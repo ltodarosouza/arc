@@ -56,6 +56,8 @@ npm run dev
 
 Then open the local address printed by the development server.
 
+For environment values and their ownership, see [docs/environment-configuration.md](docs/environment-configuration.md). The MVP currently needs no secret values to run.
+
 ## Available commands
 
 | Command | Purpose |
