@@ -22,3 +22,10 @@ export function summarizeProgress(attempts: QuestionAttempt[]) {
     incorrect: latestAttempts.filter((attempt) => attempt.outcome === 'incorrect').length,
   };
 }
+
+export function getAttemptNumber(attempt: QuestionAttempt, attempts: QuestionAttempt[]) {
+  return attempts
+    .filter((item) => item.questionId === attempt.questionId)
+    .sort((first, second) => new Date(first.createdAt).getTime() - new Date(second.createdAt).getTime())
+    .findIndex((item) => item.id === attempt.id) + 1;
+}
