@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowRight, BookOpen, Check, ChevronRight, CircleHelp, Compass, House, Search, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, ChevronRight, CircleHelp, Compass, House, Plus, Search, Sparkles, TrendingUp, X } from 'lucide-react';
+
+import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 
 const topics = [
   { name: 'Integrais', count: 48, progress: 62 },
@@ -16,12 +18,33 @@ const destinations = [
   { id: 'progress', href: '#progress', label: 'Progresso', icon: TrendingUp },
 ];
 
+const selectableSubjects = [
+  { id: 'subject-calculus-2', name: 'Cálculo II', description: 'Integrais, sequências e séries.' },
+  { id: 'subject-linear-algebra', name: 'Álgebra Linear', description: 'Matrizes, vetores e transformações.' },
+  { id: 'subject-vector-calculus', name: 'Cálculo Vetorial', description: 'Vetores, curvas e campos.' },
+];
+
 export default function Home() {
   const [activeTopic, setActiveTopic] = useState('Integrais');
   const [questionOpen, setQuestionOpen] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [activeDestination, setActiveDestination] = useState('home');
+  const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
+  const [subjectPickerOpen, setSubjectPickerOpen] = useState(false);
   const startTopic = (topic: string) => { setActiveTopic(topic); setQuestionOpen(true); setSelectedAnswer(null); };
+  const selectedSubjects = selectableSubjects.filter((subject) => selectedSubjectIds.includes(subject.id));
+
+  const toggleSubject = (subjectId: string) => {
+    const nextSubjectIds = selectedSubjectIds.includes(subjectId)
+      ? selectedSubjectIds.filter((id) => id !== subjectId)
+      : [...selectedSubjectIds, subjectId];
+    setSelectedSubjectIds(nextSubjectIds);
+    createLocalLearnerRepository().saveSelectedSubjectIds(nextSubjectIds);
+  };
+
+  useEffect(() => {
+    setSelectedSubjectIds(createLocalLearnerRepository().getState().selectedSubjectIds);
+  }, []);
 
   useEffect(() => {
     const updateActiveDestination = () => {
@@ -81,7 +104,13 @@ export default function Home() {
 
     <section id="top" className="mx-auto max-w-6xl px-5 pb-10 pt-12 sm:px-8 sm:pt-20">
       <p className="animate-enter text-sm font-medium text-[#6b766f]">sexta-feira, 5 de setembro</p>
-      <div className="mt-3 flex flex-col justify-between gap-7 sm:flex-row sm:items-end"><div className="animate-enter delay-1"><h1 className="max-w-xl text-4xl font-medium tracking-[-0.065em] sm:text-6xl">Qual assunto você quer praticar?</h1><p className="mt-4 max-w-md text-[15px] leading-6 text-[#6c716d]">Encontre uma questão e comece. Sem configurar uma sessão.</p></div><button onClick={() => startTopic(activeTopic)} className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#c8e1d4] px-5 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#b9d9c9] active:translate-y-0">Continuar estudando <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" /></button></div>
+      <div className="mt-3 flex flex-col justify-between gap-7 sm:flex-row sm:items-end"><div className="animate-enter delay-1"><h1 className="max-w-xl text-4xl font-medium tracking-[-0.065em] sm:text-6xl">Escolha uma disciplina e comece.</h1><p className="mt-4 max-w-md text-[15px] leading-6 text-[#6c716d]">Monte seu espaço uma vez. Depois, é só entrar e praticar.</p></div><button onClick={() => setSubjectPickerOpen(true)} className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#c8e1d4] px-5 text-sm font-medium transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#b9d9c9] active:translate-y-0">{selectedSubjects.length ? 'Editar disciplinas' : 'Escolher disciplinas'} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" /></button></div>
+
+      <div className="mt-10 border-t border-black/[0.07] pt-5" id="subjects">
+        <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-medium uppercase tracking-[0.14em] text-[#7b817d]">Minhas disciplinas</p><p className="mt-1 text-sm text-[#68706b]">{selectedSubjects.length ? `${selectedSubjects.length} selecionada${selectedSubjects.length > 1 ? 's' : ''}` : 'Escolha as disciplinas que você está cursando.'}</p></div><button aria-controls="subject-picker" aria-expanded={subjectPickerOpen} className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-[#435f50] transition-colors hover:bg-[#edf3ee]" onClick={() => setSubjectPickerOpen((open) => !open)}><Plus className="size-4" /> Gerenciar</button></div>
+        {selectedSubjects.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{selectedSubjects.map((subject) => <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm text-[#304238] shadow-sm" key={subject.id}>{subject.name}<button aria-label={`Remover ${subject.name}`} className="rounded-full text-[#7b817d] transition-colors hover:text-[#a45252]" onClick={() => toggleSubject(subject.id)}><X className="size-3.5" /></button></span>)}</div>}
+        {subjectPickerOpen && <section aria-labelledby="subject-picker-title" className="animate-rise mt-5 max-w-2xl rounded-[var(--arc-radius-card)] border border-black/[0.07] bg-white p-4 shadow-[var(--arc-shadow-card)] sm:p-5" id="subject-picker"><div className="flex items-start justify-between gap-4"><div><h2 className="font-medium tracking-[-0.03em]" id="subject-picker-title">Suas disciplinas</h2><p className="mt-1 text-sm text-[#68706b]">Você pode mudar isso quando quiser.</p></div><button aria-label="Fechar seleção de disciplinas" className="rounded-full p-1.5 text-[#68706b] transition-colors hover:bg-black/[0.05] hover:text-[#161616]" onClick={() => setSubjectPickerOpen(false)}><X className="size-4" /></button></div><div className="mt-4 grid gap-2">{selectableSubjects.map((subject) => { const isSelected = selectedSubjectIds.includes(subject.id); return <button aria-pressed={isSelected} className={`flex items-center gap-3 rounded-2xl border p-3.5 text-left transition-all ${isSelected ? 'border-[#a8c7b3] bg-[#eef6f0]' : 'border-black/[0.08] hover:border-black/[0.17] hover:bg-[#fafbfa]'}`} key={subject.id} onClick={() => toggleSubject(subject.id)}><span className={`grid size-6 shrink-0 place-items-center rounded-full border ${isSelected ? 'border-[#5f8f71] bg-[#5f8f71] text-white' : 'border-black/[0.13] bg-white text-transparent'}`}><Check className="size-3.5" /></span><span><span className="block text-sm font-medium">{subject.name}</span><span className="mt-0.5 block text-xs text-[#68706b]">{subject.description}</span></span></button>; })}</div></section>}
+      </div>
     </section>
 
     <section id="explore" className="mx-auto max-w-6xl px-5 sm:px-8"><div className="overflow-hidden rounded-[28px] border border-black/[0.07] bg-white shadow-[0_20px_60px_rgba(31,37,33,0.04)]">

@@ -24,6 +24,14 @@ export const seedSubjects: Subject[] = [
     sortOrder: 2,
     isPublished: true,
   },
+  {
+    id: 'subject-vector-calculus',
+    slug: 'calculo-vetorial',
+    name: 'Cálculo Vetorial',
+    description: 'Vetores, curvas e campos.',
+    sortOrder: 3,
+    isPublished: true,
+  },
 ];
 
 export const seedTaxonomyNodes: TaxonomyNode[] = [
