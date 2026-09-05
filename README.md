@@ -58,6 +58,8 @@ Then open the local address printed by the development server.
 
 For environment values and their ownership, see [docs/environment-configuration.md](docs/environment-configuration.md). The MVP currently needs no secret values to run.
 
+For durable data and Supabase setup, see [docs/supabase-setup.md](docs/supabase-setup.md).
+
 ## Available commands
 
 | Command | Purpose |
