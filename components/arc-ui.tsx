@@ -13,9 +13,9 @@ export function ArcButton({ className, tone = 'primary', ...props }: ArcButtonPr
       {...props}
       className={cn(
         'h-11 rounded-full px-5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0',
-        tone === 'primary' && 'bg-[#1d221d] text-white hover:bg-[#323b34]',
-        tone === 'accent' && 'bg-[var(--arc-accent)] text-[#243128] hover:bg-[#b9d9c9]',
-        tone === 'quiet' && 'bg-transparent text-[var(--arc-text-muted)] hover:bg-black/[0.04] hover:text-[#161616]',
+        tone === 'primary' && 'bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[#354d68]',
+        tone === 'accent' && 'bg-[var(--arc-accent)] text-[#263950] hover:bg-[#c8d8d6]',
+        tone === 'quiet' && 'bg-transparent text-[var(--arc-text-muted)] hover:bg-black/[0.04] hover:text-[var(--foreground)]',
         className,
       )}
     />
@@ -23,7 +23,7 @@ export function ArcButton({ className, tone = 'primary', ...props }: ArcButtonPr
 }
 
 export function ArcCard({ className, children }: { className?: string; children: ReactNode }) {
-  return <section className={cn('rounded-[var(--arc-radius-card)] border border-black/[0.07] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)]', className)}>{children}</section>;
+  return <section className={cn('rounded-[var(--arc-radius-card)] border border-[var(--border)] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)]', className)}>{children}</section>;
 }
 
 type AttemptStatus = 'correct' | 'incorrect' | 'redo';

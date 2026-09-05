@@ -5,17 +5,17 @@
 @custom-variant dark (&:is(.dark *));
 @theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --font-sans: var(--font-geist-sans); --font-mono: var(--font-geist-mono); --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground); --color-border: var(--border); --color-ring: var(--ring); --radius: 0.8rem; }
 :root {
-  --background: #f7f7f5;
-  --foreground: #161616;
-  --primary: #1d221d;
-  --primary-foreground: #fff;
-  --border: rgba(22, 22, 22, 0.09);
-  --ring: #79a88a;
-  --arc-surface: #ffffff;
-  --arc-surface-subtle: #f0f3f0;
-  --arc-text-muted: #68706b;
-  --arc-accent: #c8e1d4;
-  --arc-accent-strong: #5f8f71;
+  --background: #f4f1eb;
+  --foreground: #1e2b3a;
+  --primary: #263950;
+  --primary-foreground: #fbfaf7;
+  --border: rgba(38, 57, 80, 0.1);
+  --ring: #71889a;
+  --arc-surface: #fbfaf7;
+  --arc-surface-subtle: #ebe9e3;
+  --arc-text-muted: #68717a;
+  --arc-accent: #d8e3e1;
+  --arc-accent-strong: #527184;
   --arc-success-bg: #eaf5ed;
   --arc-success-text: #36734d;
   --arc-error-bg: #faeeee;
@@ -24,7 +24,7 @@
   --arc-redo-text: #8a6728;
   --arc-radius-card: 1.75rem;
   --arc-radius-control: 0.875rem;
-  --arc-shadow-card: 0 20px 60px rgba(31, 37, 33, 0.045);
+  --arc-shadow-card: 0 18px 50px rgba(38, 57, 80, 0.045);
 }
 * { @apply border-border outline-ring/50; }
 html { scroll-behavior: smooth; }
