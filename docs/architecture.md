@@ -43,12 +43,13 @@ This state does not need persistence:
 Each completed interaction creates a `QuestionAttempt` record. It references a question but does not mutate it.
 
 ```ts
-type AttemptOutcome = 'correct' | 'incorrect' | 'self_assessed_correct' | 'self_assessed_incorrect';
+type AttemptOutcome = 'correct' | 'incorrect' | 'revealed';
 
 type QuestionAttempt = {
   id: string;
   questionId: string;
   outcome: AttemptOutcome;
+  gradingMethod: 'automatic' | 'self_assessed' | 'unscored';
   selectedOptionId?: string;
   createdAt: string;
 };
@@ -58,11 +59,11 @@ The question list and question header derive a learner-facing status from attemp
 
 - **Not attempted:** no completed attempt exists.
 - **Attempted:** at least one completed attempt exists.
-- **Correct:** the latest completed attempt is correct or self-assessed correct.
-- **Incorrect:** the latest completed attempt is incorrect or self-assessed incorrect.
+- **Correct:** the latest scored attempt is correct, whether automatic or self-assessed.
+- **Incorrect:** the latest scored attempt is incorrect, whether automatic or self-assessed.
 - **Redo:** the learner explicitly marked the question for another pass.
 
-Using the latest completed attempt means that a learner who fixes a previous error is shown as currently correct. A later review feature may additionally expose “ever incorrect” as a separate historical filter; it must not overload the meaning of the current status.
+An answer reveal without self-assessment is retained as `revealed`, but does not replace the latest scored status. A learner who fixes a previous error is therefore shown as currently correct. A later review feature may additionally expose “ever incorrect” as a separate historical filter; it must not overload the meaning of the current status.
 
 ## Required question-state UI
 
