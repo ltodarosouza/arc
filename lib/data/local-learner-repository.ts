@@ -10,6 +10,12 @@ export const LEARNER_STORAGE_KEY = 'arc:learner-state';
 
 type StorageLike = Pick<Storage, 'getItem' | 'removeItem' | 'setItem'>;
 
+type ParsedLearnerState = {
+  state: LearnerState;
+  shouldPersist: boolean;
+  backupRaw?: string;
+};
+
 function uniqueIds(ids: string[]): string[] {
   return [...new Set(ids.filter((id) => typeof id === 'string' && id.length > 0))];
 }
@@ -27,27 +33,57 @@ function isQuestionAttempt(value: unknown): value is QuestionAttempt {
   );
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function normaliseState(value: Record<string, unknown>): LearnerState {
+  return {
+    version: LEARNER_STATE_VERSION,
+    selectedSubjectIds: uniqueIds(Array.isArray(value.selectedSubjectIds) ? value.selectedSubjectIds : []),
+    attempts: Array.isArray(value.attempts) ? value.attempts.filter(isQuestionAttempt) : [],
+    redoQuestionIds: uniqueIds(Array.isArray(value.redoQuestionIds) ? value.redoQuestionIds : []),
+  };
+}
+
+function migrateVersionZero(value: Record<string, unknown>): LearnerState {
+  return normaliseState({
+    selectedSubjectIds: value.selectedSubjectIds ?? value.selectedSubjects,
+    attempts: value.attempts,
+    redoQuestionIds: value.redoQuestionIds ?? value.redoQuestions,
+  });
+}
+
 /**
  * Parses only the parts of local storage that match the current state schema.
  * A bad or old record becomes a clean state rather than breaking the study
  * flow. Future versions get an explicit migration instead of silent coercion.
  */
-export function parseLearnerState(raw: string | null): LearnerState {
-  if (!raw) return createEmptyLearnerState();
+function parseStoredLearnerState(raw: string | null): ParsedLearnerState {
+  if (!raw) return { state: createEmptyLearnerState(), shouldPersist: false };
 
   try {
-    const parsed = JSON.parse(raw) as Partial<LearnerState>;
-    if (parsed.version !== LEARNER_STATE_VERSION) return createEmptyLearnerState();
+    const parsed: unknown = JSON.parse(raw);
+    if (!isRecord(parsed)) {
+      return { state: createEmptyLearnerState(), shouldPersist: true, backupRaw: raw };
+    }
 
-    return {
-      version: LEARNER_STATE_VERSION,
-      selectedSubjectIds: uniqueIds(Array.isArray(parsed.selectedSubjectIds) ? parsed.selectedSubjectIds : []),
-      attempts: Array.isArray(parsed.attempts) ? parsed.attempts.filter(isQuestionAttempt) : [],
-      redoQuestionIds: uniqueIds(Array.isArray(parsed.redoQuestionIds) ? parsed.redoQuestionIds : []),
-    };
+    if (parsed.version === LEARNER_STATE_VERSION) {
+      return { state: normaliseState(parsed), shouldPersist: false };
+    }
+
+    if (parsed.version === 0) {
+      return { state: migrateVersionZero(parsed), shouldPersist: true };
+    }
+
+    return { state: createEmptyLearnerState(), shouldPersist: true, backupRaw: raw };
   } catch {
-    return createEmptyLearnerState();
+    return { state: createEmptyLearnerState(), shouldPersist: true, backupRaw: raw };
   }
+}
+
+export function parseLearnerState(raw: string | null): LearnerState {
+  return parseStoredLearnerState(raw).state;
 }
 
 export class LocalLearnerRepository implements LearnerRepository {
@@ -58,7 +94,16 @@ export class LocalLearnerRepository implements LearnerRepository {
 
   getState(): LearnerState {
     if (!this.storage) return createEmptyLearnerState();
-    return parseLearnerState(this.storage.getItem(this.storageKey));
+    const parsed = parseStoredLearnerState(this.storage.getItem(this.storageKey));
+
+    if (parsed.shouldPersist) {
+      if (parsed.backupRaw) {
+        this.storage.setItem(`${this.storageKey}:backup:${Date.now()}`, parsed.backupRaw);
+      }
+      this.storage.setItem(this.storageKey, JSON.stringify(parsed.state));
+    }
+
+    return parsed.state;
   }
 
   saveSelectedSubjectIds(subjectIds: string[]): void {
