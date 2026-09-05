@@ -1,15 +1,48 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, ChevronRight, CircleHelp, Compass } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Check, ChevronRight, CircleHelp, Compass, Eye, MoveRight } from 'lucide-react';
 
 import { AttemptStatusBadge, ArcButton, ArcCard } from '@/components/arc-ui';
+import { MathContent } from '@/components/math-content';
+import { seedQuestions, seedTaxonomyNodes } from '@/lib/data/seed-catalogue';
+import { subjectOptions } from '@/lib/data/subject-options';
+import type { Question } from '@/lib/domain/questions';
 
-const answers = ['sen(x²) + C', '2sen(x) + C', 'x²sen(x²) + C', '−2cos(x²) + C'];
+function questionFromLocation(): Question {
+  const requestedId = new URLSearchParams(window.location.search).get('question');
+  return seedQuestions.find((question) => question.id === requestedId) ?? seedQuestions[0];
+}
 
 export function PracticeSurface() {
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const correct = selectedAnswer === 'A';
-  return <ArcCard className="mt-8 overflow-hidden"><div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 sm:px-8"><div className="flex items-center gap-2 text-xs text-zinc-500"><Compass className="size-3.5" /> Cálculo II <ChevronRight className="size-3" /> Integrais</div>{submitted ? <AttemptStatusBadge status={correct ? 'correct' : 'incorrect'} /> : <span className="rounded-full bg-[#eef4ef] px-3 py-1 text-xs font-medium text-[#496553]">Questão 01</span>}</div><div className="p-5 sm:p-10"><p className="max-w-2xl text-xl font-medium leading-relaxed tracking-[-0.035em] sm:text-2xl">Calcule a integral indefinida abaixo.</p><p className="mt-8 font-serif text-3xl italic tracking-wide sm:text-4xl">∫ 2x · cos(x²) dx</p><div className="mt-10 grid max-w-2xl gap-2">{answers.map((answer, index) => { const id = String.fromCharCode(65 + index); const chosen = selectedAnswer === id; const resultStyle = submitted && (id === 'A' ? 'border-[#8fb59f] bg-[#eef6f0]' : chosen ? 'border-[#dfaaaa] bg-[#faeeee]' : 'border-black/[0.08] bg-white'); return <button disabled={submitted} key={id} onClick={() => setSelectedAnswer(id)} className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-all ${resultStyle ?? (chosen ? 'border-[#8fb59f] bg-[#eef6f0]' : 'border-black/[0.08] bg-white hover:border-black/20')}`}><span className={`grid size-6 place-items-center rounded-full text-xs ${chosen ? 'bg-[#5f8f71] text-white' : 'bg-[#f3f4f2] text-zinc-500'}`}>{id}</span>{answer}</button>; })}</div>{submitted && <div className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${correct ? 'bg-[var(--arc-success-bg)] text-[var(--arc-success-text)]' : 'bg-[var(--arc-error-bg)] text-[var(--arc-error-text)]'}`}><p className="font-medium">{correct ? 'Você acertou.' : 'Quase. A resposta correta é A.'}</p><p className="mt-1">Use a substituição u = x²; então du = 2x dx e a integral se torna ∫ cos(u) du.</p></div>}<div className="mt-10 flex flex-wrap items-center justify-between gap-4"><button className="inline-flex items-center gap-2 text-sm text-zinc-500 transition-colors hover:text-zinc-950"><CircleHelp className="size-4" /> Preciso de uma dica</button><ArcButton disabled={!selectedAnswer || submitted} onClick={() => setSubmitted(true)}><Check className="size-4" /> Responder</ArcButton></div></div></ArcCard>;
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => setQuestion(questionFromLocation()), []);
+  const subject = subjectOptions.find((item) => item.id === question?.subjectId);
+  const primaryTag = question?.taxonomyTags.find((tag) => tag.isPrimary) ?? question?.taxonomyTags[0];
+  const topic = seedTaxonomyNodes.find((node) => node.id === primaryTag?.taxonomyNodeId);
+  const questionIndex = useMemo(() => question ? seedQuestions.filter((item) => item.subjectId === question.subjectId).findIndex((item) => item.id === question.id) : 0, [question]);
+  const nextQuestion = useMemo(() => question ? seedQuestions.filter((item) => item.subjectId === question.subjectId)[questionIndex + 1] : undefined, [question, questionIndex]);
+
+  if (!question) return <ArcCard className="mt-8 animate-pulse p-8"><div className="h-5 w-32 rounded-full bg-[var(--arc-surface-subtle)]" /></ArcCard>;
+  const correct = question.kind === 'multiple_choice' && selectedOptionId === question.correctOptionId;
+  const resolved = question.kind === 'multiple_choice' ? submitted : revealed;
+  const goToQuestion = (next: Question) => {
+    window.history.pushState({}, '', `/practice?subject=${next.subjectId}&question=${next.id}`);
+    setQuestion(next);
+    setSelectedOptionId(null);
+    setSubmitted(false);
+    setRevealed(false);
+  };
+
+  return <ArcCard className="mt-8 overflow-hidden"><div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4 sm:px-8"><div className="flex min-w-0 items-center gap-2 text-xs text-[var(--arc-text-muted)]"><Compass className="size-3.5 shrink-0" /><span className="truncate">{subject?.name}</span>{topic && <><ChevronRight className="size-3 shrink-0" /><span className="truncate">{topic.name}</span></>}</div>{resolved ? <AttemptStatusBadge status={question.kind === 'multiple_choice' ? correct ? 'correct' : 'incorrect' : 'redo'} /> : <span className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1 text-xs font-medium text-[#52616c]">Questão {String(questionIndex + 1).padStart(2, '0')}</span>}</div>
+    <div className="p-5 sm:p-10"><div className="max-w-2xl text-xl font-medium leading-relaxed tracking-[-0.035em] sm:text-2xl"><MathContent value={question.statement.value} /></div>
+      {question.kind === 'multiple_choice' ? <div className="mt-10 grid max-w-2xl gap-2">{question.options.map((option) => { const chosen = selectedOptionId === option.id; const isCorrect = option.id === question.correctOptionId; const resultStyle = submitted && (isCorrect ? 'border-[#8fb59f] bg-[#eef6f0]' : chosen ? 'border-[#dfaaaa] bg-[#faeeee]' : 'border-[var(--border)] bg-[var(--arc-surface)]'); return <button disabled={submitted} key={option.id} onClick={() => setSelectedOptionId(option.id)} className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm transition-all ${resultStyle ?? (chosen ? 'border-[#8aa7a1] bg-[#eef5f2]' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1]')}`}><span className={`grid size-6 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-white' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}>{option.label}</span><MathContent value={option.content.value} /></button>; })}</div> : <div className="mt-10 max-w-2xl rounded-2xl bg-[var(--arc-surface-subtle)] p-5 text-sm leading-6 text-[var(--arc-text-muted)]"><p>Resolva no papel e revele a resposta quando estiver pronto.</p></div>}
+      {resolved && <div className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${question.kind === 'multiple_choice' && !correct ? 'bg-[var(--arc-error-bg)] text-[var(--arc-error-text)]' : 'bg-[var(--arc-success-bg)] text-[var(--arc-success-text)]'}`}><p className="font-medium">{question.kind === 'multiple_choice' ? correct ? 'Você acertou.' : `A resposta correta é ${question.options.find((option) => option.id === question.correctOptionId)?.label}.` : 'Resposta revelada.'}</p><div className="mt-1"><MathContent value={question.solution.explanation?.value ?? question.solution.finalAnswer.value} /></div></div>}
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-4"><button className="inline-flex items-center gap-2 text-sm text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"><CircleHelp className="size-4" /> Preciso de uma dica</button><div className="flex items-center gap-3">{resolved && nextQuestion && <button className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline" onClick={() => goToQuestion(nextQuestion)}>Próxima <MoveRight className="size-4" /></button>}{question.kind === 'multiple_choice' ? <ArcButton disabled={!selectedOptionId || submitted} onClick={() => setSubmitted(true)}><Check className="size-4" /> Responder</ArcButton> : <ArcButton disabled={revealed} onClick={() => setRevealed(true)}><Eye className="size-4" /> Revelar resposta</ArcButton>}</div></div>
+    </div>
+  </ArcCard>;
 }
