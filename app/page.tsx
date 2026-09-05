@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowRight, BookOpen, Check, ChevronRight, CircleHelp, Compass, Search, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, ChevronRight, CircleHelp, Compass, House, Search, Sparkles, TrendingUp } from 'lucide-react';
 
 const topics = [
   { name: 'Integrais', count: 48, progress: 62 },
@@ -10,11 +10,35 @@ const topics = [
   { name: 'Sequências e séries', count: 39, progress: 14 },
 ];
 
+const destinations = [
+  { id: 'home', href: '#top', label: 'Início', icon: House },
+  { id: 'explore', href: '#explore', label: 'Explorar', icon: Compass },
+  { id: 'progress', href: '#progress', label: 'Progresso', icon: TrendingUp },
+];
+
 export default function Home() {
   const [activeTopic, setActiveTopic] = useState('Integrais');
   const [questionOpen, setQuestionOpen] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [activeDestination, setActiveDestination] = useState('home');
   const startTopic = (topic: string) => { setActiveTopic(topic); setQuestionOpen(true); setSelectedAnswer(null); };
+
+  useEffect(() => {
+    const updateActiveDestination = () => {
+      const destination = destinations
+        .map((item) => ({ id: item.id, distance: Math.abs((document.getElementById(item.id === 'home' ? 'top' : item.id)?.getBoundingClientRect().top ?? 0) - 128) }))
+        .sort((first, second) => first.distance - second.distance)[0];
+      if (destination) setActiveDestination(destination.id);
+    };
+
+    updateActiveDestination();
+    window.addEventListener('scroll', updateActiveDestination, { passive: true });
+    window.addEventListener('hashchange', updateActiveDestination);
+    return () => {
+      window.removeEventListener('scroll', updateActiveDestination);
+      window.removeEventListener('hashchange', updateActiveDestination);
+    };
+  }, []);
 
   useEffect(() => {
     const context = (document as Document & { modelContext?: { registerTool: (tool: object, options: { signal: AbortSignal }) => void | Promise<void> } }).modelContext;
@@ -39,7 +63,19 @@ export default function Home() {
   return <main className="min-h-screen bg-[#f7f7f5] text-[#161616]">
     <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 sm:px-8">
       <a className="flex items-center gap-2.5 font-semibold tracking-[-0.045em]" href="#top"><span className="grid size-8 place-items-center rounded-[11px] bg-[#1d221d] text-sm text-white">a</span><span className="text-[18px]">arc</span></a>
-      <nav className="hidden items-center gap-1 rounded-full border border-black/[0.07] bg-white/60 p-1 text-sm text-zinc-500 sm:flex"><a className="rounded-full px-4 py-2 transition-colors hover:text-zinc-950" href="#top">Início</a><a className="rounded-full bg-[#1d221d] px-4 py-2 text-white" href="#explore">Explorar</a><a className="rounded-full px-4 py-2 transition-colors hover:text-zinc-950" href="#progress">Progresso</a></nav>
+      <nav aria-label="Navegação principal" className="hidden items-center gap-1 rounded-full border border-black/[0.07] bg-white/60 p-1 text-sm text-zinc-500 sm:flex">
+        {destinations.map((destination) => (
+          <a
+            aria-current={activeDestination === destination.id ? 'page' : undefined}
+            className={`rounded-full px-4 py-2 transition-colors ${activeDestination === destination.id ? 'bg-[#1d221d] text-white' : 'hover:text-zinc-950'}`}
+            href={destination.href}
+            key={destination.id}
+            onClick={() => setActiveDestination(destination.id)}
+          >
+            {destination.label}
+          </a>
+        ))}
+      </nav>
       <button aria-label="Abrir perfil" className="grid size-9 place-items-center rounded-full bg-[#dfebe5] text-sm font-medium text-[#30453d]">L</button>
     </header>
 
@@ -56,5 +92,23 @@ export default function Home() {
 
     {questionOpen && <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8" aria-live="polite"><div className="animate-rise overflow-hidden rounded-[28px] border border-black/[0.07] bg-[#fcfcfb] shadow-[0_20px_60px_rgba(31,37,33,0.045)]"><div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 sm:px-8"><div className="flex items-center gap-2 text-xs text-zinc-500"><Compass className="size-3.5" /> Cálculo II <ChevronRight className="size-3" /> {activeTopic}</div><span className="rounded-full bg-[#eef4ef] px-3 py-1 text-xs font-medium text-[#496553]">Questão 04</span></div><div className="p-5 sm:p-10"><p className="max-w-2xl text-xl font-medium leading-relaxed tracking-[-0.035em] sm:text-2xl">Calcule a integral indefinida abaixo.</p><p className="mt-8 font-serif text-3xl italic tracking-wide sm:text-4xl">∫ 2x · cos(x²) dx</p><div className="mt-10 grid max-w-2xl gap-2">{['sen(x²) + C', '2sen(x) + C', 'x²sen(x²) + C', '−2cos(x²) + C'].map((answer, index) => { const id = String.fromCharCode(65 + index); const chosen = selectedAnswer === id; return <button key={id} onClick={() => setSelectedAnswer(id)} className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 ${chosen ? 'border-[#8fb59f] bg-[#eef6f0]' : 'border-black/[0.08] bg-white hover:border-black/20'}`}><span className={`grid size-6 place-items-center rounded-full text-xs ${chosen ? 'bg-[#5f8f71] text-white' : 'bg-[#f3f4f2] text-zinc-500'}`}>{id}</span>{answer}</button>; })}</div><div className="mt-10 flex flex-wrap items-center justify-between gap-4"><button className="inline-flex items-center gap-2 text-sm text-zinc-500 transition-colors hover:text-zinc-950"><CircleHelp className="size-4" /> Preciso de uma dica</button><button onClick={() => setSelectedAnswer(selectedAnswer || 'A')} className="inline-flex h-11 items-center gap-2 rounded-full bg-[#1e241f] px-5 text-sm font-medium text-white transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"><Check className="size-4" /> Responder</button></div></div></div></section>}
     <section id="progress" className="mx-auto max-w-6xl px-5 pb-16 pt-4 sm:px-8"><div className="flex items-center gap-3 text-sm text-zinc-500"><span className="grid size-8 place-items-center rounded-full bg-white"><Sparkles className="size-3.5" /></span> Um pouco por dia já faz diferença.</div></section>
+    <nav aria-label="Navegação móvel" className="fixed inset-x-4 bottom-4 z-10 flex items-center justify-around rounded-2xl border border-black/[0.08] bg-white/90 p-1.5 shadow-[0_12px_40px_rgba(31,37,33,0.12)] backdrop-blur sm:hidden">
+      {destinations.map((destination) => {
+        const Icon = destination.icon;
+        const isActive = activeDestination === destination.id;
+        return (
+          <a
+            aria-current={isActive ? 'page' : undefined}
+            className={`flex min-w-[78px] flex-col items-center gap-1 rounded-xl px-3 py-2 text-[11px] font-medium transition-colors ${isActive ? 'bg-[#eff4f0] text-[#26362d]' : 'text-zinc-500'}`}
+            href={destination.href}
+            key={destination.id}
+            onClick={() => setActiveDestination(destination.id)}
+          >
+            <Icon aria-hidden="true" className="size-4" />
+            {destination.label}
+          </a>
+        );
+      })}
+    </nav>
   </main>;
 }
