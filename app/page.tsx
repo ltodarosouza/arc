@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, BookOpen, Check, ChevronRight, CircleHelp, Compass, House, Plus, Search, Sparkles, TrendingUp, X } from 'lucide-react';
 
+import { AuthScreen } from '@/components/auth-screen';
 import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
+import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 const topics = [
   { name: 'Integrais', count: 48, progress: 62 },
@@ -31,6 +33,8 @@ export default function Home() {
   const [activeDestination, setActiveDestination] = useState('home');
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
   const [subjectPickerOpen, setSubjectPickerOpen] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const startTopic = (topic: string) => { setActiveTopic(topic); setQuestionOpen(true); setSelectedAnswer(null); };
   const selectedSubjects = selectableSubjects.filter((subject) => selectedSubjectIds.includes(subject.id));
 
@@ -45,6 +49,29 @@ export default function Home() {
   useEffect(() => {
     setSelectedSubjectIds(createLocalLearnerRepository().getState().selectedSubjectIds);
   }, []);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      setAuthReady(true);
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserEmail(session?.user.email ?? null);
+      setAuthReady(true);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserEmail(session?.user.email ?? null);
+      setAuthReady(true);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signOut = async () => {
+    if (!isSupabaseConfigured()) return;
+    await getSupabaseClient().auth.signOut();
+  };
 
   useEffect(() => {
     const updateActiveDestination = () => {
@@ -83,6 +110,9 @@ export default function Home() {
     return () => lifecycle.abort();
   }, []);
 
+  if (!authReady) return <main className="min-h-screen bg-[#f7f7f5]" />;
+  if (!userEmail) return <AuthScreen />;
+
   return <main className="min-h-screen bg-[#f7f7f5] text-[#161616]">
     <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 sm:px-8">
       <a className="flex items-center gap-2.5 font-semibold tracking-[-0.045em]" href="#top"><span className="grid size-8 place-items-center rounded-[11px] bg-[#1d221d] text-sm text-white">a</span><span className="text-[18px]">arc</span></a>
@@ -99,7 +129,7 @@ export default function Home() {
           </a>
         ))}
       </nav>
-      <button aria-label="Abrir perfil" className="grid size-9 place-items-center rounded-full bg-[#dfebe5] text-sm font-medium text-[#30453d]">L</button>
+      <div className="flex items-center gap-2"><span className="hidden max-w-44 truncate text-sm text-[#68706b] sm:block">{userEmail}</span><button aria-label="Sair da conta" className="grid size-9 place-items-center rounded-full bg-[#dfebe5] text-sm font-medium text-[#30453d] transition-colors hover:bg-[#c8e1d4]" onClick={() => void signOut()}>{userEmail.charAt(0).toUpperCase()}</button></div>
     </header>
 
     <section id="top" className="mx-auto max-w-6xl px-5 pb-10 pt-12 sm:px-8 sm:pt-20">
