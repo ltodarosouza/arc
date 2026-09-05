@@ -4,7 +4,28 @@
 
 @custom-variant dark (&:is(.dark *));
 @theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --font-sans: var(--font-geist-sans); --font-mono: var(--font-geist-mono); --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground); --color-border: var(--border); --color-ring: var(--ring); --radius: 0.8rem; }
-:root { --background: #f7f7f5; --foreground: #161616; --primary: #1d221d; --primary-foreground: #fff; --border: rgba(0, 0, 0, 0.08); --ring: #9dbbaa; }
+:root {
+  --background: #f7f7f5;
+  --foreground: #161616;
+  --primary: #1d221d;
+  --primary-foreground: #fff;
+  --border: rgba(22, 22, 22, 0.09);
+  --ring: #79a88a;
+  --arc-surface: #ffffff;
+  --arc-surface-subtle: #f0f3f0;
+  --arc-text-muted: #68706b;
+  --arc-accent: #c8e1d4;
+  --arc-accent-strong: #5f8f71;
+  --arc-success-bg: #eaf5ed;
+  --arc-success-text: #36734d;
+  --arc-error-bg: #faeeee;
+  --arc-error-text: #a45252;
+  --arc-redo-bg: #fbf1dc;
+  --arc-redo-text: #8a6728;
+  --arc-radius-card: 1.75rem;
+  --arc-radius-control: 0.875rem;
+  --arc-shadow-card: 0 20px 60px rgba(31, 37, 33, 0.045);
+}
 * { @apply border-border outline-ring/50; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-geist-sans), Arial, sans-serif; }
