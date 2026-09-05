@@ -99,8 +99,15 @@ export const seedQuestions: Question[] = [
     id: 'question-calc2-geometric-series-01',
     subjectId: 'subject-calculus-2',
     taxonomyTags: [{ questionId: 'question-calc2-geometric-series-01', taxonomyNodeId: 'calc2-topic-geometric-series', isPrimary: true }],
-    kind: 'reveal_answer', status: 'published', difficulty: 'medium',
+    kind: 'multiple_choice', status: 'published', difficulty: 'medium',
     statement: { format: 'markdown_latex', value: 'Determine se a série $\\sum_{n=0}^{\\infty} (1/3)^n$ converge e, caso convirja, calcule sua soma.' },
+    options: [
+      { id: 'option-geo-a', label: 'A', content: { format: 'markdown_latex', value: 'A série converge e sua soma é $1/2$.' }, sortOrder: 1 },
+      { id: 'option-geo-b', label: 'B', content: { format: 'markdown_latex', value: 'A série converge e sua soma é $1$.' }, sortOrder: 2 },
+      { id: 'option-geo-c', label: 'C', content: { format: 'markdown_latex', value: 'A série converge e sua soma é $3/2$.' }, sortOrder: 3 },
+      { id: 'option-geo-d', label: 'D', content: { format: 'markdown_latex', value: 'A série não converge por possuir infinitos termos.' }, sortOrder: 4 },
+    ],
+    correctOptionId: 'option-geo-c',
     hints: [{ id: 'hint-calc2-02', content: { format: 'markdown_latex', value: 'Compare com a fórmula de uma série geométrica de razão $r$.' }, sortOrder: 1 }],
     solution: {
       finalAnswer: { format: 'markdown_latex', value: 'A série converge e sua soma é $3/2$.' },
