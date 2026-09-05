@@ -4,6 +4,7 @@ import type { Subject, TaxonomyNode } from '@/lib/domain/taxonomy';
 const originalSource = {
   kind: 'original' as const,
   label: 'Arc development fixture',
+  rightsStatus: 'approved' as const,
 };
 
 export const seedSubjects: Subject[] = [

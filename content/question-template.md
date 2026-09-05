@@ -9,7 +9,13 @@ difficulty: medium # easy | medium | hard
 source_kind: original # original | open_licence | authorised_contributor | other
 source_label: ""
 source_url: ""
-licence_note: ""
+licence_id: ""
+licence_url: ""
+rights_holder: ""
+permission_reference: ""
+rights_status: unverified # unverified | review_required | approved | rejected
+verified_by: ""
+verified_at: ""
 author: ""
 created_at: YYYY-MM-DD
 reviewer: ""
@@ -61,6 +67,7 @@ Explain why the answer is correct. Break a non-trivial solution into steps.
 ## Author checklist
 
 - [ ] I wrote this question myself or I have recorded compatible reuse rights.
+- [ ] The rights status is `approved`; an unverified source cannot be published.
 - [ ] The statement is self-contained and unambiguous.
 - [ ] The primary and secondary tags match the taxonomy.
 - [ ] The declared difficulty follows the Arc rubric.

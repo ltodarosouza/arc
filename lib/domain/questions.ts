@@ -41,10 +41,16 @@ export type CommentedSolution = {
 };
 
 export type QuestionSourceReference = {
-  /** Detailed licence review is specified in the content-provenance workflow. */
   kind: 'original' | 'open_licence' | 'authorised_contributor' | 'other';
   label: string;
   url?: string;
+  licenceId?: string;
+  licenceUrl?: string;
+  rightsHolder?: string;
+  permissionReference?: string;
+  rightsStatus: 'unverified' | 'review_required' | 'approved' | 'rejected';
+  verifiedBy?: string;
+  verifiedAt?: string;
 };
 
 type BaseQuestion = {
