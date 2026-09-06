@@ -1,5 +1,10 @@
 -- Original Arc content: Cálculo II — substituição e mudança de variável.
 
+-- This batch may be applied independently of the antiderivatives batch.
+insert into public.question_sources (id, kind, label, licence_note, rights_holder, rights_status, verified_by, verified_at) values
+  ('10000000-0000-4000-8000-000000000002', 'original', 'Arc original Cálculo II — antiderivadas', 'Conteúdo original produzido para a Arc; publicação e adaptação autorizadas pela própria Arc.', 'Arc', 'approved', 'Equipe editorial Arc', '2026-09-06T00:00:00Z')
+on conflict (id) do nothing;
+
 insert into public.questions (id, subject_id, source_id, kind, difficulty, publication_status, statement_markdown) values
 ('40000000-0000-4000-8000-000000000028','20000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000002','multiple_choice','easy','published','Calcule $\\int 2x\\cos(x^2)\\,dx$.'),
 ('40000000-0000-4000-8000-000000000029','20000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000002','multiple_choice','easy','published','Calcule $\\int 3x^2e^{x^3}\\,dx$.'),
