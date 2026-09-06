@@ -106,9 +106,14 @@ export default function Home() {
                 ).length;
                 return (
                   <ArcCard
-                    className="group p-5 hover:-translate-y-1 hover:border-[#b8c9c4] hover:shadow-[0_22px_52px_rgba(38,57,80,0.09)]"
+                    className="group relative p-5 hover:-translate-y-1 hover:border-[#b8c9c4] hover:shadow-[0_22px_52px_rgba(38,57,80,0.09)]"
                     key={subject.id}
                   >
+                    <a
+                      aria-label={`Abrir ${subject.name}`}
+                      className="absolute inset-0 rounded-[var(--arc-radius-card)]"
+                      href={`/explore/${subject.id}`}
+                    />
                     <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
                       <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
                     </span>
@@ -123,7 +128,7 @@ export default function Home() {
                         ? `${completed} de ${subjectQuestionIds.length} feitas`
                         : 'Catálogo em preparação'}
                     </p>
-                    <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
+                    <div className="relative z-10 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
                       <a
                         className="inline-flex items-center gap-1 hover:underline"
                         href={`/questions?subject=${subject.id}`}
@@ -132,7 +137,7 @@ export default function Home() {
                       </a>
                       <a
                         className="inline-flex items-center gap-1 hover:underline"
-                        href="/explore"
+                        href={`/explore/${subject.id}`}
                       >
                         Assuntos <ChevronRight className="size-4" />
                       </a>

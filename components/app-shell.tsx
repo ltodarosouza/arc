@@ -78,7 +78,7 @@ export function AppShell({
     return <AuthScreen />;
 
   return (
-    <main className="min-h-screen bg-[var(--background)] pb-24 text-[var(--foreground)] sm:pb-10">
+    <main className="min-h-screen bg-[var(--background)] pb-36 text-[var(--foreground)] sm:pb-10">
       <a
         className="sr-only fixed left-4 top-4 z-50 rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] focus:not-sr-only"
         href="#main-content"
