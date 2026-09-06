@@ -54,7 +54,10 @@ export default function QuestionsPage() {
     if (!catalogue || !learnerState) return;
     const search = new URLSearchParams(window.location.search);
     const requestedSubjectId = search.get('subject');
+    const requestedUnitId = search.get('unit');
     const requestedTopicId = search.get('topic');
+    const requestedSubtopicId = search.get('subtopic');
+    const requestedDifficulties = search.get('difficulty')?.split(',') ?? [];
     const requestedStatus = search.get('status');
     setSubjectId(
       requestedSubjectId &&
@@ -62,7 +65,17 @@ export default function QuestionsPage() {
         ? requestedSubjectId
         : (catalogue.subjects[0]?.id ?? null),
     );
+    setUnitId(requestedUnitId);
     setTopicId(requestedTopicId);
+    setSubtopicId(requestedSubtopicId);
+    setSelectedDifficulties(
+      requestedDifficulties.filter(
+        (difficulty): difficulty is Difficulty =>
+          difficulty === 'easy' ||
+          difficulty === 'medium' ||
+          difficulty === 'hard',
+      ),
+    );
     if (
       requestedStatus === 'not_attempted' ||
       requestedStatus === 'attempted' ||
@@ -80,6 +93,26 @@ export default function QuestionsPage() {
     );
     setRedoQuestionIds(new Set(learnerState.redoQuestionIds));
   }, [catalogue, learnerState]);
+
+  useEffect(() => {
+    if (!subjectId) return;
+    const search = new URLSearchParams();
+    search.set('subject', subjectId);
+    if (unitId) search.set('unit', unitId);
+    if (topicId) search.set('topic', topicId);
+    if (subtopicId) search.set('subtopic', subtopicId);
+    if (selectedDifficulties.length)
+      search.set('difficulty', selectedDifficulties.join(','));
+    if (selectedStatus !== 'all') search.set('status', selectedStatus);
+    window.history.replaceState(null, '', `/questions?${search.toString()}`);
+  }, [
+    selectedDifficulties,
+    selectedStatus,
+    subjectId,
+    subtopicId,
+    topicId,
+    unitId,
+  ]);
 
   const subject =
     catalogue?.subjects.find((item) => item.id === subjectId) ??
