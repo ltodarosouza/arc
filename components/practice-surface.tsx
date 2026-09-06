@@ -8,6 +8,7 @@ import {
   CircleMinus,
   Compass,
   MoveRight,
+  RotateCcw,
 } from 'lucide-react';
 
 import { AttemptStatusBadge, ArcButton, ArcCard } from '@/components/arc-ui';
@@ -268,30 +269,41 @@ export function PracticeSurface() {
               };
               return (
                 <div
-                  className={`flex items-center gap-2 rounded-2xl border p-1.5 transition-all duration-300 ${resultStyle ?? (chosen ? 'scale-[1.01] border-[#8aa7a1] bg-[#eef5f2] shadow-[0_8px_20px_rgba(82,113,132,0.1)]' : eliminated ? 'border-[#c4c9c7] bg-[var(--arc-surface-subtle)] opacity-60' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1] hover:bg-[#fdfcf9]')}`}
+                  className={`flex items-center gap-2 rounded-2xl border p-1.5 transition-all duration-300 ${resultStyle ?? (chosen ? 'scale-[1.01] border-[#8aa7a1] bg-[#eef5f2] shadow-[0_8px_20px_rgba(82,113,132,0.1)]' : eliminated ? 'border-[#d8d4cc] bg-[#f1efea] shadow-none' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1] hover:bg-[#fdfcf9]')}`}
                   key={option.id}
                 >
                   <button
                     aria-pressed={chosen}
                     disabled={resolved}
                     onClick={selectOption}
-                    className={`flex min-w-0 flex-1 items-center gap-3 rounded-xl px-2.5 py-2 text-left text-sm ${eliminated ? 'line-through decoration-[#7b858a] decoration-1' : ''}`}
+                    className={`flex min-w-0 flex-1 items-center gap-3 rounded-xl px-2.5 py-2 text-left text-sm transition-colors ${eliminated ? 'text-[#7b817e]' : ''}`}
                   >
                     <span
-                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-white' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}
+                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-white' : eliminated ? 'bg-[#dfdcd5] text-[#7b817e]' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}
                     >
                       {option.label}
                     </span>
-                    <MathContent value={option.content.value} />
+                    <span className="min-w-0 flex-1">
+                      <MathContent value={option.content.value} />
+                    </span>
+                    {eliminated && (
+                      <span className="rounded-full bg-[#dfdcd5] px-2 py-1 text-[11px] font-medium text-[#6f7773]">
+                        Descartada
+                      </span>
+                    )}
                   </button>
                   <button
                     aria-label={`${eliminated ? 'Restaurar' : 'Eliminar'} alternativa ${option.label}`}
                     aria-pressed={eliminated}
                     disabled={resolved}
                     onClick={toggleEliminated}
-                    className={`grid size-9 shrink-0 place-items-center rounded-xl transition-colors ${eliminated ? 'bg-[#d8ddd9] text-[#4f5a56]' : 'text-[#78828a] hover:bg-[var(--arc-surface-subtle)] hover:text-[#485963]'}`}
+                    className={`grid size-9 shrink-0 place-items-center rounded-xl transition-all ${eliminated ? 'bg-[#dfdcd5] text-[#5e6863] hover:bg-[#d4d0c8]' : 'text-[#78828a] hover:bg-[var(--arc-surface-subtle)] hover:text-[#485963]'}`}
                   >
-                    <CircleMinus className="size-4" />
+                    {eliminated ? (
+                      <RotateCcw className="size-4" />
+                    ) : (
+                      <CircleMinus className="size-4" />
+                    )}
                   </button>
                 </div>
               );
