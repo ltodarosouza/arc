@@ -324,12 +324,13 @@ function AttemptRow({
   );
   const topic =
     question && catalogue ? getPrimaryTopic(question, catalogue) : undefined;
-  const option =
-    question?.kind === 'multiple_choice' &&
+  const selectedOptionId =
     attempt.answer.kind === 'selected_option'
-      ? question.options.find(
-          (item) => item.id === attempt.answer.selectedOptionId,
-        )
+      ? attempt.answer.selectedOptionId
+      : null;
+  const option =
+    question && selectedOptionId
+      ? question.options.find((item) => item.id === selectedOptionId)
       : null;
   const status =
     attempt.outcome === 'correct'

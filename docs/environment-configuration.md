@@ -11,15 +11,16 @@ does not require any _secret_ value in browser code.
 
 Copy `.env.example` to `.env.local` when local overrides are needed. `.env.local` is ignored by Git.
 
-| Variable                        | Purpose                                                      | Browser-visible? | Default                 |
-| ------------------------------- | ------------------------------------------------------------ | ---------------- | ----------------------- |
-| `ARC_APP_ENV`                   | Identifies the execution environment for future diagnostics. | No               | `development`           |
-| `ARC_SITE_ORIGIN`               | Canonical app origin for server-side/build-time features.    | No               | `http://localhost:3000` |
-| `VITE_ARC_APP_NAME`             | Non-sensitive display name.                                  | Yes              | `Arc`                   |
-| `VITE_SUPABASE_URL`             | Supabase project URL.                                        | Yes              | Unset: local fallback   |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable client key.                             | Yes              | Unset: local fallback   |
+| Variable                               | Purpose                                                      | Browser-visible? | Default                 |
+| -------------------------------------- | ------------------------------------------------------------ | ---------------- | ----------------------- |
+| `ARC_APP_ENV`                          | Identifies the execution environment for future diagnostics. | No               | `development`           |
+| `ARC_SITE_ORIGIN`                      | Canonical app origin for server-side/build-time features.    | No               | `http://localhost:3000` |
+| `NEXT_PUBLIC_ARC_APP_NAME`             | Non-sensitive display name.                                  | Yes              | `Arc`                   |
+| `NEXT_PUBLIC_SITE_URL`                 | Canonical public Arc URL for metadata.                       | Yes              | `http://localhost:3000` |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Supabase project URL.                                        | Yes              | Unset: local fallback   |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable client key.                             | Yes              | Unset: local fallback   |
 
-Any variable prefixed with `VITE_` is available to browser code. It must never contain a secret, private identifier, credential, or user data.
+Any variable prefixed with `NEXT_PUBLIC_` is available to browser code. It must never contain a secret, private identifier, credential, or user data.
 
 ## Configuration ownership
 

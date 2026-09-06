@@ -24,8 +24,8 @@ Anonymous identity is intentionally not the same as the public publishable key. 
 Add these public values to `.env.local`:
 
 ```text
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 ```
 
 Never put the database password, `service_role`, or a secret key in `.env.local` for browser code, Git, or this document.

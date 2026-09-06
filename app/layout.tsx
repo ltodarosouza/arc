@@ -13,7 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const siteOrigin =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ??
+  'http://localhost:3000';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteOrigin),
   title: 'Arc — Practice what matters',
   description:
     'A minimal place to practice the university topic you need right now.',

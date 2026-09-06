@@ -1,53 +1,43 @@
-# Publicação do Arc
+# Publicação do Arc na Vercel
 
-## Ambiente atual
+## Runtime
 
-O Arc é publicado no ambiente Sites/Cloudflare. O comando `npm run build` usa
-Vinext e produz duas partes inseparáveis:
+O Arc usa Next.js App Router e é implantado diretamente pela Vercel. O comando
+de build é `npm run build`; a Vercel detecta o framework e serve páginas
+estáticas e rotas dinâmicas sem configurar **Output Directory** manualmente.
 
-- `dist/client`: arquivos públicos do navegador;
-- `dist/server`: servidor RSC/SSR configurado para Cloudflare Workers, incluindo
-  `dist/server/wrangler.json`.
+O deploy anterior respondia 404 porque o projeto gerava um runtime
+Vinext/Cloudflare. Essa saída foi removida: não há mais diretório Cloudflare
+para apontar no painel da Vercel.
 
-As duas partes são necessárias para que as rotas e a sessão funcionem.
+## Configuração do projeto
 
-## Por que o deploy atual na Vercel responde 404
+No projeto Arc da Vercel, usar:
 
-Conectar este repositório e aceitar a detecção automática da Vercel não cria um
-runtime compatível com o servidor produzido pelo Vinext/Cloudflare. Em
-particular, `dist/client` não é uma exportação estática completa: não possui
-um `index.html` que possa servir a aplicação sozinho. Publicá-lo como diretório
-de saída gera um deploy "Ready" que responde 404.
+- **Framework Preset:** Next.js;
+- **Build Command:** padrão (`npm run build`);
+- **Output Directory:** deixar vazio/padrão;
+- **Node.js:** 22 ou mais recente.
 
-Isso é uma incompatibilidade de runtime, não um erro das rotas do Arc nem do
-Supabase.
+Criar estas variáveis em **Preview** e **Production**:
 
-## Decisão atual
+```text
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+NEXT_PUBLIC_SITE_URL=https://seu-dominio.vercel.app
+```
 
-Manter a produção no ambiente Sites/Cloudflare. A Vercel não deve ser usada
-como produção ou preview até existir um adaptador próprio e uma validação das
-rotas dinâmicas.
+Elas são públicas para o navegador. Nunca adicionar senha do banco,
+`service_role` ou outra chave secreta.
 
-## Caminho recomendado para uma futura Vercel
+No Supabase, adicionar a URL da Vercel em **Authentication → URL
+Configuration**, tanto em Site URL quanto em Redirect URLs.
 
-1. Criar uma branch de migração, sem alterar o domínio atual.
-2. Escolher deliberadamente um runtime Vercel compatível. A opção mais segura
-   é migrar o servidor para uma configuração Next.js suportada pela Vercel;
-   não reutilizar a saída de Cloudflare como se fosse estática.
-3. Levar somente `VITE_SUPABASE_URL` e
-   `VITE_SUPABASE_PUBLISHABLE_KEY` para Preview e Production. São valores
-   públicos de cliente; chaves de serviço e senha do banco continuam proibidas.
-4. Fazer um deploy de preview e verificar: Início, Questões, página de uma
-   disciplina, Prática, Progresso, cadastro, entrada e saída.
-5. Confirmar que tentativas, disciplinas selecionadas e sessão do Supabase
-   persistem no preview.
-6. Só após essa validação, decidir se a produção será duplicada ou migrada.
+## Checklist de publicação
 
-## Checklist antes de trocar a produção
-
-- [ ] O preview da Vercel abre todas as rotas principais sem 404.
-- [ ] As variáveis públicas do Supabase estão configuradas nos dois ambientes.
+- [ ] A Vercel detecta Next.js e não há Output Directory personalizado.
+- [ ] As três variáveis públicas estão configuradas em Preview e Production.
 - [ ] URLs de Preview e Production estão nas Redirect URLs do Supabase.
-- [ ] Não há segredo em variáveis prefixadas com `VITE_`.
-- [ ] O deploy atual continua acessível para rollback.
-- [ ] A troca foi aprovada explicitamente pelo responsável pelo produto.
+- [ ] Início, Questões, disciplina, Prática, Progresso e Conta abrem sem 404.
+- [ ] Cadastro, entrada, saída e persistência de tentativa foram testados.
+- [ ] Não há segredo em variável `NEXT_PUBLIC_`.

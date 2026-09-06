@@ -196,7 +196,10 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
         .map((option) => ({
           id: option.id,
           label: option.label,
-          content: { format: 'markdown_latex', value: option.content_markdown },
+          content: {
+            format: 'markdown_latex' as const,
+            value: option.content_markdown,
+          },
           sortOrder: option.sort_order,
         })),
       taxonomyTags: tags
@@ -210,13 +213,16 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
         .filter((hint) => hint.question_id === item.id)
         .map((hint) => ({
           id: hint.id,
-          content: { format: 'markdown_latex', value: hint.content_markdown },
+          content: {
+            format: 'markdown_latex' as const,
+            value: hint.content_markdown,
+          },
           sortOrder: hint.sort_order,
         })),
       source: {
         kind: source?.kind ?? 'other',
         label: source?.label ?? 'Fonte não informada',
-        rightsStatus: 'approved',
+        rightsStatus: 'approved' as const,
       },
     };
   });
