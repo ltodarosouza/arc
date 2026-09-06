@@ -102,7 +102,7 @@ export function AppShell({
           {destinations.map((destination) => (
             <a
               aria-current={active === destination.id ? 'page' : undefined}
-              className={`rounded-full px-4 py-2 transition-colors ${active === destination.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'hover:text-[var(--foreground)]'}`}
+              className={`rounded-full px-4 py-2 transition-all duration-300 ${active === destination.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[0_2px_8px_rgba(38,57,80,0.16)]' : 'hover:bg-black/[0.035] hover:text-[var(--foreground)]'}`}
               href={destination.href}
               key={destination.id}
             >
@@ -147,7 +147,7 @@ export function AppShell({
           return (
             <a
               aria-current={isActive ? 'page' : undefined}
-              className={`flex min-w-[64px] flex-col items-center gap-1 rounded-xl px-2 py-2 text-[10px] font-medium transition-colors ${isActive ? 'bg-[var(--arc-accent)] text-[#263950]' : 'text-[var(--arc-text-muted)]'}`}
+              className={`flex min-w-[64px] flex-col items-center gap-1 rounded-xl px-2 py-2 text-[10px] font-medium transition-all duration-300 ${isActive ? 'bg-[var(--arc-accent)] text-[#263950] shadow-[0_2px_8px_rgba(38,57,80,0.08)]' : 'text-[var(--arc-text-muted)] active:scale-[0.97]'}`}
               href={destination.href}
               key={destination.id}
             >

@@ -407,7 +407,7 @@ export default function QuestionsPage() {
                 .filter(Boolean);
               return (
                 <ArcCard
-                  className="p-5 transition-shadow duration-300 hover:shadow-[0_18px_45px_rgba(38,57,80,0.075)] sm:p-6"
+                  className="p-5 hover:-translate-y-0.5 hover:border-[#becdc9] hover:shadow-[0_20px_48px_rgba(38,57,80,0.09)] sm:p-6"
                   key={question.id}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">

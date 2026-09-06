@@ -39,7 +39,7 @@ export function ArcCard({
   return (
     <section
       className={cn(
-        'rounded-[var(--arc-radius-card)] border border-[var(--border)] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)]',
+        'rounded-[var(--arc-radius-card)] border border-[var(--border)] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-out',
         className,
       )}
     >

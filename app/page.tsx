@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <AppShell active="home">
       <section className="mx-auto max-w-6xl px-5 pb-10 pt-12 sm:px-8 sm:pt-20">
-        <div className="flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
+        <div className="animate-enter flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
           <div>
             <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
               Início
@@ -105,9 +105,12 @@ export default function Home() {
                   outcomeByQuestionId.has(id),
                 ).length;
                 return (
-                  <ArcCard className="p-5" key={subject.id}>
+                  <ArcCard
+                    className="group p-5 hover:-translate-y-1 hover:border-[#b8c9c4] hover:shadow-[0_22px_52px_rgba(38,57,80,0.09)]"
+                    key={subject.id}
+                  >
                     <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
-                      <BookOpen className="size-4" />
+                      <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
                     </span>
                     <p className="mt-5 font-medium tracking-[-0.03em]">
                       {subject.name}
