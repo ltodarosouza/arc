@@ -54,7 +54,9 @@ const expectedParentKind: Record<TaxonomyNodeKind, TaxonomyNodeKind | null> = {
  * It returns errors instead of throwing so authoring interfaces can show all
  * problems at once.
  */
-export function validateTaxonomy(nodes: TaxonomyNode[]): TaxonomyValidationError[] {
+export function validateTaxonomy(
+  nodes: TaxonomyNode[],
+): TaxonomyValidationError[] {
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
   const errors: TaxonomyValidationError[] = [];
 
@@ -63,28 +65,44 @@ export function validateTaxonomy(nodes: TaxonomyNode[]): TaxonomyValidationError
 
     if (requiredParentKind === null) {
       if (node.parentId !== null) {
-        errors.push({ nodeId: node.id, message: 'A unit cannot have a parent.' });
+        errors.push({
+          nodeId: node.id,
+          message: 'A unit cannot have a parent.',
+        });
       }
       continue;
     }
 
     if (!node.parentId) {
-      errors.push({ nodeId: node.id, message: `A ${node.kind} requires a parent ${requiredParentKind}.` });
+      errors.push({
+        nodeId: node.id,
+        message: `A ${node.kind} requires a parent ${requiredParentKind}.`,
+      });
       continue;
     }
 
     const parent = nodeById.get(node.parentId);
     if (!parent) {
-      errors.push({ nodeId: node.id, message: 'The declared parent does not exist.' });
+      errors.push({
+        nodeId: node.id,
+        message: 'The declared parent does not exist.',
+      });
       continue;
     }
 
     if (parent.kind !== requiredParentKind) {
-      errors.push({ nodeId: node.id, message: `A ${node.kind} must belong to a ${requiredParentKind}.` });
+      errors.push({
+        nodeId: node.id,
+        message: `A ${node.kind} must belong to a ${requiredParentKind}.`,
+      });
     }
 
     if (parent.subjectId !== node.subjectId) {
-      errors.push({ nodeId: node.id, message: 'A taxonomy node and its parent must belong to the same subject.' });
+      errors.push({
+        nodeId: node.id,
+        message:
+          'A taxonomy node and its parent must belong to the same subject.',
+      });
     }
   }
 
@@ -92,7 +110,10 @@ export function validateTaxonomy(nodes: TaxonomyNode[]): TaxonomyValidationError
 }
 
 /** Returns the selected node and all of its descendants for topic filtering. */
-export function getTaxonomyBranch(nodeId: string, nodes: TaxonomyNode[]): string[] {
+export function getTaxonomyBranch(
+  nodeId: string,
+  nodes: TaxonomyNode[],
+): string[] {
   const childIdsByParentId = new Map<string, string[]>();
 
   for (const node of nodes) {
@@ -124,7 +145,9 @@ export function validateQuestionTaxonomyTags(
   for (const tag of tags) {
     const node = nodeById.get(tag.taxonomyNodeId);
     if (!node) {
-      errors.push(`Tag ${tag.taxonomyNodeId} references an unknown taxonomy node.`);
+      errors.push(
+        `Tag ${tag.taxonomyNodeId} references an unknown taxonomy node.`,
+      );
       continue;
     }
     if (node.subjectId !== subjectId) {
@@ -133,7 +156,8 @@ export function validateQuestionTaxonomyTags(
     if (tag.isPrimary) primaryTagCount += 1;
   }
 
-  if (primaryTagCount > 1) errors.push('A question can have at most one primary taxonomy tag.');
+  if (primaryTagCount > 1)
+    errors.push('A question can have at most one primary taxonomy tag.');
 
   return errors;
 }

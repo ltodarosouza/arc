@@ -24,10 +24,10 @@ The full typed contract lives in `lib/domain/questions.ts`.
 
 An attempt is immutable. Retrying a question creates another attempt; it never overwrites history.
 
-| Outcome | Meaning | Counts toward accuracy? |
-| --- | --- | --- |
-| `correct` | Correct multiple-choice alternative | Yes |
-| `incorrect` | Incorrect multiple-choice alternative | Yes |
+| Outcome     | Meaning                               | Counts toward accuracy? |
+| ----------- | ------------------------------------- | ----------------------- |
+| `correct`   | Correct multiple-choice alternative   | Yes                     |
+| `incorrect` | Incorrect multiple-choice alternative | Yes                     |
 
 The learner-facing status badge and filters use the latest outcome. A question counts once in progress; a reattempt updates its current status without deleting the historical attempts.
 

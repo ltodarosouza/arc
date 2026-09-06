@@ -15,16 +15,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Arc — Practice what matters',
-  description: 'A minimal place to practice the university topic you need right now.',
+  description:
+    'A minimal place to practice the university topic you need right now.',
   openGraph: {
     title: 'Arc — Practice what matters',
-    description: 'A minimal place to practice the university topic you need right now.',
+    description:
+      'A minimal place to practice the university topic you need right now.',
     images: ['/og.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Arc — Practice what matters',
-    description: 'A minimal place to practice the university topic you need right now.',
+    description:
+      'A minimal place to practice the university topic you need right now.',
     images: ['/og.png'],
   },
 };

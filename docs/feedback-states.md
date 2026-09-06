@@ -14,26 +14,26 @@ The learner should always understand what happened and what to do next. Empty an
 
 ### Início
 
-| Situation | Message | Primary action |
-| --- | --- | --- |
-| No selected subjects | “Escolha suas disciplinas” | Open subject selection |
+| Situation                           | Message                                            | Primary action         |
+| ----------------------------------- | -------------------------------------------------- | ---------------------- |
+| No selected subjects                | “Escolha suas disciplinas”                         | Open subject selection |
 | Selected subject has no content yet | “Estamos preparando questões para esta disciplina” | Choose another subject |
 
 ### Explorar
 
-| Situation | Message | Primary action |
-| --- | --- | --- |
-| Filter has no results | “Nenhuma questão encontrada” | Clear filters |
-| Subject has no published questions | “Ainda não há questões disponíveis” | Return to subjects |
-| Question cannot be loaded | “Esta questão não está disponível agora” | Return to question bank |
+| Situation                          | Message                                  | Primary action          |
+| ---------------------------------- | ---------------------------------------- | ----------------------- |
+| Filter has no results              | “Nenhuma questão encontrada”             | Clear filters           |
+| Subject has no published questions | “Ainda não há questões disponíveis”      | Return to subjects      |
+| Question cannot be loaded          | “Esta questão não está disponível agora” | Return to question bank |
 
 ### Progresso
 
-| Situation | Message | Primary action |
-| --- | --- | --- |
-| No completed attempts | “Seu progresso começa na primeira questão” | Practise a question |
-| No incorrect questions | “Você não tem erros para revisar agora” | Explore all questions |
-| No redo questions | “Nenhuma questão está marcada para refazer” | Explore a subject |
+| Situation              | Message                                     | Primary action        |
+| ---------------------- | ------------------------------------------- | --------------------- |
+| No completed attempts  | “Seu progresso começa na primeira questão”  | Practise a question   |
+| No incorrect questions | “Você não tem erros para revisar agora”     | Explore all questions |
+| No redo questions      | “Nenhuma questão está marcada para refazer” | Explore a subject     |
 
 ## Error recovery
 

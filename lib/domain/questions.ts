@@ -107,23 +107,39 @@ export type QuestionValidationError = {
   message: string;
 };
 
-export function validateQuestion(question: Question): QuestionValidationError[] {
+export function validateQuestion(
+  question: Question,
+): QuestionValidationError[] {
   const errors: QuestionValidationError[] = [];
 
   if (!question.statement.value.trim()) {
-    errors.push({ field: 'statement', message: 'A question requires a statement.' });
+    errors.push({
+      field: 'statement',
+      message: 'A question requires a statement.',
+    });
   }
 
   if (!question.solution.finalAnswer.value.trim()) {
-    errors.push({ field: 'solution.finalAnswer', message: 'A question requires a final answer.' });
+    errors.push({
+      field: 'solution.finalAnswer',
+      message: 'A question requires a final answer.',
+    });
   }
 
   if (question.kind === 'multiple_choice') {
     if (question.options.length < 2) {
-      errors.push({ field: 'options', message: 'A multiple-choice question requires at least two options.' });
+      errors.push({
+        field: 'options',
+        message: 'A multiple-choice question requires at least two options.',
+      });
     }
-    if (!question.options.some((option) => option.id === question.correctOptionId)) {
-      errors.push({ field: 'correctOptionId', message: 'The correct option must belong to the question.' });
+    if (
+      !question.options.some((option) => option.id === question.correctOptionId)
+    ) {
+      errors.push({
+        field: 'correctOptionId',
+        message: 'The correct option must belong to the question.',
+      });
     }
   }
 

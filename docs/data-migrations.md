@@ -11,11 +11,11 @@
 
 The temporary browser state uses `version` in `LearnerState`.
 
-| Version | Meaning | Behaviour |
-| --- | --- | --- |
-| `0` | Legacy shape using `selectedSubjects` and `redoQuestions`. | Converted to version 1 and saved again. |
-| `1` | Current shape. | Read normally. |
-| Unknown or malformed | Not safely interpretable. | Original raw value is backed up locally, then a clean version 1 state is created. |
+| Version              | Meaning                                                    | Behaviour                                                                         |
+| -------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `0`                  | Legacy shape using `selectedSubjects` and `redoQuestions`. | Converted to version 1 and saved again.                                           |
+| `1`                  | Current shape.                                             | Read normally.                                                                    |
+| Unknown or malformed | Not safely interpretable.                                  | Original raw value is backed up locally, then a clean version 1 state is created. |
 
 This code lives in `lib/data/local-learner-repository.ts`. Browser state is transitional only; it may preserve a learner experience during rollout, but Supabase is the authoritative store for durable progress.
 

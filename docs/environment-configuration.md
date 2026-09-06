@@ -10,22 +10,22 @@ The MVP has no authentication, external API, or database credentials. It therefo
 
 Copy `.env.example` to `.env.local` when local overrides are needed. `.env.local` is ignored by Git.
 
-| Variable | Purpose | Browser-visible? | Default |
-| --- | --- | --- | --- |
-| `ARC_APP_ENV` | Identifies the execution environment for future diagnostics. | No | `development` |
-| `ARC_SITE_ORIGIN` | Canonical app origin for server-side/build-time features. | No | `http://localhost:3000` |
-| `VITE_ARC_APP_NAME` | Non-sensitive display name. | Yes | `Arc` |
+| Variable            | Purpose                                                      | Browser-visible? | Default                 |
+| ------------------- | ------------------------------------------------------------ | ---------------- | ----------------------- |
+| `ARC_APP_ENV`       | Identifies the execution environment for future diagnostics. | No               | `development`           |
+| `ARC_SITE_ORIGIN`   | Canonical app origin for server-side/build-time features.    | No               | `http://localhost:3000` |
+| `VITE_ARC_APP_NAME` | Non-sensitive display name.                                  | Yes              | `Arc`                   |
 
 Any variable prefixed with `VITE_` is available to browser code. It must never contain a secret, private identifier, credential, or user data.
 
 ## Configuration ownership
 
-| Value type | Owner and location |
-| --- | --- |
-| Non-sensitive defaults | `.env.example`, reviewed in Git with the application source. |
-| Developer-specific overrides | Each developer’s ignored `.env.local`. |
-| Preview and production non-secrets | The hosting environment configuration, maintained by the project owner. |
-| Credentials and secrets | Hosting secret store only; never Git, browser code, logs, issue bodies, or client-side variables. |
+| Value type                         | Owner and location                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Non-sensitive defaults             | `.env.example`, reviewed in Git with the application source.                                      |
+| Developer-specific overrides       | Each developer’s ignored `.env.local`.                                                            |
+| Preview and production non-secrets | The hosting environment configuration, maintained by the project owner.                           |
+| Credentials and secrets            | Hosting secret store only; never Git, browser code, logs, issue bodies, or client-side variables. |
 
 ## Future variables
 

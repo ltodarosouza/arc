@@ -7,19 +7,19 @@ primary_taxonomy_tag: Substituição
 secondary_taxonomy_tags: []
 difficulty: medium # easy | medium | hard
 source_kind: original # original | open_licence | authorised_contributor | other
-source_label: ""
-source_url: ""
-licence_id: ""
-licence_url: ""
-rights_holder: ""
-permission_reference: ""
+source_label: ''
+source_url: ''
+licence_id: ''
+licence_url: ''
+rights_holder: ''
+permission_reference: ''
 rights_status: unverified # unverified | review_required | approved | rejected
-verified_by: ""
-verified_at: ""
-author: ""
+verified_by: ''
+verified_at: ''
+author: ''
 created_at: YYYY-MM-DD
-reviewer: ""
-reviewed_at: ""
+reviewer: ''
+reviewed_at: ''
 ---
 
 ## Statement
@@ -36,10 +36,10 @@ State every assumption, convention, unit, interval, or condition needed to answe
 
 Use this section only for `multiple_choice`.
 
-- A. 
-- B. 
-- C. 
-- D. 
+- A.
+- B.
+- C.
+- D.
 
 ## Correct answer
 

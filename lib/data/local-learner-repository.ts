@@ -17,7 +17,9 @@ type ParsedLearnerState = {
 };
 
 function uniqueIds(ids: string[]): string[] {
-  return [...new Set(ids.filter((id) => typeof id === 'string' && id.length > 0))];
+  return [
+    ...new Set(ids.filter((id) => typeof id === 'string' && id.length > 0)),
+  ];
 }
 
 function isQuestionAttempt(value: unknown): value is QuestionAttempt {
@@ -27,8 +29,12 @@ function isQuestionAttempt(value: unknown): value is QuestionAttempt {
     typeof attempt.id === 'string' &&
     typeof attempt.questionId === 'string' &&
     typeof attempt.createdAt === 'string' &&
-    (attempt.outcome === 'correct' || attempt.outcome === 'incorrect' || attempt.outcome === 'revealed') &&
-    (attempt.gradingMethod === 'automatic' || attempt.gradingMethod === 'self_assessed' || attempt.gradingMethod === 'unscored') &&
+    (attempt.outcome === 'correct' ||
+      attempt.outcome === 'incorrect' ||
+      attempt.outcome === 'revealed') &&
+    (attempt.gradingMethod === 'automatic' ||
+      attempt.gradingMethod === 'self_assessed' ||
+      attempt.gradingMethod === 'unscored') &&
     Boolean(attempt.answer)
   );
 }
@@ -40,9 +46,15 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function normaliseState(value: Record<string, unknown>): LearnerState {
   return {
     version: LEARNER_STATE_VERSION,
-    selectedSubjectIds: uniqueIds(Array.isArray(value.selectedSubjectIds) ? value.selectedSubjectIds : []),
-    attempts: Array.isArray(value.attempts) ? value.attempts.filter(isQuestionAttempt) : [],
-    redoQuestionIds: uniqueIds(Array.isArray(value.redoQuestionIds) ? value.redoQuestionIds : []),
+    selectedSubjectIds: uniqueIds(
+      Array.isArray(value.selectedSubjectIds) ? value.selectedSubjectIds : [],
+    ),
+    attempts: Array.isArray(value.attempts)
+      ? value.attempts.filter(isQuestionAttempt)
+      : [],
+    redoQuestionIds: uniqueIds(
+      Array.isArray(value.redoQuestionIds) ? value.redoQuestionIds : [],
+    ),
   };
 }
 
@@ -65,7 +77,11 @@ function parseStoredLearnerState(raw: string | null): ParsedLearnerState {
   try {
     const parsed: unknown = JSON.parse(raw);
     if (!isRecord(parsed)) {
-      return { state: createEmptyLearnerState(), shouldPersist: true, backupRaw: raw };
+      return {
+        state: createEmptyLearnerState(),
+        shouldPersist: true,
+        backupRaw: raw,
+      };
     }
 
     if (parsed.version === LEARNER_STATE_VERSION) {
@@ -76,9 +92,17 @@ function parseStoredLearnerState(raw: string | null): ParsedLearnerState {
       return { state: migrateVersionZero(parsed), shouldPersist: true };
     }
 
-    return { state: createEmptyLearnerState(), shouldPersist: true, backupRaw: raw };
+    return {
+      state: createEmptyLearnerState(),
+      shouldPersist: true,
+      backupRaw: raw,
+    };
   } catch {
-    return { state: createEmptyLearnerState(), shouldPersist: true, backupRaw: raw };
+    return {
+      state: createEmptyLearnerState(),
+      shouldPersist: true,
+      backupRaw: raw,
+    };
   }
 }
 
@@ -94,11 +118,16 @@ export class LocalLearnerRepository implements LearnerRepository {
 
   getState(): LearnerState {
     if (!this.storage) return createEmptyLearnerState();
-    const parsed = parseStoredLearnerState(this.storage.getItem(this.storageKey));
+    const parsed = parseStoredLearnerState(
+      this.storage.getItem(this.storageKey),
+    );
 
     if (parsed.shouldPersist) {
       if (parsed.backupRaw) {
-        this.storage.setItem(`${this.storageKey}:backup:${Date.now()}`, parsed.backupRaw);
+        this.storage.setItem(
+          `${this.storageKey}:backup:${Date.now()}`,
+          parsed.backupRaw,
+        );
       }
       this.storage.setItem(this.storageKey, JSON.stringify(parsed.state));
     }
@@ -107,12 +136,20 @@ export class LocalLearnerRepository implements LearnerRepository {
   }
 
   saveSelectedSubjectIds(subjectIds: string[]): void {
-    this.update((state) => ({ ...state, selectedSubjectIds: uniqueIds(subjectIds) }));
+    this.update((state) => ({
+      ...state,
+      selectedSubjectIds: uniqueIds(subjectIds),
+    }));
   }
 
   recordAttempt(attempt: QuestionAttempt): void {
     this.update((state) => {
-      if (state.attempts.some((existingAttempt) => existingAttempt.id === attempt.id)) return state;
+      if (
+        state.attempts.some(
+          (existingAttempt) => existingAttempt.id === attempt.id,
+        )
+      )
+        return state;
       return { ...state, attempts: [...state.attempts, attempt] };
     });
   }

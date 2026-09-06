@@ -34,24 +34,24 @@ Cálculo II
 
 ## Question coverage target
 
-| Unit | Topic | Minimum questions | Notes |
-| --- | --- | ---: | --- |
-| Integrais | Antiderivadas e indefinidas | 7 | Foundations before techniques. |
-| Integrais | Integral definida e TFC | 10 | Include interpretation and direct application. |
-| Integrais | Substituição | 8 | Include recognising an appropriate substitution. |
-| Integrais | Integração por partes | 7 | Include choice of terms and repeated use. |
-| Integrais | Frações parciais | 6 | Start with distinct linear factors. |
-| Integrais | Trigonométricas | 7 | Include identities and common patterns. |
-| Integrais impróprias | Intervalos infinitos | 6 | Distinguish convergence from evaluation. |
-| Integrais impróprias | Descontinuidades | 6 | Include split intervals and limits. |
-| Sequências | Limite de sequência | 5 | Foundational convergence intuition. |
-| Sequências | Monotonicidade e convergência | 5 | Combine reasoning and calculation. |
-| Séries | Geométricas | 6 | Include sum and convergence condition. |
-| Séries | Convergência e divergência | 6 | Necessary-condition fluency. |
-| Séries | Comparação, razão e raiz | 12 | Mix test selection and execution. |
-| Séries | Alternadas | 5 | Include error-bound intuition. |
-| Séries | Potências | 9 | Radius and interval of convergence. |
-| Séries | Taylor e Maclaurin | 4 | Introductory approximation problems. |
+| Unit                 | Topic                         | Minimum questions | Notes                                            |
+| -------------------- | ----------------------------- | ----------------: | ------------------------------------------------ |
+| Integrais            | Antiderivadas e indefinidas   |                 7 | Foundations before techniques.                   |
+| Integrais            | Integral definida e TFC       |                10 | Include interpretation and direct application.   |
+| Integrais            | Substituição                  |                 8 | Include recognising an appropriate substitution. |
+| Integrais            | Integração por partes         |                 7 | Include choice of terms and repeated use.        |
+| Integrais            | Frações parciais              |                 6 | Start with distinct linear factors.              |
+| Integrais            | Trigonométricas               |                 7 | Include identities and common patterns.          |
+| Integrais impróprias | Intervalos infinitos          |                 6 | Distinguish convergence from evaluation.         |
+| Integrais impróprias | Descontinuidades              |                 6 | Include split intervals and limits.              |
+| Sequências           | Limite de sequência           |                 5 | Foundational convergence intuition.              |
+| Sequências           | Monotonicidade e convergência |                 5 | Combine reasoning and calculation.               |
+| Séries               | Geométricas                   |                 6 | Include sum and convergence condition.           |
+| Séries               | Convergência e divergência    |                 6 | Necessary-condition fluency.                     |
+| Séries               | Comparação, razão e raiz      |                12 | Mix test selection and execution.                |
+| Séries               | Alternadas                    |                 5 | Include error-bound intuition.                   |
+| Séries               | Potências                     |                 9 | Radius and interval of convergence.              |
+| Séries               | Taylor e Maclaurin            |                 4 | Introductory approximation problems.             |
 
 **Total: 103 questions minimum.**
 

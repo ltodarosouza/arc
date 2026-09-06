@@ -62,12 +62,12 @@ For durable data and Supabase setup, see [docs/supabase-setup.md](docs/supabase-
 
 ## Available commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Start the local development server. |
-| `npm run build` | Create a production build. |
-| `npm run lint` | Run the code-quality checks. |
-| `npm run format` | Format supported source files. |
+| Command          | Purpose                             |
+| ---------------- | ----------------------------------- |
+| `npm run dev`    | Start the local development server. |
+| `npm run build`  | Create a production build.          |
+| `npm run lint`   | Run the code-quality checks.        |
+| `npm run format` | Format supported source files.      |
 
 ## Project structure
 

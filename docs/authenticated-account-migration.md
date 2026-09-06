@@ -27,12 +27,12 @@ a conta sem duplicar ou substituir informações de outro usuário.
 
 ## Regras de mesclagem
 
-| Dado | Regra |
-| --- | --- |
-| Disciplinas | União sem duplicatas. |
-| Tentativas | Preservar todas, com datas originais. Os painéis usam a tentativa mais recente por questão. |
-| Refazer | Manter marcado se a questão estiver marcada em qualquer origem; uma resposta correta posterior remove a marca. |
-| Conflitos | A conta nunca perde histórico. A sessão anônima é apenas adicionada à conta escolhida. |
+| Dado        | Regra                                                                                                          |
+| ----------- | -------------------------------------------------------------------------------------------------------------- |
+| Disciplinas | União sem duplicatas.                                                                                          |
+| Tentativas  | Preservar todas, com datas originais. Os painéis usam a tentativa mais recente por questão.                    |
+| Refazer     | Manter marcado se a questão estiver marcada em qualquer origem; uma resposta correta posterior remove a marca. |
+| Conflitos   | A conta nunca perde histórico. A sessão anônima é apenas adicionada à conta escolhida.                         |
 
 ## Segurança
 

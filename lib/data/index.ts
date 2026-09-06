@@ -1,1 +1,6 @@
-export { seedDemoAttempts, seedQuestions, seedSubjects, seedTaxonomyNodes } from './seed-catalogue';
+export {
+  seedDemoAttempts,
+  seedQuestions,
+  seedSubjects,
+  seedTaxonomyNodes,
+} from './seed-catalogue';

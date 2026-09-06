@@ -1,5 +1,10 @@
 import type { ReactNode } from 'react';
-import { AlertCircle, BookOpen, ChartNoAxesColumnIncreasing, Compass } from 'lucide-react';
+import {
+  AlertCircle,
+  BookOpen,
+  ChartNoAxesColumnIncreasing,
+  Compass,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -44,13 +49,19 @@ export function FeedbackState({
       <span
         className={cn(
           'grid size-10 place-items-center rounded-2xl',
-          tone === 'error' ? 'bg-[#f9eeee] text-[#9a5757]' : 'bg-[#eff4f0] text-[#466254]',
+          tone === 'error'
+            ? 'bg-[#f9eeee] text-[#9a5757]'
+            : 'bg-[#eff4f0] text-[#466254]',
         )}
       >
-        <Icon className={cn('size-[18px]', tone === 'loading' && 'animate-pulse')} />
+        <Icon
+          className={cn('size-[18px]', tone === 'loading' && 'animate-pulse')}
+        />
       </span>
       <h2 className="mt-5 text-lg font-medium tracking-[-0.035em]">{title}</h2>
-      <p className="mt-2 max-w-sm text-sm leading-6 text-zinc-500">{description}</p>
+      <p className="mt-2 max-w-sm text-sm leading-6 text-zinc-500">
+        {description}
+      </p>
       {action ? <div className="mt-6">{action}</div> : null}
     </section>
   );
@@ -99,5 +110,7 @@ export function QuestionUnavailableState({ action }: { action: ReactNode }) {
 }
 
 export function ProgressIcon() {
-  return <ChartNoAxesColumnIncreasing aria-hidden="true" className="size-[18px]" />;
+  return (
+    <ChartNoAxesColumnIncreasing aria-hidden="true" className="size-[18px]" />
+  );
 }
