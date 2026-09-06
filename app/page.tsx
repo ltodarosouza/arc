@@ -47,7 +47,22 @@ export default function Home() {
     }),
     [outcomeByQuestionId],
   );
-  const resumeHref = selectedSubjects.length ? '/explore' : '/subjects';
+  const resumeSubject = useMemo(() => {
+    const latestAttempt = [...(learnerState?.attempts ?? [])].sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() -
+        new Date(first.createdAt).getTime(),
+    )[0];
+    const question = catalogue?.questions.find(
+      (item) => item.id === latestAttempt?.questionId,
+    );
+    return catalogue?.subjects.find((item) => item.id === question?.subjectId);
+  }, [catalogue, learnerState]);
+  const resumeHref = resumeSubject
+    ? `/questions?subject=${resumeSubject.id}&status=not_attempted`
+    : selectedSubjects.length
+      ? '/explore'
+      : '/subjects';
 
   return (
     <AppShell active="home">
@@ -65,9 +80,11 @@ export default function Home() {
             className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[var(--arc-accent)] px-5 text-sm font-medium text-[#263950] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c8d8d6]"
             href={resumeHref}
           >
-            {selectedSubjects.length
-              ? 'Ir para questões'
-              : 'Escolher disciplinas'}{' '}
+            {resumeSubject
+              ? `Continuar em ${resumeSubject.name}`
+              : selectedSubjects.length
+                ? 'Ir para questões'
+                : 'Escolher disciplinas'}{' '}
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>
