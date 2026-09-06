@@ -49,7 +49,8 @@ export function PracticeSurface() {
     const selectedOption = selectedOptionId;
     const outcome = selectedOption === question.correctOptionId ? 'correct' : 'incorrect';
     const attemptId = typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `attempt-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    createLocalLearnerRepository().recordAttempt({
+    const learnerRepository = createLocalLearnerRepository();
+    learnerRepository.recordAttempt({
       id: attemptId,
       questionId: question.id,
       answer: { kind: 'selected_option', selectedOptionId: selectedOption },
@@ -57,6 +58,7 @@ export function PracticeSurface() {
       gradingMethod: 'automatic',
       createdAt: new Date().toISOString(),
     });
+    learnerRepository.setRedo(question.id, outcome === 'incorrect');
     setSubmitted(true);
   };
 

@@ -31,8 +31,10 @@ export default function QuestionsPage() {
     const search = new URLSearchParams(window.location.search);
     const requestedSubjectId = search.get('subject');
     const requestedTopicId = search.get('topic');
+    const requestedStatus = search.get('status');
     setSubjectId(requestedSubjectId && subjectOptions.some((subject) => subject.id === requestedSubjectId) ? requestedSubjectId : 'subject-calculus-2');
     setTopicId(requestedTopicId);
+    if (requestedStatus === 'not_attempted' || requestedStatus === 'attempted' || requestedStatus === 'correct' || requestedStatus === 'incorrect' || requestedStatus === 'redo') setSelectedStatus(requestedStatus);
     setOutcomeByQuestionId(new Map([...getLatestAttemptsByQuestion(state.attempts)].map(([questionId, attempt]) => [questionId, attempt.outcome])));
     setRedoQuestionIds(new Set(state.redoQuestionIds));
   }, []);
