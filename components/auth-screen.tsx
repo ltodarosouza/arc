@@ -2,13 +2,14 @@
 
 import type { FormEvent } from 'react';
 import { useState } from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 
 import { ArcButton, ArcCard } from '@/components/arc-ui';
 import { Input } from '@/components/ui/input';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 type AuthMode = 'sign-in' | 'sign-up';
+type AuthErrorFeedback = { message: string; code: string | null };
 
 function readableAuthError(message: string) {
   if (message.toLowerCase().includes('invalid login credentials'))
@@ -22,9 +23,10 @@ export function AuthScreen() {
   const [mode, setMode] = useState<AuthMode>('sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AuthErrorFeedback | null>(null);
 
   const isSignUp = mode === 'sign-up';
 
@@ -37,9 +39,11 @@ export function AuthScreen() {
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isSupabaseConfigured()) {
-      setError(
-        'O acesso ainda está sendo preparado. Tente novamente em alguns instantes.',
-      );
+      setError({
+        message:
+          'O acesso ainda está sendo preparado. Tente novamente em alguns instantes.',
+        code: 'SUPABASE_NOT_CONFIGURED',
+      });
       return;
     }
 
@@ -58,7 +62,12 @@ export function AuthScreen() {
 
     setIsSubmitting(false);
     if (result.error) {
-      setError(readableAuthError(result.error.message));
+      setError({
+        message: readableAuthError(result.error.message),
+        code:
+          result.error.code ??
+          (result.error.status ? `HTTP_${result.error.status}` : null),
+      });
       return;
     }
 
@@ -85,10 +94,7 @@ export function AuthScreen() {
 
       <section className="mx-auto flex min-h-[calc(100vh-112px)] max-w-md items-center py-12 sm:py-16">
         <ArcCard className="w-full p-5 sm:p-8">
-          <p className="text-sm font-medium text-[#5f8f71]">
-            Seu espaço de prática
-          </p>
-          <h1 className="mt-3 text-3xl font-medium tracking-[-0.055em] sm:text-4xl">
+          <h1 className="text-3xl font-medium tracking-[-0.055em] sm:text-4xl">
             {isSignUp ? 'Comece de onde você está.' : 'Bom ter você por aqui.'}
           </h1>
           <p className="mt-3 max-w-sm text-[15px] leading-6 text-[#68706b]">
@@ -132,24 +138,48 @@ export function AuthScreen() {
                 htmlFor="password"
               >
                 Senha
-                <Input
-                  autoComplete={isSignUp ? 'new-password' : 'current-password'}
-                  className="h-11 rounded-xl border-black/[0.11] bg-white px-3 text-sm focus-visible:border-[#79a88a]"
-                  id="password"
-                  minLength={6}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="Mínimo de 6 caracteres"
-                  required
-                  type="password"
-                  value={password}
-                />
+                <span className="relative block">
+                  <Input
+                    autoComplete={
+                      isSignUp ? 'new-password' : 'current-password'
+                    }
+                    className="h-11 rounded-xl border-black/[0.11] bg-white px-3 pr-11 text-sm focus-visible:border-[#46657a]"
+                    id="password"
+                    minLength={6}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="Mínimo de 6 caracteres"
+                    required
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    value={password}
+                  />
+                  <button
+                    aria-label={
+                      isPasswordVisible ? 'Ocultar senha' : 'Mostrar senha'
+                    }
+                    aria-pressed={isPasswordVisible}
+                    className="absolute inset-y-0 right-0 grid w-11 place-items-center rounded-r-xl text-[var(--arc-text-muted)] transition-colors hover:text-[#31485c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-[#46657a]"
+                    onClick={() => setIsPasswordVisible((visible) => !visible)}
+                    type="button"
+                  >
+                    {isPasswordVisible ? (
+                      <EyeOff aria-hidden="true" className="size-4" />
+                    ) : (
+                      <Eye aria-hidden="true" className="size-4" />
+                    )}
+                  </button>
+                </span>
               </label>
               {error && (
                 <p
                   className="rounded-xl bg-[var(--arc-error-bg)] px-3 py-2.5 text-sm text-[var(--arc-error-text)]"
                   role="alert"
                 >
-                  {error}
+                  <span>{error.message}</span>
+                  {error.code && (
+                    <span className="mt-1.5 block text-xs opacity-80">
+                      Código: {error.code}
+                    </span>
+                  )}
                 </p>
               )}
               <ArcButton
@@ -171,7 +201,7 @@ export function AuthScreen() {
             <p className="mt-6 text-center text-sm text-[#68706b]">
               {isSignUp ? 'Já tem uma conta?' : 'Ainda não tem uma conta?'}{' '}
               <button
-                className="font-medium text-[#435f50] underline-offset-4 hover:underline"
+                className="font-medium text-[#46657a] underline-offset-4 hover:underline"
                 onClick={() => changeMode(isSignUp ? 'sign-in' : 'sign-up')}
                 type="button"
               >
