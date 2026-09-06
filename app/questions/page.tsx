@@ -267,6 +267,24 @@ export default function QuestionsPage() {
             <SlidersHorizontal className="size-4 text-[#527184]" />
             <p className="text-sm font-medium">Filtrar questões</p>
           </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {(
+              [
+                { id: 'not_attempted', label: 'Não feitas' },
+                { id: 'incorrect', label: 'Erradas' },
+              ] as const
+            ).map((filter) => (
+              <button
+                aria-pressed={selectedStatus === filter.id}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selectedStatus === filter.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[#263950]'}`}
+                key={filter.id}
+                onClick={() => setSelectedStatus(filter.id)}
+                type="button"
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
               Unidade
