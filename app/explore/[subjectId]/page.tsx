@@ -5,15 +5,27 @@ import { useParams } from 'next/navigation';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
 import { useCatalogue } from '@/lib/data/use-catalogue';
+import { getTaxonomyBranch } from '@/lib/domain/taxonomy';
 
 export default function SubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>();
   const { catalogue } = useCatalogue();
   const subject = catalogue?.subjects.find((item) => item.id === subjectId);
-  const topics =
+  const topicNodes =
     catalogue?.taxonomyNodes.filter(
       (item) => item.subjectId === subjectId && item.kind === 'topic',
     ) ?? [];
+  const topics = topicNodes.map((topic) => {
+    const branch = getTaxonomyBranch(topic.id, catalogue?.taxonomyNodes ?? []);
+    const count = (catalogue?.questions ?? []).filter(
+      (question) =>
+        question.subjectId === subjectId &&
+        question.taxonomyTags.some((tag) =>
+          branch.includes(tag.taxonomyNodeId),
+        ),
+    ).length;
+    return { ...topic, count };
+  });
   return (
     <AppShell active="explore">
       <section className="mx-auto max-w-4xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
@@ -43,7 +55,12 @@ export default function SubjectPage() {
               key={topic.id}
             >
               <ArcCard className="flex items-center justify-between p-5 hover:-translate-y-0.5 hover:border-[#becdc9] hover:shadow-[0_18px_45px_rgba(38,57,80,0.08)]">
-                <span className="font-medium">{topic.name}</span>
+                <span className="font-medium">
+                  {topic.name}{' '}
+                  <span className="text-sm font-normal text-[var(--arc-text-muted)]">
+                    {topic.count}
+                  </span>
+                </span>
                 <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
               </ArcCard>
             </a>
