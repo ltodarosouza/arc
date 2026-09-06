@@ -5,6 +5,7 @@ import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
 
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
+import { FeedbackState } from '@/components/feedback-state';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { useLearnerState } from '@/lib/data/use-learner-state';
@@ -91,13 +92,34 @@ export default function ExplorePage() {
           </a>
         </div>
         {isLoading ? (
-          <ArcCard className="mt-9 p-7 text-sm text-[var(--arc-text-muted)]">
-            Carregando suas disciplinas…
-          </ArcCard>
+          <div
+            aria-busy="true"
+            aria-label="Carregando disciplinas"
+            className="mt-9 grid gap-4 lg:grid-cols-2"
+          >
+            {[0, 1].map((item) => (
+              <ArcCard className="animate-pulse p-6" key={item}>
+                <div className="h-5 w-36 rounded-full bg-[var(--arc-surface-subtle)]" />
+                <div className="mt-6 h-4 w-full rounded-full bg-[var(--arc-surface-subtle)]" />
+                <div className="mt-3 h-4 w-3/4 rounded-full bg-[var(--arc-surface-subtle)]" />
+              </ArcCard>
+            ))}
+          </div>
         ) : error ? (
-          <ArcCard className="mt-9 p-7 text-sm text-[var(--arc-error-text)]">
-            Não foi possível carregar o catálogo publicado.
-          </ArcCard>
+          <FeedbackState
+            action={
+              <button
+                className="text-sm font-medium text-[#46657a] hover:underline"
+                onClick={() => window.location.reload()}
+              >
+                Tentar novamente
+              </button>
+            }
+            className="mt-9"
+            description="Não foi possível abrir as disciplinas publicadas agora."
+            title="As disciplinas não carregaram"
+            tone="error"
+          />
         ) : subjectDetails.length ? (
           <div className="mt-9 grid gap-4 lg:grid-cols-2">
             {subjectDetails.map(
@@ -154,20 +176,19 @@ export default function ExplorePage() {
             )}
           </div>
         ) : (
-          <ArcCard className="mt-9 p-7">
-            <p className="text-lg font-medium tracking-[-0.03em]">
-              Selecione suas disciplinas.
-            </p>
-            <p className="mt-2 text-sm text-[var(--arc-text-muted)]">
-              Elas aparecerão aqui para você começar a praticar.
-            </p>
-            <a
-              className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-              href="/subjects"
-            >
-              Escolher disciplinas <ChevronRight className="size-4" />
-            </a>
-          </ArcCard>
+          <FeedbackState
+            action={
+              <a
+                className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                href="/subjects"
+              >
+                Escolher disciplinas <ChevronRight className="size-4" />
+              </a>
+            }
+            className="mt-9"
+            description="Elas aparecerão aqui para você chegar às questões mais rápido."
+            title="Escolha suas disciplinas"
+          />
         )}
       </section>
     </AppShell>

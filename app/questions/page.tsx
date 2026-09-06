@@ -1,16 +1,11 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import {
-  ArrowRight,
-  BookOpen,
-  ChevronRight,
-  SlidersHorizontal,
-  X,
-} from 'lucide-react';
+import { ArrowRight, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
 
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
+import { FeedbackState } from '@/components/feedback-state';
 import { MathContent } from '@/components/math-content';
 import { Reveal } from '@/components/reveal';
 import { useCatalogue } from '@/lib/data/use-catalogue';
@@ -169,9 +164,19 @@ export default function QuestionsPage() {
     return (
       <AppShell active="explore">
         <section className="mx-auto max-w-5xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
-          <ArcCard className="p-7 text-sm text-[var(--arc-error-text)]">
-            Não foi possível carregar o catálogo publicado.
-          </ArcCard>
+          <FeedbackState
+            action={
+              <button
+                className="text-sm font-medium text-[#46657a] hover:underline"
+                onClick={() => window.location.reload()}
+              >
+                Tentar novamente
+              </button>
+            }
+            description="Não conseguimos abrir as questões publicadas agora. Tente novamente em instantes."
+            title="As questões não carregaram"
+            tone="error"
+          />
         </section>
       </AppShell>
     );
@@ -179,9 +184,7 @@ export default function QuestionsPage() {
     return (
       <AppShell active="explore">
         <section className="mx-auto max-w-5xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
-          <ArcCard className="p-7 text-sm text-[var(--arc-text-muted)]">
-            Carregando questões…
-          </ArcCard>
+          <QuestionListSkeleton />
         </section>
       </AppShell>
     );
@@ -487,25 +490,40 @@ export default function QuestionsPage() {
             })}
           </div>
         ) : (
-          <ArcCard className="mt-6 p-8 text-center">
-            <span className="mx-auto grid size-11 place-items-center rounded-2xl bg-[var(--arc-accent)] text-[#46657a]">
-              <BookOpen className="size-5" />
-            </span>
-            <h2 className="mt-5 text-xl font-medium tracking-[-0.03em]">
-              Nenhuma questão encontrada.
-            </h2>
-            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[var(--arc-text-muted)]">
-              Remova um filtro ou escolha outro assunto.
-            </p>
-            <button
-              className="mt-5 text-sm font-medium text-[#46657a] hover:underline"
-              onClick={clearAllFilters}
-            >
-              Limpar filtros
-            </button>
-          </ArcCard>
+          <FeedbackState
+            action={
+              <button
+                className="text-sm font-medium text-[#46657a] hover:underline"
+                onClick={clearAllFilters}
+              >
+                Limpar filtros
+              </button>
+            }
+            className="mt-6 items-center text-center"
+            description="Ajuste os filtros ou escolha outro assunto desta disciplina."
+            title="Nenhuma questão encontrada"
+          />
         )}
       </section>
     </AppShell>
+  );
+}
+
+function QuestionListSkeleton() {
+  return (
+    <div
+      aria-busy="true"
+      aria-label="Carregando questões"
+      className="mt-8 grid gap-3"
+    >
+      {[0, 1, 2].map((item) => (
+        <ArcCard className="animate-pulse p-5 sm:p-6" key={item}>
+          <div className="h-4 w-24 rounded-full bg-[var(--arc-surface-subtle)]" />
+          <div className="mt-6 h-6 max-w-xl rounded-full bg-[var(--arc-surface-subtle)]" />
+          <div className="mt-3 h-6 w-3/5 rounded-full bg-[var(--arc-surface-subtle)]" />
+          <div className="mt-7 h-8 w-28 rounded-full bg-[var(--arc-surface-subtle)]" />
+        </ArcCard>
+      ))}
+    </div>
   );
 }
