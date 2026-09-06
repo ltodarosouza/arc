@@ -22,3 +22,42 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+
+  migration-preflight:
+    name: Validate database migrations
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: arc_preflight
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d arc_preflight"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGPASSWORD: postgres
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGDATABASE: arc_preflight
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Supabase compatibility stubs
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "create schema auth;"
+          psql -v ON_ERROR_STOP=1 -c "create table auth.users (id uuid primary key);"
+          psql -v ON_ERROR_STOP=1 -c "create function auth.uid() returns uuid language sql stable as 'select null::uuid';"
+          psql -v ON_ERROR_STOP=1 -c "create role anon nologin;"
+          psql -v ON_ERROR_STOP=1 -c "create role authenticated nologin;"
+      - name: Apply every migration in order
+        run: |
+          for migration in $(find supabase/migrations -type f -name '*.sql' | sort); do
+            echo "Applying $migration"
+            psql -v ON_ERROR_STOP=1 -f "$migration"
+          done
