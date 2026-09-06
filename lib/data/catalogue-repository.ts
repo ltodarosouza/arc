@@ -1,5 +1,6 @@
 import type { ContentFormat, Difficulty, QuestionKind } from '@/lib/domain/questions';
 import type { Subject, TaxonomyNode } from '@/lib/domain/taxonomy';
+import { seedQuestions, seedSubjects, seedTaxonomyNodes } from '@/lib/data/seed-catalogue';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 export type CatalogueOption = { id: string; label: string; content: { format: ContentFormat; value: string }; sortOrder: number };
@@ -17,6 +18,10 @@ export type CatalogueQuestion = {
 
 export type CatalogueSnapshot = { subjects: Subject[]; taxonomyNodes: TaxonomyNode[]; questions: CatalogueQuestion[] };
 
+export type CatalogueRepository = {
+  loadPublished(): Promise<CatalogueSnapshot>;
+};
+
 type DatabaseSubject = { id: string; slug: string; name: string; description: string | null; sort_order: number; is_published: boolean };
 type DatabaseNode = { id: string; subject_id: string; parent_id: string | null; kind: 'unit' | 'topic' | 'subtopic'; slug: string; name: string; sort_order: number; is_published: boolean };
 type DatabaseQuestion = { id: string; subject_id: string; kind: QuestionKind; difficulty: Difficulty; statement_markdown: string; content_format: ContentFormat; source_id: string | null };
@@ -26,7 +31,7 @@ type DatabaseHint = { id: string; question_id: string; content_markdown: string;
 type DatabaseSource = { id: string; kind: CatalogueQuestion['source']['kind']; label: string };
 
 /** Browser-safe published catalogue. Answer keys and solutions are intentionally absent. */
-export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
+async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
   if (!isSupabaseConfigured()) throw new Error('Supabase is unavailable.');
   const supabase = getSupabaseClient();
   const [subjectsResult, nodesResult, questionsResult, optionsResult, tagsResult, hintsResult, sourcesResult] = await Promise.all([
@@ -64,4 +69,64 @@ export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
   });
 
   return { subjects, taxonomyNodes, questions };
+}
+
+function loadFixtureCatalogue(): CatalogueSnapshot {
+  return {
+    subjects: seedSubjects.filter((subject) => subject.isPublished),
+    taxonomyNodes: seedTaxonomyNodes.filter((node) => node.isPublished),
+    questions: seedQuestions.filter((question) => question.status === 'published').map((question) => ({
+      id: question.id,
+      subjectId: question.subjectId,
+      kind: question.kind,
+      difficulty: question.difficulty,
+      statement: question.statement,
+      options: question.kind === 'multiple_choice' ? question.options : [],
+      taxonomyTags: question.taxonomyTags,
+      hints: question.hints,
+      source: {
+        kind: question.source.kind,
+        label: question.source.label,
+        rightsStatus: 'approved',
+      },
+    })),
+  };
+}
+
+class SupabaseCatalogueRepository implements CatalogueRepository {
+  loadPublished() { return loadSupabaseCatalogue(); }
+}
+
+class FixtureCatalogueRepository implements CatalogueRepository {
+  async loadPublished() { return loadFixtureCatalogue(); }
+}
+
+/**
+ * Supabase is the source of truth when configured. Fixtures exist only for
+ * local development without a Supabase project; a configured project never
+ * silently falls back on a query error or an empty catalogue.
+ */
+export function createCatalogueRepository(): CatalogueRepository {
+  return isSupabaseConfigured() ? new SupabaseCatalogueRepository() : new FixtureCatalogueRepository();
+}
+
+/** Maps the original fixture ids to the durable subject records by slug. */
+export function normalizeSelectedSubjectIds(subjectIds: string[], catalogue: CatalogueSnapshot): string[] {
+  return subjectIds.map((savedId) => {
+    if (catalogue.subjects.some((subject) => subject.id === savedId)) return savedId;
+    const fixtureSubject = seedSubjects.find((subject) => subject.id === savedId);
+    return catalogue.subjects.find((subject) => subject.slug === fixtureSubject?.slug)?.id;
+  }).filter((id): id is string => Boolean(id));
+}
+
+let cachedCatalogue: CatalogueSnapshot | null = null;
+let pendingCatalogue: Promise<CatalogueSnapshot> | null = null;
+
+export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
+  if (cachedCatalogue) return cachedCatalogue;
+  pendingCatalogue ??= createCatalogueRepository().loadPublished().then((catalogue) => {
+    cachedCatalogue = catalogue;
+    return catalogue;
+  }).finally(() => { pendingCatalogue = null; });
+  return pendingCatalogue;
 }
