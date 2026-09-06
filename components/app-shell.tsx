@@ -78,7 +78,7 @@ export function AppShell({
     return <AuthScreen />;
 
   return (
-    <main className="min-h-screen bg-[var(--background)] pb-36 text-[var(--foreground)] sm:pb-10">
+    <main className="min-h-screen bg-[var(--background)] pb-[calc(9.5rem+env(safe-area-inset-bottom))] text-[var(--foreground)] sm:pb-12">
       <a
         className="sr-only fixed left-4 top-4 z-50 rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] focus:not-sr-only"
         href="#main-content"
@@ -87,7 +87,7 @@ export function AppShell({
       </a>
       <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 sm:px-8">
         <a
-          className="flex items-center gap-2.5 font-semibold tracking-[-0.045em]"
+          className="flex min-h-11 items-center gap-2.5 font-semibold tracking-[-0.045em]"
           href="/"
         >
           <span className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-sm text-[var(--primary-foreground)]">
@@ -102,7 +102,7 @@ export function AppShell({
           {destinations.map((destination) => (
             <a
               aria-current={active === destination.id ? 'page' : undefined}
-              className={`rounded-full px-4 py-2 transition-all duration-300 ${active === destination.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[0_2px_8px_rgba(38,57,80,0.16)]' : 'hover:bg-black/[0.035] hover:text-[var(--foreground)]'}`}
+              className={`flex min-h-11 items-center rounded-full px-4 py-2 transition-all duration-300 ${active === destination.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[0_2px_8px_rgba(38,57,80,0.16)]' : 'hover:bg-black/[0.035] hover:text-[var(--foreground)]'}`}
               href={destination.href}
               key={destination.id}
             >
@@ -125,7 +125,7 @@ export function AppShell({
               </span>
               <button
                 aria-label="Sair da conta"
-                className="grid size-9 place-items-center rounded-full bg-[var(--arc-accent)] text-sm font-medium text-[#30475a] transition-colors hover:bg-[#c8d8d6]"
+                className="grid size-11 place-items-center rounded-full bg-[var(--arc-accent)] text-sm font-medium text-[#30475a] transition-colors hover:bg-[#c8d8d6]"
                 onClick={() => void signOut()}
               >
                 {userEmail?.charAt(0).toUpperCase()}
@@ -139,7 +139,7 @@ export function AppShell({
       </div>
       <nav
         aria-label="Navegação móvel"
-        className="fixed inset-x-4 bottom-4 z-10 flex items-center justify-around rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)]/90 p-1.5 shadow-[0_12px_40px_rgba(38,57,80,0.12)] backdrop-blur md:hidden"
+        className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-10 flex min-h-[72px] items-center justify-around rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)]/90 p-1.5 shadow-[0_12px_40px_rgba(38,57,80,0.12)] backdrop-blur md:hidden"
       >
         {destinations.map((destination) => {
           const Icon = destination.icon;
@@ -147,7 +147,7 @@ export function AppShell({
           return (
             <a
               aria-current={isActive ? 'page' : undefined}
-              className={`flex min-w-[64px] flex-col items-center gap-1 rounded-xl px-2 py-2 text-[10px] font-medium transition-all duration-300 ${isActive ? 'bg-[var(--arc-accent)] text-[#263950] shadow-[0_2px_8px_rgba(38,57,80,0.08)]' : 'text-[var(--arc-text-muted)] active:scale-[0.97]'}`}
+              className={`flex min-h-14 min-w-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium transition-all duration-300 ${isActive ? 'bg-[var(--arc-accent)] text-[#263950] shadow-[0_2px_8px_rgba(38,57,80,0.08)]' : 'text-[var(--arc-text-muted)] active:scale-[0.97]'}`}
               href={destination.href}
               key={destination.id}
             >
