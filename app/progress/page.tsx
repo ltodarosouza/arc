@@ -339,19 +339,28 @@ function AttemptRow({
         : 'redo';
 
   return (
-    <ArcCard className="flex items-center justify-between gap-4 px-5 py-4">
-      <div className="min-w-0">
-        <p className="truncate text-sm font-medium">
-          {subject?.name ?? 'Disciplina'}
-          {topic ? ` · ${topic.name}` : ''}
-        </p>
-        <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
-          Tentativa {getAttemptNumber(attempt, attempts)}
-          {option ? ` · alternativa ${option.label}` : ''} ·{' '}
-          {formatAttemptDate(attempt.createdAt)}
-        </p>
-      </div>
-      <AttemptStatusBadge status={status} />
-    </ArcCard>
+    <a
+      className="group block rounded-[var(--arc-radius-card)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]"
+      href={
+        question && subject
+          ? `/practice?subject=${subject.id}&question=${question.id}`
+          : '/progress'
+      }
+    >
+      <ArcCard className="flex items-center justify-between gap-4 px-5 py-4 group-hover:-translate-y-0.5 group-hover:border-[#becdc9] group-hover:shadow-[0_18px_45px_rgba(38,57,80,0.08)]">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium">
+            {subject?.name ?? 'Disciplina'}
+            {topic ? ` · ${topic.name}` : ''}
+          </p>
+          <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
+            Tentativa {getAttemptNumber(attempt, attempts)}
+            {option ? ` · alternativa ${option.label}` : ''} ·{' '}
+            {formatAttemptDate(attempt.createdAt)}
+          </p>
+        </div>
+        <AttemptStatusBadge status={status} />
+      </ArcCard>
+    </a>
   );
 }
