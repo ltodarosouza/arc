@@ -84,9 +84,9 @@ export function PracticeSurface() {
     [catalogue, question, questionIndex],
   );
 
-  const goToQuestion = (nextQuestionId: string, subjectId: string) => {
+  const goToQuestion = (nextQuestionId: string, subjectSlug: string) => {
     window.location.assign(
-      `/practice?subject=${subjectId}&question=${nextQuestionId}`,
+      `/practice?subject=${subjectSlug}&question=${nextQuestionId}`,
     );
   };
 
@@ -429,7 +429,7 @@ export function PracticeSurface() {
           <div className="flex items-center gap-3">
             <a
               className="text-sm font-medium text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
-              href={`/questions?subject=${subject?.id ?? question.subjectId}`}
+              href={`/questions?subject=${subject?.slug ?? question.subjectId}`}
             >
               Voltar para questões
             </a>
@@ -437,7 +437,12 @@ export function PracticeSurface() {
               <button
                 className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
                 onClick={() =>
-                  goToQuestion(nextQuestion.id, nextQuestion.subjectId)
+                  goToQuestion(
+                    nextQuestion.id,
+                    catalogue?.subjects.find(
+                      (item) => item.id === nextQuestion.subjectId,
+                    )?.slug ?? nextQuestion.subjectId,
+                  )
                 }
               >
                 {resolved ? 'Próxima questão' : 'Pular questão'}{' '}

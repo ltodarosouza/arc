@@ -59,15 +59,28 @@ export default function QuestionsPage() {
     const requestedSubtopicId = search.get('subtopic');
     const requestedDifficulties = search.get('difficulty')?.split(',') ?? [];
     const requestedStatus = search.get('status');
-    setSubjectId(
-      requestedSubjectId &&
-        catalogue.subjects.some((subject) => subject.id === requestedSubjectId)
-        ? requestedSubjectId
-        : (catalogue.subjects[0]?.id ?? null),
+    const requestedSubject = catalogue.subjects.find(
+      (subject) =>
+        subject.id === requestedSubjectId ||
+        subject.slug === requestedSubjectId,
     );
-    setUnitId(requestedUnitId);
-    setTopicId(requestedTopicId);
-    setSubtopicId(requestedSubtopicId);
+    const resolvedSubjectId =
+      requestedSubject?.id ?? catalogue.subjects[0]?.id ?? null;
+    const subjectNodes = catalogue.taxonomyNodes.filter(
+      (node) => node.subjectId === resolvedSubjectId,
+    );
+    const resolveNodeId = (
+      value: string | null,
+      kind: 'unit' | 'topic' | 'subtopic',
+    ) =>
+      subjectNodes.find(
+        (node) =>
+          node.kind === kind && (node.id === value || node.slug === value),
+      )?.id ?? null;
+    setSubjectId(resolvedSubjectId);
+    setUnitId(resolveNodeId(requestedUnitId, 'unit'));
+    setTopicId(resolveNodeId(requestedTopicId, 'topic'));
+    setSubtopicId(resolveNodeId(requestedSubtopicId, 'subtopic'));
     setSelectedDifficulties(
       requestedDifficulties.filter(
         (difficulty): difficulty is Difficulty =>
@@ -95,17 +108,23 @@ export default function QuestionsPage() {
   }, [catalogue, learnerState]);
 
   useEffect(() => {
-    if (!subjectId) return;
+    const selectedSubject = catalogue?.subjects.find(
+      (subject) => subject.id === subjectId,
+    );
+    if (!selectedSubject) return;
     const search = new URLSearchParams();
-    search.set('subject', subjectId);
-    if (unitId) search.set('unit', unitId);
-    if (topicId) search.set('topic', topicId);
-    if (subtopicId) search.set('subtopic', subtopicId);
+    const slugForNode = (id: string) =>
+      catalogue?.taxonomyNodes.find((node) => node.id === id)?.slug ?? id;
+    search.set('subject', selectedSubject.slug);
+    if (unitId) search.set('unit', slugForNode(unitId));
+    if (topicId) search.set('topic', slugForNode(topicId));
+    if (subtopicId) search.set('subtopic', slugForNode(subtopicId));
     if (selectedDifficulties.length)
       search.set('difficulty', selectedDifficulties.join(','));
     if (selectedStatus !== 'all') search.set('status', selectedStatus);
     window.history.replaceState(null, '', `/questions?${search.toString()}`);
   }, [
+    catalogue,
     selectedDifficulties,
     selectedStatus,
     subjectId,
@@ -207,7 +226,7 @@ export default function QuestionsPage() {
     const question = questions[Math.floor(Math.random() * questions.length)];
     if (!question) return;
     window.location.assign(
-      `/practice?subject=${subject?.id ?? question.subjectId}&question=${question.id}`,
+      `/practice?subject=${subject?.slug ?? question.subjectId}&question=${question.id}`,
     );
   };
 
@@ -302,7 +321,9 @@ export default function QuestionsPage() {
                 value={unitId}
               >
                 <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue placeholder="Todas" />
+                  <SelectValue placeholder="Todas">
+                    {units.find((unit) => unit.id === unitId)?.name ?? 'Todas'}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className={selectContentClass}>
                   <SelectItem className={selectItemClass} value={null}>
@@ -328,7 +349,10 @@ export default function QuestionsPage() {
                 value={topicId}
               >
                 <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue placeholder="Todos" />
+                  <SelectValue placeholder="Todos">
+                    {topics.find((topic) => topic.id === topicId)?.name ??
+                      'Todos'}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className={selectContentClass}>
                   <SelectItem className={selectItemClass} value={null}>
@@ -354,7 +378,10 @@ export default function QuestionsPage() {
                 value={subtopicId}
               >
                 <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue placeholder="Todos" />
+                  <SelectValue placeholder="Todos">
+                    {subtopics.find((subtopic) => subtopic.id === subtopicId)
+                      ?.name ?? 'Todos'}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className={selectContentClass}>
                   <SelectItem className={selectItemClass} value={null}>
@@ -519,14 +546,14 @@ export default function QuestionsPage() {
                       if ((event.target as HTMLElement).closest('a, button'))
                         return;
                       window.location.assign(
-                        `/practice?subject=${subject.id}&question=${question.id}`,
+                        `/practice?subject=${subject.slug}&question=${question.id}`,
                       );
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         window.location.assign(
-                          `/practice?subject=${subject.id}&question=${question.id}`,
+                          `/practice?subject=${subject.slug}&question=${question.id}`,
                         );
                       }
                     }}
@@ -577,7 +604,7 @@ export default function QuestionsPage() {
                           </button>
                           <a
                             className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-                            href={`/practice?subject=${subject.id}&question=${question.id}`}
+                            href={`/practice?subject=${subject.slug}&question=${question.id}`}
                           >
                             {outcome ? 'Refazer' : 'Resolver'}{' '}
                             <ArrowRight className="size-4" />

@@ -141,7 +141,7 @@ export default function ExplorePage() {
                     </div>
                     <a
                       className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-                      href={`/explore/${subject.id}`}
+                      href={`/explore/${subject.slug}`}
                     >
                       Ver todas <ChevronRight className="size-4" />
                     </a>
@@ -155,7 +155,7 @@ export default function ExplorePage() {
                         {topics.map((topic) => (
                           <a
                             className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1.5 text-xs text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
-                            href={`/explore/${subject.id}`}
+                            href={`/questions?subject=${subject.slug}&topic=${topic.slug}`}
                             key={topic.id}
                           >
                             {topic.name}{' '}

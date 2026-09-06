@@ -22,13 +22,16 @@ const minimumReliableSampleSize = 3;
 
 type TopicPerformance = {
   id: string;
+  slug: string;
   name: string;
   attempted: number;
   correct: number;
   subjectId: string;
+  subjectSlug: string;
 };
 type SubjectPerformance = {
   id: string;
+  slug: string;
   name: string;
   attempted: number;
   correct: number;
@@ -78,6 +81,7 @@ function buildPerformance(
     if (!subject) continue;
     const subjectItem = subjects.get(subject.id) ?? {
       id: subject.id,
+      slug: subject.slug,
       name: subject.name,
       attempted: 0,
       correct: 0,
@@ -91,10 +95,12 @@ function buildPerformance(
     if (!topic) continue;
     const topicItem = topics.get(topic.id) ?? {
       id: topic.id,
+      slug: topic.slug,
       name: topic.name,
       attempted: 0,
       correct: 0,
       subjectId: subject.id,
+      subjectSlug: subject.slug,
     };
     topicItem.attempted += 1;
     if (attempt.outcome === 'correct') topicItem.correct += 1;
@@ -214,7 +220,7 @@ export default function ProgressPage() {
             <ArcCard className="mt-6 p-6">
               <p className="font-medium tracking-[-0.025em]">
                 {summary.answered
-                  ? `${summary.answered} questão${summary.answered === 1 ? '' : 'ões'} respondida${summary.answered === 1 ? '' : 's'}.`
+                  ? `${summary.answered} ${summary.answered === 1 ? 'questão respondida.' : 'questões respondidas.'}`
                   : 'Nenhuma questão respondida ainda.'}
               </p>
               <p className="mt-2 text-sm leading-6 text-[var(--arc-text-muted)]">
@@ -240,7 +246,7 @@ export default function ProgressPage() {
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <a
                           className="font-medium tracking-[-0.025em] transition-colors hover:text-[#46657a]"
-                          href={`/questions?subject=${subject.id}`}
+                          href={`/questions?subject=${subject.slug}`}
                         >
                           {subject.name}
                         </a>
@@ -259,7 +265,7 @@ export default function ProgressPage() {
                             <div>
                               <a
                                 className="text-sm font-medium transition-colors hover:text-[#46657a]"
-                                href={`/questions?subject=${topic.subjectId}&topic=${topic.id}`}
+                                href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                               >
                                 {topic.name}
                               </a>
@@ -271,7 +277,7 @@ export default function ProgressPage() {
                             </div>
                             <a
                               className="shrink-0 text-sm font-medium text-[#46657a] hover:underline"
-                              href={`/questions?subject=${topic.subjectId}&topic=${topic.id}`}
+                              href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                             >
                               Praticar
                             </a>
@@ -344,7 +350,7 @@ function AttemptRow({
       className="group block rounded-[var(--arc-radius-card)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]"
       href={
         question && subject
-          ? `/practice?subject=${subject.id}&question=${question.id}`
+          ? `/practice?subject=${subject.slug}&question=${question.id}`
           : '/progress'
       }
     >

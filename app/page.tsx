@@ -59,7 +59,7 @@ export default function Home() {
     return catalogue?.subjects.find((item) => item.id === question?.subjectId);
   }, [catalogue, learnerState]);
   const resumeHref = resumeSubject
-    ? `/questions?subject=${resumeSubject.id}&status=not_attempted`
+    ? `/questions?subject=${resumeSubject.slug}&status=not_attempted`
     : selectedSubjects.length
       ? '/explore'
       : '/subjects';
@@ -130,7 +130,7 @@ export default function Home() {
                     <a
                       aria-label={`Abrir ${subject.name}`}
                       className="absolute inset-0 rounded-[var(--arc-radius-card)]"
-                      href={`/explore/${subject.id}`}
+                      href={`/explore/${subject.slug}`}
                     />
                     <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
                       <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
@@ -144,20 +144,20 @@ export default function Home() {
                     <p className="mt-4 text-xs font-medium text-[#527184]">
                       {subjectQuestionIds.length
                         ? remaining
-                          ? `${remaining} questão${remaining === 1 ? '' : 'ões'} para fazer`
+                          ? `${remaining} ${remaining === 1 ? 'questão para fazer' : 'questões para fazer'}`
                           : 'Todas as questões concluídas'
                         : 'Catálogo em preparação'}
                     </p>
                     <div className="relative z-10 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
                       <a
                         className="inline-flex items-center gap-1 hover:underline"
-                        href={`/questions?subject=${subject.id}`}
+                        href={`/questions?subject=${subject.slug}`}
                       >
                         Questões <ChevronRight className="size-4" />
                       </a>
                       <a
                         className="inline-flex items-center gap-1 hover:underline"
-                        href={`/explore/${subject.id}`}
+                        href={`/explore/${subject.slug}`}
                       >
                         Assuntos <ChevronRight className="size-4" />
                       </a>
