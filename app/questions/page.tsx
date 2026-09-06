@@ -203,6 +203,13 @@ export default function QuestionsPage() {
       return next;
     });
   };
+  const startRandomQuestion = () => {
+    const question = questions[Math.floor(Math.random() * questions.length)];
+    if (!question) return;
+    window.location.assign(
+      `/practice?subject=${subject?.id ?? question.subjectId}&question=${question.id}`,
+    );
+  };
 
   if (error)
     return (
@@ -255,12 +262,14 @@ export default function QuestionsPage() {
               {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
             </p>
           </div>
-          <a
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--arc-accent)] px-5 text-sm font-medium text-[#263950] transition-colors hover:bg-[#c8d8d6]"
-            href={`/practice?subject=${subject.id}`}
+          <button
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--arc-accent)] px-5 text-sm font-medium text-[#263950] transition-colors hover:bg-[#c8d8d6] disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!questions.length}
+            onClick={startRandomQuestion}
+            type="button"
           >
-            Começar agora <ArrowRight className="size-4" />
-          </a>
+            Praticar uma questão <ArrowRight className="size-4" />
+          </button>
         </div>
         <ArcCard className="mt-8 bg-[color:color-mix(in_srgb,var(--arc-surface)_72%,var(--arc-surface-subtle))] p-4 shadow-none sm:p-5">
           <div className="flex items-center gap-2">
