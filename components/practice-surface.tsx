@@ -19,6 +19,7 @@ import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 type Solution = {
   finalAnswer: string;
+  correctOptionId: string;
   explanation: string | null;
   steps: {
     id: string;
@@ -136,6 +137,7 @@ export function PracticeSurface() {
         setOutcome(localOutcome);
         setSolution({
           finalAnswer: fixture.solution.finalAnswer.value,
+          correctOptionId: fixture.correctOptionId,
           explanation: fixture.solution.explanation?.value ?? null,
           steps: fixture.solution.steps.map((step) => ({
             id: step.id,
@@ -217,11 +219,12 @@ export function PracticeSurface() {
           <div className="grid gap-2">
             {question.options.map((option) => {
               const chosen = selectedOptionId === option.id;
+              const correct = solution?.correctOptionId === option.id;
               const eliminated = eliminatedOptionIds.has(option.id);
               const resultStyle =
                 resolved &&
-                (chosen
-                  ? outcome === 'correct'
+                (chosen || correct
+                  ? correct
                     ? 'border-[#8fb59f] bg-[#eef6f0]'
                     : 'border-[#dfaaaa] bg-[#faeeee]'
                   : 'border-[var(--border)] bg-[var(--arc-surface)]');
@@ -244,7 +247,7 @@ export function PracticeSurface() {
               };
               return (
                 <div
-                  className={`flex items-center gap-2 rounded-2xl border p-1.5 transition-all ${resultStyle ?? (chosen ? 'border-[#8aa7a1] bg-[#eef5f2]' : eliminated ? 'border-[#c4c9c7] bg-[var(--arc-surface-subtle)] opacity-60' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1]')}`}
+                  className={`flex items-center gap-2 rounded-2xl border p-1.5 transition-all duration-300 ${resultStyle ?? (chosen ? 'scale-[1.01] border-[#8aa7a1] bg-[#eef5f2] shadow-[0_8px_20px_rgba(82,113,132,0.1)]' : eliminated ? 'border-[#c4c9c7] bg-[var(--arc-surface-subtle)] opacity-60' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1] hover:bg-[#fdfcf9]')}`}
                   key={option.id}
                 >
                   <button
@@ -320,6 +323,9 @@ export function PracticeSurface() {
                 <div className="mt-5 rounded-2xl border border-[#d9e2df] bg-[#f1f6f4] p-5 sm:p-6">
                   <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#557064]">
                     Resposta correta
+                    {solution.correctOptionId
+                      ? ` · Alternativa ${question.options.find((option) => option.id === solution.correctOptionId)?.label ?? ''}`
+                      : ''}
                   </p>
                   <div className="mt-2 text-lg font-medium leading-7 text-[var(--foreground)]">
                     <MathContent value={solution.finalAnswer} />
@@ -383,22 +389,31 @@ export function PracticeSurface() {
             <span />
           )}
           <div className="flex items-center gap-3">
-            {resolved && nextQuestion && (
+            <a
+              className="text-sm font-medium text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
+              href={`/questions?subject=${subject.id}`}
+            >
+              Voltar para questões
+            </a>
+            {nextQuestion && (
               <button
                 className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
                 onClick={() =>
                   goToQuestion(nextQuestion.id, nextQuestion.subjectId)
                 }
               >
-                Próxima <MoveRight className="size-4" />
+                {resolved ? 'Próxima questão' : 'Pular questão'}{' '}
+                <MoveRight className="size-4" />
               </button>
             )}
-            <ArcButton
-              disabled={!selectedOptionId || resolved}
-              onClick={() => void submitAnswer()}
-            >
-              <Check className="size-4" /> Responder
-            </ArcButton>
+            {!resolved && (
+              <ArcButton
+                disabled={!selectedOptionId}
+                onClick={() => void submitAnswer()}
+              >
+                <Check className="size-4" /> Responder
+              </ArcButton>
+            )}
           </div>
         </div>
       </div>
