@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { Compass, House, Layers3, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
 
 import { AuthScreen } from '@/components/auth-screen';
 import {
@@ -45,6 +46,7 @@ export function AppShell({
   const [authReady, setAuthReady] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
@@ -69,6 +71,8 @@ export function AppShell({
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => setIsNavigating(false), [active]);
+
   const signOut = async () => {
     if (isSupabaseConfigured()) await getSupabaseClient().auth.signOut();
   };
@@ -79,6 +83,10 @@ export function AppShell({
 
   return (
     <main className="min-h-screen bg-[var(--background)] pb-[calc(9.5rem+env(safe-area-inset-bottom))] text-[var(--foreground)] sm:pb-12">
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-[var(--arc-accent-strong)] transition-transform duration-300 ease-out ${isNavigating ? 'scale-x-100' : 'scale-x-0'}`}
+      />
       <a
         className="sr-only fixed left-4 top-4 z-50 rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] focus:not-sr-only"
         href="#main-content"
@@ -86,7 +94,7 @@ export function AppShell({
         Pular para o conteúdo
       </a>
       <header className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 sm:px-8">
-        <a
+        <Link
           className="flex min-h-11 items-center gap-2.5 font-semibold tracking-[-0.045em]"
           href="/"
         >
@@ -94,20 +102,21 @@ export function AppShell({
             a
           </span>
           <span className="text-[18px]">arc</span>
-        </a>
+        </Link>
         <nav
           aria-label="Navegação principal"
           className="hidden items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--arc-surface)]/75 p-1 text-sm text-[var(--arc-text-muted)] md:flex"
         >
           {destinations.map((destination) => (
-            <a
+            <Link
               aria-current={active === destination.id ? 'page' : undefined}
               className={`flex min-h-11 items-center rounded-full px-4 py-2 transition-all duration-300 ${active === destination.id ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[0_2px_8px_rgba(38,57,80,0.16)]' : 'hover:bg-black/[0.035] hover:text-[var(--foreground)]'}`}
               href={destination.href}
               key={destination.id}
+              onNavigate={() => setIsNavigating(true)}
             >
               {destination.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex items-center gap-2">
@@ -145,15 +154,16 @@ export function AppShell({
           const Icon = destination.icon;
           const isActive = active === destination.id;
           return (
-            <a
+            <Link
               aria-current={isActive ? 'page' : undefined}
               className={`flex min-h-14 min-w-[70px] flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium transition-all duration-300 ${isActive ? 'bg-[var(--arc-accent)] text-[#263950] shadow-[0_2px_8px_rgba(38,57,80,0.08)]' : 'text-[var(--arc-text-muted)] active:scale-[0.97]'}`}
               href={destination.href}
               key={destination.id}
+              onNavigate={() => setIsNavigating(true)}
             >
               <Icon aria-hidden="true" className="size-4" />
               {destination.label}
-            </a>
+            </Link>
           );
         })}
       </nav>
