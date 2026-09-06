@@ -12,6 +12,7 @@ import {
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { MathContent } from '@/components/math-content';
+import { Reveal } from '@/components/reveal';
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
@@ -22,7 +23,7 @@ import {
 import type { AttemptOutcome, Difficulty } from '@/lib/domain/questions';
 
 const selectClass =
-  'h-10 w-full rounded-full border border-transparent bg-[var(--arc-surface-subtle)] px-3.5 text-sm text-[var(--foreground)] shadow-[inset_0_0_0_1px_rgba(38,57,80,0.055)] transition-colors hover:bg-[#e2e4e0] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]/25 disabled:cursor-not-allowed disabled:opacity-45';
+  'h-11 w-full appearance-none rounded-2xl border border-[#d4d9d6] bg-[var(--arc-surface)] px-4 pr-10 text-sm font-medium text-[var(--foreground)] shadow-[0_1px_2px_rgba(38,57,80,0.03)] transition-all duration-200 hover:border-[#aebfba] hover:bg-[#fdfcf9] focus:border-[#718e9d] focus:outline-none focus:ring-4 focus:ring-[#d8e3e1]/70 disabled:cursor-not-allowed disabled:opacity-45';
 
 export default function QuestionsPage() {
   const [subjectId, setSubjectId] = useState<string | null>(null);
@@ -406,59 +407,60 @@ export default function QuestionsPage() {
                 )
                 .filter(Boolean);
               return (
-                <ArcCard
-                  className="p-5 hover:-translate-y-0.5 hover:border-[#becdc9] hover:shadow-[0_20px_48px_rgba(38,57,80,0.09)] sm:p-6"
-                  key={question.id}
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
-                      <span>Questão {String(index + 1).padStart(2, '0')}</span>
-                      <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 capitalize">
-                        {question.difficulty === 'easy'
-                          ? 'Fácil'
-                          : question.difficulty === 'medium'
-                            ? 'Média'
-                            : 'Difícil'}
-                      </span>
-                    </div>
-                    {displayStatus && (
-                      <AttemptStatusBadge status={displayStatus} />
-                    )}
-                  </div>
-                  <div className="mt-5 max-w-3xl text-[17px] font-medium leading-8 tracking-[-0.02em]">
-                    <MathContent value={question.statement.value} />
-                  </div>
-                  <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex flex-wrap gap-2">
-                      {topicNames.map((name) => (
-                        <span
-                          className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 text-xs text-[#5c6972]"
-                          key={name}
-                        >
-                          {name}
+                <Reveal delay={(index % 5) * 45} key={question.id}>
+                  <ArcCard className="p-5 hover:-translate-y-0.5 hover:border-[#becdc9] hover:shadow-[0_20px_48px_rgba(38,57,80,0.09)] sm:p-6">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
+                        <span>
+                          Questão {String(index + 1).padStart(2, '0')}
                         </span>
-                      ))}
+                        <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 capitalize">
+                          {question.difficulty === 'easy'
+                            ? 'Fácil'
+                            : question.difficulty === 'medium'
+                              ? 'Média'
+                              : 'Difícil'}
+                        </span>
+                      </div>
+                      {displayStatus && (
+                        <AttemptStatusBadge status={displayStatus} />
+                      )}
                     </div>
-                    <div className="flex items-center gap-4">
-                      <button
-                        aria-pressed={markedForRedo}
-                        className="text-sm text-[var(--arc-text-muted)] hover:text-[var(--foreground)]"
-                        onClick={() => toggleRedo(question.id)}
-                      >
-                        {markedForRedo
-                          ? 'Remover de refazer'
-                          : 'Marcar para refazer'}
-                      </button>
-                      <a
-                        className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-                        href={`/practice?subject=${subject.id}&question=${question.id}`}
-                      >
-                        {outcome ? 'Refazer' : 'Resolver'}{' '}
-                        <ArrowRight className="size-4" />
-                      </a>
+                    <div className="mt-5 max-w-3xl text-[17px] font-medium leading-8 tracking-[-0.02em]">
+                      <MathContent value={question.statement.value} />
                     </div>
-                  </div>
-                </ArcCard>
+                    <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+                      <div className="flex flex-wrap gap-2">
+                        {topicNames.map((name) => (
+                          <span
+                            className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 text-xs text-[#5c6972]"
+                            key={name}
+                          >
+                            {name}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <button
+                          aria-pressed={markedForRedo}
+                          className="text-sm text-[var(--arc-text-muted)] hover:text-[var(--foreground)]"
+                          onClick={() => toggleRedo(question.id)}
+                        >
+                          {markedForRedo
+                            ? 'Remover de refazer'
+                            : 'Marcar para refazer'}
+                        </button>
+                        <a
+                          className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                          href={`/practice?subject=${subject.id}&question=${question.id}`}
+                        >
+                          {outcome ? 'Refazer' : 'Resolver'}{' '}
+                          <ArrowRight className="size-4" />
+                        </a>
+                      </div>
+                    </div>
+                  </ArcCard>
+                </Reveal>
               );
             })}
           </div>
