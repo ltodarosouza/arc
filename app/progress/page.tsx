@@ -123,6 +123,9 @@ export default function ProgressPage() {
   const attempts = learnerState?.attempts ?? [];
   const summary = summarizeProgress(attempts);
   const redoCount = learnerState?.redoQuestionIds.length ?? 0;
+  const accuracy = summary.answered
+    ? percentage(summary.correct, summary.answered)
+    : null;
   const recentAttempts = useMemo(
     () =>
       [...attempts]
@@ -167,6 +170,11 @@ export default function ProgressPage() {
                 <p className="mt-1 text-sm text-[var(--arc-text-muted)]">
                   Acertos
                 </p>
+                {accuracy !== null && (
+                  <p className="mt-3 text-xs font-medium text-[var(--arc-success-text)]">
+                    {accuracy}% de aproveitamento
+                  </p>
+                )}
               </ArcCard>
               <ArcCard className="p-5">
                 <XCircle className="size-5 text-[var(--arc-error-text)]" />
