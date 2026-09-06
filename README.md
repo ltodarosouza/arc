@@ -18,7 +18,9 @@ The initial experience includes three areas:
 - **Explorar:** open all questions in a subject or filter by topic, difficulty, and prior result.
 - **Progresso:** see answered, correct, incorrect, and redo questions; then return directly to review.
 
-The MVP intentionally begins without sign-in. Subject selections and attempts will be saved only on the current device until account sync becomes justified.
+Learners can create an account or sign in with Supabase. Their selected
+subjects, attempts, and redo list are saved to their account; the local store
+remains only as a development fallback when Supabase is not configured.
 
 ## MVP scope
 
@@ -33,7 +35,6 @@ Included in the MVP:
 
 Not included yet:
 
-- login and cross-device sync;
 - university, degree, and curriculum catalogues;
 - automatic correction of discursive or mathematical answers;
 - AI tutoring, question generation, social features, or gamification.
@@ -56,18 +57,19 @@ npm run dev
 
 Then open the local address printed by the development server.
 
-For environment values and their ownership, see [docs/environment-configuration.md](docs/environment-configuration.md). The MVP currently needs no secret values to run.
+For environment values and their ownership, see [docs/environment-configuration.md](docs/environment-configuration.md).
 
 For durable data and Supabase setup, see [docs/supabase-setup.md](docs/supabase-setup.md).
 
 ## Available commands
 
-| Command          | Purpose                             |
-| ---------------- | ----------------------------------- |
-| `npm run dev`    | Start the local development server. |
-| `npm run build`  | Create a production build.          |
-| `npm run lint`   | Run the code-quality checks.        |
-| `npm run format` | Format supported source files.      |
+| Command            | Purpose                               |
+| ------------------ | ------------------------------------- |
+| `npm run dev`      | Start the local development server.   |
+| `npm run build`    | Create a production build.            |
+| `npm run lint`     | Run the code-quality checks.          |
+| `npm run format`   | Format supported source files.        |
+| `npm run test:e2e` | Run the learner journey in a browser. |
 
 ## Project structure
 
@@ -100,3 +102,6 @@ The repository backlog is organised into five GitHub milestones:
 5. Quality and release
 
 See the [open issues](https://github.com/ltodarosouza/arc/issues) for the implementation plan.
+
+For the current hosting runtime and the safe path for a future Vercel
+publication, see [docs/deployment.md](docs/deployment.md).

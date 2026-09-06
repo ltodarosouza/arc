@@ -1,6 +1,8 @@
 # Arc — local learner progress
 
-Until login exists, Arc saves the learner’s state only on the current browser and device.
+When Supabase is not configured locally, Arc uses browser storage as a
+development fallback. In configured environments, Supabase is authoritative
+for the learner account, selected subjects, attempts, and redo list.
 
 ## What is saved
 
@@ -9,7 +11,7 @@ Until login exists, Arc saves the learner’s state only on the current browser 
 - questions marked for redo;
 - a schema version.
 
-## What is not promised
+## What the fallback does not promise
 
 - synchronisation across browsers or devices;
 - backup or account recovery;
@@ -19,6 +21,8 @@ The interface must describe this accurately until account support exists.
 
 ## Design
 
-`LearnerRepository` is the stable application boundary. The current `LocalLearnerRepository` writes JSON to browser storage; a future authenticated repository can implement the same interface against the database planned in issue #58.
+`LearnerRepository` is the stable application boundary. `LocalLearnerRepository`
+writes JSON to browser storage only for local development; the authenticated
+Supabase repository implements the same boundary in configured environments.
 
 The key is versioned as `arc:learner-state`. Invalid, malformed, or unsupported-version records fail safely to an empty state rather than stopping the learner from studying. Future state versions need a deliberate migration before replacing this fallback.
