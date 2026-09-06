@@ -238,9 +238,12 @@ export default function ProgressPage() {
                   {performance.map((subject) => (
                     <ArcCard className="p-5 sm:p-6" key={subject.id}>
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <p className="font-medium tracking-[-0.025em]">
+                        <a
+                          className="font-medium tracking-[-0.025em] transition-colors hover:text-[#46657a]"
+                          href={`/questions?subject=${subject.id}`}
+                        >
                           {subject.name}
-                        </p>
+                        </a>
                         <p className="text-sm text-[var(--arc-text-muted)]">
                           {subject.attempted >= minimumReliableSampleSize
                             ? `${percentage(subject.correct, subject.attempted)}% de acerto`
@@ -254,9 +257,12 @@ export default function ProgressPage() {
                             key={topic.id}
                           >
                             <div>
-                              <p className="text-sm font-medium">
+                              <a
+                                className="text-sm font-medium transition-colors hover:text-[#46657a]"
+                                href={`/questions?subject=${topic.subjectId}&topic=${topic.id}`}
+                              >
                                 {topic.name}
-                              </p>
+                              </a>
                               <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
                                 {topic.attempted >= minimumReliableSampleSize
                                   ? `${percentage(topic.correct, topic.attempted)}% de acerto em ${topic.attempted} questões`
