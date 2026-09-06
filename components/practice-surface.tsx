@@ -365,6 +365,11 @@ export function PracticeSurface() {
             )}
           </>
         )}
+        {resolved && !nextQuestion && (
+          <div className="mt-8 rounded-2xl border border-[#d9e2df] bg-[#f1f6f4] px-5 py-4 text-sm text-[#48665b]">
+            Você chegou ao fim das questões disponíveis desta disciplina.
+          </div>
+        )}
         {submissionError && (
           <p className="mt-4 text-sm text-[var(--arc-error-text)]">
             {submissionError}
