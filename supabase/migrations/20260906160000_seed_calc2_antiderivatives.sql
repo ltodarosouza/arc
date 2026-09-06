@@ -160,24 +160,24 @@ insert into public.question_hints (id, question_id, content_markdown, sort_order
 on conflict (id) do nothing;
 
 insert into public.question_solutions (question_id, final_answer_markdown, explanation_markdown) values
-  ('40000000-0000-4000-8000-000000000011', '$x^6-2x^2+3x+C$', 'A integral é linear: integre cada termo e conserve a constante de integração.'),
-  ('40000000-0000-4000-8000-000000000012', '$\\ln x+C$', 'Para $x>0$, a derivada de $\\ln x$ é $1/x$.'),
-  ('40000000-0000-4000-8000-000000000013', '$\\frac{8}{3}x^{3/2}+\\frac{3}{x}+C$', 'As duas parcelas pedem a regra da potência, inclusive para o expoente negativo.'),
-  ('40000000-0000-4000-8000-000000000014', '$\\frac{1}{2}e^{2x}+C$', 'O fator $1/2$ compensa a derivada interna de $2x$.'),
-  ('40000000-0000-4000-8000-000000000015', '$F(x)+7$', 'Adicionar uma constante não muda a derivada da função.'),
-  ('40000000-0000-4000-8000-000000000016', '$3\\sen x+2\\cos x+C$', 'Verificar pela derivada evita trocar o sinal da parcela com seno.'),
-  ('40000000-0000-4000-8000-000000000017', '$10$', 'A condição inicial determina a constante da primitiva; depois basta avaliar em $x=2$.')
+  ('40000000-0000-4000-8000-000000000011', '$x^6-2x^2+3x+C$', 'A integral é linear: cada parcela pode ser integrada separadamente pela regra da potência. A constante $C$ representa todas as primitivas possíveis.'),
+  ('40000000-0000-4000-8000-000000000012', '$\\ln x+C$', 'No intervalo indicado, a derivada de $\\ln x$ é $1/x$. A restrição $x>0$ evita a ambiguidade de sinal e torna $\\ln x$ uma escolha válida.'),
+  ('40000000-0000-4000-8000-000000000013', '$\\frac{8}{3}x^{3/2}+\\frac{3}{x}+C$', 'Reescrever as parcelas com expoentes torna a regra da potência aplicável. Para $x^{-2}$, somar um ao expoente produz $x^{-1}$ e o sinal muda ao dividir por $-1$.'),
+  ('40000000-0000-4000-8000-000000000014', '$\\frac{1}{2}e^{2x}+C$', 'A derivada de $e^{2x}$ traz um fator $2$. Por isso, a primitiva precisa do fator $1/2$ para que a derivada volte a ser exatamente $e^{2x}$.'),
+  ('40000000-0000-4000-8000-000000000015', '$F(x)+7$', 'Duas primitivas da mesma função diferem apenas por uma constante. Somar $7$ não altera a derivada; multiplicar por $7$ ou acrescentar $x$ alteraria.'),
+  ('40000000-0000-4000-8000-000000000016', '$3\\sen x+2\\cos x+C$', 'Integre os dois termos separadamente. O cuidado principal é que a primitiva de $-\\sen x$ é $\\cos x$, pois a derivada de $\\cos x$ já contém o sinal negativo.'),
+  ('40000000-0000-4000-8000-000000000017', '$10$', 'Primeiro integre a derivada para encontrar a família de primitivas. A condição $F(1)=4$ determina a constante; só então a avaliação em $x=2$ fica definida.')
 on conflict (question_id) do nothing;
 
-insert into public.question_solution_steps (id, question_id, content_markdown, sort_order) values
-  ('70000000-0000-4000-8000-000000000012', '40000000-0000-4000-8000-000000000011', '$\\int 6x^5\\,dx=x^6$, $\\int -4x\\,dx=-2x^2$ e $\\int 3\\,dx=3x$.', 1),
-  ('70000000-0000-4000-8000-000000000013', '40000000-0000-4000-8000-000000000011', 'Somando as primitivas: $x^6-2x^2+3x+C$.', 2),
-  ('70000000-0000-4000-8000-000000000014', '40000000-0000-4000-8000-000000000012', '$\\frac{d}{dx}\\ln x=1/x$ no intervalo indicado.', 1),
-  ('70000000-0000-4000-8000-000000000015', '40000000-0000-4000-8000-000000000013', '$4\\sqrt{x}-3/x^2=4x^{1/2}-3x^{-2}$.', 1),
-  ('70000000-0000-4000-8000-000000000016', '40000000-0000-4000-8000-000000000013', '$\\int 4x^{1/2}dx=\\frac{8}{3}x^{3/2}$ e $\\int -3x^{-2}dx=3x^{-1}$.', 2),
-  ('70000000-0000-4000-8000-000000000017', '40000000-0000-4000-8000-000000000014', '$\\frac{d}{dx}\\left(\\frac{1}{2}e^{2x}\\right)=\\frac{1}{2}\\cdot2e^{2x}=e^{2x}$.', 1),
-  ('70000000-0000-4000-8000-000000000018', '40000000-0000-4000-8000-000000000015', '$\\frac{d}{dx}[F(x)+7]=F''(x)+0=f(x)$.', 1),
-  ('70000000-0000-4000-8000-000000000019', '40000000-0000-4000-8000-000000000016', '$\\int 3\\cos x\\,dx=3\\sen x$ e $\\int -2\\sen x\\,dx=2\\cos x$.', 1),
-  ('70000000-0000-4000-8000-000000000020', '40000000-0000-4000-8000-000000000017', '$F(x)=x^3+2/x+C$. Como $F(1)=1+2+C=4$, obtemos $C=1$.', 1),
-  ('70000000-0000-4000-8000-000000000021', '40000000-0000-4000-8000-000000000017', 'Assim, $F(2)=2^3+2/2+1=8+1+1=10$.', 2)
+insert into public.question_solution_steps (id, question_id, title, content_markdown, sort_order) values
+  ('70000000-0000-4000-8000-000000000012', '40000000-0000-4000-8000-000000000011', 'Integre cada parcela', '$\\int 6x^5\\,dx=x^6$, $\\int -4x\\,dx=-2x^2$ e $\\int 3\\,dx=3x$.', 1),
+  ('70000000-0000-4000-8000-000000000013', '40000000-0000-4000-8000-000000000011', 'Reúna as primitivas', 'Somando os resultados, obtemos $x^6-2x^2+3x+C$.', 2),
+  ('70000000-0000-4000-8000-000000000014', '40000000-0000-4000-8000-000000000012', 'Use a primitiva logarítmica', '$\\frac{d}{dx}\\ln x=1/x$ no intervalo $x>0$. Logo, a primitiva é $\\ln x+C$.', 1),
+  ('70000000-0000-4000-8000-000000000015', '40000000-0000-4000-8000-000000000013', 'Reescreva com expoentes', '$4\\sqrt{x}-3/x^2=4x^{1/2}-3x^{-2}$.', 1),
+  ('70000000-0000-4000-8000-000000000016', '40000000-0000-4000-8000-000000000013', 'Aplique a regra da potência', '$\\int 4x^{1/2}dx=\\frac{8}{3}x^{3/2}$ e $\\int -3x^{-2}dx=3x^{-1}$.', 2),
+  ('70000000-0000-4000-8000-000000000017', '40000000-0000-4000-8000-000000000014', 'Compense a derivada interna', '$\\frac{d}{dx}\\left(\\frac{1}{2}e^{2x}\\right)=\\frac{1}{2}\cdot2e^{2x}=e^{2x}$.', 1),
+  ('70000000-0000-4000-8000-000000000018', '40000000-0000-4000-8000-000000000015', 'Derive a expressão candidata', '$\\frac{d}{dx}[F(x)+7]=F''(x)+0=f(x)$.', 1),
+  ('70000000-0000-4000-8000-000000000019', '40000000-0000-4000-8000-000000000016', 'Integre seno e cosseno', '$\\int 3\\cos x\\,dx=3\\sen x$ e $\\int -2\\sen x\\,dx=2\\cos x$.', 1),
+  ('70000000-0000-4000-8000-000000000020', '40000000-0000-4000-8000-000000000017', 'Encontre a constante', '$F(x)=x^3+2/x+C$. Como $F(1)=1+2+C=4$, obtemos $C=1$.', 1),
+  ('70000000-0000-4000-8000-000000000021', '40000000-0000-4000-8000-000000000017', 'Avalie em $x=2$', 'Assim, $F(2)=2^3+2/2+1=8+1+1=10$.', 2)
 on conflict (id) do nothing;
