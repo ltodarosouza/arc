@@ -8,6 +8,13 @@ import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { MathContent } from '@/components/math-content';
 import { Reveal } from '@/components/reveal';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
@@ -17,8 +24,12 @@ import {
 } from '@/lib/domain/question-filtering';
 import type { AttemptOutcome, Difficulty } from '@/lib/domain/questions';
 
-const selectClass =
-  'h-11 w-full appearance-none rounded-2xl border border-[#d4d9d6] bg-[var(--arc-surface)] px-4 pr-10 text-sm font-medium text-[var(--foreground)] shadow-[0_1px_2px_rgba(38,57,80,0.03)] transition-all duration-200 hover:border-[#aebfba] hover:bg-[#fdfcf9] focus:border-[#718e9d] focus:outline-none focus:ring-4 focus:ring-[#d8e3e1]/70 disabled:cursor-not-allowed disabled:opacity-45';
+const selectTriggerClass =
+  'h-11 w-full rounded-2xl border-[#d4d9d6] bg-[var(--arc-surface)] px-4 text-sm font-medium text-[var(--foreground)] shadow-[0_1px_2px_rgba(38,57,80,0.03)] transition-all duration-200 hover:border-[#aebfba] hover:bg-[#fdfcf9] focus:border-[#718e9d] focus:ring-4 focus:ring-[#d8e3e1]/70';
+const selectContentClass =
+  'rounded-2xl border-[var(--border)] bg-[var(--arc-surface)] p-1.5 shadow-[0_16px_36px_rgba(38,57,80,0.14)]';
+const selectItemClass =
+  'min-h-10 rounded-xl px-3 py-2 text-sm text-[var(--foreground)] data-highlighted:bg-[var(--arc-accent)] data-highlighted:text-[#263950]';
 
 export default function QuestionsPage() {
   const [subjectId, setSubjectId] = useState<string | null>(null);
@@ -224,53 +235,83 @@ export default function QuestionsPage() {
             <p className="text-sm font-medium">Filtrar questões</p>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <label className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
               Unidade
-              <select
-                className={selectClass}
-                onChange={(event) => selectUnit(event.target.value)}
-                value={unitId ?? ''}
+              <Select
+                onValueChange={(value) => selectUnit(value ?? '')}
+                value={unitId}
               >
-                <option value="">Todas</option>
-                {units.map((unit) => (
-                  <option key={unit.id} value={unit.id}>
-                    {unit.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue placeholder="Todas" />
+                </SelectTrigger>
+                <SelectContent className={selectContentClass}>
+                  <SelectItem className={selectItemClass} value={null}>
+                    Todas
+                  </SelectItem>
+                  {units.map((unit) => (
+                    <SelectItem
+                      className={selectItemClass}
+                      key={unit.id}
+                      value={unit.id}
+                    >
+                      {unit.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
               Assunto
-              <select
-                className={selectClass}
+              <Select
                 disabled={!topics.length}
-                onChange={(event) => selectTopic(event.target.value)}
-                value={topicId ?? ''}
+                onValueChange={(value) => selectTopic(value ?? '')}
+                value={topicId}
               >
-                <option value="">Todos</option>
-                {topics.map((topic) => (
-                  <option key={topic.id} value={topic.id}>
-                    {topic.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue placeholder="Todos" />
+                </SelectTrigger>
+                <SelectContent className={selectContentClass}>
+                  <SelectItem className={selectItemClass} value={null}>
+                    Todos
+                  </SelectItem>
+                  {topics.map((topic) => (
+                    <SelectItem
+                      className={selectItemClass}
+                      key={topic.id}
+                      value={topic.id}
+                    >
+                      {topic.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
               Subassunto
-              <select
-                className={selectClass}
+              <Select
                 disabled={!subtopics.length || !topicId}
-                onChange={(event) => setSubtopicId(event.target.value || null)}
-                value={subtopicId ?? ''}
+                onValueChange={(value) => setSubtopicId(value)}
+                value={subtopicId}
               >
-                <option value="">Todos</option>
-                {subtopics.map((subtopic) => (
-                  <option key={subtopic.id} value={subtopic.id}>
-                    {subtopic.name}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue placeholder="Todos" />
+                </SelectTrigger>
+                <SelectContent className={selectContentClass}>
+                  <SelectItem className={selectItemClass} value={null}>
+                    Todos
+                  </SelectItem>
+                  {subtopics.map((subtopic) => (
+                    <SelectItem
+                      className={selectItemClass}
+                      key={subtopic.id}
+                      value={subtopic.id}
+                    >
+                      {subtopic.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <fieldset className="mt-4">
             <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
