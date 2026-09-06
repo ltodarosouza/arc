@@ -6,27 +6,26 @@ import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
-import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useLearnerState } from '@/lib/data/use-learner-state';
 import type { AttemptOutcome } from '@/lib/domain/questions';
 
 export default function Home() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
-  const [outcomeByQuestionId, setOutcomeByQuestionId] = useState<Map<string, AttemptOutcome>>(new Map());
   const { catalogue } = useCatalogue();
+  const { state: learnerState, saveSelectedSubjectIds } = useLearnerState();
 
   useEffect(() => {
     if (!catalogue) return;
-    const state = createLocalLearnerRepository().getState();
-    const outcomes = new Map<string, AttemptOutcome>();
-    for (const attempt of state.attempts) outcomes.set(attempt.questionId, attempt.outcome);
+    const state = learnerState;
+    if (!state) return;
     const subjectIds = normalizeSelectedSubjectIds(state.selectedSubjectIds, catalogue);
     setSelectedSubjectIds(subjectIds);
-    if (subjectIds.join(',') !== state.selectedSubjectIds.join(',')) createLocalLearnerRepository().saveSelectedSubjectIds(subjectIds);
-    setOutcomeByQuestionId(outcomes);
-  }, [catalogue]);
+    if (subjectIds.join(',') !== state.selectedSubjectIds.join(',')) void saveSelectedSubjectIds(subjectIds);
+  }, [catalogue, learnerState, saveSelectedSubjectIds]);
 
   const selectedSubjects = catalogue?.subjects.filter((subject) => selectedSubjectIds.includes(subject.id)) ?? [];
+  const outcomeByQuestionId = useMemo(() => { const outcomes = new Map<string, AttemptOutcome>(); for (const attempt of learnerState?.attempts ?? []) outcomes.set(attempt.questionId, attempt.outcome); return outcomes; }, [learnerState]);
   const progress = useMemo(() => ({ completed: outcomeByQuestionId.size, correct: [...outcomeByQuestionId.values()].filter((outcome) => outcome === 'correct').length }), [outcomeByQuestionId]);
   const resumeHref = selectedSubjects.length ? '/explore' : '/subjects';
 

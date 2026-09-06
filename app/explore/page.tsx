@@ -6,23 +6,25 @@ import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
-import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getTaxonomyBranch } from '@/lib/domain/taxonomy';
 
 export default function ExplorePage() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
   const [attemptedQuestionIds, setAttemptedQuestionIds] = useState<string[]>([]);
   const { catalogue, error, isLoading } = useCatalogue();
+  const { state: learnerState, saveSelectedSubjectIds } = useLearnerState();
 
   useEffect(() => {
     if (!catalogue) return;
-    const state = createLocalLearnerRepository().getState();
+    const state = learnerState;
+    if (!state) return;
     const subjectIds = normalizeSelectedSubjectIds(state.selectedSubjectIds, catalogue);
     setSelectedSubjectIds(subjectIds);
-    if (subjectIds.join(',') !== state.selectedSubjectIds.join(',')) createLocalLearnerRepository().saveSelectedSubjectIds(subjectIds);
+    if (subjectIds.join(',') !== state.selectedSubjectIds.join(',')) void saveSelectedSubjectIds(subjectIds);
     setAttemptedQuestionIds([...new Set(state.attempts.map((attempt) => attempt.questionId))]);
-  }, [catalogue]);
+  }, [catalogue, learnerState, saveSelectedSubjectIds]);
 
   const selectedSubjects = catalogue?.subjects.filter((subject) => selectedSubjectIds.includes(subject.id)) ?? [];
   const subjectDetails = useMemo(() => selectedSubjects.map((subject) => {

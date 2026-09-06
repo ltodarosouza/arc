@@ -6,8 +6,8 @@ import { ArrowRight, BookOpen, ChevronRight, SlidersHorizontal, X } from 'lucide
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { MathContent } from '@/components/math-content';
-import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getTaxonomyBranch } from '@/lib/domain/taxonomy';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
 import type { AttemptOutcome, Difficulty } from '@/lib/domain/questions';
@@ -25,10 +25,10 @@ export default function QuestionsPage() {
   const [redoQuestionIds, setRedoQuestionIds] = useState<Set<string>>(new Set());
   const [outcomeByQuestionId, setOutcomeByQuestionId] = useState<Map<string, AttemptOutcome>>(new Map());
   const { catalogue, error, isLoading } = useCatalogue();
+  const { state: learnerState, setRedo } = useLearnerState();
 
   useEffect(() => {
-    if (!catalogue) return;
-    const state = createLocalLearnerRepository().getState();
+    if (!catalogue || !learnerState) return;
     const search = new URLSearchParams(window.location.search);
     const requestedSubjectId = search.get('subject');
     const requestedTopicId = search.get('topic');
@@ -36,9 +36,9 @@ export default function QuestionsPage() {
     setSubjectId(requestedSubjectId && catalogue.subjects.some((subject) => subject.id === requestedSubjectId) ? requestedSubjectId : catalogue.subjects[0]?.id ?? null);
     setTopicId(requestedTopicId);
     if (requestedStatus === 'not_attempted' || requestedStatus === 'attempted' || requestedStatus === 'correct' || requestedStatus === 'incorrect' || requestedStatus === 'redo') setSelectedStatus(requestedStatus);
-    setOutcomeByQuestionId(new Map([...getLatestAttemptsByQuestion(state.attempts)].map(([questionId, attempt]) => [questionId, attempt.outcome])));
-    setRedoQuestionIds(new Set(state.redoQuestionIds));
-  }, [catalogue]);
+    setOutcomeByQuestionId(new Map([...getLatestAttemptsByQuestion(learnerState.attempts)].map(([questionId, attempt]) => [questionId, attempt.outcome])));
+    setRedoQuestionIds(new Set(learnerState.redoQuestionIds));
+  }, [catalogue, learnerState]);
 
   const subject = catalogue?.subjects.find((item) => item.id === subjectId) ?? catalogue?.subjects[0];
   const nodes = useMemo(() => catalogue?.taxonomyNodes.filter((node) => node.subjectId === subject?.id) ?? [], [catalogue, subject?.id]);
@@ -58,7 +58,7 @@ export default function QuestionsPage() {
   const clearAllFilters = () => { clearFilter('unit'); setSelectedDifficulties([]); setSelectedStatus('all'); };
   const toggleRedo = (questionId: string) => {
     const enabled = !redoQuestionIds.has(questionId);
-    createLocalLearnerRepository().setRedo(questionId, enabled);
+    void setRedo(questionId, enabled);
     setRedoQuestionIds((current) => { const next = new Set(current); if (enabled) next.add(questionId); else next.delete(questionId); return next; });
   };
 
