@@ -425,7 +425,7 @@ export default function QuestionsPage() {
                       <AttemptStatusBadge status={displayStatus} />
                     )}
                   </div>
-                  <div className="mt-5 max-w-3xl text-[17px] font-medium leading-7 tracking-[-0.02em]">
+                  <div className="mt-5 max-w-3xl text-[17px] font-medium leading-8 tracking-[-0.02em]">
                     <MathContent value={question.statement.value} />
                   </div>
                   <div className="mt-5 flex flex-wrap items-center justify-between gap-4">

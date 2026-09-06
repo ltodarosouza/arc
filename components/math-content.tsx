@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 function renderMath(expression: string, displayMode: boolean) {
   return {
-    __html: katex.renderToString(expression, {
+    __html: katex.renderToString(expression.replace(/\\\\/g, '\\'), {
       displayMode,
       output: 'html',
       strict: 'ignore',
@@ -34,12 +34,13 @@ export function MathContent({
         const expression = part.slice(isBlock ? 2 : 1, isBlock ? -2 : -1);
         return isBlock ? (
           <span
-            className="my-4 block overflow-x-auto"
+            className="my-4 block overflow-x-auto py-1"
             dangerouslySetInnerHTML={renderMath(expression, true)}
             key={`${part}-${index}`}
           />
         ) : (
           <span
+            className="inline-block max-w-full align-middle"
             dangerouslySetInnerHTML={renderMath(expression, false)}
             key={`${part}-${index}`}
           />

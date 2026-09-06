@@ -50,6 +50,7 @@ body {
 }
 .math-content .katex {
   font-size: 1em;
+  white-space: nowrap;
 }
 .math-content .katex-display {
   margin: 0;

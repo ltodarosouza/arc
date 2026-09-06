@@ -207,7 +207,7 @@ export function PracticeSurface() {
         )}
       </div>
       <div className="p-5 sm:p-10">
-        <div className="max-w-2xl text-xl font-medium leading-relaxed tracking-[-0.035em] sm:text-2xl">
+        <div className="max-w-3xl text-[1.35rem] font-medium leading-relaxed tracking-[-0.035em] sm:text-[1.625rem]">
           <MathContent value={question.statement.value} />
         </div>
         <div className="mt-10 max-w-2xl">
@@ -307,38 +307,48 @@ export function PracticeSurface() {
             {solution && (
               <section
                 aria-label="Gabarito comentado"
-                className="mt-6 max-w-2xl border-t border-[var(--border)] pt-6"
+                className="mt-8 max-w-3xl border-t border-[var(--border)] pt-8"
               >
-                <div className="flex items-baseline justify-between gap-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <h2 className="text-lg font-medium tracking-[-0.03em]">
                     Gabarito comentado
                   </h2>
-                  <span className="text-xs text-[var(--arc-text-muted)]">
-                    Resposta
+                  <span className="text-xs font-medium text-[var(--arc-text-muted)]">
+                    Confira o raciocínio
                   </span>
                 </div>
-                <div className="mt-4 rounded-2xl bg-[var(--arc-surface-subtle)] p-4 text-[15px] leading-6">
-                  <MathContent value={solution.finalAnswer} />
+                <div className="mt-5 rounded-2xl border border-[#d9e2df] bg-[#f1f6f4] p-5 sm:p-6">
+                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#557064]">
+                    Resposta correta
+                  </p>
+                  <div className="mt-2 text-lg font-medium leading-7 text-[var(--foreground)]">
+                    <MathContent value={solution.finalAnswer} />
+                  </div>
                 </div>
                 {solution.explanation && (
-                  <div className="mt-4 text-sm leading-6 text-[var(--arc-text-muted)]">
-                    <MathContent value={solution.explanation} />
+                  <div className="mt-7">
+                    <h3 className="text-sm font-medium text-[var(--foreground)]">
+                      Como resolver
+                    </h3>
+                    <div className="mt-2 text-[15px] leading-7 text-[var(--arc-text-muted)]">
+                      <MathContent value={solution.explanation} />
+                    </div>
                   </div>
                 )}
                 {solution.steps.length > 0 && (
                   <ol className="mt-5 grid gap-3">
                     {solution.steps.map((step, index) => (
                       <li
-                        className="flex gap-3 text-sm leading-6"
+                        className="flex gap-3 rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)] p-4 text-[15px] leading-7"
                         key={step.id}
                       >
                         <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[var(--arc-accent)] text-xs font-medium text-[#405b6d]">
                           {index + 1}
                         </span>
                         <div>
-                          {step.title && (
-                            <p className="font-medium">{step.title}</p>
-                          )}
+                          <p className="font-medium text-[var(--foreground)]">
+                            {step.title ?? `Passo ${index + 1}`}
+                          </p>
                           <MathContent value={step.content} />
                         </div>
                       </li>
