@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Check,
   ChevronRight,
@@ -157,6 +157,27 @@ export function PracticeSurface() {
       submissionInFlight.current = false;
     }
   };
+
+  useEffect(() => {
+    if (!question || outcome) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('input, textarea, select, [contenteditable=true]'))
+        return;
+      const optionIndex = Number.parseInt(event.key, 10) - 1;
+      if (optionIndex >= 0 && optionIndex < question.options.length) {
+        event.preventDefault();
+        setSelectedOptionId(question.options[optionIndex]?.id ?? null);
+        return;
+      }
+      if (event.key === 'Enter' && selectedOptionId) {
+        event.preventDefault();
+        void submitAnswer();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [outcome, question, selectedOptionId]);
 
   if (isLoading)
     return (
