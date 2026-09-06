@@ -103,5 +103,5 @@ The repository backlog is organised into five GitHub milestones:
 
 See the [open issues](https://github.com/ltodarosouza/arc/issues) for the implementation plan.
 
-For the current hosting runtime and the safe path for a future Vercel
-publication, see [docs/deployment.md](docs/deployment.md).
+For Vercel setup and the required Supabase environment values, see
+[docs/deployment.md](docs/deployment.md).

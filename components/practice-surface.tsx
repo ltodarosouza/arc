@@ -429,7 +429,7 @@ export function PracticeSurface() {
           <div className="flex items-center gap-3">
             <a
               className="text-sm font-medium text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
-              href={`/questions?subject=${subject.id}`}
+              href={`/questions?subject=${subject?.id ?? question.subjectId}`}
             >
               Voltar para questões
             </a>
