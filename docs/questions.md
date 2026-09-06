@@ -1,16 +1,10 @@
 # Arc — question and attempt model
 
-## Supported MVP question types
+## Supported MVP question type
 
 ### Multiple choice
 
 The learner chooses one alternative and Arc grades it automatically. The attempt preserves the chosen option, outcome, and time.
-
-### Reveal answer
-
-The learner solves the question independently, then reveals the official answer and commented solution. They may self-assess as correct or incorrect; if they only reveal the answer, the event is kept as `revealed` and does not inflate accuracy.
-
-This is the MVP path for discursive and mathematical questions. It intentionally does not pretend to understand every typed mathematical expression.
 
 ## Content structure
 
@@ -32,11 +26,10 @@ An attempt is immutable. Retrying a question creates another attempt; it never o
 
 | Outcome | Meaning | Counts toward accuracy? |
 | --- | --- | --- |
-| `correct` | Automatically or self-assessed correct | Yes |
-| `incorrect` | Automatically or self-assessed incorrect | Yes |
-| `revealed` | Answer was shown without self-assessment | No |
+| `correct` | Correct multiple-choice alternative | Yes |
+| `incorrect` | Incorrect multiple-choice alternative | Yes |
 
-The learner-facing status badge and filters use the latest scored outcome. A `revealed` event preserves history but does not replace the latest correct/incorrect status.
+The learner-facing status badge and filters use the latest outcome. A question counts once in progress; a reattempt updates its current status without deleting the historical attempts.
 
 ## Future compatibility
 

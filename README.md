@@ -26,7 +26,7 @@ Included in the MVP:
 
 - a reusable, multi-subject catalogue;
 - topic/subtopic navigation and question filters;
-- multiple-choice and reveal-answer questions;
+- multiple-choice questions with automatic feedback;
 - correct/incorrect feedback, commented solutions, and hints;
 - attempt history, status filters, and lightweight progress;
 - responsive and accessible user experience.

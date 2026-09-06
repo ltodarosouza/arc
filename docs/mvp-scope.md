@@ -31,7 +31,7 @@ The MVP validates one question: **will students return to practise a specific un
 - Initial support for multiple subjects, beginning with a small, curated set. Cálculo II and Álgebra Linear are the leading candidates.
 - **Explorar** with a subject overview, all-questions view, and topic/subtopic filtering.
 - Filters for difficulty and attempt status: not attempted, attempted, correct, incorrect, and redo.
-- Multiple-choice questions and a reveal-answer mode for questions that cannot yet be graded automatically.
+- Multiple-choice questions with automatic feedback. Open-answer flows are deferred until they can be graded reliably.
 - Correct/incorrect feedback, commented solution, optional hints, and a next-question action.
 - Local persistence of subject selections and attempts while login is intentionally absent.
 - **Progresso** with answered, correct, and incorrect counts; subject/topic performance; and a path to revisit errors.

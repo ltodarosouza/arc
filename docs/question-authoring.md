@@ -4,7 +4,7 @@
 
 Every question should be traceable, correctly classified, and useful after the learner submits an answer. The goal is not maximum volume; it is a reliable bank that students trust.
 
-Start every new item from [content/question-template.md](../content/question-template.md).
+Start every new item from [content/question-template.md](../content/question-template.md) and apply the [difficulty rubric](difficulty-rubric.md).
 
 ## Required metadata
 
@@ -12,7 +12,7 @@ Each question must contain:
 
 - subject and primary taxonomy tag;
 - any legitimate secondary tags;
-- question type: multiple choice or reveal answer;
+- question type: multiple choice;
 - difficulty: easy, medium, or hard;
 - statement, final answer, hints when useful, and commented solution;
 - origin, source label, licence/reuse note, and author;
@@ -54,13 +54,6 @@ Use for unusable, duplicate, incorrect, or rights-unclear submissions. Record a 
 - Avoid “all of the above”, trick wording, and clues created by option length.
 - Write distractors based on realistic mistakes, not random nonsense.
 - Do not expose the correct alternative in the statement, hint, or metadata visible to the learner.
-
-## Reveal-answer rules
-
-- Use when automatic grading would be misleading or too narrow for the MVP.
-- Provide a clear expected result and solution.
-- Let the learner mark their own result as correct, incorrect, or not assessed after reveal.
-- Do not label self-assessed outcomes as automatically graded.
 
 ## Mathematical notation
 

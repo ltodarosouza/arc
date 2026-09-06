@@ -1,7 +1,7 @@
 ---
 id: question-subject-topic-001
 status: draft # draft | technical_review | pedagogical_review | approved | published | rejected
-kind: multiple_choice # multiple_choice | reveal_answer
+kind: multiple_choice
 subject: Cálculo II
 primary_taxonomy_tag: Substituição
 secondary_taxonomy_tags: []
@@ -49,7 +49,7 @@ Use this section only for `multiple_choice`.
 
 ## Final answer
 
-Write the expected result for either question type. For `reveal_answer`, this is what the learner sees after choosing to reveal the answer.
+Write the expected result.
 
 ## Hints
 

@@ -49,7 +49,7 @@ type QuestionAttempt = {
   id: string;
   questionId: string;
   outcome: AttemptOutcome;
-  gradingMethod: 'automatic' | 'self_assessed' | 'unscored';
+  gradingMethod: 'automatic'; // MVP; other modes remain a future-compatible domain option
   selectedOptionId?: string;
   createdAt: string;
 };
@@ -59,11 +59,11 @@ The question list and question header derive a learner-facing status from attemp
 
 - **Not attempted:** no completed attempt exists.
 - **Attempted:** at least one completed attempt exists.
-- **Correct:** the latest scored attempt is correct, whether automatic or self-assessed.
-- **Incorrect:** the latest scored attempt is incorrect, whether automatic or self-assessed.
+- **Correct:** the latest automatically graded attempt is correct.
+- **Incorrect:** the latest automatically graded attempt is incorrect.
 - **Redo:** the learner explicitly marked the question for another pass.
 
-An answer reveal without self-assessment is retained as `revealed`, but does not replace the latest scored status. A learner who fixes a previous error is therefore shown as currently correct. A later review feature may additionally expose “ever incorrect” as a separate historical filter; it must not overload the meaning of the current status.
+A learner who fixes a previous error is shown as currently correct. A later review feature may additionally expose “ever incorrect” as a separate historical filter; it must not overload the meaning of the current status. Open-answer modes remain deferred until they can be graded reliably.
 
 ## Required question-state UI
 
