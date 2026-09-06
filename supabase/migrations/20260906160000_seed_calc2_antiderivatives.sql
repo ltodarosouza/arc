@@ -19,7 +19,6 @@ on conflict (id) do nothing;
 insert into public.taxonomy_nodes (
   id, subject_id, parent_id, kind, slug, name, sort_order, is_published
 ) values (
-  (
     '30000000-0000-4000-8000-000000000015',
     '20000000-0000-4000-8000-000000000001',
     '30000000-0000-4000-8000-000000000001',
@@ -28,7 +27,6 @@ insert into public.taxonomy_nodes (
     'Antiderivadas e integrais indefinidas',
     1,
     true
-  )
 )
 on conflict (id) do nothing;
 
