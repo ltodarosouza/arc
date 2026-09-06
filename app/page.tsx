@@ -121,6 +121,7 @@ export default function Home() {
                 const completed = subjectQuestionIds.filter((id) =>
                   outcomeByQuestionId.has(id),
                 ).length;
+                const remaining = subjectQuestionIds.length - completed;
                 return (
                   <ArcCard
                     className="group relative p-5 hover:-translate-y-1 hover:border-[#b8c9c4] hover:shadow-[0_22px_52px_rgba(38,57,80,0.09)]"
@@ -142,7 +143,9 @@ export default function Home() {
                     </p>
                     <p className="mt-4 text-xs font-medium text-[#527184]">
                       {subjectQuestionIds.length
-                        ? `${completed} de ${subjectQuestionIds.length} feitas`
+                        ? remaining
+                          ? `${remaining} questão${remaining === 1 ? '' : 'ões'} para fazer`
+                          : 'Todas as questões concluídas'
                         : 'Catálogo em preparação'}
                     </p>
                     <div className="relative z-10 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
