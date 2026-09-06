@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
@@ -18,10 +18,10 @@ export default function SubjectPage() {
     <AppShell active="explore">
       <section className="mx-auto max-w-4xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
         <a
-          className="text-sm font-medium text-[#46657a] hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
           href="/explore"
         >
-          Questões
+          <ArrowLeft className="size-4" /> Minhas disciplinas
         </a>
         <h1 className="mt-4 text-4xl font-medium tracking-[-0.06em] sm:text-5xl">
           {subject?.name ?? 'Disciplina'}
