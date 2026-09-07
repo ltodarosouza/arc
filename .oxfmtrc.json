@@ -4,6 +4,8 @@
   "printWidth": 80,
   "sortPackageJson": false,
   "ignorePatterns": [
+    "content/calculus-2/review-*.md",
+    "content/calculus-2/verification.json",
     "package-lock.json",
     "pnpm-lock.yaml",
     "yarn.lock",

@@ -1,0 +1,2821 @@
+[
+  {
+    "topic": "partes",
+    "difficulty": "easy",
+    "statement": "Calcule $\\int xe^x\\,dx$.",
+    "options": [
+      "$e^x(x-1)+C$",
+      "$xe^x+C$",
+      "$e^x(x+1)+C$",
+      "$x^2e^x/2+C$"
+    ],
+    "steps": [
+      "Escolha $u=x$ e $dv=e^x dx$, logo $du=dx$ e $v=e^x$.",
+      "Por partes, $\\int xe^x dx=xe^x-\\int e^x dx=e^x(x-1)+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "x*exp(x)",
+      "primitives": [
+        "exp(x)*(x-1)",
+        "x*exp(x)",
+        "exp(x)*(x+1)",
+        "x**2*exp(x)/2"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006200",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "partes",
+    "difficulty": "easy",
+    "statement": "Para $x>0$, calcule $\\int\\ln x\\,dx$.",
+    "options": [
+      "$x\\ln x+x+C$",
+      "$x\\ln x-x+C$",
+      "$x\\ln x+C$",
+      "$1/x+C$"
+    ],
+    "steps": [
+      "Use $u=\\ln x$ e $dv=dx$, de modo que $du=dx/x$ e $v=x$.",
+      "A fórmula dá $x\\ln x-\\int 1\\,dx=x\\ln x-x+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "log(x)",
+      "primitives": [
+        "x*log(x)-x",
+        "x*log(x)",
+        "1/x",
+        "x*log(x)+x"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006201",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "partes",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int x\\cos x\\,dx$.",
+    "options": [
+      "$x\\cos x-\\sin x+C$",
+      "$\\sin x+C$",
+      "$x\\sin x+\\cos x+C$",
+      "$x\\sin x-\\cos x+C$"
+    ],
+    "steps": [
+      "Tome $u=x$, $dv=\\cos x\\,dx$. Então $v=\\sin x$.",
+      "Obtemos $x\\sin x-\\int\\sin x\\,dx=x\\sin x+\\cos x+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "x*cos(x)",
+      "primitives": [
+        "x*sin(x)+cos(x)",
+        "x*sin(x)-cos(x)",
+        "x*cos(x)-sin(x)",
+        "sin(x)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006202",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "partes",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int xe^{2x}\\,dx$.",
+    "options": [
+      "$e^{2x}(x-1)+C$",
+      "$xe^{2x}/2+C$",
+      "$e^{2x}(x/2+1/4)+C$",
+      "$e^{2x}(x/2-1/4)+C$"
+    ],
+    "steps": [
+      "Com $u=x$ e $dv=e^{2x}dx$, temos $v=e^{2x}/2$.",
+      "Subtraia $\\frac12\\int e^{2x}dx$ de $xe^{2x}/2$, obtendo $e^{2x}(x/2-1/4)+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "x*exp(2*x)",
+      "primitives": [
+        "exp(2*x)*(x/2-1/4)",
+        "exp(2*x)*(x-1)",
+        "x*exp(2*x)/2",
+        "exp(2*x)*(x/2+1/4)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006203",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "partes",
+    "difficulty": "medium",
+    "statement": "Para $x>0$, calcule $\\int x\\ln x\\,dx$.",
+    "options": [
+      "$x^2\\ln x/2-x^2/4+C$",
+      "$x^2\\ln x/2-x^2/2+C$",
+      "$x^2\\ln x-x^2+C$",
+      "$x^2\\ln x/2+C$"
+    ],
+    "steps": [
+      "Escolha $u=\\ln x$ e $dv=x\\,dx$, com $v=x^2/2$.",
+      "O termo restante é $\\frac12\\int x\\,dx=x^2/4$, que deve ser subtraído de $x^2\\ln x/2$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "x*log(x)",
+      "primitives": [
+        "x**2*log(x)/2-x**2/4",
+        "x**2*log(x)/2-x**2/2",
+        "x**2*log(x)-x**2",
+        "x**2*log(x)/2"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006204",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "partes",
+    "difficulty": "hard",
+    "statement": "Calcule $\\int x^2e^x\\,dx$.",
+    "options": [
+      "$e^x(x^2-x+1)+C$",
+      "$e^x(x^2-2x+2)+C$",
+      "$e^x(x^2-2x)+C$",
+      "$e^x(x^2+2x+2)+C$"
+    ],
+    "steps": [
+      "Uma integração por partes resulta em $x^2e^x-2\\int xe^x dx$.",
+      "Repita por partes: $\\int xe^x dx=e^x(x-1)$. Substituindo, resulta $e^x(x^2-2x+2)+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "x**2*exp(x)",
+      "primitives": [
+        "exp(x)*(x**2-2*x+2)",
+        "exp(x)*(x**2-2*x)",
+        "exp(x)*(x**2+2*x+2)",
+        "exp(x)*(x**2-x+1)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006205",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "partes",
+    "difficulty": "hard",
+    "statement": "Calcule $\\int e^x\\sin x\\,dx$.",
+    "options": [
+      "$e^x(\\sin x-\\cos x)+C$",
+      "$e^x\\sin x+C$",
+      "$e^x(\\sin x-\\cos x)/2+C$",
+      "$e^x(\\sin x+\\cos x)/2+C$"
+    ],
+    "steps": [
+      "Defina $I=\\int e^x\\sin x dx$. Por partes, $I=e^x\\sin x-\\int e^x\\cos x dx$.",
+      "A segunda integral é $e^x\\cos x+I$. Logo $2I=e^x(\\sin x-\\cos x)$; divida por dois."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "exp(x)*sin(x)",
+      "primitives": [
+        "exp(x)*(sin(x)-cos(x))/2",
+        "exp(x)*(sin(x)+cos(x))/2",
+        "exp(x)*(sin(x)-cos(x))",
+        "exp(x)*sin(x)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006206",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "fracoes",
+    "difficulty": "easy",
+    "statement": "Em um intervalo que não contém $0$ nem $-1$, calcule $\\int\\frac{dx}{x(x+1)}$.",
+    "options": [
+      "$\\ln|x|+\\ln|x+1|+C$",
+      "$-1/[x(x+1)]+C$",
+      "$\\ln|x+1|-\\ln|x|+C$",
+      "$\\ln|x|-\\ln|x+1|+C$"
+    ],
+    "steps": [
+      "Decomponha $1/[x(x+1)]=1/x-1/(x+1)$.",
+      "Integre cada fração: $\\ln|x|-\\ln|x+1|+C$. Os módulos permitem os intervalos admissíveis."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "1/(x*(x+1))",
+      "primitives": [
+        "log(x)-log(x+1)",
+        "log(x)+log(x+1)",
+        "-1/(x*(x+1))",
+        "log(x+1)-log(x)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006207",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "fracoes",
+    "difficulty": "easy",
+    "statement": "Para $x>2$, calcule $\\int\\frac{3}{(x-2)(x+1)}\\,dx$.",
+    "options": [
+      "$\\ln(x-2)-\\ln(x+1)+C$",
+      "$3\\ln(x-2)-3\\ln(x+1)+C$",
+      "$\\ln(x-2)+\\ln(x+1)+C$",
+      "$\\ln(x+1)-\\ln(x-2)+C$"
+    ],
+    "steps": [
+      "Busque $A/(x-2)+B/(x+1)$. A identidade $3=A(x+1)+B(x-2)$ dá $A=1$, $B=-1$.",
+      "Integre as duas parcelas; como $x>2$, os argumentos dos logaritmos são positivos."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "3/((x-2)*(x+1))",
+      "primitives": [
+        "log(x-2)-log(x+1)",
+        "3*log(x-2)-3*log(x+1)",
+        "log(x-2)+log(x+1)",
+        "log(x+1)-log(x-2)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006208",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "fracoes",
+    "difficulty": "medium",
+    "statement": "Para $x>0$, calcule $\\int\\frac{2x+3}{x(x+1)}\\,dx$.",
+    "options": [
+      "$3\\ln x+\\ln(x+1)+C$",
+      "$3\\ln x-\\ln(x+1)+C$",
+      "$2\\ln x+3\\ln(x+1)+C$",
+      "$\\ln x+\\ln(x+1)+C$"
+    ],
+    "steps": [
+      "A identidade $2x+3=A(x+1)+Bx$ fornece $A=3$ e $B=-1$.",
+      "Integre $3/x-1/(x+1)$ para obter $3\\ln x-\\ln(x+1)+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "(2*x+3)/(x*(x+1))",
+      "primitives": [
+        "3*log(x)-log(x+1)",
+        "2*log(x)+3*log(x+1)",
+        "log(x)+log(x+1)",
+        "3*log(x)+log(x+1)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006209",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "fracoes",
+    "difficulty": "medium",
+    "statement": "Para $x>1$, calcule $\\int\\frac{dx}{x^2-1}$.",
+    "options": [
+      "$\\frac12\\ln(x^2-1)+C$",
+      "$\\arctan x+C$",
+      "$\\frac12\\ln(x-1)-\\frac12\\ln(x+1)+C$",
+      "$\\ln(x-1)-\\ln(x+1)+C$"
+    ],
+    "steps": [
+      "Fatore $x^2-1=(x-1)(x+1)$. As frações têm coeficientes $1/2$ e $-1/2$.",
+      "Integre $1/[2(x-1)]-1/[2(x+1)]$, conservando o fator $1/2$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "1/(x**2-1)",
+      "primitives": [
+        "log(x-1)/2-log(x+1)/2",
+        "log(x-1)-log(x+1)",
+        "log(x**2-1)/2",
+        "atan(x)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006210",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "fracoes",
+    "difficulty": "hard",
+    "statement": "Para $x>0$, calcule $\\int\\frac{dx}{x(x+1)^2}$.",
+    "options": [
+      "$\\ln x-\\ln(x+1)-1/(x+1)+C$",
+      "$\\ln x-2\\ln(x+1)+C$",
+      "$1/(x+1)+C$",
+      "$\\ln x-\\ln(x+1)+1/(x+1)+C$"
+    ],
+    "steps": [
+      "O fator repetido exige $A/x+B/(x+1)+D/(x+1)^2$. A identidade dos numeradores dá $A=1$, $B=-1$, $D=-1$.",
+      "A primitiva de $-(x+1)^{-2}$ é $+(x+1)^{-1}$. Some esse termo aos dois logaritmos."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "1/(x*(x+1)**2)",
+      "primitives": [
+        "log(x)-log(x+1)+1/(x+1)",
+        "log(x)-log(x+1)-1/(x+1)",
+        "log(x)-2*log(x+1)",
+        "1/(x+1)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006211",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "fracoes",
+    "difficulty": "hard",
+    "statement": "Para $x>0$, calcule $\\int\\frac{x^2+1}{x(x+1)}\\,dx$.",
+    "options": [
+      "$x+\\ln x-2\\ln(x+1)+C$",
+      "$\\ln x-2\\ln(x+1)+C$",
+      "$x+\\ln x+2\\ln(x+1)+C$",
+      "$x-\\ln x+C$"
+    ],
+    "steps": [
+      "Faça primeiro a divisão: $(x^2+1)/(x^2+x)=1+(1-x)/(x(x+1))$.",
+      "A parte própria é $1/x-2/(x+1)$. Integrando com o termo polinomial, resulta $x+\\ln x-2\\ln(x+1)+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "(x**2+1)/(x*(x+1))",
+      "primitives": [
+        "x+log(x)-2*log(x+1)",
+        "log(x)-2*log(x+1)",
+        "x+log(x)+2*log(x+1)",
+        "x-log(x)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006212",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "easy",
+    "statement": "Calcule $\\int\\sin^2x\\,dx$.",
+    "options": [
+      "$x-\\sin(2x)/2+C$",
+      "$x/2-\\sin(2x)/4+C$",
+      "$x/2+\\sin(2x)/4+C$",
+      "$-\\cos^3x/3+C$"
+    ],
+    "steps": [
+      "Use a identidade $\\sin^2x=(1-\\cos2x)/2$.",
+      "A primitiva de $\\cos2x$ é $\\sin2x/2$; logo o segundo termo é $-\\sin2x/4$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "sin(x)**2",
+      "primitives": [
+        "x/2-sin(2*x)/4",
+        "x/2+sin(2*x)/4",
+        "-cos(x)**3/3",
+        "x-sin(2*x)/2"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006213",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "easy",
+    "statement": "Calcule $\\int\\cos^2x\\,dx$.",
+    "options": [
+      "$\\sin^3x/3+C$",
+      "$x/2+\\sin(2x)/2+C$",
+      "$x/2+\\sin(2x)/4+C$",
+      "$x/2-\\sin(2x)/4+C$"
+    ],
+    "steps": [
+      "Escreva $\\cos^2x=(1+\\cos2x)/2$.",
+      "Integre termo a termo, incluindo o fator da regra da cadeia: $x/2+\\sin2x/4+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "cos(x)**2",
+      "primitives": [
+        "x/2+sin(2*x)/4",
+        "x/2-sin(2*x)/4",
+        "sin(x)**3/3",
+        "x/2+sin(2*x)/2"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006214",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int\\sin^3x\\,dx$.",
+    "options": [
+      "$-\\cos x-\\cos^3x/3+C$",
+      "$\\sin^4x/4+C$",
+      "$\\cos x-\\cos^3x/3+C$",
+      "$-\\cos x+\\cos^3x/3+C$"
+    ],
+    "steps": [
+      "Separe $\\sin x$ e use $\\sin^2x=1-\\cos^2x$. Com $u=\\cos x$, $du=-\\sin x dx$.",
+      "Integre $-\\int(1-u^2)du=-u+u^3/3+C$ e retorne a $x$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "sin(x)**3",
+      "primitives": [
+        "-cos(x)+cos(x)**3/3",
+        "-cos(x)-cos(x)**3/3",
+        "sin(x)**4/4",
+        "cos(x)-cos(x)**3/3"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006215",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int\\cos^3x\\,dx$.",
+    "options": [
+      "$\\sin x-\\sin^3x/3+C$",
+      "$\\sin x+\\sin^3x/3+C$",
+      "$\\cos^4x/4+C$",
+      "$-\\sin x+\\sin^3x/3+C$"
+    ],
+    "steps": [
+      "Escreva $\\cos^3x=(1-\\sin^2x)\\cos x$. Use $u=\\sin x$.",
+      "A integral vira $\\int(1-u^2)du=u-u^3/3+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "cos(x)**3",
+      "primitives": [
+        "sin(x)-sin(x)**3/3",
+        "sin(x)+sin(x)**3/3",
+        "cos(x)**4/4",
+        "-sin(x)+sin(x)**3/3"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006216",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "medium",
+    "statement": "Em $(-\\pi/2,\\pi/2)$, calcule $\\int\\tan^2x\\,dx$.",
+    "options": [
+      "$\\sec^2x+C$",
+      "$\\tan x-x+C$",
+      "$\\tan x+x+C$",
+      "$\\tan^3x/3+C$"
+    ],
+    "steps": [
+      "A identidade $1+\\tan^2x=\\sec^2x$ fornece $\\tan^2x=\\sec^2x-1$.",
+      "Integre as parcelas: a primitiva de $\\sec^2x$ é $\\tan x$, resultando $\\tan x-x+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "tan(x)**2",
+      "primitives": [
+        "tan(x)-x",
+        "tan(x)+x",
+        "tan(x)**3/3",
+        "1/cos(x)**2"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006217",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "hard",
+    "statement": "Calcule $\\int\\sin^2x\\cos^2x\\,dx$.",
+    "options": [
+      "$x/8+\\sin(4x)/32+C$",
+      "$\\sin^3x\\cos^3x/3+C$",
+      "$x/8-\\sin(4x)/32+C$",
+      "$x/4-\\sin(4x)/16+C$"
+    ],
+    "steps": [
+      "Use $\\sin x\\cos x=\\sin2x/2$, depois $\\sin^22x=(1-\\cos4x)/2$. O integrando é $(1-\\cos4x)/8$.",
+      "Integre; a frequência quatro introduz mais um fator $1/4$, dando $x/8-\\sin4x/32+C$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "sin(x)**2*cos(x)**2",
+      "primitives": [
+        "x/8-sin(4*x)/32",
+        "x/4-sin(4*x)/16",
+        "x/8+sin(4*x)/32",
+        "sin(x)**3*cos(x)**3/3"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006218",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "trigonometricas",
+    "difficulty": "hard",
+    "statement": "Em $(-\\pi/2,\\pi/2)$, calcule $\\int\\sec^4x\\,dx$.",
+    "options": [
+      "$\\tan x-\\tan^3x/3+C$",
+      "$\\tan^5x/5+C$",
+      "$\\sec^5x/5+C$",
+      "$\\tan x+\\tan^3x/3+C$"
+    ],
+    "steps": [
+      "Separe $\\sec^2x\\,dx$ e substitua $u=\\tan x$, usando $\\sec^2x=1+\\tan^2x$.",
+      "Resta $\\int(1+u^2)du=u+u^3/3+C$. Volte a $x$."
+    ],
+    "verification": {
+      "kind": "antiderivative",
+      "integrand": "1/cos(x)**4",
+      "primitives": [
+        "tan(x)+tan(x)**3/3",
+        "tan(x)-tan(x)**3/3",
+        "tan(x)**5/5",
+        "1/(5*cos(x)**5)"
+      ]
+    },
+    "issue": 62,
+    "id": "40000000-0000-4000-8000-000000006219",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "infinitos",
+    "difficulty": "easy",
+    "statement": "Calcule $\\int_1^\\infty x^{-2}\\,dx$.",
+    "options": [
+      "$1$",
+      "$2$",
+      "$0$",
+      "Diverge."
+    ],
+    "steps": [
+      "Substitua o limite infinito por $b$ e use a primitiva $-1/x$.",
+      "O valor é $\\lim_{b\\to\\infty}(1-1/b)=1$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "x**-2",
+      "lower": "1",
+      "upper": "oo",
+      "expected": "1"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006300",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "infinitos",
+    "difficulty": "easy",
+    "statement": "Calcule $\\int_0^\\infty e^{-2x}\\,dx$.",
+    "options": [
+      "Diverge.",
+      "$1/2$",
+      "$2$",
+      "$1$"
+    ],
+    "steps": [
+      "A primitiva é $-e^{-2x}/2$. Avalie entre $0$ e $b$.",
+      "Como $e^{-2b}\\to0$, a integral vale $1/2$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "exp(-2*x)",
+      "lower": "0",
+      "upper": "oo",
+      "expected": "1/2"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006301",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "infinitos",
+    "difficulty": "medium",
+    "statement": "Qual é o comportamento de $\\int_1^\\infty dx/x$?",
+    "options": [
+      "$1$",
+      "$-1$",
+      "Diverge para $+\\infty$.",
+      "$0$"
+    ],
+    "steps": [
+      "Em $[1,b]$, a integral é $\\ln b$.",
+      "Embora $1/x\\to0$, $\\ln b\\to+\\infty$; portanto a integral diverge."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/x",
+      "lower": "1",
+      "upper": "oo",
+      "expected": "oo"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006302",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "infinitos",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int_2^\\infty 3x^{-2}\\,dx$.",
+    "options": [
+      "$3$",
+      "$2/3$",
+      "Diverge.",
+      "$3/2$"
+    ],
+    "steps": [
+      "Use a primitiva $-3/x$ em $[2,b]$.",
+      "O limite de $3/2-3/b$ é $3/2$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "3/x**2",
+      "lower": "2",
+      "upper": "oo",
+      "expected": "3/2"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006303",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "infinitos",
+    "difficulty": "hard",
+    "statement": "Calcule $\\int_1^\\infty\\frac{\\ln x}{x^2}\\,dx$.",
+    "options": [
+      "$1$",
+      "$0$",
+      "$2$",
+      "Diverge."
+    ],
+    "steps": [
+      "Por partes, uma primitiva é $-(\\ln x+1)/x$.",
+      "Como $\\ln b/b\\to0$, o limite da avaliação entre $1$ e $b$ é $1$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "log(x)/x**2",
+      "lower": "1",
+      "upper": "oo",
+      "expected": "1"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006304",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "infinitos",
+    "difficulty": "hard",
+    "statement": "Calcule $\\int_{-\\infty}^{\\infty}\\frac{dx}{1+x^2}$ no sentido usual de integral imprópria.",
+    "options": [
+      "Diverge.",
+      "$\\pi$",
+      "$\\pi/2$",
+      "$0$"
+    ],
+    "steps": [
+      "Separe em $0$: ambas as integrais laterais precisam convergir. A primitiva é $\\arctan x$.",
+      "Cada lado vale $\\pi/2$; somando, o resultado é $\\pi$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/(1+x**2)",
+      "lower": "-oo",
+      "upper": "oo",
+      "expected": "pi"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006305",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "descontinuidades",
+    "difficulty": "easy",
+    "statement": "Calcule $\\int_0^1 x^{-1/2}\\,dx$.",
+    "options": [
+      "$1$",
+      "Diverge.",
+      "$2$",
+      "$1/2$"
+    ],
+    "steps": [
+      "Use $a>0$ no lugar de zero. A primitiva é $2\\sqrt{x}$.",
+      "O limite de $2-2\\sqrt a$ quando $a\\to0^+$ é $2$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/sqrt(x)",
+      "lower": "0",
+      "upper": "1",
+      "expected": "2"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006306",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "descontinuidades",
+    "difficulty": "easy",
+    "statement": "Qual é o comportamento de $\\int_0^1 dx/x$?",
+    "options": [
+      "$0$",
+      "$1$",
+      "$-1$",
+      "Diverge para $+\\infty$."
+    ],
+    "steps": [
+      "Em $[a,1]$ a integral é $-\\ln a$.",
+      "Quando $a\\to0^+$, $-\\ln a\\to+\\infty$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/x",
+      "lower": "0",
+      "upper": "1",
+      "expected": "oo"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006307",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "descontinuidades",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int_0^4\\frac{dx}{\\sqrt{4-x}}$.",
+    "options": [
+      "$4$",
+      "$2$",
+      "$8$",
+      "Diverge."
+    ],
+    "steps": [
+      "A singularidade fica no limite superior; integre até $b<4$ usando $-2\\sqrt{4-x}$.",
+      "A avaliação é $4-2\\sqrt{4-b}$, que tende a $4$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/sqrt(4-x)",
+      "lower": "0",
+      "upper": "4",
+      "expected": "4"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006308",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "descontinuidades",
+    "difficulty": "medium",
+    "statement": "Calcule $\\int_0^1\\ln x\\,dx$.",
+    "options": [
+      "Diverge para $-\\infty$.",
+      "$-1$",
+      "$1$",
+      "$0$"
+    ],
+    "steps": [
+      "Uma primitiva é $x\\ln x-x$. Avalie de $a>0$ até $1$.",
+      "Como $a\\ln a\\to0$, o resultado é $-1$. Um integrando ilimitado pode ter integral finita."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "log(x)",
+      "lower": "0",
+      "upper": "1",
+      "expected": "-1"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006309",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "descontinuidades",
+    "difficulty": "hard",
+    "statement": "Calcule $\\int_{-1}^1\\frac{dx}{\\sqrt{|x|}}$.",
+    "options": [
+      "$0$",
+      "Diverge.",
+      "$4$",
+      "$2$"
+    ],
+    "steps": [
+      "Separe no ponto singular $0$. Por simetria, cada integral lateral equivale a $\\int_0^1x^{-1/2}dx$.",
+      "Cada lado vale $2$; os limites existem separadamente e a soma é $4$."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/sqrt(Abs(x))",
+      "lower": "-1",
+      "upper": "1",
+      "expected": "4"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006310",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "descontinuidades",
+    "difficulty": "hard",
+    "statement": "No sentido usual (não valor principal), $\\int_{-1}^1dx/x$ é:",
+    "options": [
+      "$0$, por simetria.",
+      "$2$",
+      "$-2$",
+      "Divergente, pois as integrais laterais não são finitas."
+    ],
+    "steps": [
+      "A integral de $-1$ até $-a$ tende a $-\\infty$, enquanto a de $a$ até $1$ tende a $+\\infty$.",
+      "Não se pode cancelar infinitos. O valor principal simétrico é zero, mas a integral imprópria usual não existe."
+    ],
+    "verification": {
+      "kind": "improper",
+      "integrand": "1/x",
+      "lower": "-1",
+      "upper": "1",
+      "expected": "divergent-split"
+    },
+    "issue": 63,
+    "id": "40000000-0000-4000-8000-000000006311",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "limites-sequencias",
+    "difficulty": "easy",
+    "statement": "Calcule $\\lim_{n\\to\\infty}(3n+2)/(n+5)$.",
+    "options": [
+      "$3$",
+      "$2/5$",
+      "$0$",
+      "$+\\infty$"
+    ],
+    "steps": [
+      "Divida numerador e denominador por $n$.",
+      "A razão vira $(3+2/n)/(1+5/n)$ e tende a $3$."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "(3*n+2)/(n+5)",
+      "expected": "3"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006400",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "limites-sequencias",
+    "difficulty": "easy",
+    "statement": "Calcule $\\lim_{n\\to\\infty}1/n^2$.",
+    "options": [
+      "$+\\infty$",
+      "$0$",
+      "$1$",
+      "$2$"
+    ],
+    "steps": [
+      "Para $n\\ge1$, temos $0<1/n^2\\le1/n$.",
+      "Como $1/n\\to0$, o confronto fornece limite zero."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "1/n**2",
+      "expected": "0"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006401",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "limites-sequencias",
+    "difficulty": "medium",
+    "statement": "Calcule $\\lim_{n\\to\\infty}(\\sqrt{n^2+n}-n)$.",
+    "options": [
+      "$1$",
+      "$+\\infty$",
+      "$1/2$",
+      "$0$"
+    ],
+    "steps": [
+      "Racionalize: a diferença é $n/(\\sqrt{n^2+n}+n)$.",
+      "Divida por $n$, obtendo $1/(\\sqrt{1+1/n}+1)\\to1/2$."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "sqrt(n**2+n)-n",
+      "expected": "1/2"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006402",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "limites-sequencias",
+    "difficulty": "medium",
+    "statement": "Calcule $\\lim_{n\\to\\infty}n/2^n$.",
+    "options": [
+      "$1/2$",
+      "$1$",
+      "$+\\infty$",
+      "$0$"
+    ],
+    "steps": [
+      "Para $a_n=n/2^n$, a razão $a_{n+1}/a_n=(n+1)/(2n)$ tende a $1/2$.",
+      "A partir de algum índice, essa razão é menor que $3/4$, permitindo comparação com uma sequência geométrica que tende a zero."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "n/2**n",
+      "expected": "0"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006403",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "limites-sequencias",
+    "difficulty": "hard",
+    "statement": "Calcule $\\lim_{n\\to\\infty}n\\ln(1+2/n)$.",
+    "options": [
+      "$2$",
+      "$0$",
+      "$1$",
+      "$e^2$"
+    ],
+    "steps": [
+      "Escreva $n\\ln(1+2/n)=2\\,\\ln(1+2/n)/(2/n)$.",
+      "Use $\\lim_{t\\to0}\\ln(1+t)/t=1$. O limite é $2$, não sua exponencial."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "n*log(1+2/n)",
+      "expected": "2"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006404",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "monotonicidade",
+    "difficulty": "easy",
+    "statement": "Para $n\\ge1$, a sequência $a_n=1-1/n$ é:",
+    "options": [
+      "Constante e igual a $0$.",
+      "Estritamente crescente e convergente para $1$.",
+      "Estritamente decrescente e convergente para $1$.",
+      "Crescente e ilimitada."
+    ],
+    "steps": [
+      "A diferença $a_{n+1}-a_n=1/[n(n+1)]$ é positiva.",
+      "Além disso, $a_n<1$ e $1/n\\to0$, portanto o limite é $1$."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "1-1/n",
+      "expected": "1",
+      "monotonic": "increasing"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006405",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "monotonicidade",
+    "difficulty": "easy",
+    "statement": "Para $n\\ge1$, a sequência $a_n=2+1/n$ é:",
+    "options": [
+      "Decrescente e convergente para $0$.",
+      "Constante e igual a $2$.",
+      "Estritamente decrescente e convergente para $2$.",
+      "Estritamente crescente e convergente para $2$."
+    ],
+    "steps": [
+      "A diferença entre termos consecutivos é $-1/[n(n+1)]<0$.",
+      "A sequência é limitada inferiormente por $2$, e $1/n\\to0$ fornece o limite $2$."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "2+1/n",
+      "expected": "2",
+      "monotonic": "decreasing"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006406",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "monotonicidade",
+    "difficulty": "medium",
+    "statement": "Para $n\\ge1$, classifique $a_n=n/(n+2)$.",
+    "options": [
+      "Decrescente e convergente para $0$.",
+      "Crescente e divergente para infinito.",
+      "Constante e igual a $1$.",
+      "Crescente, limitada e convergente para $1$."
+    ],
+    "steps": [
+      "Escreva $a_n=1-2/(n+2)$: a parcela subtraída diminui quando $n$ aumenta.",
+      "Logo $a_n$ cresce e permanece abaixo de $1$. Seu limite é $1$."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "n/(n+2)",
+      "expected": "1",
+      "monotonic": "increasing"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006407",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "monotonicidade",
+    "difficulty": "medium",
+    "statement": "Para $n\\ge1$, a sequência $a_n=\\sqrt{n+1}-\\sqrt n$ é:",
+    "options": [
+      "Positiva, decrescente e convergente para $0$.",
+      "Positiva, crescente e convergente para $1$.",
+      "Negativa e convergente para $0$.",
+      "Positiva e divergente para infinito."
+    ],
+    "steps": [
+      "Racionalize: $a_n=1/(\\sqrt{n+1}+\\sqrt n)$.",
+      "O denominador é positivo, cresce estritamente e tende a infinito. Portanto os termos decrescem para zero."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "sqrt(n+1)-sqrt(n)",
+      "expected": "0",
+      "monotonic": "decreasing"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006408",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "monotonicidade",
+    "difficulty": "hard",
+    "statement": "Para $n\\ge1$, $a_n=(1+1/n)^n$ é:",
+    "options": [
+      "Crescente e ilimitada.",
+      "Crescente e convergente para $e$.",
+      "Decrescente e convergente para $e$.",
+      "Crescente e convergente para $1$."
+    ],
+    "steps": [
+      "Considere $f(x)=x\\ln(1+1/x)$. Sua derivada é $\\ln(1+1/x)-1/(x+1)>0$, pois $\\ln(1+t)>t/(1+t)$ para $t>0$.",
+      "Assim $a_n=e^{f(n)}$ cresce. Como $f(n)\\to1$, temos $a_n\\to e$."
+    ],
+    "verification": {
+      "kind": "sequence",
+      "expression": "(1+1/n)**n",
+      "expected": "E",
+      "monotonic": "increasing"
+    },
+    "issue": 64,
+    "id": "40000000-0000-4000-8000-000000006409",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "geometricas",
+    "difficulty": "easy",
+    "statement": "Calcule $\\sum_{n=0}^\\infty(1/4)^n$.",
+    "options": [
+      "$4/3$",
+      "$1/3$",
+      "$4$",
+      "Diverge."
+    ],
+    "steps": [
+      "A razão é $1/4$, com módulo menor que um, e o primeiro termo é $1$.",
+      "A soma é $1/(1-1/4)=4/3$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "(1/4)**n",
+      "start": 0,
+      "expected": "4/3"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006500",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "geometricas",
+    "difficulty": "easy",
+    "statement": "Calcule $\\sum_{n=1}^\\infty(1/2)^n$.",
+    "options": [
+      "Diverge.",
+      "$1$",
+      "$2$",
+      "$1/2$"
+    ],
+    "steps": [
+      "O primeiro termo é $1/2$ e a razão é $1/2$.",
+      "Use primeiro termo dividido por $1-r$: $(1/2)/(1-1/2)=1$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "(1/2)**n",
+      "start": 1,
+      "expected": "1"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006501",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "geometricas",
+    "difficulty": "medium",
+    "statement": "Calcule $\\sum_{n=0}^\\infty3(-1/2)^n$.",
+    "options": [
+      "$-2$",
+      "Diverge.",
+      "$2$",
+      "$6$"
+    ],
+    "steps": [
+      "Apesar dos sinais alternados, $|r|=1/2<1$.",
+      "A soma é $3/(1+1/2)=2$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "3*(-1/2)**n",
+      "start": 0,
+      "expected": "2"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006502",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "geometricas",
+    "difficulty": "medium",
+    "statement": "Calcule $\\sum_{n=2}^\\infty(1/3)^n$.",
+    "options": [
+      "$1/2$",
+      "$3/2$",
+      "$1/9$",
+      "$1/6$"
+    ],
+    "steps": [
+      "O índice inicial faz o primeiro termo ser $1/9$.",
+      "Divida por $1-1/3$: $(1/9)/(2/3)=1/6$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "(1/3)**n",
+      "start": 2,
+      "expected": "1/6"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006503",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "geometricas",
+    "difficulty": "hard",
+    "statement": "Calcule $\\sum_{n=0}^\\infty(2^{n+1}+1)/5^n$.",
+    "options": [
+      "$55/12$",
+      "$15/4$",
+      "$10/3$",
+      "Diverge."
+    ],
+    "steps": [
+      "Separe em $2\\sum(2/5)^n+\\sum(1/5)^n$. Ambas as razões têm módulo menor que um.",
+      "Some $2/(1-2/5)+1/(1-1/5)=10/3+5/4=55/12$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "(2**(n+1)+1)/5**n",
+      "start": 0,
+      "expected": "55/12"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006504",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "geometricas",
+    "difficulty": "hard",
+    "statement": "Calcule $\\sum_{n=1}^\\infty[3(1/2)^n-2(1/4)^n]$.",
+    "options": [
+      "$5/3$",
+      "$7/3$",
+      "$1$",
+      "$11/3$"
+    ],
+    "steps": [
+      "As duas séries geométricas convergem absolutamente, então podem ser subtraídas.",
+      "Desde $n=1$, suas somas são $1$ e $1/3$. O resultado é $3\\cdot1-2\\cdot(1/3)=7/3$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "3*(1/2)**n-2*(1/4)**n",
+      "start": 1,
+      "expected": "7/3"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006505",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "convergencia",
+    "difficulty": "easy",
+    "statement": "A série $\\sum_{n=1}^\\infty n/(n+1)$:",
+    "options": [
+      "Converge para $0$.",
+      "Converge, pois seus termos são menores que $1$.",
+      "Diverge, pois o termo geral tende a $1$.",
+      "Converge para $1$."
+    ],
+    "steps": [
+      "A convergência de uma série exige que seu termo geral tenda a zero.",
+      "Aqui $n/(n+1)\\to1$, violando essa condição necessária."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "n/(n+1)",
+      "start": 1,
+      "expected": "divergent"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006506",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "convergencia",
+    "difficulty": "easy",
+    "statement": "A série harmônica $\\sum_{n=1}^\\infty1/n$:",
+    "options": [
+      "Converge porque $1/n$ tende a zero.",
+      "Converge para $1$.",
+      "Diverge porque $1/n$ não tende a zero.",
+      "Diverge, apesar de o termo geral tender a zero."
+    ],
+    "steps": [
+      "Agrupe os termos em blocos entre potências de dois. Cada bloco após o primeiro soma pelo menos $1/2$.",
+      "Há infinitos blocos; as somas parciais crescem sem limite. Ter termo geral tendendo a zero não basta."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "1/n",
+      "start": 1,
+      "expected": "divergent"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006507",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "convergencia",
+    "difficulty": "medium",
+    "statement": "A série $\\sum_{n=1}^\\infty1/n^{3/2}$:",
+    "options": [
+      "Converge pelo critério das séries de potências de $n$, pois $p=3/2>1$.",
+      "Diverge porque $p>1$.",
+      "Diverge porque os termos são positivos.",
+      "Converge para zero porque os termos tendem a zero."
+    ],
+    "steps": [
+      "Trata-se de uma série $\\sum n^{-p}$, com $p=3/2$.",
+      "O critério das séries desse tipo garante convergência quando $p>1$; não determina soma zero."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "1/n**(3/2)",
+      "start": 1,
+      "expected": "convergent"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006508",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "convergencia",
+    "difficulty": "medium",
+    "statement": "Calcule $\\sum_{n=1}^\\infty1/[n(n+1)]$.",
+    "options": [
+      "Diverge.",
+      "$1$",
+      "$1/2$",
+      "$2$"
+    ],
+    "steps": [
+      "Decomponha $1/[n(n+1)]=1/n-1/(n+1)$.",
+      "A soma parcial é $1-1/(N+1)$; seu limite é $1$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "1/(n*(n+1))",
+      "start": 1,
+      "expected": "1"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006509",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "convergencia",
+    "difficulty": "hard",
+    "statement": "Calcule $\\sum_{n=1}^\\infty1/[n(n+2)]$.",
+    "options": [
+      "$3/2$",
+      "Diverge.",
+      "$3/4$",
+      "$1/2$"
+    ],
+    "steps": [
+      "Use $1/[n(n+2)]=(1/n-1/(n+2))/2$.",
+      "Após cancelar os termos, a soma parcial é $(1+1/2-1/(N+1)-1/(N+2))/2$. O limite é $3/4$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "1/(n*(n+2))",
+      "start": 1,
+      "expected": "3/4"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006510",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "convergencia",
+    "difficulty": "hard",
+    "statement": "Calcule $\\sum_{n=1}^\\infty\\ln[(n+1)^2/(n(n+2))]$.",
+    "options": [
+      "$0$",
+      "$2\\ln2$",
+      "Diverge.",
+      "$\\ln2$"
+    ],
+    "steps": [
+      "A soma dos logaritmos é o logaritmo do produto. Esse produto até $N$ se simplifica para $2(N+1)/(N+2)$.",
+      "Quando $N\\to\\infty$, o produto tende a $2$, e a soma tende a $\\ln2$."
+    ],
+    "verification": {
+      "kind": "series",
+      "expression": "log((n+1)**2/(n*(n+2)))",
+      "start": 1,
+      "expected": "log(2)"
+    },
+    "issue": 65,
+    "id": "40000000-0000-4000-8000-000000006511",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "easy",
+    "statement": "Qual comparação prova a convergência de $\\sum_{n=1}^\\infty1/(n^2+1)$?",
+    "options": [
+      "$0<1/(n^2+1)\\le1/n^2$.",
+      "$1/(n^2+1)\\le1/n$.",
+      "$1/(n^2+1)\\ge1/n^2$.",
+      "O termo geral tende a zero, o que basta."
+    ],
+    "steps": [
+      "Como $n^2+1\\ge n^2$, o inverso é menor ou igual a $1/n^2$.",
+      "A série maior é convergente, com $p=2$; a comparação direta conclui."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "1/(n**2+1)",
+      "method": "comparison",
+      "limit": "1/n**2",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006600",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "easy",
+    "statement": "Qual comparação prova que $\\sum_{n=1}^\\infty1/\\sqrt n$ diverge?",
+    "options": [
+      "O termo tende a zero, logo a série diverge.",
+      "$1/\\sqrt n\\ge1/n$ e a série harmônica diverge.",
+      "$1/\\sqrt n\\le1$ e a série constante diverge.",
+      "$1/\\sqrt n\\ge1/n^2$ e a série de quadrados converge."
+    ],
+    "steps": [
+      "Para $n\\ge1$, $\\sqrt n\\le n$, então $1/\\sqrt n\\ge1/n$.",
+      "A série menor já diverge; as somas parciais da maior também são ilimitadas."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "1/sqrt(n)",
+      "method": "comparison",
+      "limit": "1/n",
+      "expected": "divergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006601",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "medium",
+    "statement": "Ao comparar $a_n=(3n+1)/(n^3+2)$ com $b_n=1/n^2$, qual conclusão é correta?",
+    "options": [
+      "$a_n/b_n\\to3$; a série diverge.",
+      "$a_n/b_n\\to\\infty$; a série converge.",
+      "$a_n/b_n\\to3$; a série de $a_n$ converge.",
+      "$a_n/b_n\\to0$; a série diverge."
+    ],
+    "steps": [
+      "A razão é $(3n^3+n^2)/(n^3+2)$ e tende a $3$.",
+      "Esse limite é positivo e finito; as duas séries têm o mesmo comportamento. Como $\\sum1/n^2$ converge, a série proposta também converge."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "(3*n+1)/(n**3+2)",
+      "method": "limit-comparison",
+      "limit": "3",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006602",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "hard",
+    "statement": "Compare $a_n=1/\\sqrt{n^2+3n}$ com $b_n=1/n$.",
+    "options": [
+      "A razão tende a $1$, e $\\sum a_n$ converge.",
+      "A razão tende a $0$, e $\\sum a_n$ converge.",
+      "A razão tende a $3$, e $\\sum a_n$ diverge.",
+      "A razão tende a $1$, e $\\sum a_n$ diverge."
+    ],
+    "steps": [
+      "A razão é $n/\\sqrt{n^2+3n}=1/\\sqrt{1+3/n}\\to1$.",
+      "A comparação pelo limite com a série harmônica garante divergência, apesar de cada termo ser menor que $1/n$."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "1/sqrt(n**2+3*n)",
+      "method": "limit-comparison-harmonic",
+      "limit": "1",
+      "expected": "divergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006603",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "easy",
+    "statement": "Pelo teste da razão, $\\sum_{n=1}^\\infty n/3^n$:",
+    "options": [
+      "Converge, com limite da razão $1/3$.",
+      "Diverge, com limite da razão $3$.",
+      "Converge, com limite da razão $0$.",
+      "O teste é inconclusivo, pois o limite é $1$."
+    ],
+    "steps": [
+      "A razão entre termos consecutivos é $(n+1)/(3n)$.",
+      "Seu limite é $1/3<1$; a série converge."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "n/3**n",
+      "method": "ratio",
+      "limit": "1/3",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006604",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "medium",
+    "statement": "Pelo teste da razão, $\\sum_{n=1}^\\infty2^n/n!$:",
+    "options": [
+      "Converge, com limite da razão $1/2$.",
+      "Converge, com limite da razão $0$.",
+      "Diverge, com limite da razão $2$.",
+      "O teste é inconclusivo, com limite $1$."
+    ],
+    "steps": [
+      "Usando $(n+1)!=(n+1)n!$, a razão é $2/(n+1)$.",
+      "Ela tende a zero, menor que um, garantindo convergência."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "2**n/factorial(n)",
+      "method": "ratio",
+      "limit": "0",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006605",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "medium",
+    "statement": "Pelo teste da razão, $\\sum_{n=1}^\\infty n!/4^n$:",
+    "options": [
+      "Converge, pois a razão tende a $1/4$.",
+      "O teste é inconclusivo, pois a razão tende a $1$.",
+      "Diverge, pois a razão tende a $+\\infty$.",
+      "Converge, pois a razão tende a $0$."
+    ],
+    "steps": [
+      "A razão é $(n+1)/4$.",
+      "Ela ultrapassa um e tende a infinito; em particular os termos não tendem a zero."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "factorial(n)/4**n",
+      "method": "ratio",
+      "limit": "oo",
+      "expected": "divergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006606",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "hard",
+    "statement": "Para $\\sum_{n=1}^\\infty1/n^2$, o teste da razão:",
+    "options": [
+      "Prova divergência porque o limite é $1$.",
+      "Prova convergência porque o limite é $1$.",
+      "Prova convergência porque o limite é $0$.",
+      "É inconclusivo: o limite é $1$, mas a série converge pelo critério $p>1$."
+    ],
+    "steps": [
+      "A razão é $n^2/(n+1)^2\\to1$. O teste da razão não decide nesse caso.",
+      "Outro critério resolve: a série tem $p=2>1$, logo converge."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "1/n**2",
+      "method": "ratio",
+      "limit": "1",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006607",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "easy",
+    "statement": "Pelo teste da raiz, $\\sum_{n=1}^\\infty(2/5)^n$:",
+    "options": [
+      "Converge, com limite da raiz $2/5$.",
+      "Diverge, com limite da raiz $5/2$.",
+      "É inconclusivo, com limite $1$.",
+      "Converge, com limite da raiz $0$."
+    ],
+    "steps": [
+      "A raiz de ordem $n$ do termo positivo é exatamente $2/5$.",
+      "Como $2/5<1$, o teste garante convergência."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "(2/5)**n",
+      "method": "root",
+      "limit": "2/5",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006608",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "medium",
+    "statement": "Pelo teste da raiz, $\\sum_{n=1}^\\infty[(n+1)/(3n)]^n$:",
+    "options": [
+      "Converge, com limite da raiz $0$.",
+      "Converge, com limite da raiz $1/3$.",
+      "Diverge, com limite da raiz $3$.",
+      "É inconclusivo, com limite $1$."
+    ],
+    "steps": [
+      "A raiz de ordem $n$ cancela a potência, deixando $(n+1)/(3n)$.",
+      "Esse valor tende a $1/3<1$."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "((n+1)/(3*n))**n",
+      "method": "root",
+      "limit": "1/3",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006609",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "medium",
+    "statement": "Pelo teste da raiz, $\\sum_{n=1}^\\infty(2n/(n+1))^n$:",
+    "options": [
+      "É inconclusivo, com limite $1$.",
+      "Converge, com limite da raiz $0$.",
+      "Diverge, com limite da raiz $2$.",
+      "Converge, com limite da raiz $1/2$."
+    ],
+    "steps": [
+      "A raiz de ordem $n$ é $2n/(n+1)$.",
+      "Seu limite é $2>1$, o que implica divergência."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "(2*n/(n+1))**n",
+      "method": "root",
+      "limit": "2",
+      "expected": "divergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006610",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "testes",
+    "difficulty": "hard",
+    "statement": "Pelo teste da raiz, $\\sum_{n=1}^\\infty n^3/2^n$:",
+    "options": [
+      "Diverge, com limite da raiz $2$.",
+      "É inconclusivo, com limite $1$.",
+      "Converge, com limite da raiz $0$.",
+      "Converge, com limite da raiz $1/2$."
+    ],
+    "steps": [
+      "A raiz é $n^{3/n}/2$. Escreva $n^{3/n}=e^{3\\ln n/n}$.",
+      "Como $\\ln n/n\\to0$, o numerador tende a $1$. O limite é $1/2<1$."
+    ],
+    "verification": {
+      "kind": "convergence-test",
+      "expression": "n**3/2**n",
+      "method": "root",
+      "limit": "1/2",
+      "expected": "convergent"
+    },
+    "issue": 66,
+    "id": "40000000-0000-4000-8000-000000006611",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "alternadas",
+    "difficulty": "easy",
+    "statement": "A série $\\sum_{n=1}^\\infty(-1)^{n+1}/n$ é:",
+    "options": [
+      "Condicionalmente convergente.",
+      "Absolutamente convergente.",
+      "Divergente, pois alterna sinais.",
+      "Divergente, pois o termo geral não tende a zero."
+    ],
+    "steps": [
+      "Os módulos $1/n$ decrescem para zero; o teste de Leibniz garante convergência.",
+      "A série dos módulos é a harmônica e diverge. Logo a convergência é condicional."
+    ],
+    "verification": {
+      "kind": "alternating",
+      "expression": "1/n",
+      "absolute": false
+    },
+    "issue": 67,
+    "id": "40000000-0000-4000-8000-000000006700",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "alternadas",
+    "difficulty": "easy",
+    "statement": "A série $\\sum_{n=1}^\\infty(-1)^{n+1}/n^2$ é:",
+    "options": [
+      "Convergente para zero porque alterna sinais.",
+      "Absolutamente convergente.",
+      "Somente condicionalmente convergente.",
+      "Divergente."
+    ],
+    "steps": [
+      "A série dos módulos é $\\sum1/n^2$, convergente pois $p=2>1$.",
+      "Convergência absoluta implica convergência da série com sinais."
+    ],
+    "verification": {
+      "kind": "alternating",
+      "expression": "1/n**2",
+      "absolute": true
+    },
+    "issue": 67,
+    "id": "40000000-0000-4000-8000-000000006701",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "alternadas",
+    "difficulty": "medium",
+    "statement": "Ao aproximar $\\sum_{n=1}^\\infty(-1)^{n+1}/n$ pelos primeiros dez termos, qual cota de Leibniz se obtém para o erro absoluto?",
+    "options": [
+      "$1/100$",
+      "$1/9$",
+      "$1/11$",
+      "$1/10$"
+    ],
+    "steps": [
+      "Os módulos decrescem para zero, satisfazendo as hipóteses do teorema do resto.",
+      "O erro é no máximo o módulo do primeiro termo omitido: $1/(10+1)=1/11$."
+    ],
+    "verification": {
+      "kind": "alternating-error",
+      "expression": "1/n",
+      "terms": 10,
+      "expected": "1/11"
+    },
+    "issue": 67,
+    "id": "40000000-0000-4000-8000-000000006702",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "alternadas",
+    "difficulty": "medium",
+    "statement": "Qual é o menor número $N$ de termos que garante, pela cota de Leibniz, erro no máximo $0{,}01$ em $\\sum_{n=1}^\\infty(-1)^{n+1}/n^2$?",
+    "options": [
+      "$10$",
+      "$99$",
+      "$8$",
+      "$9$"
+    ],
+    "steps": [
+      "A cota é $1/(N+1)^2$. Exija $1/(N+1)^2\\le1/100$.",
+      "Temos $N+1\\ge10$, logo $N\\ge9$. Para $N=8$, a cota é $1/81>0{,}01$."
+    ],
+    "verification": {
+      "kind": "alternating-minimum",
+      "expression": "1/n**2",
+      "tolerance": "1/100",
+      "expected": 9
+    },
+    "issue": 67,
+    "id": "40000000-0000-4000-8000-000000006703",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "alternadas",
+    "difficulty": "hard",
+    "statement": "Se $S$ é a soma de $\\sum_{n=1}^\\infty(-1)^{n+1}/n$ e $S_{20}$ sua soma parcial, qual intervalo certificado pelo primeiro termo omitido contém $S$?",
+    "options": [
+      "$[S_{20},S_{20}+1/21]$",
+      "$[S_{20}-1/21,S_{20}]$",
+      "$[S_{20},S_{20}+1/22]$",
+      "$[S_{20}-1/22,S_{20}]$"
+    ],
+    "steps": [
+      "Após um número par de termos, o próximo termo é positivo. O resto tem esse sinal.",
+      "Seu módulo não supera $1/21$. Portanto $0\\le S-S_{20}\\le1/21$."
+    ],
+    "verification": {
+      "kind": "alternating-signed-error",
+      "expression": "1/n",
+      "terms": 20,
+      "expected": "1/21"
+    },
+    "issue": 67,
+    "id": "40000000-0000-4000-8000-000000006704",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "easy",
+    "statement": "Qual é o raio de convergência de $\\sum_{n=0}^\\infty x^n/3^n$?",
+    "options": [
+      "$3$",
+      "$1/3$",
+      "$1$",
+      "$0$"
+    ],
+    "steps": [
+      "A série é geométrica, de razão $x/3$.",
+      "A condição $|x/3|<1$ equivale a $|x|<3$, logo $R=3$."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/3**n",
+      "center": 0,
+      "radius": "3",
+      "endpoints": [
+        false,
+        false
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006800",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "easy",
+    "statement": "Qual é o intervalo de convergência de $\\sum_{n=0}^\\infty((x-2)/4)^n$?",
+    "options": [
+      "$(2,4)$",
+      "$(-2,6)$",
+      "$(-4,4)$",
+      "$[-2,6]$"
+    ],
+    "steps": [
+      "A condição geométrica é $|x-2|<4$, isto é, $-2<x<6$.",
+      "Nos extremos, os termos são $(-1)^n$ ou $1$ e não tendem a zero. Os extremos são excluídos."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/4**n",
+      "center": 2,
+      "radius": "4",
+      "endpoints": [
+        false,
+        false
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006801",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "easy",
+    "statement": "Qual é o raio de convergência de $\\sum_{n=1}^\\infty nx^n/2^n$?",
+    "options": [
+      "$0$",
+      "$\\infty$",
+      "$2$",
+      "$1/2$"
+    ],
+    "steps": [
+      "O teste da razão fornece limite $|x|/2$, pois $(n+1)/n\\to1$.",
+      "A condição é $|x|<2$, portanto $R=2$."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "n/2**n",
+      "center": 0,
+      "radius": "2",
+      "endpoints": [
+        false,
+        false
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006802",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "medium",
+    "statement": "Qual é o intervalo de convergência de $\\sum_{n=1}^\\infty x^n/n$?",
+    "options": [
+      "$(-1,1)$",
+      "$[-1,1]$",
+      "$(-1,1]$",
+      "$[-1,1)$"
+    ],
+    "steps": [
+      "A razão fornece $R=1$. Os extremos precisam de análise separada.",
+      "Em $x=1$ surge a harmônica divergente. Em $x=-1$ surge uma harmônica alternada convergente. Logo o intervalo é $[-1,1)$."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/n",
+      "center": 0,
+      "radius": "1",
+      "endpoints": [
+        true,
+        false
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006803",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "medium",
+    "statement": "Qual é o intervalo de convergência de $\\sum_{n=1}^\\infty x^n/n^2$?",
+    "options": [
+      "$[-1,1]$",
+      "$(-1,1)$",
+      "$[-1,1)$",
+      "$(-1,1]$"
+    ],
+    "steps": [
+      "O raio calculado pela razão é $1$.",
+      "Em ambos os extremos, os módulos formam $\\sum1/n^2$, que converge. Inclua os dois extremos."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/n**2",
+      "center": 0,
+      "radius": "1",
+      "endpoints": [
+        true,
+        true
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006804",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "medium",
+    "statement": "Qual é o intervalo de convergência de $\\sum_{n=1}^\\infty(x-1)^n/(n2^n)$?",
+    "options": [
+      "$[-1,3]$",
+      "$[-1,3)$",
+      "$(-1,3]$",
+      "$(-2,2)$"
+    ],
+    "steps": [
+      "A razão dá $|x-1|/2<1$, logo $R=2$.",
+      "Em $x=-1$ temos $\\sum(-1)^n/n$, convergente; em $x=3$, a harmônica diverge. O intervalo é $[-1,3)$."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/(n*2**n)",
+      "center": 1,
+      "radius": "2",
+      "endpoints": [
+        true,
+        false
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006805",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "medium",
+    "statement": "Qual é o raio de convergência de $\\sum_{n=0}^\\infty x^n/n!$?",
+    "options": [
+      "$0$",
+      "$e$",
+      "$\\infty$",
+      "$1$"
+    ],
+    "steps": [
+      "Para cada $x$ fixo, a razão dos módulos é $|x|/(n+1)$.",
+      "O limite é zero para todo $x$, portanto a série converge em toda a reta e $R=\\infty$."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/factorial(n)",
+      "center": 0,
+      "radius": "oo",
+      "endpoints": null
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006806",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "hard",
+    "statement": "Qual é o raio de convergência de $\\sum_{n=1}^\\infty n!x^n$?",
+    "options": [
+      "$1$",
+      "$\\infty$",
+      "$1/2$",
+      "$0$"
+    ],
+    "steps": [
+      "Se $x\\ne0$, a razão dos módulos é $(n+1)|x|\\to\\infty$, causando divergência.",
+      "Em $x=0$, todos os termos são zero. Só há convergência no centro, então $R=0$."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "factorial(n)",
+      "center": 0,
+      "radius": "0",
+      "endpoints": null
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006807",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "potencias",
+    "difficulty": "hard",
+    "statement": "Qual é o intervalo de convergência de $\\sum_{n=1}^\\infty(x+2)^n/(n^2 3^n)$?",
+    "options": [
+      "$[-5,1]$",
+      "$(-5,1)$",
+      "$[-5,1)$",
+      "$(-3,3)$"
+    ],
+    "steps": [
+      "O centro é $-2$ e a razão fornece raio $3$, com interior $(-5,1)$.",
+      "Nos extremos, os módulos são $1/n^2$ e somam uma série convergente. Ambos pertencem ao intervalo."
+    ],
+    "verification": {
+      "kind": "power",
+      "coefficient": "1/(n**2*3**n)",
+      "center": -2,
+      "radius": "3",
+      "endpoints": [
+        true,
+        true
+      ]
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006808",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "taylor",
+    "difficulty": "easy",
+    "statement": "Qual é o polinômio de Maclaurin de grau dois de $e^x$?",
+    "options": [
+      "$1-x+x^2/2$",
+      "$1+x+x^2/2$",
+      "$1+x+x^2$",
+      "$x+x^2/2$"
+    ],
+    "steps": [
+      "As derivadas de $e^x$ em zero valem $1$.",
+      "A fórmula $f(0)+f'(0)x+f''(0)x^2/2!$ dá $1+x+x^2/2$."
+    ],
+    "verification": {
+      "kind": "taylor",
+      "expression": "exp(x)",
+      "center": 0,
+      "degree": 2,
+      "expected": "1+x+x**2/2"
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006809",
+    "correctIndex": 1,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "taylor",
+    "difficulty": "medium",
+    "statement": "Qual é o polinômio de Maclaurin de grau três de $\\sin x$?",
+    "options": [
+      "$1-x^2/2$",
+      "$x-x^3/3$",
+      "$x-x^3/6$",
+      "$x+x^3/6$"
+    ],
+    "steps": [
+      "As derivadas de ordem zero a três em zero são $0,1,0,-1$.",
+      "Dividindo pelos fatoriais, resulta $x-x^3/3!=x-x^3/6$."
+    ],
+    "verification": {
+      "kind": "taylor",
+      "expression": "sin(x)",
+      "center": 0,
+      "degree": 3,
+      "expected": "x-x**3/6"
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006810",
+    "correctIndex": 2,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "taylor",
+    "difficulty": "medium",
+    "statement": "Qual é o polinômio de Taylor de grau dois de $\\ln x$ centrado em $x=1$?",
+    "options": [
+      "$(x-1)+(x-1)^2/2$",
+      "$x-x^2/2$",
+      "$1+(x-1)-(x-1)^2/2$",
+      "$(x-1)-(x-1)^2/2$"
+    ],
+    "steps": [
+      "No centro, $f(1)=0$, $f'(1)=1$ e $f''(1)=-1$.",
+      "Use potências de $x-1$: o polinômio é $(x-1)-(x-1)^2/2$."
+    ],
+    "verification": {
+      "kind": "taylor",
+      "expression": "log(x)",
+      "center": 1,
+      "degree": 2,
+      "expected": "(x-1)-(x-1)**2/2"
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006811",
+    "correctIndex": 3,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  },
+  {
+    "topic": "taylor",
+    "difficulty": "hard",
+    "statement": "A aproximação $\\cos(0{,}2)\\approx1-(0{,}2)^2/2$ tem qual cota de erro absoluto pelo primeiro termo omitido da série de Maclaurin?",
+    "options": [
+      "$(0{,}2)^4/24=1/15000$",
+      "$(0{,}2)^3/6=1/750$",
+      "$(0{,}2)^2/2=1/50$",
+      "$(0{,}2)^4/4=1/2500$"
+    ],
+    "steps": [
+      "A série é $1-x^2/2!+x^4/4!-\\cdots$. Para $x=0{,}2$, os módulos decrescem para zero.",
+      "O resto após o termo quadrático tem módulo no máximo $(1/5)^4/24=1/15000$."
+    ],
+    "verification": {
+      "kind": "taylor-error",
+      "expression": "cos(x)",
+      "at": "1/5",
+      "polynomial": "1-x**2/2",
+      "bound": "1/15000"
+    },
+    "issue": 68,
+    "id": "40000000-0000-4000-8000-000000006812",
+    "correctIndex": 0,
+    "source": {
+      "kind": "original",
+      "author": "Codex",
+      "createdAt": "2026-09-07",
+      "rightsStatus": "review_required",
+      "reviewer": null
+    },
+    "status": "draft"
+  }
+]

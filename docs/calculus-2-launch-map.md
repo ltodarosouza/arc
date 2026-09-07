@@ -4,7 +4,7 @@
 
 This is Arc’s first **validation slice**, not a claim that every university teaches the same Cálculo II course. It deliberately focuses on the content that gives the product enough depth to test topic navigation, difficulty filters, solutions, and progress.
 
-The initial launch goal is **at least 103 reviewed questions**. Every published question needs a correct taxonomy tag, difficulty, origin record, final answer, and commented solution.
+The initial launch goal is **at least 109 reviewed questions**. Every published question needs a correct taxonomy tag, difficulty, origin record, final answer, and commented solution.
 
 ## Scope
 
@@ -53,7 +53,7 @@ Cálculo II
 | Séries               | Potências                     |                 9 | Radius and interval of convergence.              |
 | Séries               | Taylor e Maclaurin            |                 4 | Introductory approximation problems.             |
 
-**Total: 103 questions minimum.**
+**Total: 109 questions minimum.**
 
 ## Difficulty distribution
 

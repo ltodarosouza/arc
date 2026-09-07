@@ -23,6 +23,23 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 
+  content-verification:
+    name: Verify authored mathematics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: python -m pip install sympy==1.14.0
+      - run: node scripts/build-content-batches.mjs --check
+      - run: python scripts/verify-content.py
+
   migration-preflight:
     name: Validate database migrations
     runs-on: ubuntu-latest
@@ -52,12 +69,18 @@ jobs:
         run: |
           psql -v ON_ERROR_STOP=1 -c "create schema auth;"
           psql -v ON_ERROR_STOP=1 -c "create table auth.users (id uuid primary key);"
-          psql -v ON_ERROR_STOP=1 -c "create function auth.uid() returns uuid language sql stable as 'select null::uuid';"
+          psql -v ON_ERROR_STOP=1 -c "create function auth.uid() returns uuid language sql stable as 'select nullif(current_setting(''request.jwt.claim.sub'', true), '''')::uuid';"
           psql -v ON_ERROR_STOP=1 -c "create role anon nologin;"
           psql -v ON_ERROR_STOP=1 -c "create role authenticated nologin;"
+          psql -v ON_ERROR_STOP=1 -c "grant usage on schema auth to authenticated, anon;"
       - name: Apply every migration in order
         run: |
           for migration in $(find supabase/migrations -type f -name '*.sql' | sort); do
             echo "Applying $migration"
             psql -v ON_ERROR_STOP=1 -f "$migration"
+          done
+      - name: Check private profiles and unpublished content
+        run: |
+          for test in supabase/tests/*.sql; do
+            psql -v ON_ERROR_STOP=1 -f "$test"
           done
