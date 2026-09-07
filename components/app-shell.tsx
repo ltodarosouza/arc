@@ -7,11 +7,7 @@ import Link from 'next/link';
 
 import { useAuth } from '@/components/auth-provider';
 import { AuthScreen } from '@/components/auth-screen';
-import {
-  ensureLearnerSession,
-  getSupabaseClient,
-  isSupabaseConfigured,
-} from '@/lib/supabase/client';
+import { isSupabaseConfigured } from '@/lib/supabase/client';
 
 type Destination = 'home' | 'explore' | 'progress' | 'subjects' | 'account';
 
@@ -45,8 +41,7 @@ export function AppShell({
   children: ReactNode;
 }) {
   const { session, ready: authReady, profileName, signOut } = useAuth();
-  const userEmail = session?.user.email;
-  const isAnonymous = Boolean(session?.user.is_anonymous);
+  const profileLabel = profileName ?? 'Minha conta';
   const [isNavigating, setIsNavigating] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
@@ -67,8 +62,7 @@ export function AppShell({
 
   if (!authReady)
     return <main className="min-h-screen bg-[var(--background)]" />;
-  if (!userEmail && !isAnonymous && isSupabaseConfigured())
-    return <AuthScreen />;
+  if (!session && isSupabaseConfigured()) return <AuthScreen />;
 
   return (
     <main className="min-h-screen bg-[var(--background)] pb-[calc(9.5rem+env(safe-area-inset-bottom))] text-[var(--foreground)] sm:pb-12">
@@ -115,13 +109,13 @@ export function AppShell({
             className="flex min-h-11 items-center gap-2 rounded-full px-3 hover:bg-[var(--arc-accent)]"
           >
             <span className="hidden max-w-36 truncate text-sm sm:block">
-              {profileName ?? (isAnonymous ? 'Visitante' : 'Minha conta')}
+              {profileLabel}
             </span>
             <span
               className="grid size-9 place-items-center rounded-full bg-[var(--arc-accent)]"
               aria-hidden="true"
             >
-              {profileName?.charAt(0).toUpperCase() ?? 'a'}
+              {profileLabel.charAt(0).toUpperCase()}
             </span>
           </Link>
           {session && (

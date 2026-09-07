@@ -8,11 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import {
-  getSupabaseClient,
-  ensureLearnerSession,
-  isSupabaseConfigured,
-} from '@/lib/supabase/client';
+import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 import { normalizeProfileName, profileNameError } from '@/lib/domain/profile';
 
@@ -52,6 +48,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } = client.auth.onAuthStateChange((event, next) => {
       if (!active) return;
       authChanged = true;
+      if (next?.user.is_anonymous) {
+        // Anonymous sessions were used by an earlier prototype. They must not
+        // unlock the product now that progress belongs to real accounts.
+        setSession(null);
+        setProfile(null);
+        window.setTimeout(() => {
+          void client.auth.signOut({ scope: 'local' });
+        }, 0);
+        setReady(true);
+        return;
+      }
       setSession(next);
       setReady(true);
       if (event === 'SIGNED_OUT') {
@@ -73,12 +80,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(async ({ data, error }) => {
         if (error) throw error;
         let next = data.session;
-        if (
-          !next &&
-          !window.location.pathname.startsWith('/account') &&
-          !sessionStorage.getItem('arc:signed-out')
-        )
-          next = await ensureLearnerSession();
+        if (next?.user.is_anonymous) {
+          await client.auth.signOut({ scope: 'local' });
+          next = null;
+        }
         if (active && !authChanged) setSession(next);
       })
       .catch(() => {
