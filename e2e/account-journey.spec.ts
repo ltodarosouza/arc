@@ -145,6 +145,10 @@ test.describe('real account flows in disposable local Supabase', () => {
       'Nome preservado na falha',
     );
     await page.unroute('**/rest/v1/profiles*');
+    await page.reload();
+    await expect(page.getByLabel('Como quer ser chamado')).toHaveValue(
+      'Ana D’Ávila',
+    );
     await page.getByLabel('Como quer ser chamado').fill('Ana Revisada');
     await page.getByRole('button', { name: 'Salvar nome' }).click();
     await expect(

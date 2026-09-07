@@ -114,7 +114,11 @@ export function AccountProfile() {
               {auth.profileError && (
                 <div>
                   <p role="alert">{auth.profileError}</p>
-                  <ArcButton className="mt-3" onClick={auth.reloadProfile}>
+                  <ArcButton
+                    className="mt-3"
+                    type="button"
+                    onClick={auth.reloadProfile}
+                  >
                     Tentar novamente
                   </ArcButton>
                 </div>
