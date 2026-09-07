@@ -6,7 +6,8 @@ import { ArcCard } from '@/components/arc-ui';
 import { PasswordUpdate } from '@/components/password-update';
 
 export default function ResetPage() {
-  const { ready, session } = useAuth();
+  const { ready, session, isRecoverySession } = useAuth();
+  const [complete, setComplete] = useState(false);
   const [invalid, setInvalid] = useState(false);
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -17,9 +18,21 @@ export default function ResetPage() {
     <main className="mx-auto max-w-lg px-5 py-12">
       <ArcCard className="p-6">
         <h1 className="text-3xl font-medium">Nova senha</h1>
-        {!ready ? (
+        {complete ? (
+          <div className="mt-4">
+            <output>
+              Senha atualizada. Use a nova senha no próximo acesso.
+            </output>
+            <Link href="/account" className="mt-4 block underline">
+              Voltar ao perfil
+            </Link>
+          </div>
+        ) : !ready ? (
           <output className="mt-4">Verificando o link…</output>
-        ) : invalid || !session || session.user.is_anonymous ? (
+        ) : invalid ||
+          !session ||
+          session.user.is_anonymous ||
+          !isRecoverySession ? (
           <div className="mt-4">
             <p role="alert">Este link expirou, já foi usado ou não é válido.</p>
             <Link
@@ -30,7 +43,7 @@ export default function ResetPage() {
             </Link>
           </div>
         ) : (
-          <PasswordUpdate recovery />
+          <PasswordUpdate recovery onSuccess={() => setComplete(true)} />
         )}
       </ArcCard>
     </main>

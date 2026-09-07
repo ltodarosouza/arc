@@ -21,6 +21,8 @@ type AuthState = {
   reloadProfile: () => void;
   saveName: (value: string) => Promise<void>;
   signOut: () => Promise<void>;
+  isRecoverySession: boolean;
+  finishRecovery: () => void;
 };
 const AuthContext = createContext<AuthState | null>(null);
 
@@ -34,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [revision, setRevision] = useState(0);
+  const [recoveryOwner, setRecoveryOwner] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
@@ -62,11 +65,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(next);
       setReady(true);
       if (event === 'SIGNED_OUT') {
+        setRecoveryOwner(null);
         setProfile(null);
         try {
           createLocalLearnerRepository().clear();
+          sessionStorage.removeItem('arc:password-recovery');
         } catch {
           /* session is already invalidated */
+        }
+      }
+      if (event === 'PASSWORD_RECOVERY' && next) {
+        setRecoveryOwner(next.user.id);
+        try {
+          sessionStorage.setItem(
+            'arc:password-recovery',
+            JSON.stringify({
+              owner: next.user.id,
+              expires: Date.now() + 15 * 60_000,
+            }),
+          );
+        } catch {
+          /* The current page still supports recovery without storage. */
         }
       }
       if (
@@ -83,6 +102,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (next?.user.is_anonymous) {
           await client.auth.signOut({ scope: 'local' });
           next = null;
+        }
+        try {
+          const recovery = JSON.parse(
+            sessionStorage.getItem('arc:password-recovery') ?? 'null',
+          );
+          if (
+            active &&
+            next &&
+            recovery?.owner === next.user.id &&
+            recovery.expires > Date.now()
+          )
+            setRecoveryOwner(next.user.id);
+        } catch {
+          /* Invalid recovery state does not authorize the form. */
         }
         if (active && !authChanged) setSession(next);
       })
@@ -167,10 +200,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { error } = await getSupabaseClient().auth.signOut({
       scope: 'local',
     });
-    if (error)
-      throw new Error(
-        'Não foi possível sair. Verifique sua conexão e tente novamente.',
-      );
     try {
       sessionStorage.setItem('arc:signed-out', '1');
       createLocalLearnerRepository().clear();
@@ -179,7 +208,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     setSession(null);
     setProfile(null);
-    window.location.replace('/account');
+    window.location.replace(error ? '/account?logout=unconfirmed' : '/account');
   }
 
   return (
@@ -193,6 +222,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         reloadProfile: () => setRevision((value) => value + 1),
         saveName,
         signOut,
+        isRecoverySession: Boolean(owner && owner === recoveryOwner),
+        finishRecovery: () => {
+          setRecoveryOwner(null);
+          try {
+            sessionStorage.removeItem('arc:password-recovery');
+          } catch {
+            /* optional storage */
+          }
+        },
       }}
     >
       {children}

@@ -6,8 +6,14 @@ import { PasswordField } from '@/components/password-field';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import { useAuth } from '@/components/auth-provider';
 
-export function PasswordUpdate({ recovery = false }: { recovery?: boolean }) {
-  const { session } = useAuth();
+export function PasswordUpdate({
+  recovery = false,
+  onSuccess,
+}: {
+  recovery?: boolean;
+  onSuccess?: () => void;
+}) {
+  const { session, isRecoverySession, finishRecovery } = useAuth();
   const [current, setCurrent] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -29,6 +35,8 @@ export function PasswordUpdate({ recovery = false }: { recovery?: boolean }) {
     setBusy(true);
     try {
       const client = getSupabaseClient();
+      if (recovery && !isRecoverySession)
+        throw new Error('Solicite um novo link de recuperação.');
       if (!recovery) {
         if (!session?.user.email)
           throw new Error('Entre novamente para alterar sua senha.');
@@ -49,11 +57,8 @@ export function PasswordUpdate({ recovery = false }: { recovery?: boolean }) {
       setConfirmation('');
       setFeedback('Senha atualizada. Use a nova senha no próximo acesso.');
       if (recovery) {
-        try {
-          sessionStorage.removeItem('arc:password-recovery');
-        } catch {
-          /* storage optional */
-        }
+        onSuccess?.();
+        finishRecovery();
       }
     } catch (failure) {
       setError(

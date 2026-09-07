@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 export const runtime = 'nodejs';
 
 function reply(status: number, message: string) {
+  if (status >= 500) console.warn('account_deletion_unavailable', { status });
   return Response.json(
     { message },
     { status, headers: { 'Cache-Control': 'no-store' } },

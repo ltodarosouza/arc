@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
 import { randomUUID } from 'node:crypto';
+import { AxeBuilder } from '@axe-core/playwright';
 
 test.describe('real account flows in disposable local Supabase', () => {
   test.skip(
@@ -12,11 +13,13 @@ test.describe('real account flows in disposable local Supabase', () => {
   const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
   const password = 'Arc-test-' + randomUUID();
   const nextPassword = 'Arc-next-' + randomUUID();
+  const profilePassword = 'Arc-profile-' + randomUUID();
   const address = 'arc-qa-' + randomUUID();
   const email = address + '@example.test';
   const otherEmail = 'arc-qa-' + randomUUID() + '@example.test';
   let userId = '';
   let otherId = '';
+  let registeredId = '';
   const options = { auth: { persistSession: false, autoRefreshToken: false } };
   const admin = () => {
     if (!['127.0.0.1', 'localhost'].includes(new URL(url).hostname))
@@ -41,6 +44,68 @@ test.describe('real account flows in disposable local Supabase', () => {
     const client = admin();
     if (userId) await client.auth.admin.deleteUser(userId);
     if (otherId) await client.auth.admin.deleteUser(otherId);
+    if (registeredId) await client.auth.admin.deleteUser(registeredId);
+  });
+
+  test('registration confirmation and neutral recovery for an unknown address', async ({
+    page,
+    request,
+  }) => {
+    const signupEmail = 'arc-signup-' + randomUUID() + '@example.test';
+    await page.goto('/account/sign-in');
+    await page.getByRole('button', { name: 'Ainda não tenho conta' }).click();
+    await page.getByLabel('E-mail', { exact: true }).fill(signupEmail);
+    await page.getByLabel('Senha', { exact: true }).fill(password);
+    const [response] = await Promise.all([
+      page.waitForResponse((value) => value.url().includes('/auth/v1/signup')),
+      page.getByRole('button', { name: 'Criar conta', exact: true }).click(),
+    ]);
+    const result = await response.json();
+    registeredId = result.user?.id ?? result.id ?? '';
+    expect(Boolean(registeredId)).toBe(true);
+    await expect(page.getByRole('status')).toContainText('e-mail');
+    let messageId = '';
+    await expect
+      .poll(async () => {
+        const inbox = await (
+          await request.get('http://127.0.0.1:54324/api/v1/messages')
+        ).json();
+        messageId =
+          inbox.messages.find(
+            (item: { ID: string; To: { Address: string }[] }) =>
+              item.To.some((to) => to.Address === signupEmail),
+          )?.ID ?? '';
+        return Boolean(messageId);
+      })
+      .toBe(true);
+    const mail = await (
+      await request.get('http://127.0.0.1:54324/api/v1/message/' + messageId)
+    ).json();
+    const link = String(mail.Text || mail.HTML)
+      .match(/http:\/\/127\.0\.0\.1:54321\/auth\/v1\/verify[^\s<>"]+/)?.[0]
+      ?.replaceAll('&amp;', '&');
+    if (!link) throw new Error('Confirmation link missing.');
+    await page.goto(link);
+    await page.getByRole('link', { name: 'Abrir perfil' }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Perfil', exact: true }),
+    ).toBeVisible();
+    await Promise.all([
+      page.waitForEvent('load'),
+      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
+    ]);
+    await page.goto('/account/reset');
+    await expect(
+      page.getByRole('alert').filter({ hasText: 'Este link expirou' }),
+    ).toBeVisible();
+    await page.goto('/account/recover');
+    await page
+      .getByLabel('E-mail', { exact: true })
+      .fill('not-registered-' + randomUUID() + '@example.test');
+    await page
+      .getByRole('button', { name: 'Enviar link', exact: true })
+      .click();
+    await expect(page.getByRole('status')).toContainText('Se houver uma conta');
   });
 
   test('profile, RLS, recovery, password change, sign-out and deletion', async ({
@@ -64,6 +129,22 @@ test.describe('real account flows in disposable local Supabase', () => {
     await expect(page.getByLabel('Como quer ser chamado')).toHaveValue(
       'Ana D’Ávila',
     );
+    await page.getByLabel('Como quer ser chamado').fill('Ana Revisada');
+
+    await page.route('**/rest/v1/profiles*', (route) =>
+      route.fulfill({ status: 503, body: '{}' }),
+    );
+    await page
+      .getByLabel('Como quer ser chamado')
+      .fill('Nome preservado na falha');
+    await page.getByRole('button', { name: 'Salvar nome' }).click();
+    await expect(
+      page.getByRole('alert').filter({ hasText: 'Não foi possível salvar' }),
+    ).toBeVisible();
+    await expect(page.getByLabel('Como quer ser chamado')).toHaveValue(
+      'Nome preservado na falha',
+    );
+    await page.unroute('**/rest/v1/profiles*');
     await page.getByLabel('Como quer ser chamado').fill('Ana Revisada');
     await page.getByRole('button', { name: 'Salvar nome' }).click();
     await expect(
@@ -94,6 +175,18 @@ test.describe('real account flows in disposable local Supabase', () => {
 
     // Narrow viewport and keyboard access; no personal production data used.
     await page.setViewportSize({ width: 390, height: 844 });
+    const accessibility = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+    expect(
+      accessibility.violations.map((violation) => ({
+        id: violation.id,
+        nodes: violation.nodes.map((node) => ({
+          target: node.target,
+          summary: node.failureSummary,
+        })),
+      })),
+    ).toEqual([]);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -110,12 +203,36 @@ test.describe('real account flows in disposable local Supabase', () => {
       page.getByRole('button', { name: 'Excluir minha conta', exact: true }),
     ).toBeFocused();
 
-    await page
-      .getByRole('button', { name: 'Sair da conta', exact: true })
-      .click();
+    await page.route('**/auth/v1/logout*', (route) =>
+      route.fulfill({ status: 503, body: '{}' }),
+    );
+    await Promise.all([
+      page.waitForEvent('load'),
+      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
+    ]);
     await expect(
-      page.getByRole('heading', { name: 'Entre na sua conta' }),
+      page
+        .getByRole('alert')
+        .filter({ hasText: 'Seu acesso neste navegador foi encerrado' }),
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Perfil', exact: true }),
+    ).not.toBeVisible();
+    await page.unroute('**/auth/v1/logout*');
+    await page.getByLabel('E-mail', { exact: true }).fill(otherEmail);
+    await page.getByLabel('Senha', { exact: true }).fill(password);
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Perfil', exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel('Como quer ser chamado')).toHaveValue('');
+    await expect(
+      page.getByRole('link', { name: 'Abrir perfil' }),
+    ).not.toContainText('Ana Revisada');
+    await Promise.all([
+      page.waitForEvent('load'),
+      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
+    ]);
     await page.goto('/account/recover');
     await page.getByLabel('E-mail', { exact: true }).fill(email);
     await page.getByRole('button', { name: 'Enviar link' }).click();
@@ -152,9 +269,18 @@ test.describe('real account flows in disposable local Supabase', () => {
     await page.getByRole('button', { name: 'Atualizar senha' }).click();
     await expect(page.getByRole('status')).toContainText('Senha atualizada');
     await page.goto('/account');
-    await page
-      .getByRole('button', { name: 'Sair da conta', exact: true })
-      .click();
+    await Promise.all([
+      page.waitForEvent('load'),
+      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
+    ]);
+    await page.goto(link);
+    await expect(
+      page.getByRole('alert').filter({ hasText: 'Este link expirou' }),
+    ).toBeVisible();
+    await expect(
+      page.getByLabel('Nova senha', { exact: true }),
+    ).not.toBeVisible();
+    await page.goto('/account/sign-in');
     await page.getByLabel('E-mail', { exact: true }).fill(email);
     await page.getByLabel('Senha', { exact: true }).fill(nextPassword);
     await page.getByRole('button', { name: 'Entrar', exact: true }).click();
@@ -162,10 +288,42 @@ test.describe('real account flows in disposable local Supabase', () => {
       page.getByRole('heading', { name: 'Perfil', exact: true }),
     ).toBeVisible();
 
+    await page
+      .getByLabel('Senha atual', { exact: true })
+      .fill('wrong-password');
+    await page.getByLabel('Nova senha', { exact: true }).fill(profilePassword);
+    await page
+      .getByLabel('Confirmar nova senha', { exact: true })
+      .fill(profilePassword);
+    await page
+      .getByRole('button', { name: 'Atualizar senha', exact: true })
+      .click();
+    await expect(
+      page
+        .getByRole('alert')
+        .filter({ hasText: 'Não foi possível confirmar a senha atual' }),
+    ).toBeVisible();
+    await page.getByLabel('Senha atual', { exact: true }).fill(nextPassword);
+    await page
+      .getByRole('button', { name: 'Atualizar senha', exact: true })
+      .click();
+    await expect(
+      page.getByRole('status').filter({ hasText: 'Senha atualizada' }),
+    ).toBeVisible();
+    await Promise.all([
+      page.waitForEvent('load'),
+      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
+    ]);
+    await page.getByLabel('E-mail', { exact: true }).fill(email);
+    await page.getByLabel('Senha', { exact: true }).fill(profilePassword);
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Perfil', exact: true }),
+    ).toBeVisible();
     const learner = createClient(url, key, options);
     const login = await learner.auth.signInWithPassword({
       email,
-      password: nextPassword,
+      password: profilePassword,
     });
     const token = login.data.session?.access_token;
     expect(Boolean(token)).toBe(true);
@@ -193,16 +351,46 @@ test.describe('real account flows in disposable local Supabase', () => {
         Origin: 'https://untrusted.invalid',
         Authorization: 'Bearer ' + token,
       },
-      data: { confirmation: 'EXCLUIR MINHA CONTA', password: nextPassword },
+      data: { confirmation: 'EXCLUIR MINHA CONTA', password: profilePassword },
     });
     expect(forbidden.status()).toBe(403);
+    for (const [data, status] of [
+      [
+        {
+          confirmation: 'EXCLUIR MINHA CONTA',
+          password: profilePassword,
+          userId: otherId,
+        },
+        400,
+      ],
+      [
+        { confirmation: 'EXCLUIR MINHA CONTA', password: 'incorrect-password' },
+        403,
+      ],
+      [{ confirmation: 'not-confirmed', password: profilePassword }, 400],
+    ] as const) {
+      const response = await request.post('/api/account/delete', {
+        headers: {
+          Origin: 'http://127.0.0.1:3000',
+          Authorization: 'Bearer ' + token,
+        },
+        data,
+      });
+      expect(response.status()).toBe(status);
+    }
 
     await page
       .getByRole('button', { name: 'Excluir minha conta', exact: true })
       .click();
+    await expect(
+      page.getByRole('button', {
+        name: 'Excluir definitivamente',
+        exact: true,
+      }),
+    ).toBeDisabled();
     await page
       .getByLabel('Senha atual para excluir', { exact: true })
-      .fill(nextPassword);
+      .fill(profilePassword);
     await page
       .getByLabel('Digite EXCLUIR MINHA CONTA')
       .fill('EXCLUIR MINHA CONTA');

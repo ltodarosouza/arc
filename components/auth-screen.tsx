@@ -17,6 +17,13 @@ export function AuthScreen() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [logoutWarning, setLogoutWarning] = useState(false);
+  useEffect(() => {
+    setLogoutWarning(
+      new URLSearchParams(window.location.search).get('logout') ===
+        'unconfirmed',
+    );
+  }, []);
   useEffect(() => {
     if (session?.user.email && !session.user.is_anonymous)
       router.replace('/account');
@@ -119,6 +126,13 @@ export function AuthScreen() {
             {signup && (
               <p className="text-sm text-[var(--arc-text-muted)]">
                 Use pelo menos 8 caracteres.
+              </p>
+            )}
+            {logoutWarning && (
+              <p role="alert">
+                Seu acesso neste navegador foi encerrado. Não foi possível
+                confirmar a revogação da sessão no servidor; entre novamente
+                quando sua conexão voltar.
               </p>
             )}
             {error && (
