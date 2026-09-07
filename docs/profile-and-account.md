@@ -26,3 +26,13 @@ Após excluir, RLS não deve permitir acesso nem mesmo com um JWT antigo.
 Validação: aplicar em banco separado, criar duas identidades descartáveis,
 tentar leitura e alteração cruzadas e verificar cascatas. Testes devem exercitar
 RLS com papéis autenticados, não apenas o administrador.
+
+# Implementação e validação local — 7 de setembro de 2026
+
+As issues #103–#107 têm implementação em `/account`: identidade privada, edição de nome, saída explícita, recuperação em `/account/recover`, atualização em `/account/reset` e exclusão autenticada via `POST /api/account/delete`. A exclusão exige senha atual e a frase `EXCLUIR MINHA CONTA`; o servidor determina o usuário pela sessão verificada e recusa identificadores enviados pelo cliente.
+
+O teste `e2e/account-journey.spec.ts` usa duas contas descartáveis em Supabase local, entrega real de e-mail no Mailpit, login após recuperação, RLS entre usuários, teclado no diálogo, viewport móvel e exclusão em cascata. A primeira execução completa passou. Isso não constitui validação do ambiente publicado.
+
+Para reproduzir: instalar Docker e iniciar `npx supabase start`; configurar `.env.local` com as credenciais exclusivamente locais retornadas pelo CLI, incluindo `SUPABASE_SERVICE_ROLE_KEY` e `NEXT_PUBLIC_SITE_URL=http://127.0.0.1:3000`; iniciar `npm run dev -- --hostname 127.0.0.1 --port 3000`; executar Playwright com `ARC_ACCOUNT_QA=1` e `node --env-file=.env.local node_modules/@playwright/test/cli.js test --config playwright.account.config.ts`. O teste recusa Supabase remoto e apaga somente as contas que criou. Não publicar relatórios de falha que possam conter campos dos formulários de teste.
+
+Antes da publicação, aplicar as migrations no Supabase de destino, cadastrar a URL exata `https://<domínio>/account/reset` entre os redirects autorizados e configurar a origem pública e a chave de serviço apenas no ambiente de servidor da Vercel. A chave de serviço nunca deve receber o prefixo `NEXT_PUBLIC_`. Sem ela a exclusão retorna indisponibilidade e preserva a conta. Confirmar entrega de e-mail e executar a revisão de aceitação no ambiente publicado antes de encerrar a #108.

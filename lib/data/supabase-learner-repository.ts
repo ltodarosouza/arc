@@ -1,7 +1,7 @@
 import type { LearnerState } from '@/lib/domain/learner';
 import type { AttemptOutcome, QuestionAttempt } from '@/lib/domain/questions';
 import { createEmptyLearnerState } from '@/lib/domain/learner';
-import { ensureLearnerSession, getSupabaseClient } from '@/lib/supabase/client';
+import { getSupabaseClient } from '@/lib/supabase/client';
 import { seedSubjects } from '@/lib/data/seed-catalogue';
 
 type DatabaseAttempt = {
@@ -14,7 +14,12 @@ type DatabaseAttempt = {
 };
 
 async function currentUserId() {
-  const session = await ensureLearnerSession();
+  const {
+    data: { session },
+    error,
+  } = await getSupabaseClient().auth.getSession();
+  if (error || !session)
+    throw new Error('Entre novamente para acessar seu progresso.');
   return session.user.id;
 }
 

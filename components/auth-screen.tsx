@@ -1,214 +1,159 @@
 'use client';
-
-import type { FormEvent } from 'react';
-import { useState } from 'react';
-import { ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react';
-
+import Link from 'next/link';
+import { useEffect, useState, type SyntheticEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { ArcButton, ArcCard } from '@/components/arc-ui';
 import { Input } from '@/components/ui/input';
+import { PasswordField } from '@/components/password-field';
+import { useAuth } from '@/components/auth-provider';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
-type AuthMode = 'sign-in' | 'sign-up';
-type AuthErrorFeedback = { message: string; code: string | null };
-
-function readableAuthError(message: string) {
-  if (message.toLowerCase().includes('invalid login credentials'))
-    return 'E-mail ou senha incorretos.';
-  if (message.toLowerCase().includes('email not confirmed'))
-    return 'Confirme seu e-mail antes de entrar.';
-  return message;
-}
-
 export function AuthScreen() {
-  const [mode, setMode] = useState<AuthMode>('sign-in');
+  const { session } = useAuth();
+  const router = useRouter();
+  const [signup, setSignup] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<AuthErrorFeedback | null>(null);
-
-  const isSignUp = mode === 'sign-up';
-
-  const changeMode = (nextMode: AuthMode) => {
-    setMode(nextMode);
-    setError(null);
-    setMessage(null);
-  };
-
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    if (session?.user.email && !session.user.is_anonymous)
+      router.replace('/account');
+  }, [session, router]);
+  async function submit(event: SyntheticEvent) {
     event.preventDefault();
-    if (!isSupabaseConfigured()) {
-      setError({
-        message:
-          'O acesso ainda está sendo preparado. Tente novamente em alguns instantes.',
-        code: 'SUPABASE_NOT_CONFIGURED',
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
+    setBusy(true);
     setError(null);
     setMessage(null);
-
-    const supabase = getSupabaseClient();
-    const result = isSignUp
-      ? await supabase.auth.signUp({
-          email,
-          password,
-          options: { emailRedirectTo: window.location.origin },
-        })
-      : await supabase.auth.signInWithPassword({ email, password });
-
-    setIsSubmitting(false);
-    if (result.error) {
-      setError({
-        message: readableAuthError(result.error.message),
-        code:
-          result.error.code ??
-          (result.error.status ? `HTTP_${result.error.status}` : null),
-      });
-      return;
-    }
-
-    if (isSignUp && !result.data.session) {
-      setMessage(
-        'Conta criada. Confira seu e-mail para confirmar o acesso e depois entre por aqui.',
+    try {
+      if (!isSupabaseConfigured())
+        throw new Error('O acesso não está configurado neste ambiente.');
+      const client = getSupabaseClient();
+      const result = signup
+        ? await client.auth.signUp({
+            email: email.trim(),
+            password,
+            options: { emailRedirectTo: window.location.origin + '/account' },
+          })
+        : await client.auth.signInWithPassword({
+            email: email.trim(),
+            password,
+          });
+      if (result.error) {
+        const code = result.error.code;
+        throw new Error(
+          code === 'invalid_credentials'
+            ? 'E-mail ou senha incorretos.'
+            : code === 'email_not_confirmed'
+              ? 'Confirme seu e-mail antes de entrar.'
+              : code === 'over_request_rate_limit' ||
+                  code === 'over_email_send_rate_limit'
+                ? 'Aguarde alguns instantes antes de tentar novamente.'
+                : 'Não foi possível concluir o acesso. Confira os dados e tente novamente.',
+        );
+      }
+      setPassword('');
+      if (result.data.session) {
+        try {
+          sessionStorage.removeItem('arc:signed-out');
+        } catch {
+          /* optional local preference */
+        }
+        router.replace('/account');
+      } else
+        setMessage(
+          'Confira seu e-mail para confirmar o acesso e depois entre por aqui.',
+        );
+    } catch (failure) {
+      setError(
+        failure instanceof Error
+          ? failure.message
+          : 'Não foi possível conectar. Tente novamente.',
       );
+    } finally {
+      setBusy(false);
     }
-  };
-
+  }
   return (
-    <main className="min-h-screen bg-[#f7f7f5] px-5 py-6 text-[#161616] sm:px-8 sm:py-8">
-      <header className="mx-auto flex max-w-6xl items-center">
-        <a
-          className="flex items-center gap-2.5 font-semibold tracking-[-0.045em]"
-          href="#top"
-        >
-          <span className="grid size-8 place-items-center rounded-[11px] bg-[#1d221d] text-sm text-white">
-            a
-          </span>
-          <span className="text-[18px]">arc</span>
-        </a>
-      </header>
-
-      <section className="mx-auto flex min-h-[calc(100vh-112px)] max-w-md items-center py-12 sm:py-16">
-        <ArcCard className="w-full p-5 sm:p-8">
-          <h1 className="text-3xl font-medium tracking-[-0.055em] sm:text-4xl">
-            {isSignUp ? 'Comece de onde você está.' : 'Bom ter você por aqui.'}
+    <main className="min-h-screen bg-[var(--background)] px-5 py-10">
+      <section className="mx-auto max-w-md">
+        <Link href="/" className="text-xl font-semibold">
+          arc
+        </Link>
+        <ArcCard className="mt-10 p-6 sm:p-8">
+          <h1 className="text-3xl font-medium tracking-tight">
+            {signup ? 'Crie sua conta' : 'Entre na sua conta'}
           </h1>
-          <p className="mt-3 max-w-sm text-[15px] leading-6 text-[#68706b]">
-            {isSignUp
-              ? 'Salve suas disciplinas, tentativas e revisões em um só lugar.'
-              : 'Entre para continuar suas questões e manter seu progresso.'}
+          <p className="mt-3 text-[var(--arc-text-muted)]">
+            Salve suas disciplinas, tentativas e revisões.
           </p>
-
-          {message ? (
-            <div
-              className="mt-8 rounded-2xl bg-[var(--arc-success-bg)] p-4 text-sm leading-6 text-[var(--arc-success-text)]"
-              role="status"
-            >
-              <CheckCircle2 aria-hidden="true" className="mb-2 size-5" />
-              {message}
-              <button
-                className="mt-3 block font-medium underline underline-offset-4"
-                onClick={() => changeMode('sign-in')}
-                type="button"
-              >
-                Ir para entrar
-              </button>
-            </div>
-          ) : (
-            <form className="mt-8 grid gap-4" onSubmit={submit}>
-              <label className="grid gap-2 text-sm font-medium" htmlFor="email">
-                E-mail
-                <Input
-                  autoComplete="email"
-                  className="h-11 rounded-xl border-black/[0.11] bg-white px-3 text-sm focus-visible:border-[#79a88a]"
-                  id="email"
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="voce@universidade.edu"
-                  required
-                  type="email"
-                  value={email}
-                />
-              </label>
-              <label
-                className="grid gap-2 text-sm font-medium"
-                htmlFor="password"
-              >
-                Senha
-                <span className="relative block">
-                  <Input
-                    autoComplete={
-                      isSignUp ? 'new-password' : 'current-password'
-                    }
-                    className="h-11 rounded-xl border-black/[0.11] bg-white px-3 pr-11 text-sm focus-visible:border-[#46657a]"
-                    id="password"
-                    minLength={6}
-                    onChange={(event) => setPassword(event.target.value)}
-                    placeholder="Mínimo de 6 caracteres"
-                    required
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    value={password}
-                  />
-                  <button
-                    aria-label={
-                      isPasswordVisible ? 'Ocultar senha' : 'Mostrar senha'
-                    }
-                    aria-pressed={isPasswordVisible}
-                    className="absolute inset-y-0 right-0 grid w-11 place-items-center rounded-r-xl text-[var(--arc-text-muted)] transition-colors hover:text-[#31485c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-[#46657a]"
-                    onClick={() => setIsPasswordVisible((visible) => !visible)}
-                    type="button"
-                  >
-                    {isPasswordVisible ? (
-                      <EyeOff aria-hidden="true" className="size-4" />
-                    ) : (
-                      <Eye aria-hidden="true" className="size-4" />
-                    )}
-                  </button>
-                </span>
-              </label>
-              {error && (
-                <p
-                  className="rounded-xl bg-[var(--arc-error-bg)] px-3 py-2.5 text-sm text-[var(--arc-error-text)]"
-                  role="alert"
-                >
-                  <span>{error.message}</span>
-                  {error.code && (
-                    <span className="mt-1.5 block text-xs opacity-80">
-                      Código: {error.code}
-                    </span>
-                  )}
-                </p>
-              )}
-              <ArcButton
-                className="mt-2 w-full"
-                disabled={isSubmitting}
-                type="submit"
-              >
-                {isSubmitting
-                  ? 'Só um instante…'
-                  : isSignUp
-                    ? 'Criar conta'
-                    : 'Entrar'}{' '}
-                {!isSubmitting && <ArrowRight className="size-4" />}
-              </ArcButton>
-            </form>
-          )}
-
-          {!message && (
-            <p className="mt-6 text-center text-sm text-[#68706b]">
-              {isSignUp ? 'Já tem uma conta?' : 'Ainda não tem uma conta?'}{' '}
-              <button
-                className="font-medium text-[#46657a] underline-offset-4 hover:underline"
-                onClick={() => changeMode(isSignUp ? 'sign-in' : 'sign-up')}
-                type="button"
-              >
-                {isSignUp ? 'Entrar' : 'Criar conta'}
-              </button>
+          {session?.user.is_anonymous && (
+            <p className="mt-3 text-sm">
+              O histórico de visitante fica separado da conta. Você pode
+              continuar praticando como visitante pelo início.
             </p>
           )}
+          <form className="mt-6 grid gap-4" onSubmit={submit}>
+            <label htmlFor="email" className="font-medium">
+              E-mail
+            </label>
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              disabled={busy}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <PasswordField
+              id="password"
+              label="Senha"
+              value={password}
+              onChange={setPassword}
+              autoComplete={signup ? 'new-password' : 'current-password'}
+              minLength={signup ? 8 : 1}
+              disabled={busy}
+            />
+            {signup && (
+              <p className="text-sm text-[var(--arc-text-muted)]">
+                Use pelo menos 8 caracteres.
+              </p>
+            )}
+            {error && (
+              <p role="alert" className="text-[var(--arc-error-text)]">
+                {error}
+              </p>
+            )}
+            {message && (
+              <output className="text-[var(--arc-success-text)]">
+                {message}
+              </output>
+            )}
+            <ArcButton type="submit" disabled={busy}>
+              {busy ? 'Só um instante…' : signup ? 'Criar conta' : 'Entrar'}
+            </ArcButton>
+          </form>
+          <Link
+            href="/account/recover"
+            className="mt-5 inline-flex min-h-11 items-center underline"
+          >
+            Esqueci minha senha
+          </Link>
+          <button
+            className="mt-2 block min-h-11 underline"
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              setSignup((value) => !value);
+              setError(null);
+              setMessage(null);
+              setPassword('');
+            }}
+          >
+            {signup ? 'Já tenho conta. Entrar' : 'Ainda não tenho conta'}
+          </button>
         </ArcCard>
       </section>
     </main>

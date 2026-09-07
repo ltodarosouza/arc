@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Compass, House, Layers3, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
+import { useAuth } from '@/components/auth-provider';
 import { AuthScreen } from '@/components/auth-screen';
 import {
   ensureLearnerSession,
@@ -12,7 +13,7 @@ import {
   isSupabaseConfigured,
 } from '@/lib/supabase/client';
 
-type Destination = 'home' | 'explore' | 'progress' | 'subjects';
+type Destination = 'home' | 'explore' | 'progress' | 'subjects' | 'account';
 
 const destinations = [
   { id: 'home' as const, href: '/', label: 'Início', icon: House },
@@ -43,39 +44,27 @@ export function AppShell({
   active: Destination;
   children: ReactNode;
 }) {
-  const [authReady, setAuthReady] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [isAnonymous, setIsAnonymous] = useState(false);
+  const { session, ready: authReady, profileName, signOut } = useAuth();
+  const userEmail = session?.user.email;
+  const isAnonymous = Boolean(session?.user.is_anonymous);
   const [isNavigating, setIsNavigating] = useState(false);
-
-  useEffect(() => {
-    if (!isSupabaseConfigured()) {
-      setAuthReady(true);
-      return;
+  const [leaving, setLeaving] = useState(false);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
+  async function leave() {
+    setLeaving(true);
+    setLogoutError(null);
+    try {
+      await signOut();
+    } catch (failure) {
+      setLogoutError(
+        failure instanceof Error ? failure.message : 'Não foi possível sair.',
+      );
+      setLeaving(false);
     }
-    const supabase = getSupabaseClient();
-    void ensureLearnerSession()
-      .then((session) => {
-        setUserEmail(session.user.email ?? null);
-        setIsAnonymous(Boolean(session.user.is_anonymous));
-        setAuthReady(true);
-      })
-      .catch(() => setAuthReady(true));
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUserEmail(session?.user.email ?? null);
-      setIsAnonymous(Boolean(session?.user.is_anonymous));
-      setAuthReady(true);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
+  }
 
   useEffect(() => setIsNavigating(false), [active]);
 
-  const signOut = async () => {
-    if (isSupabaseConfigured()) await getSupabaseClient().auth.signOut();
-  };
   if (!authReady)
     return <main className="min-h-screen bg-[var(--background)]" />;
   if (!userEmail && !isAnonymous && isSupabaseConfigured())
@@ -120,29 +109,40 @@ export function AppShell({
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          {isAnonymous ? (
-            <a
-              className="text-sm font-medium text-[#46657a] hover:underline"
-              href="/account"
+          <Link
+            aria-label="Abrir perfil"
+            href="/account"
+            className="flex min-h-11 items-center gap-2 rounded-full px-3 hover:bg-[var(--arc-accent)]"
+          >
+            <span className="hidden max-w-36 truncate text-sm sm:block">
+              {profileName ?? (isAnonymous ? 'Visitante' : 'Minha conta')}
+            </span>
+            <span
+              className="grid size-9 place-items-center rounded-full bg-[var(--arc-accent)]"
+              aria-hidden="true"
             >
-              Entrar
-            </a>
-          ) : (
-            <>
-              <span className="hidden max-w-44 truncate text-sm text-[var(--arc-text-muted)] sm:block">
-                {userEmail}
-              </span>
-              <button
-                aria-label="Sair da conta"
-                className="grid size-11 place-items-center rounded-full bg-[var(--arc-accent)] text-sm font-medium text-[#30475a] transition-colors hover:bg-[#c8d8d6]"
-                onClick={() => void signOut()}
-              >
-                {userEmail?.charAt(0).toUpperCase()}
-              </button>
-            </>
+              {profileName?.charAt(0).toUpperCase() ?? 'a'}
+            </span>
+          </Link>
+          {session && (
+            <button
+              disabled={leaving}
+              className="min-h-11 px-2 text-sm underline"
+              onClick={() => void leave()}
+            >
+              {leaving ? 'Saindo…' : 'Sair'}
+            </button>
           )}
         </div>
       </header>
+      {logoutError && (
+        <p
+          role="alert"
+          className="mx-auto max-w-6xl px-5 text-[var(--arc-error-text)]"
+        >
+          {logoutError}
+        </p>
+      )}
       <div id="main-content" tabIndex={-1}>
         {children}
       </div>

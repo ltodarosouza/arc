@@ -1,129 +1,134 @@
 'use client';
-
-import { useCallback, useEffect, useState } from 'react';
-
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAuth } from '@/components/auth-provider';
 import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 import {
   loadSupabaseLearnerState,
   saveSupabaseSelectedSubjects,
   setSupabaseRedo,
 } from '@/lib/data/supabase-learner-repository';
-import type { LearnerState } from '@/lib/domain/learner';
+import {
+  createEmptyLearnerState,
+  type LearnerState,
+} from '@/lib/domain/learner';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
-type LearnerData = {
-  state: LearnerState | null;
-  isLoading: boolean;
-  isFallback: boolean;
-  error: Error | null;
-  refresh: () => Promise<void>;
-  saveSelectedSubjectIds: (subjectIds: string[]) => Promise<boolean>;
-  setRedo: (questionId: string, enabled: boolean) => Promise<boolean>;
-};
-
-export function useLearnerState(): LearnerData {
-  const [state, setState] = useState<LearnerState | null>(null);
+export function useLearnerState() {
+  const { session, ready } = useAuth();
+  const owner = session?.user.id ?? null;
+  const remote = isSupabaseConfigured();
+  const [snapshot, setSnapshot] = useState<{
+    owner: string | null;
+    state: LearnerState;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFallback, setIsFallback] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-
+  const generation = useRef(0);
   const refresh = useCallback(async () => {
+    const request = ++generation.current;
+    if (!ready) return;
+    if (remote && !owner) {
+      setSnapshot(null);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     try {
-      const localState = createLocalLearnerRepository().getState();
-      const remoteState = isSupabaseConfigured()
+      const state = remote
         ? await loadSupabaseLearnerState()
-        : null;
-      const nextState =
-        remoteState &&
-        (remoteState.selectedSubjectIds.length ||
-          !localState.selectedSubjectIds.length)
-          ? remoteState
-          : remoteState
-            ? {
-                ...remoteState,
-                selectedSubjectIds: localState.selectedSubjectIds,
-              }
-            : localState;
-      setState(nextState);
-      setIsFallback(!isSupabaseConfigured());
+        : createLocalLearnerRepository().getState();
+      if (request !== generation.current) return;
+      setSnapshot({ owner, state });
       setError(null);
-    } catch (failure) {
-      setState(createLocalLearnerRepository().getState());
-      setIsFallback(true);
+    } catch {
+      if (request !== generation.current) return;
+      setSnapshot(null);
       setError(
-        failure instanceof Error
-          ? failure
-          : new Error('Não foi possível sincronizar seu progresso.'),
+        new Error('Não foi possível carregar seu progresso. Tente novamente.'),
       );
     } finally {
-      setIsLoading(false);
+      if (request === generation.current) setIsLoading(false);
     }
-  }, []);
-
+  }, [owner, ready, remote]);
   useEffect(() => {
     void refresh();
+    return () => {
+      generation.current++;
+    };
   }, [refresh]);
 
-  const saveSelectedSubjectIds = useCallback(async (subjectIds: string[]) => {
-    const local = createLocalLearnerRepository();
-    local.saveSelectedSubjectIds(subjectIds);
-    setState((current) =>
-      current ? { ...current, selectedSubjectIds: subjectIds } : current,
-    );
-    if (!isSupabaseConfigured()) return true;
-    try {
-      await saveSupabaseSelectedSubjects(subjectIds);
-      setIsFallback(false);
-      return true;
-    } catch (failure) {
-      setIsFallback(true);
-      setError(
-        failure instanceof Error
-          ? failure
-          : new Error(
-              'Alteração salva neste dispositivo e aguardando sincronização.',
+  const saveSelectedSubjectIds = useCallback(
+    async (ids: string[]) => {
+      const request = generation.current;
+      try {
+        if (remote) {
+          if (!owner) throw new Error('Entre para salvar.');
+          await saveSupabaseSelectedSubjects(ids);
+        } else createLocalLearnerRepository().saveSelectedSubjectIds(ids);
+        if (request !== generation.current) return false;
+        setSnapshot((current) => ({
+          owner,
+          state: {
+            ...(current?.owner === owner
+              ? current.state
+              : createEmptyLearnerState()),
+            selectedSubjectIds: ids,
+          },
+        }));
+        setError(null);
+        return true;
+      } catch {
+        if (request === generation.current)
+          setError(
+            new Error(
+              'Não foi possível salvar suas disciplinas. Tente novamente.',
             ),
-      );
-      return false;
-    }
-  }, []);
-
-  const setRedo = useCallback(async (questionId: string, enabled: boolean) => {
-    const local = createLocalLearnerRepository();
-    local.setRedo(questionId, enabled);
-    setState((current) =>
-      current
-        ? {
-            ...current,
-            redoQuestionIds: enabled
-              ? [...new Set([...current.redoQuestionIds, questionId])]
-              : current.redoQuestionIds.filter((id) => id !== questionId),
-          }
-        : current,
-    );
-    if (!isSupabaseConfigured()) return true;
-    try {
-      await setSupabaseRedo(questionId, enabled);
-      setIsFallback(false);
-      return true;
-    } catch (failure) {
-      setIsFallback(true);
-      setError(
-        failure instanceof Error
-          ? failure
-          : new Error(
-              'Alteração salva neste dispositivo e aguardando sincronização.',
-            ),
-      );
-      return false;
-    }
-  }, []);
-
+          );
+        return false;
+      }
+    },
+    [owner, remote],
+  );
+  const setRedo = useCallback(
+    async (questionId: string, enabled: boolean) => {
+      const request = generation.current;
+      try {
+        if (remote) {
+          if (!owner) throw new Error('Entre para salvar.');
+          await setSupabaseRedo(questionId, enabled);
+        } else createLocalLearnerRepository().setRedo(questionId, enabled);
+        if (request !== generation.current) return false;
+        setSnapshot((current) => {
+          const state =
+            current?.owner === owner
+              ? current.state
+              : createEmptyLearnerState();
+          return {
+            owner,
+            state: {
+              ...state,
+              redoQuestionIds: enabled
+                ? [...new Set([...state.redoQuestionIds, questionId])]
+                : state.redoQuestionIds.filter((id) => id !== questionId),
+            },
+          };
+        });
+        setError(null);
+        return true;
+      } catch {
+        if (request === generation.current)
+          setError(
+            new Error('Não foi possível salvar a marcação. Tente novamente.'),
+          );
+        return false;
+      }
+    },
+    [owner, remote],
+  );
   return {
-    state,
+    state: snapshot?.owner === owner ? snapshot.state : null,
     isLoading,
-    isFallback,
+    isFallback: !remote,
     error,
     refresh,
     saveSelectedSubjectIds,

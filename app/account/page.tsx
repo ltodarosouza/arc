@@ -1,5 +1,5 @@
-import { AuthScreen } from '@/components/auth-screen';
+import { AccountProfile } from '@/components/account-profile';
 
 export default function AccountPage() {
-  return <AuthScreen />;
+  return <AccountProfile />;
 }
