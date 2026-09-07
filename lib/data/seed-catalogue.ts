@@ -359,7 +359,7 @@ export const seedQuestions: Question[] = [
         sortOrder: 4,
       },
     ],
-    correctOptionId: 'option-a',
+    correctOptionId: 'option-linear-a',
     hints: [],
     solution: {
       finalAnswer: { format: 'markdown_latex', value: '$5$' },

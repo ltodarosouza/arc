@@ -1,15 +1,17 @@
 import katex from 'katex';
+import { normalizeLegacyMath } from '@/lib/domain/math';
 
 import { cn } from '@/lib/utils';
 
 function renderMath(expression: string, displayMode: boolean) {
   return {
-    __html: katex.renderToString(expression.replace(/\\\\/g, '\\'), {
+    __html: katex.renderToString(normalizeLegacyMath(expression), {
       displayMode,
       output: 'html',
       strict: 'ignore',
       throwOnError: false,
       trust: false,
+      macros: { '\\sen': '\\sin' },
     }),
   };
 }
