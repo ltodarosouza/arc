@@ -40,23 +40,9 @@ export function AppShell({
   active: Destination;
   children: ReactNode;
 }) {
-  const { session, ready: authReady, profileName, signOut } = useAuth();
+  const { session, ready: authReady, profileName } = useAuth();
   const profileLabel = profileName ?? 'Minha conta';
   const [isNavigating, setIsNavigating] = useState(false);
-  const [leaving, setLeaving] = useState(false);
-  const [logoutError, setLogoutError] = useState<string | null>(null);
-  async function leave() {
-    setLeaving(true);
-    setLogoutError(null);
-    try {
-      await signOut();
-    } catch (failure) {
-      setLogoutError(
-        failure instanceof Error ? failure.message : 'Não foi possível sair.',
-      );
-      setLeaving(false);
-    }
-  }
 
   useEffect(() => setIsNavigating(false), [active]);
 
@@ -118,25 +104,8 @@ export function AppShell({
               {profileLabel.charAt(0).toUpperCase()}
             </span>
           </Link>
-          {session && (
-            <button
-              disabled={leaving}
-              className="min-h-11 px-2 text-sm underline"
-              onClick={() => void leave()}
-            >
-              {leaving ? 'Saindo…' : 'Sair'}
-            </button>
-          )}
         </div>
       </header>
-      {logoutError && (
-        <p
-          role="alert"
-          className="mx-auto max-w-6xl px-5 text-[var(--arc-error-text)]"
-        >
-          {logoutError}
-        </p>
-      )}
       <div id="main-content" tabIndex={-1}>
         {children}
       </div>

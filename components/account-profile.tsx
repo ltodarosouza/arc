@@ -109,15 +109,16 @@ export function AccountProfile() {
           )}
           {auth.profileLoading ? (
             <output className="mt-4">Carregando nome…</output>
-          ) : auth.profileError ? (
-            <div className="mt-4">
-              <p role="alert">{auth.profileError}</p>
-              <ArcButton className="mt-3" onClick={auth.reloadProfile}>
-                Tentar novamente
-              </ArcButton>
-            </div>
           ) : (
             <form onSubmit={save} className="mt-5 grid gap-3">
+              {auth.profileError && (
+                <div>
+                  <p role="alert">{auth.profileError}</p>
+                  <ArcButton className="mt-3" onClick={auth.reloadProfile}>
+                    Tentar novamente
+                  </ArcButton>
+                </div>
+              )}
               <label htmlFor="profile-name" className="font-medium">
                 Como quer ser chamado
               </label>

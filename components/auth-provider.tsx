@@ -166,6 +166,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!owner) throw new Error('Entre novamente para salvar seu perfil.');
     const name = normalizeProfileName(value);
     const client = getSupabaseClient();
+    const { error: metadataError } = await client.auth.updateUser({
+      data: { ...session?.user.user_metadata, display_name: name },
+    });
+    if (metadataError)
+      throw new Error('Não foi possível salvar seu nome. Tente novamente.');
     let result =
       profile?.owner === owner
         ? await client
@@ -187,12 +192,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .select('display_name')
         .single();
     const { error } = result;
-    if (error)
-      throw new Error(
-        'Não foi possível salvar. Seu nome digitado foi preservado; tente novamente.',
-      );
     setProfile({ owner, name });
-    setProfileError(null);
+    setProfileError(
+      error
+        ? 'Seu nome foi salvo, mas a sincronização do perfil ainda não está disponível.'
+        : null,
+    );
   }
 
   async function signOut() {
@@ -216,7 +221,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         session,
         ready,
-        profileName: profile && profile.owner === owner ? profile.name : null,
+        profileName:
+          profile && profile.owner === owner
+            ? profile.name
+            : typeof session?.user.user_metadata.display_name === 'string'
+              ? normalizeProfileName(session.user.user_metadata.display_name)
+              : null,
         profileLoading,
         profileError,
         reloadProfile: () => setRevision((value) => value + 1),
