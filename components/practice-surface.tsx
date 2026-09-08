@@ -35,6 +35,15 @@ function requestedQuestionId() {
   return new URLSearchParams(window.location.search).get('question');
 }
 
+function hasInteractiveKeyboardFocus(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+  return Boolean(
+    target.closest(
+      'a, button, input, textarea, select, [contenteditable="true"], [role="button"], [role="link"], [role="dialog"], [role="menu"], [role="menuitem"], [role="option"], [role="tab"], [aria-modal="true"]',
+    ),
+  );
+}
+
 export function PracticeSurface() {
   const { catalogue, error, isLoading } = useCatalogue();
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
@@ -164,8 +173,15 @@ export function PracticeSurface() {
   useEffect(() => {
     if (!question || outcome) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target?.closest('input, textarea, select, [contenteditable=true]'))
+      if (
+        event.defaultPrevented ||
+        event.isComposing ||
+        event.repeat ||
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        hasInteractiveKeyboardFocus(event.target)
+      )
         return;
       const optionIndex = Number.parseInt(event.key, 10) - 1;
       if (optionIndex >= 0 && optionIndex < question.options.length) {
