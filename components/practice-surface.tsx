@@ -31,8 +31,12 @@ type Solution = {
 };
 type RpcAttempt = { attempt_id: string; outcome: 'correct' | 'incorrect' };
 
-function requestedQuestionId() {
-  return new URLSearchParams(window.location.search).get('question');
+function requestedPracticeContext() {
+  const search = new URLSearchParams(window.location.search);
+  return {
+    questionId: search.get('question'),
+    subject: search.get('subject'),
+  };
 }
 
 function hasInteractiveKeyboardFocus(target: EventTarget | null) {
@@ -46,6 +50,7 @@ function hasInteractiveKeyboardFocus(target: EventTarget | null) {
 
 export function PracticeSurface() {
   const { catalogue, error, isLoading } = useCatalogue();
+  const requestedContext = useMemo(requestedPracticeContext, []);
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [eliminatedOptionIds, setEliminatedOptionIds] = useState<Set<string>>(
     new Set(),
@@ -56,15 +61,40 @@ export function PracticeSurface() {
   const [visibleHintCount, setVisibleHintCount] = useState(0);
   const submissionInFlight = useRef(false);
 
+  const requestedSubject = catalogue?.subjects.find(
+    (item) =>
+      item.id === requestedContext.subject ||
+      item.slug === requestedContext.subject,
+  );
+  const requestedQuestion = catalogue?.questions.find(
+    (item) => item.id === requestedContext.questionId,
+  );
+  const hasInvalidSubject = Boolean(
+    requestedContext.subject && !requestedSubject,
+  );
+  const hasIncompatibleSubject = Boolean(
+    requestedQuestion &&
+    requestedSubject &&
+    requestedQuestion.subjectId !== requestedSubject.id,
+  );
   const question = useMemo(() => {
-    if (!catalogue) return null;
-    const requestedId = requestedQuestionId();
-    return (
-      catalogue.questions.find((item) => item.id === requestedId) ??
-      catalogue.questions[0] ??
-      null
-    );
-  }, [catalogue]);
+    if (!catalogue || hasInvalidSubject || hasIncompatibleSubject) return null;
+    if (requestedContext.questionId) return requestedQuestion ?? null;
+    if (requestedSubject)
+      return (
+        catalogue.questions.find(
+          (item) => item.subjectId === requestedSubject.id,
+        ) ?? null
+      );
+    return catalogue.questions[0] ?? null;
+  }, [
+    catalogue,
+    hasIncompatibleSubject,
+    hasInvalidSubject,
+    requestedContext.questionId,
+    requestedQuestion,
+    requestedSubject,
+  ]);
   const subject = catalogue?.subjects.find(
     (item) => item.id === question?.subjectId,
   );
@@ -208,6 +238,31 @@ export function PracticeSurface() {
     return (
       <ArcCard className="mt-8 p-8 text-sm text-[var(--arc-error-text)]">
         Não foi possível carregar esta questão.
+      </ArcCard>
+    );
+  if (!question && requestedContext.questionId)
+    return (
+      <ArcCard className="mt-8 p-8">
+        <h2 className="text-lg font-medium tracking-[-0.03em]">
+          {hasIncompatibleSubject || hasInvalidSubject
+            ? 'Este link de prática não é válido.'
+            : 'Esta questão não está disponível.'}
+        </h2>
+        <p className="mt-2 max-w-lg text-sm leading-6 text-[var(--arc-text-muted)]">
+          {hasIncompatibleSubject || hasInvalidSubject
+            ? 'A disciplina indicada não corresponde à questão solicitada.'
+            : 'Ela pode ter sido removida ou ainda não estar publicada.'}
+        </p>
+        <a
+          className="arc-link mt-5 inline-flex min-h-11 items-center"
+          href={
+            requestedSubject
+              ? `/questions?subject=${requestedSubject.slug}`
+              : '/questions'
+          }
+        >
+          Voltar para questões <MoveRight className="ml-2 size-4" />
+        </a>
       </ArcCard>
     );
   if (!question)
