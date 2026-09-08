@@ -29,7 +29,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
         if (!entry.isIntersecting) return;
         observer.disconnect();
         // Let the empty chart paint once before drawing its history.
-        drawTimer = window.setTimeout(() => setIsDrawn(true), 180);
+        drawTimer = window.setTimeout(() => setIsDrawn(true), 380);
       },
       { threshold: 0.18 },
     );
