@@ -35,11 +35,19 @@ if (result.status !== 0) throw new Error(result.stderr);
 const rows = JSON.parse(result.stdout);
 let expressions = 0;
 for (const row of rows) {
-  for (const match of String(row.content ?? '').matchAll(
-    /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g,
-  )) {
+  const content = String(row.content ?? '');
+  if ((content.match(/\$/g) ?? []).length % 2 !== 0)
+    throw new Error(`Unpaired math delimiter in ${row.id}`);
+  for (const match of content.matchAll(/\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g)) {
     try {
-      katex.renderToString(normalizeLegacyMath(match[1] ?? match[2]), {
+      const expression = match[1] ?? match[2];
+      if (
+        /(^|[^\\])\b(?:int|frac|sqrt|sum|sin|cos|tan|ln|infty)\b/.test(
+          expression,
+        )
+      )
+        throw new Error('LaTeX command is missing its backslash');
+      katex.renderToString(normalizeLegacyMath(expression), {
         throwOnError: true,
         trust: false,
         macros: { '\\sen': '\\sin' },

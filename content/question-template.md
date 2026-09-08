@@ -53,16 +53,25 @@ Write the expected result.
 
 ## Hints
 
-1. First optional hint, without revealing the result.
-2. Second optional hint, more concrete but still not the complete solution.
+Every question requires at least two progressive hints. They must help a student
+make the next decision, not simply restate the answer or paste a step from the
+resolution.
+
+1. First hint: identify the concept, theorem, representation, or common trap.
+2. Second hint: direct the first mathematical action without completing it.
 
 ## Commented solution
 
-Explain why the answer is correct. Break a non-trivial solution into steps.
+Write a self-contained explanation that teaches the method, not only the
+answer. State why the chosen method applies, show the transformation or
+calculation, and include a final check or interpretation. A resolution must
+have at least three meaningful steps (four for hard questions); headings should
+describe the student's goal in that step.
 
-1. First reasoning step.
-2. Second reasoning step.
-3. Final conclusion.
+1. Recognize the method and justify it.
+2. Carry out the first transformation.
+3. Complete the calculation and connect it to the correct alternative.
+4. Check the result, domain, sign, units, or limiting case when applicable.
 
 ## Author checklist
 
@@ -74,4 +83,6 @@ Explain why the answer is correct. Break a non-trivial solution into steps.
 - [ ] Every multiple-choice distractor is plausible but clearly incorrect.
 - [ ] The final answer was independently checked.
 - [ ] The solution teaches the method, not only the result.
-- [ ] Mathematical notation renders correctly.
+- [ ] I included two progressive hints that do not reveal the answer.
+- [ ] The commented solution has the required number of meaningful steps.
+- [ ] Mathematical notation renders correctly, with matched `$` delimiters and LaTeX commands that preserve their backslash (for example, `\int`).

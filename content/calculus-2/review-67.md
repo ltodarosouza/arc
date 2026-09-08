@@ -19,8 +19,15 @@ D. Divergente, pois o termo geral não tende a zero.
 
 Gabarito proposto: **A**
 
-1. Os módulos $1/n$ decrescem para zero; o teste de Leibniz garante convergência.
-2. A série dos módulos é a harmônica e diverge. Logo a convergência é condicional.
+Dica 1. Ignore temporariamente o sinal alternado e estude o módulo dos termos.
+Dica 2. Para a cota do erro, use o primeiro termo que ficou de fora da soma parcial.
+
+Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. Os módulos $1/n$ decrescem para zero; o teste de Leibniz garante convergência. A série dos módulos é a harmônica e diverge. Logo a convergência é condicional. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
+
+1. **Escolha o método** — Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz.
+2. **Desenvolva a estratégia** — Os módulos $1/n$ decrescem para zero; o teste de Leibniz garante convergência.
+3. **Complete o cálculo** — A série dos módulos é a harmônica e diverge. Logo a convergência é condicional.
+4. **Confira o resultado** — Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -37,8 +44,15 @@ D. Divergente.
 
 Gabarito proposto: **B**
 
-1. A série dos módulos é $\sum1/n^2$, convergente pois $p=2>1$.
-2. Convergência absoluta implica convergência da série com sinais.
+Dica 1. Ignore temporariamente o sinal alternado e estude o módulo dos termos.
+Dica 2. Para a cota do erro, use o primeiro termo que ficou de fora da soma parcial.
+
+Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. A série dos módulos é $\sum1/n^2$, convergente pois $p=2>1$. Convergência absoluta implica convergência da série com sinais. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
+
+1. **Escolha o método** — Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz.
+2. **Desenvolva a estratégia** — A série dos módulos é $\sum1/n^2$, convergente pois $p=2>1$.
+3. **Complete o cálculo** — Convergência absoluta implica convergência da série com sinais.
+4. **Confira o resultado** — Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -55,8 +69,15 @@ D. $1/10$
 
 Gabarito proposto: **C**
 
-1. Os módulos decrescem para zero, satisfazendo as hipóteses do teorema do resto.
-2. O erro é no máximo o módulo do primeiro termo omitido: $1/(10+1)=1/11$.
+Dica 1. Ignore temporariamente o sinal alternado e estude o módulo dos termos.
+Dica 2. Para a cota do erro, use o primeiro termo que ficou de fora da soma parcial.
+
+Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. Os módulos decrescem para zero, satisfazendo as hipóteses do teorema do resto. O erro é no máximo o módulo do primeiro termo omitido: $1/(10+1)=1/11$. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
+
+1. **Escolha o método** — Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz.
+2. **Desenvolva a estratégia** — Os módulos decrescem para zero, satisfazendo as hipóteses do teorema do resto.
+3. **Complete o cálculo** — O erro é no máximo o módulo do primeiro termo omitido: $1/(10+1)=1/11$.
+4. **Confira o resultado** — Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -73,8 +94,15 @@ D. $9$
 
 Gabarito proposto: **D**
 
-1. A cota é $1/(N+1)^2$. Exija $1/(N+1)^2\le1/100$.
-2. Temos $N+1\ge10$, logo $N\ge9$. Para $N=8$, a cota é $1/81>0{,}01$.
+Dica 1. Ignore temporariamente o sinal alternado e estude o módulo dos termos.
+Dica 2. Para a cota do erro, use o primeiro termo que ficou de fora da soma parcial.
+
+Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. A cota é $1/(N+1)^2$. Exija $1/(N+1)^2\le1/100$. Temos $N+1\ge10$, logo $N\ge9$. Para $N=8$, a cota é $1/81>0{,}01$. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
+
+1. **Escolha o método** — Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz.
+2. **Desenvolva a estratégia** — A cota é $1/(N+1)^2$. Exija $1/(N+1)^2\le1/100$.
+3. **Complete o cálculo** — Temos $N+1\ge10$, logo $N\ge9$. Para $N=8$, a cota é $1/81>0{,}01$.
+4. **Confira o resultado** — Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -91,7 +119,14 @@ D. $[S_{20}-1/22,S_{20}]$
 
 Gabarito proposto: **A**
 
-1. Após um número par de termos, o próximo termo é positivo. O resto tem esse sinal.
-2. Seu módulo não supera $1/21$. Portanto $0\le S-S_{20}\le1/21$.
+Dica 1. Ignore temporariamente o sinal alternado e estude o módulo dos termos.
+Dica 2. Para a cota do erro, use o primeiro termo que ficou de fora da soma parcial.
+
+Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. Após um número par de termos, o próximo termo é positivo. O resto tem esse sinal. Seu módulo não supera $1/21$. Portanto $0\le S-S_{20}\le1/21$. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
+
+1. **Escolha o método** — Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz.
+2. **Desenvolva a estratégia** — Após um número par de termos, o próximo termo é positivo. O resto tem esse sinal.
+3. **Complete o cálculo** — Seu módulo não supera $1/21$. Portanto $0\le S-S_{20}\le1/21$.
+4. **Confira o resultado** — Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos

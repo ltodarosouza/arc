@@ -19,8 +19,15 @@ D. O termo geral tende a zero, o que basta.
 
 Gabarito proposto: **A**
 
-1. Como $n^2+1\ge n^2$, o inverso é menor ou igual a $1/n^2$.
-2. A série maior é convergente, com $p=2$; a comparação direta conclui.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. Como $n^2+1\ge n^2$, o inverso é menor ou igual a $1/n^2$. A série maior é convergente, com $p=2$; a comparação direta conclui. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — Como $n^2+1\ge n^2$, o inverso é menor ou igual a $1/n^2$.
+3. **Complete o cálculo** — A série maior é convergente, com $p=2$; a comparação direta conclui.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -37,8 +44,15 @@ D. $1/\sqrt n\ge1/n^2$ e a série de quadrados converge.
 
 Gabarito proposto: **B**
 
-1. Para $n\ge1$, $\sqrt n\le n$, então $1/\sqrt n\ge1/n$.
-2. A série menor já diverge; as somas parciais da maior também são ilimitadas.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. Para $n\ge1$, $\sqrt n\le n$, então $1/\sqrt n\ge1/n$. A série menor já diverge; as somas parciais da maior também são ilimitadas. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — Para $n\ge1$, $\sqrt n\le n$, então $1/\sqrt n\ge1/n$.
+3. **Complete o cálculo** — A série menor já diverge; as somas parciais da maior também são ilimitadas.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -55,8 +69,15 @@ D. $a_n/b_n\to0$; a série diverge.
 
 Gabarito proposto: **C**
 
-1. A razão é $(3n^3+n^2)/(n^3+2)$ e tende a $3$.
-2. Esse limite é positivo e finito; as duas séries têm o mesmo comportamento. Como $\sum1/n^2$ converge, a série proposta também converge.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $(3n^3+n^2)/(n^3+2)$ e tende a $3$. Esse limite é positivo e finito; as duas séries têm o mesmo comportamento. Como $\sum1/n^2$ converge, a série proposta também converge. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A razão é $(3n^3+n^2)/(n^3+2)$ e tende a $3$.
+3. **Complete o cálculo** — Esse limite é positivo e finito; as duas séries têm o mesmo comportamento. Como $\sum1/n^2$ converge, a série proposta também converge.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -73,8 +94,15 @@ D. A razão tende a $1$, e $\sum a_n$ diverge.
 
 Gabarito proposto: **D**
 
-1. A razão é $n/\sqrt{n^2+3n}=1/\sqrt{1+3/n}\to1$.
-2. A comparação pelo limite com a série harmônica garante divergência, apesar de cada termo ser menor que $1/n$.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $n/\sqrt{n^2+3n}=1/\sqrt{1+3/n}\to1$. A comparação pelo limite com a série harmônica garante divergência, apesar de cada termo ser menor que $1/n$. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A razão é $n/\sqrt{n^2+3n}=1/\sqrt{1+3/n}\to1$.
+3. **Complete o cálculo** — A comparação pelo limite com a série harmônica garante divergência, apesar de cada termo ser menor que $1/n$.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -91,8 +119,15 @@ D. O teste é inconclusivo, pois o limite é $1$.
 
 Gabarito proposto: **A**
 
-1. A razão entre termos consecutivos é $(n+1)/(3n)$.
-2. Seu limite é $1/3<1$; a série converge.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão entre termos consecutivos é $(n+1)/(3n)$. Seu limite é $1/3<1$; a série converge. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A razão entre termos consecutivos é $(n+1)/(3n)$.
+3. **Complete o cálculo** — Seu limite é $1/3<1$; a série converge.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -109,8 +144,15 @@ D. O teste é inconclusivo, com limite $1$.
 
 Gabarito proposto: **B**
 
-1. Usando $(n+1)!=(n+1)n!$, a razão é $2/(n+1)$.
-2. Ela tende a zero, menor que um, garantindo convergência.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. Usando $(n+1)!=(n+1)n!$, a razão é $2/(n+1)$. Ela tende a zero, menor que um, garantindo convergência. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — Usando $(n+1)!=(n+1)n!$, a razão é $2/(n+1)$.
+3. **Complete o cálculo** — Ela tende a zero, menor que um, garantindo convergência.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -127,8 +169,15 @@ D. Converge, pois a razão tende a $0$.
 
 Gabarito proposto: **C**
 
-1. A razão é $(n+1)/4$.
-2. Ela ultrapassa um e tende a infinito; em particular os termos não tendem a zero.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $(n+1)/4$. Ela ultrapassa um e tende a infinito; em particular os termos não tendem a zero. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A razão é $(n+1)/4$.
+3. **Complete o cálculo** — Ela ultrapassa um e tende a infinito; em particular os termos não tendem a zero.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -145,8 +194,15 @@ D. É inconclusivo: o limite é $1$, mas a série converge pelo critério $p>1$.
 
 Gabarito proposto: **D**
 
-1. A razão é $n^2/(n+1)^2\to1$. O teste da razão não decide nesse caso.
-2. Outro critério resolve: a série tem $p=2>1$, logo converge.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $n^2/(n+1)^2\to1$. O teste da razão não decide nesse caso. Outro critério resolve: a série tem $p=2>1$, logo converge. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A razão é $n^2/(n+1)^2\to1$. O teste da razão não decide nesse caso.
+3. **Complete o cálculo** — Outro critério resolve: a série tem $p=2>1$, logo converge.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -163,8 +219,15 @@ D. Converge, com limite da raiz $0$.
 
 Gabarito proposto: **A**
 
-1. A raiz de ordem $n$ do termo positivo é exatamente $2/5$.
-2. Como $2/5<1$, o teste garante convergência.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz de ordem $n$ do termo positivo é exatamente $2/5$. Como $2/5<1$, o teste garante convergência. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A raiz de ordem $n$ do termo positivo é exatamente $2/5$.
+3. **Complete o cálculo** — Como $2/5<1$, o teste garante convergência.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -181,8 +244,15 @@ D. É inconclusivo, com limite $1$.
 
 Gabarito proposto: **B**
 
-1. A raiz de ordem $n$ cancela a potência, deixando $(n+1)/(3n)$.
-2. Esse valor tende a $1/3<1$.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz de ordem $n$ cancela a potência, deixando $(n+1)/(3n)$. Esse valor tende a $1/3<1$. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A raiz de ordem $n$ cancela a potência, deixando $(n+1)/(3n)$.
+3. **Complete o cálculo** — Esse valor tende a $1/3<1$.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -199,8 +269,15 @@ D. Converge, com limite da raiz $1/2$.
 
 Gabarito proposto: **C**
 
-1. A raiz de ordem $n$ é $2n/(n+1)$.
-2. Seu limite é $2>1$, o que implica divergência.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz de ordem $n$ é $2n/(n+1)$. Seu limite é $2>1$, o que implica divergência. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A raiz de ordem $n$ é $2n/(n+1)$.
+3. **Complete o cálculo** — Seu limite é $2>1$, o que implica divergência.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -217,7 +294,14 @@ D. Converge, com limite da raiz $1/2$.
 
 Gabarito proposto: **D**
 
-1. A raiz é $n^{3/n}/2$. Escreva $n^{3/n}=e^{3\ln n/n}$.
-2. Como $\ln n/n\to0$, o numerador tende a $1$. O limite é $1/2<1$.
+Dica 1. Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$.
+Dica 2. Compare o limite obtido com o valor de corte do teste escolhido.
+
+Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz é $n^{3/n}/2$. Escreva $n^{3/n}=e^{3\ln n/n}$. Como $\ln n/n\to0$, o numerador tende a $1$. O limite é $1/2<1$. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
+
+1. **Escolha o método** — Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação.
+2. **Desenvolva a estratégia** — A raiz é $n^{3/n}/2$. Escreva $n^{3/n}=e^{3\ln n/n}$.
+3. **Complete o cálculo** — Como $\ln n/n\to0$, o numerador tende a $1$. O limite é $1/2<1$.
+4. **Confira o resultado** — Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos

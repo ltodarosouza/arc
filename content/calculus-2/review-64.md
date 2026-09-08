@@ -19,8 +19,15 @@ D. $+\infty$
 
 Gabarito proposto: **A**
 
-1. Divida numerador e denominador por $n$.
-2. A razão vira $(3+2/n)/(1+5/n)$ e tende a $3$.
+Dica 1. Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$.
+Dica 2. Depois da simplificação, identifique os termos que tendem a zero e os que permanecem.
+
+Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Divida numerador e denominador por $n$. A razão vira $(3+2/n)/(1+5/n)$ e tende a $3$. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
+
+1. **Escolha o método** — Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite.
+2. **Desenvolva a estratégia** — Divida numerador e denominador por $n$.
+3. **Complete o cálculo** — A razão vira $(3+2/n)/(1+5/n)$ e tende a $3$.
+4. **Confira o resultado** — Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -37,8 +44,15 @@ D. $2$
 
 Gabarito proposto: **B**
 
-1. Para $n\ge1$, temos $0<1/n^2\le1/n$.
-2. Como $1/n\to0$, o confronto fornece limite zero.
+Dica 1. Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$.
+Dica 2. Depois da simplificação, identifique os termos que tendem a zero e os que permanecem.
+
+Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Para $n\ge1$, temos $0<1/n^2\le1/n$. Como $1/n\to0$, o confronto fornece limite zero. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
+
+1. **Escolha o método** — Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite.
+2. **Desenvolva a estratégia** — Para $n\ge1$, temos $0<1/n^2\le1/n$.
+3. **Complete o cálculo** — Como $1/n\to0$, o confronto fornece limite zero.
+4. **Confira o resultado** — Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -55,8 +69,15 @@ D. $0$
 
 Gabarito proposto: **C**
 
-1. Racionalize: a diferença é $n/(\sqrt{n^2+n}+n)$.
-2. Divida por $n$, obtendo $1/(\sqrt{1+1/n}+1)\to1/2$.
+Dica 1. Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$.
+Dica 2. Depois da simplificação, identifique os termos que tendem a zero e os que permanecem.
+
+Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Racionalize: a diferença é $n/(\sqrt{n^2+n}+n)$. Divida por $n$, obtendo $1/(\sqrt{1+1/n}+1)\to1/2$. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
+
+1. **Escolha o método** — Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite.
+2. **Desenvolva a estratégia** — Racionalize: a diferença é $n/(\sqrt{n^2+n}+n)$.
+3. **Complete o cálculo** — Divida por $n$, obtendo $1/(\sqrt{1+1/n}+1)\to1/2$.
+4. **Confira o resultado** — Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -73,8 +94,15 @@ D. $0$
 
 Gabarito proposto: **D**
 
-1. Para $a_n=n/2^n$, a razão $a_{n+1}/a_n=(n+1)/(2n)$ tende a $1/2$.
-2. A partir de algum índice, essa razão é menor que $3/4$, permitindo comparação com uma sequência geométrica que tende a zero.
+Dica 1. Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$.
+Dica 2. Depois da simplificação, identifique os termos que tendem a zero e os que permanecem.
+
+Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Para $a_n=n/2^n$, a razão $a_{n+1}/a_n=(n+1)/(2n)$ tende a $1/2$. A partir de algum índice, essa razão é menor que $3/4$, permitindo comparação com uma sequência geométrica que tende a zero. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
+
+1. **Escolha o método** — Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite.
+2. **Desenvolva a estratégia** — Para $a_n=n/2^n$, a razão $a_{n+1}/a_n=(n+1)/(2n)$ tende a $1/2$.
+3. **Complete o cálculo** — A partir de algum índice, essa razão é menor que $3/4$, permitindo comparação com uma sequência geométrica que tende a zero.
+4. **Confira o resultado** — Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -91,8 +119,15 @@ D. $e^2$
 
 Gabarito proposto: **A**
 
-1. Escreva $n\ln(1+2/n)=2\,\ln(1+2/n)/(2/n)$.
-2. Use $\lim_{t\to0}\ln(1+t)/t=1$. O limite é $2$, não sua exponencial.
+Dica 1. Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$.
+Dica 2. Depois da simplificação, identifique os termos que tendem a zero e os que permanecem.
+
+Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Escreva $n\ln(1+2/n)=2\,\ln(1+2/n)/(2/n)$. Use $\lim_{t\to0}\ln(1+t)/t=1$. O limite é $2$, não sua exponencial. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
+
+1. **Escolha o método** — Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite.
+2. **Desenvolva a estratégia** — Escreva $n\ln(1+2/n)=2\,\ln(1+2/n)/(2/n)$.
+3. **Complete o cálculo** — Use $\lim_{t\to0}\ln(1+t)/t=1$. O limite é $2$, não sua exponencial.
+4. **Confira o resultado** — Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -109,8 +144,15 @@ D. Crescente e ilimitada.
 
 Gabarito proposto: **B**
 
-1. A diferença $a_{n+1}-a_n=1/[n(n+1)]$ é positiva.
-2. Além disso, $a_n<1$ e $1/n\to0$, portanto o limite é $1$.
+Dica 1. Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor.
+Dica 2. Monotonicidade sozinha não basta: indique também uma cota ou o limite relevante.
+
+Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. A diferença $a_{n+1}-a_n=1/[n(n+1)]$ é positiva. Além disso, $a_n<1$ e $1/n\to0$, portanto o limite é $1$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
+
+1. **Escolha o método** — Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência.
+2. **Desenvolva a estratégia** — A diferença $a_{n+1}-a_n=1/[n(n+1)]$ é positiva.
+3. **Complete o cálculo** — Além disso, $a_n<1$ e $1/n\to0$, portanto o limite é $1$.
+4. **Confira o resultado** — Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -127,8 +169,15 @@ D. Estritamente crescente e convergente para $2$.
 
 Gabarito proposto: **C**
 
-1. A diferença entre termos consecutivos é $-1/[n(n+1)]<0$.
-2. A sequência é limitada inferiormente por $2$, e $1/n\to0$ fornece o limite $2$.
+Dica 1. Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor.
+Dica 2. Monotonicidade sozinha não basta: indique também uma cota ou o limite relevante.
+
+Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. A diferença entre termos consecutivos é $-1/[n(n+1)]<0$. A sequência é limitada inferiormente por $2$, e $1/n\to0$ fornece o limite $2$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
+
+1. **Escolha o método** — Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência.
+2. **Desenvolva a estratégia** — A diferença entre termos consecutivos é $-1/[n(n+1)]<0$.
+3. **Complete o cálculo** — A sequência é limitada inferiormente por $2$, e $1/n\to0$ fornece o limite $2$.
+4. **Confira o resultado** — Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -145,8 +194,15 @@ D. Crescente, limitada e convergente para $1$.
 
 Gabarito proposto: **D**
 
-1. Escreva $a_n=1-2/(n+2)$: a parcela subtraída diminui quando $n$ aumenta.
-2. Logo $a_n$ cresce e permanece abaixo de $1$. Seu limite é $1$.
+Dica 1. Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor.
+Dica 2. Monotonicidade sozinha não basta: indique também uma cota ou o limite relevante.
+
+Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. Escreva $a_n=1-2/(n+2)$: a parcela subtraída diminui quando $n$ aumenta. Logo $a_n$ cresce e permanece abaixo de $1$. Seu limite é $1$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
+
+1. **Escolha o método** — Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência.
+2. **Desenvolva a estratégia** — Escreva $a_n=1-2/(n+2)$: a parcela subtraída diminui quando $n$ aumenta.
+3. **Complete o cálculo** — Logo $a_n$ cresce e permanece abaixo de $1$. Seu limite é $1$.
+4. **Confira o resultado** — Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -163,8 +219,15 @@ D. Positiva e divergente para infinito.
 
 Gabarito proposto: **A**
 
-1. Racionalize: $a_n=1/(\sqrt{n+1}+\sqrt n)$.
-2. O denominador é positivo, cresce estritamente e tende a infinito. Portanto os termos decrescem para zero.
+Dica 1. Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor.
+Dica 2. Monotonicidade sozinha não basta: indique também uma cota ou o limite relevante.
+
+Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. Racionalize: $a_n=1/(\sqrt{n+1}+\sqrt n)$. O denominador é positivo, cresce estritamente e tende a infinito. Portanto os termos decrescem para zero. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
+
+1. **Escolha o método** — Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência.
+2. **Desenvolva a estratégia** — Racionalize: $a_n=1/(\sqrt{n+1}+\sqrt n)$.
+3. **Complete o cálculo** — O denominador é positivo, cresce estritamente e tende a infinito. Portanto os termos decrescem para zero.
+4. **Confira o resultado** — Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
 
@@ -181,7 +244,14 @@ D. Crescente e convergente para $1$.
 
 Gabarito proposto: **B**
 
-1. Considere $f(x)=x\ln(1+1/x)$. Sua derivada é $\ln(1+1/x)-1/(x+1)>0$, pois $\ln(1+t)>t/(1+t)$ para $t>0$.
-2. Assim $a_n=e^{f(n)}$ cresce. Como $f(n)\to1$, temos $a_n\to e$.
+Dica 1. Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor.
+Dica 2. Monotonicidade sozinha não basta: indique também uma cota ou o limite relevante.
+
+Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. Considere $f(x)=x\ln(1+1/x)$. Sua derivada é $\ln(1+1/x)-1/(x+1)>0$, pois $\ln(1+t)>t/(1+t)$ para $t>0$. Assim $a_n=e^{f(n)}$ cresce. Como $f(n)\to1$, temos $a_n\to e$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
+
+1. **Escolha o método** — Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência.
+2. **Desenvolva a estratégia** — Considere $f(x)=x\ln(1+1/x)$. Sua derivada é $\ln(1+1/x)-1/(x+1)>0$, pois $\ln(1+t)>t/(1+t)$ para $t>0$.
+3. **Complete o cálculo** — Assim $a_n=e^{f(n)}$ cresce. Como $f(n)\to1$, temos $a_n\to e$.
+4. **Confira o resultado** — Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.
 
 Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos
