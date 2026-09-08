@@ -60,7 +60,13 @@ export default function QuestionsPage() {
     Map<string, AttemptOutcome>
   >(new Map());
   const { catalogue, error, isLoading } = useCatalogue();
-  const { state: learnerState, setRedo } = useLearnerState();
+  const {
+    state: learnerState,
+    error: learnerError,
+    isLoading: learnerLoading,
+    refresh: refreshLearnerState,
+    setRedo,
+  } = useLearnerState();
 
   useEffect(() => {
     if (!catalogue || !learnerState) return;
@@ -286,7 +292,27 @@ export default function QuestionsPage() {
         </section>
       </AppShell>
     );
-  if (isLoading || !subject)
+  if (learnerError)
+    return (
+      <AppShell active="explore">
+        <section className="arc-page">
+          <FeedbackState
+            action={
+              <button
+                className="text-sm font-medium text-[#46657a] hover:underline"
+                onClick={() => void refreshLearnerState()}
+              >
+                Tentar novamente
+              </button>
+            }
+            description="Suas questões continuam protegidas, mas não conseguimos carregar seu histórico agora."
+            title="Seu histórico não carregou"
+            tone="error"
+          />
+        </section>
+      </AppShell>
+    );
+  if (isLoading || learnerLoading || !subject)
     return (
       <AppShell active="explore">
         <section className="arc-page">
