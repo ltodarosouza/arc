@@ -75,7 +75,7 @@ export default function ExplorePage() {
   return (
     <AppShell active="explore">
       <section className="arc-page">
-        <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+        <div className="max-w-2xl">
           <div>
             <h1 className="arc-title">Questões</h1>
             <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
@@ -83,7 +83,7 @@ export default function ExplorePage() {
             </p>
           </div>
           <a
-            className="inline-flex items-center gap-2 text-sm font-medium text-[#46657a] hover:underline"
+            className="arc-link mt-4 inline-flex min-h-11 items-center gap-2 text-sm"
             href="/subjects"
           >
             <SlidersHorizontal className="size-4" /> Gerenciar disciplinas

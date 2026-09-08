@@ -70,7 +70,7 @@ export function AppShell({
         Pular para o conteúdo
       </a>
       <header className="arc-sticky-header">
-        <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between gap-3 px-5 sm:px-8">
+        <div className="mx-auto flex h-[72px] max-w-5xl items-center justify-between gap-3 px-5 sm:px-8">
           <Link
             className="flex min-h-11 items-center gap-2.5 font-semibold tracking-[-0.045em]"
             href="/"

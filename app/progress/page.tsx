@@ -156,7 +156,7 @@ export default function ProgressPage() {
 
   return (
     <AppShell active="progress">
-      <section className="arc-page">
+      <section className="arc-page arc-page--reading">
         <h1 className="arc-title">Seu progresso</h1>
         <p className="mt-3 max-w-lg text-[15px] leading-6 text-[var(--arc-text-muted)]">
           Cada questão conta uma vez. Ao refazer, o resultado mais recente
@@ -185,7 +185,7 @@ export default function ProgressPage() {
           />
         ) : (
           <>
-            <dl className="arc-section grid grid-cols-2 gap-x-8 gap-y-6 border-y border-[var(--border)] py-6 sm:grid-cols-4">
+            <dl className="arc-section grid max-w-2xl grid-cols-2 gap-x-8 gap-y-6 border-y border-[var(--border)] py-6">
               {[
                 {
                   label: 'Questões feitas',

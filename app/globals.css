@@ -67,12 +67,12 @@ body {
 @layer components {
   .arc-page {
     width: 100%;
-    max-width: 72rem;
+    max-width: 62rem;
     margin-inline: auto;
-    padding: clamp(2rem, 5vw, 3.5rem) 1.25rem 2.5rem;
+    padding: clamp(2.25rem, 4vw, 3.25rem) 1.25rem 2.75rem;
   }
   .arc-page--reading {
-    max-width: 58rem;
+    max-width: 54rem;
   }
   .arc-title {
     font-size: clamp(1.875rem, 3.8vw, 2.75rem);
@@ -91,7 +91,7 @@ body {
     color: var(--arc-text-muted);
   }
   .arc-section {
-    margin-top: var(--arc-space-section);
+    margin-top: clamp(2rem, 4vw, 2.75rem);
   }
   .arc-link {
     color: var(--arc-accent-strong);

@@ -239,7 +239,7 @@ export default function QuestionsPage() {
   if (error)
     return (
       <AppShell active="explore">
-        <section className="arc-page max-w-5xl">
+        <section className="arc-page">
           <FeedbackState
             action={
               <button
@@ -259,7 +259,7 @@ export default function QuestionsPage() {
   if (isLoading || !subject)
     return (
       <AppShell active="explore">
-        <section className="arc-page max-w-5xl">
+        <section className="arc-page">
           <QuestionListSkeleton />
         </section>
       </AppShell>
@@ -267,7 +267,7 @@ export default function QuestionsPage() {
 
   return (
     <AppShell active="explore">
-      <section className="arc-page max-w-5xl">
+      <section className="arc-page">
         <div className="flex items-center gap-2 text-sm text-[var(--arc-text-muted)]">
           <a className="hover:text-[var(--foreground)]" href="/explore">
             Questões
@@ -275,7 +275,7 @@ export default function QuestionsPage() {
           <ChevronRight className="size-4" />
           <span>{subject.name}</span>
         </div>
-        <div className="mt-5 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+        <div className="mt-5 max-w-2xl">
           <div>
             <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
               {subject.name}
@@ -286,7 +286,7 @@ export default function QuestionsPage() {
             </p>
           </div>
           <button
-            className="arc-action"
+            className="arc-action mt-5"
             disabled={!questions.length}
             onClick={startRandomQuestion}
             type="button"

@@ -74,17 +74,14 @@ export default function Home() {
   return (
     <AppShell active="home">
       <section className="arc-page">
-        <div className="animate-enter flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+        <div className="animate-enter max-w-2xl">
           <div>
             <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
               Início
             </p>
             <h1 className="arc-title mt-2 max-w-xl">O que vamos praticar?</h1>
           </div>
-          <a
-            className="arc-action group shrink-0 self-start sm:self-auto"
-            href={resumeHref}
-          >
+          <a className="arc-action group mt-5" href={resumeHref}>
             {resumeSubject
               ? `Continuar em ${resumeSubject.name}`
               : selectedSubjects.length
@@ -94,7 +91,7 @@ export default function Home() {
           </a>
         </div>
         {progress.completed > 0 && !learnerLoading && (
-          <div className="arc-section flex flex-wrap items-center gap-x-10 gap-y-5 border-y border-[var(--border)] py-5">
+          <div className="arc-section flex max-w-xl flex-wrap items-center gap-x-10 gap-y-5 border-y border-[var(--border)] py-5">
             <div>
               <p className="text-2xl font-semibold tabular-nums">
                 {progress.completed}
@@ -109,7 +106,7 @@ export default function Home() {
             </div>
             <a
               href="/progress"
-              className="arc-link ml-auto inline-flex min-h-11 items-center gap-2 text-sm"
+              className="arc-link inline-flex min-h-11 items-center gap-2 text-sm"
             >
               Ver progresso <ArrowRight className="size-4" />
             </a>
@@ -199,20 +196,10 @@ export default function Home() {
                             : 'Todas as questões concluídas'
                           : 'Catálogo em preparação'}
                       </p>
-                      <div className="relative z-10 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
-                        <a
-                          className="inline-flex items-center gap-1 hover:underline"
-                          href={`/questions?subject=${subject.slug}`}
-                        >
-                          Questões <ChevronRight className="size-4" />
-                        </a>
-                        <a
-                          className="inline-flex items-center gap-1 hover:underline"
-                          href={`/explore/${subject.slug}`}
-                        >
-                          Assuntos <ChevronRight className="size-4" />
-                        </a>
-                      </div>
+                      <p className="mt-5 text-sm font-medium text-[#46657a]">
+                        Abrir disciplina{' '}
+                        <ChevronRight className="inline size-4" />
+                      </p>
                     </ArcCard>
                   </Reveal>
                 );
