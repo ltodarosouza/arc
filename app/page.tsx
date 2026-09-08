@@ -5,6 +5,7 @@ import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
 
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
+import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import { Reveal } from '@/components/reveal';
 import { FeedbackState } from '@/components/feedback-state';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
@@ -178,17 +179,15 @@ export default function Home() {
                       <p className="mt-1 text-sm leading-5 text-[var(--arc-text-muted)]">
                         {subject.description}
                       </p>
-                      <div
-                        aria-hidden="true"
-                        className="mt-5 h-1 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]"
-                      >
-                        <div
-                          className="h-full bg-[var(--arc-accent-strong)]"
-                          style={{
-                            width: `${subjectQuestionIds.length ? (completed / subjectQuestionIds.length) * 100 : 0}%`,
-                          }}
-                        />
-                      </div>
+                      <AnimatedProgressBar
+                        className="mt-5 h-1"
+                        label={`${completed} de ${subjectQuestionIds.length} questões concluídas em ${subject.name}`}
+                        value={
+                          subjectQuestionIds.length
+                            ? (completed / subjectQuestionIds.length) * 100
+                            : 0
+                        }
+                      />
                       <p className="mt-2 text-xs text-[var(--arc-text-muted)]">
                         {subjectQuestionIds.length
                           ? remaining

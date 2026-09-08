@@ -1,5 +1,7 @@
 import { BarChart3 } from 'lucide-react';
 
+import { AnimatedProgressBar } from '@/components/animated-progress-bar';
+
 import {
   getQuestionAggregate,
   minimumAggregateThreshold,
@@ -62,15 +64,15 @@ export function QuestionStatistics({ question }: { question: Question }) {
                 <span className="font-medium text-[var(--arc-text-muted)]">
                   {option.label}
                 </span>
-                <div
-                  aria-label={`${rate}% escolheram a alternativa ${option.label}`}
-                  className="h-1.5 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]"
-                >
-                  <span
-                    className={`block h-full rounded-full ${option.id === question.correctOptionId ? 'bg-[#729b84]' : 'bg-[#aab4b9]'}`}
-                    style={{ width: `${rate}%` }}
-                  />
-                </div>
+                <AnimatedProgressBar
+                  indicatorClassName={
+                    option.id === question.correctOptionId
+                      ? 'bg-[#729b84]'
+                      : 'bg-[#aab4b9]'
+                  }
+                  label={`${rate}% escolheram a alternativa ${option.label}`}
+                  value={rate}
+                />
                 <span className="tabular-nums text-[var(--arc-text-muted)]">
                   {rate}%
                 </span>

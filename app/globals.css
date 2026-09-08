@@ -251,6 +251,9 @@ a {
   stroke-width: 3;
   outline: none;
 }
+.arc-progress-fill {
+  transition: width 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
 .arc-progress-chart[data-drawn='true'] .arc-progress-chart-line {
   stroke-dashoffset: 0;
 }

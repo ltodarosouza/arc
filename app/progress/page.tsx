@@ -8,6 +8,7 @@ import { Reveal } from '@/components/reveal';
 
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
+import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import type {
   CatalogueQuestion,
   CatalogueSnapshot,
@@ -286,17 +287,11 @@ export default function ProgressPage() {
                               : `${subject.attempted} respondida${subject.attempted === 1 ? '' : 's'}`}
                           </p>
                         </div>
-                        <div
-                          aria-hidden="true"
-                          className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]"
-                        >
-                          <div
-                            className="h-full rounded-full bg-[var(--arc-accent-strong)]"
-                            style={{
-                              width: `${percentage(subject.correct, subject.attempted)}%`,
-                            }}
-                          />
-                        </div>
+                        <AnimatedProgressBar
+                          className="mt-4"
+                          label={`${percentage(subject.correct, subject.attempted)}% de acerto em ${subject.name}`}
+                          value={percentage(subject.correct, subject.attempted)}
+                        />
                         <p className="arc-caption mt-2">
                           {subject.correct}{' '}
                           {subject.correct === 1 ? 'acerto' : 'acertos'} em{' '}
