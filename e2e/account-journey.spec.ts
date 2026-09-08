@@ -118,6 +118,10 @@ test.describe('real account flows in disposable local Supabase', () => {
     await page.getByLabel('Senha', { exact: true }).fill(password);
     await page.getByRole('button', { name: 'Entrar', exact: true }).click();
     await expect(
+      page.getByRole('heading', { name: 'O que vamos praticar?' }),
+    ).toBeVisible();
+    await page.goto('/account');
+    await expect(
       page.getByRole('heading', { name: 'Perfil', exact: true }),
     ).toBeVisible();
     await page.getByLabel('Como quer ser chamado').fill('  Ana   D’Ávila  ');
