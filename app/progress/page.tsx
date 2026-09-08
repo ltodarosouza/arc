@@ -155,6 +155,21 @@ export default function ProgressPage() {
     () => buildPerformance(attempts, catalogue),
     [attempts, catalogue],
   );
+  const subjectsWithErrors = useMemo(
+    () => performance.filter((subject) => subject.correct < subject.attempted),
+    [performance],
+  );
+  const subjectsToRedo = useMemo(
+    () =>
+      catalogue?.subjects.filter((subject) =>
+        catalogue.questions.some(
+          (question) =>
+            question.subjectId === subject.id &&
+            learnerState?.redoQuestionIds.includes(question.id),
+        ),
+      ) ?? [],
+    [catalogue, learnerState?.redoQuestionIds],
+  );
 
   return (
     <AppShell active="progress">
@@ -219,31 +234,25 @@ export default function ProgressPage() {
                 </div>
               ))}
             </dl>
+            {subjectsWithErrors.length > 0 && (
+              <details className="arc-disclosure mt-3 text-sm">
+                <summary className="arc-link inline-flex min-h-11 items-center gap-2">
+                  Revisar erros{' '}
+                  <ChevronDown className="disclosure-icon size-4" />
+                </summary>
+                <ReviewSubjectLinks
+                  subjects={subjectsWithErrors}
+                  status="incorrect"
+                />
+              </details>
+            )}
             {redoCount > 0 && (
               <details className="arc-disclosure mt-3 text-sm">
                 <summary className="arc-link inline-flex min-h-11 items-center gap-2">
                   Abrir revisão{' '}
                   <ChevronDown className="disclosure-icon size-4" />
                 </summary>
-                <div className="disclosure-content flex flex-wrap gap-3 py-2">
-                  {catalogue?.subjects
-                    .filter((subject) =>
-                      catalogue.questions.some(
-                        (question) =>
-                          question.subjectId === subject.id &&
-                          learnerState?.redoQuestionIds.includes(question.id),
-                      ),
-                    )
-                    .map((subject) => (
-                      <a
-                        key={subject.id}
-                        className="arc-link inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3"
-                        href={`/questions?subject=${subject.slug}&status=redo`}
-                      >
-                        {subject.name} <ArrowRight className="ml-2 size-4" />
-                      </a>
-                    ))}
-                </div>
+                <ReviewSubjectLinks subjects={subjectsToRedo} status="redo" />
               </details>
             )}
             {summary.answered > 0 && <ProgressChart attempts={attempts} />}
@@ -374,6 +383,28 @@ export default function ProgressPage() {
         )}
       </section>
     </AppShell>
+  );
+}
+
+function ReviewSubjectLinks({
+  subjects,
+  status,
+}: {
+  subjects: Pick<SubjectPerformance, 'id' | 'name' | 'slug'>[];
+  status: 'incorrect' | 'redo';
+}) {
+  return (
+    <div className="disclosure-content flex flex-wrap gap-3 py-2">
+      {subjects.map((subject) => (
+        <a
+          key={subject.id}
+          className="arc-link inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3"
+          href={`/questions?subject=${subject.slug}&status=${status}`}
+        >
+          {subject.name} <ArrowRight className="ml-2 size-4" />
+        </a>
+      ))}
+    </div>
   );
 }
 
