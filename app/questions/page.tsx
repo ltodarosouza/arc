@@ -24,6 +24,7 @@ import {
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
+import { createPracticeSession } from '@/lib/practice-session';
 import {
   filterQuestions,
   type QuestionStatusFilter,
@@ -252,8 +253,16 @@ export default function QuestionsPage() {
   const startRandomQuestion = () => {
     const question = questions[Math.floor(Math.random() * questions.length)];
     if (!question) return;
+    startPractice(question.id);
+  };
+  const startPractice = (questionId: string) => {
+    const returnPath = `${window.location.pathname}${window.location.search}`;
+    const sessionId = createPracticeSession({
+      questionIds: questions.map((question) => question.id),
+      returnPath,
+    });
     window.location.assign(
-      `/practice?subject=${subject?.slug ?? question.subjectId}&question=${question.id}`,
+      `/practice?subject=${subject?.slug ?? ''}&question=${questionId}&session=${sessionId}`,
     );
   };
 
@@ -597,16 +606,12 @@ export default function QuestionsPage() {
                     onClick={(event) => {
                       if ((event.target as HTMLElement).closest('a, button'))
                         return;
-                      window.location.assign(
-                        `/practice?subject=${subject.slug}&question=${question.id}`,
-                      );
+                      startPractice(question.id);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
-                        window.location.assign(
-                          `/practice?subject=${subject.slug}&question=${question.id}`,
-                        );
+                        startPractice(question.id);
                       }
                     }}
                     role="link"
@@ -660,6 +665,10 @@ export default function QuestionsPage() {
                           <a
                             className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
                             href={`/practice?subject=${subject.slug}&question=${question.id}`}
+                            onClick={(event) => {
+                              event.preventDefault();
+                              startPractice(question.id);
+                            }}
                           >
                             {outcome ? 'Refazer' : 'Resolver'}{' '}
                             <ArrowRight className="size-4" />

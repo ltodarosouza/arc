@@ -16,6 +16,7 @@ import { MathContent } from '@/components/math-content';
 import { createLocalLearnerRepository } from '@/lib/data/learner-repository';
 import { seedQuestions } from '@/lib/data/seed-catalogue';
 import { useCatalogue } from '@/lib/data/use-catalogue';
+import { getPracticeSession } from '@/lib/practice-session';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 type Solution = {
@@ -36,6 +37,7 @@ function requestedPracticeContext() {
   return {
     questionId: search.get('question'),
     subject: search.get('subject'),
+    session: search.get('session'),
   };
 }
 
@@ -51,6 +53,10 @@ function hasInteractiveKeyboardFocus(target: EventTarget | null) {
 export function PracticeSurface() {
   const { catalogue, error, isLoading } = useCatalogue();
   const requestedContext = useMemo(requestedPracticeContext, []);
+  const practiceSession = useMemo(
+    () => getPracticeSession(requestedContext.session),
+    [requestedContext.session],
+  );
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [eliminatedOptionIds, setEliminatedOptionIds] = useState<Set<string>>(
     new Set(),
@@ -80,9 +86,25 @@ export function PracticeSurface() {
     requestedSubject &&
     requestedQuestion.subjectId !== requestedSubject.id,
   );
+  const sessionQuestions = useMemo(
+    () =>
+      practiceSession
+        ? practiceSession.questionIds
+            .map((id) => catalogue?.questions.find((item) => item.id === id))
+            .filter((item): item is NonNullable<typeof item> => Boolean(item))
+        : null,
+    [catalogue, practiceSession],
+  );
   const question = useMemo(() => {
     if (!catalogue || hasInvalidSubject || hasIncompatibleSubject) return null;
-    if (requestedContext.questionId) return requestedQuestion ?? null;
+    if (requestedContext.questionId) {
+      if (
+        practiceSession &&
+        !practiceSession.questionIds.includes(requestedContext.questionId)
+      )
+        return null;
+      return requestedQuestion ?? null;
+    }
     if (requestedSubject)
       return (
         catalogue.questions.find(
@@ -97,6 +119,7 @@ export function PracticeSurface() {
     requestedContext.questionId,
     requestedQuestion,
     requestedSubject,
+    practiceSession,
   ]);
   const subject = catalogue?.subjects.find(
     (item) => item.id === question?.subjectId,
@@ -107,28 +130,28 @@ export function PracticeSurface() {
   const topic = catalogue?.taxonomyNodes.find(
     (node) => node.id === primaryTag?.taxonomyNodeId,
   );
+  const practiceQuestions = useMemo(() => {
+    if (!question) return [];
+    return (
+      sessionQuestions ??
+      catalogue?.questions.filter(
+        (item) => item.subjectId === question.subjectId,
+      ) ??
+      []
+    );
+  }, [catalogue, question, sessionQuestions]);
   const questionIndex = useMemo(
-    () =>
-      question
-        ? (catalogue?.questions
-            .filter((item) => item.subjectId === question.subjectId)
-            .findIndex((item) => item.id === question.id) ?? 0)
-        : 0,
-    [catalogue, question],
+    () => practiceQuestions.findIndex((item) => item.id === question?.id),
+    [practiceQuestions, question?.id],
   );
   const nextQuestion = useMemo(
-    () =>
-      question
-        ? catalogue?.questions.filter(
-            (item) => item.subjectId === question.subjectId,
-          )[questionIndex + 1]
-        : undefined,
-    [catalogue, question, questionIndex],
+    () => practiceQuestions[questionIndex + 1],
+    [practiceQuestions, questionIndex],
   );
 
   const goToQuestion = (nextQuestionId: string, subjectSlug: string) => {
     window.location.assign(
-      `/practice?subject=${subjectSlug}&question=${nextQuestionId}`,
+      `/practice?subject=${subjectSlug}&question=${nextQuestionId}${requestedContext.session ? `&session=${requestedContext.session}` : ''}`,
     );
   };
 
@@ -278,9 +301,10 @@ export function PracticeSurface() {
         <a
           className="arc-link mt-5 inline-flex min-h-11 items-center"
           href={
-            requestedSubject
+            practiceSession?.returnPath ??
+            (requestedSubject
               ? `/questions?subject=${requestedSubject.slug}`
-              : '/questions'
+              : '/questions')
           }
         >
           Voltar para questões <MoveRight className="ml-2 size-4" />
@@ -548,7 +572,10 @@ export function PracticeSurface() {
           <div className="flex w-full flex-wrap items-center justify-end gap-x-5 gap-y-4 sm:w-auto">
             <a
               className="text-sm font-medium text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
-              href={`/questions?subject=${subject?.slug ?? question.subjectId}`}
+              href={
+                practiceSession?.returnPath ??
+                `/questions?subject=${subject?.slug ?? question.subjectId}`
+              }
             >
               Voltar para questões
             </a>
