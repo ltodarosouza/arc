@@ -86,16 +86,6 @@ for (const [issue, count] of [
     `../content/calculus-2/batch-${issue}.mjs`
   );
   assert.equal(batch.length, count);
-  const review = [
-    `# Lote #${issue} — ${count} questões para revisão`,
-    '',
-    'Autoria: Codex, por solicitação do responsável pelo projeto. Data: 2026-09-07.',
-    '',
-    'Estado: rascunho. Revisor técnico: pendente. Revisão pedagógica e aprovação de direitos: pendentes.',
-    '',
-    'A alternativa marcada é o gabarito proposto, ainda sujeito à revisão independente.',
-    '',
-  ];
   for (const [index, sourceItem] of batch.entries()) {
     const item = enrichEditorial(sourceItem);
     assert(taxonomy[item.topic]);
@@ -158,30 +148,7 @@ for (const [issue, count] of [
       },
       status: 'draft',
     });
-    review.push(
-      `## ${index + 1}. ${taxonomy[item.topic][3]} — ${item.difficulty}`,
-      '',
-      `ID: ${id}`,
-      '',
-      item.statement,
-      '',
-      ...options.map((option, i) => `${'ABCD'[i]}. ${option}`),
-      '',
-      `Gabarito proposto: **${'ABCD'[shift]}**`,
-      '',
-      ...item.hints.map((hint, i) => `Dica ${i + 1}. ${hint}`),
-      '',
-      item.explanation,
-      '',
-      ...item.solutionSteps.map(
-        (step, i) => `${i + 1}. **${step.title}** — ${step.content}`,
-      ),
-      '',
-      'Revisão: [ ] gabarito [ ] distratores [ ] clareza [ ] dificuldade [ ] direitos',
-      '',
-    );
   }
-  output(`content/calculus-2/review-${issue}.md`, review.join('\n'));
 }
 assert.equal(new Set(all.map((item) => item.statement)).size, 84);
 output(
