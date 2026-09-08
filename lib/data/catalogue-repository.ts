@@ -37,7 +37,7 @@ export type CatalogueQuestion = {
   source: {
     kind: 'original' | 'open_licence' | 'authorised_contributor' | 'other';
     label: string;
-    rightsStatus: 'approved';
+    rightsStatus: 'unverified' | 'review_required' | 'approved' | 'rejected';
   };
 };
 
@@ -100,6 +100,7 @@ type DatabaseSource = {
   id: string;
   kind: CatalogueQuestion['source']['kind'];
   label: string;
+  rights_status: CatalogueQuestion['source']['rightsStatus'];
 };
 
 /** Browser-safe published catalogue. Answer keys and solutions are intentionally absent. */
@@ -142,7 +143,7 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
       .from('question_hints')
       .select('id, question_id, content_markdown, sort_order')
       .order('sort_order'),
-    supabase.from('question_sources').select('id, kind, label'),
+    supabase.from('question_sources').select('id, kind, label, rights_status'),
   ]);
 
   const failure = [
@@ -222,7 +223,7 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
       source: {
         kind: source?.kind ?? 'other',
         label: source?.label ?? 'Fonte não informada',
-        rightsStatus: 'approved' as const,
+        rightsStatus: source?.rights_status ?? 'unverified',
       },
     };
   });
