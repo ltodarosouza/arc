@@ -23,16 +23,21 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
       setIsDrawn(true);
       return;
     }
+    let drawTimer: number | undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        setIsDrawn(true);
         observer.disconnect();
+        // Let the empty chart paint once before drawing its history.
+        drawTimer = window.setTimeout(() => setIsDrawn(true), 180);
       },
       { threshold: 0.18 },
     );
     observer.observe(chart);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (drawTimer) window.clearTimeout(drawTimer);
+    };
   }, []);
   if (!days.length) return null;
   const firstTime = Date.parse(days[0].date);
@@ -89,7 +94,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
         {days.length > 1 && (
           <polyline
             className="arc-progress-chart-line"
-            pathLength="1"
+            pathLength="100"
             points={points}
             fill="none"
             stroke="var(--arc-accent-strong)"
