@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
 export function Reveal({
   children,
@@ -10,28 +10,35 @@ export function Reveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
+    if (
+      !('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
+      return;
+    // Never hide content already on screen; progressively enhance only below the fold.
+    if (node.getBoundingClientRect().top < window.innerHeight) return;
+    node.classList.add('reveal-pending');
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          node.classList.remove('reveal-pending');
+          node.classList.add('reveal-in');
           observer.disconnect();
         }
       },
       { threshold: 0.12 },
     );
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      node.classList.remove('reveal-pending');
+    };
   }, []);
   return (
-    <div
-      ref={ref}
-      className={visible ? 'reveal-in' : 'reveal-pending'}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <div ref={ref} style={{ transitionDelay: `${delay}ms` }}>
       {children}
     </div>
   );

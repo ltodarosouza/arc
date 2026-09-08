@@ -4,12 +4,13 @@ import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
+import { FeedbackState } from '@/components/feedback-state';
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { getTaxonomyBranch } from '@/lib/domain/taxonomy';
 
 export default function SubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>();
-  const { catalogue } = useCatalogue();
+  const { catalogue, isLoading, error } = useCatalogue();
   const subject = catalogue?.subjects.find(
     (item) => item.id === subjectId || item.slug === subjectId,
   );
@@ -30,44 +31,82 @@ export default function SubjectPage() {
   });
   return (
     <AppShell active="explore">
-      <section className="mx-auto max-w-4xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
+      <section className="arc-page arc-page--reading">
         <a
           className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
           href="/explore"
         >
           <ArrowLeft className="size-4" /> Minhas disciplinas
         </a>
-        <h1 className="mt-4 text-4xl font-medium tracking-[-0.06em] sm:text-5xl">
-          {subject?.name ?? 'Disciplina'}
-        </h1>
-        <p className="mt-3 text-[var(--arc-text-muted)]">
-          Escolha um assunto ou pratique todas as questões.
-        </p>
-        <a
-          className="mt-7 inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-          href={`/questions?subject=${subject?.slug ?? subjectId}`}
-        >
-          Ver todas <ChevronRight className="size-4" />
-        </a>
-        <div className="mt-8 grid gap-3">
-          {topics.map((topic) => (
-            <a
-              className="group"
-              href={`/questions?subject=${subject?.slug ?? subjectId}&topic=${topic.slug}`}
-              key={topic.id}
-            >
-              <ArcCard className="flex items-center justify-between p-5 hover:-translate-y-0.5 hover:border-[#becdc9] hover:shadow-[0_18px_45px_rgba(38,57,80,0.08)]">
-                <span className="font-medium">
-                  {topic.name}{' '}
-                  <span className="text-sm font-normal text-[var(--arc-text-muted)]">
-                    {topic.count}
+        <h1 className="arc-title mt-5">{subject?.name ?? 'Disciplina'}</h1>
+        {subject && (
+          <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+            {subject.description}
+          </p>
+        )}
+        {subject && (
+          <a
+            className="arc-action mt-6"
+            href={`/questions?subject=${subject?.slug ?? subjectId}`}
+          >
+            Ver todas <ChevronRight className="size-4" />
+          </a>
+        )}
+        {isLoading ? (
+          <ArcCard className="mt-8 h-56 animate-pulse bg-[var(--arc-surface-subtle)]">
+            <span className="sr-only">Carregando assuntos</span>
+          </ArcCard>
+        ) : error ? (
+          <FeedbackState
+            className="mt-8"
+            title="Os assuntos não carregaram"
+            description="Tente novamente para abrir esta disciplina."
+            tone="error"
+            action={
+              <button
+                className="arc-link"
+                onClick={() => window.location.reload()}
+              >
+                Tentar novamente
+              </button>
+            }
+          />
+        ) : !subject ? (
+          <FeedbackState
+            className="mt-8"
+            title="Disciplina não encontrada"
+            description="Volte a Questões e escolha uma disciplina disponível."
+          />
+        ) : (
+          <section className="arc-section">
+            <h2 className="arc-section-title">
+              Assuntos{' '}
+              <span className="ml-2 text-sm font-normal text-[var(--arc-text-muted)]">
+                {topics.length}
+              </span>
+            </h2>
+            <div className="mt-4 divide-y divide-[var(--border)]">
+              {topics.map((topic) => (
+                <a
+                  className="group flex items-center justify-between gap-4 rounded-lg px-3 py-5 transition-colors hover:bg-[var(--arc-surface)]"
+                  href={`/questions?subject=${subject?.slug ?? subjectId}&topic=${topic.slug}`}
+                  key={topic.id}
+                >
+                  <span className="font-medium">
+                    {topic.name}{' '}
+                    <span className="mt-1 block text-sm font-normal text-[var(--arc-text-muted)]">
+                      {topic.count} {topic.count === 1 ? 'questão' : 'questões'}
+                    </span>
                   </span>
-                </span>
-                <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
-              </ArcCard>
-            </a>
-          ))}
-        </div>
+                  <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
+                </a>
+              ))}
+            </div>
+            {!topics.length && (
+              <p className="arc-caption py-5">Assuntos em preparação.</p>
+            )}
+          </section>
+        )}
       </section>
     </AppShell>
   );

@@ -6,12 +6,24 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-arc-sans);
   --font-mono: var(--font-geist-mono);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
+  --color-input: var(--border);
+  --color-muted: var(--arc-surface-subtle);
+  --color-muted-foreground: var(--arc-text-muted);
+  --color-popover: var(--arc-surface);
+  --color-popover-foreground: var(--foreground);
+  --color-card: var(--arc-surface);
+  --color-card-foreground: var(--foreground);
+  --color-accent: var(--arc-accent);
+  --color-accent-foreground: var(--primary);
+  --color-secondary: var(--arc-surface-subtle);
+  --color-secondary-foreground: var(--foreground);
+  --color-destructive: var(--arc-error-text);
   --radius: 0.8rem;
 }
 :root {
@@ -32,21 +44,137 @@
   --arc-error-text: #a45252;
   --arc-redo-bg: #fbf1dc;
   --arc-redo-text: #8a6728;
-  --arc-radius-card: 1.75rem;
-  --arc-radius-control: 0.875rem;
-  --arc-shadow-card: 0 18px 50px rgba(38, 57, 80, 0.045);
+  --arc-radius-card: 1rem;
+  --arc-radius-control: 0.625rem;
+  --arc-shadow-card: 0 2px 6px rgba(38, 57, 80, 0.015);
+  --arc-space-section: clamp(2rem, 5vw, 3.5rem);
+  --arc-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 * {
   @apply border-border outline-ring/50;
 }
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: var(--font-arc-sans), Arial, sans-serif;
+  line-height: 1.6;
+}
+@layer components {
+  .arc-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding: clamp(2rem, 5vw, 3.5rem) 1.25rem 2.5rem;
+  }
+  .arc-page--reading {
+    max-width: 58rem;
+  }
+  .arc-title {
+    font-size: clamp(1.875rem, 3.8vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .arc-section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .arc-caption {
+    font-size: 0.8125rem;
+    color: var(--arc-text-muted);
+  }
+  .arc-section {
+    margin-top: var(--arc-space-section);
+  }
+  .arc-link {
+    color: var(--arc-accent-strong);
+    font-weight: 500;
+  }
+  .arc-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .arc-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: var(--arc-radius-control);
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    transition:
+      background 180ms,
+      transform 180ms;
+  }
+  .arc-action:hover {
+    background: #354d68;
+  }
+  .arc-action:active {
+    transform: translateY(1px);
+  }
+  .arc-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .arc-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(244, 241, 235, 0.94);
+    border-bottom: 1px solid var(--border);
+  }
+  @supports (backdrop-filter: blur(12px)) {
+    .arc-sticky-header {
+      background: rgba(244, 241, 235, 0.82);
+      backdrop-filter: blur(16px);
+    }
+  }
+  .arc-disclosure > summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .arc-disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+  .arc-disclosure > summary .disclosure-icon {
+    transition: transform 180ms;
+  }
+  .arc-disclosure[open] > summary .disclosure-icon {
+    transform: rotate(180deg);
+  }
+  .arc-disclosure[open] > .disclosure-content {
+    animation: enter 220ms var(--arc-ease);
+  }
+  .arc-statement {
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    line-height: 1.85;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+  }
+  .arc-metric {
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+  }
+  @media (min-width: 640px) {
+    .arc-page {
+      padding-inline: 2rem;
+    }
+  }
 }
 .math-content .katex {
   font-size: 1em;

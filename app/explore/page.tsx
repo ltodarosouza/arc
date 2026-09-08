@@ -74,15 +74,13 @@ export default function ExplorePage() {
 
   return (
     <AppShell active="explore">
-      <section className="mx-auto max-w-6xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
+      <section className="arc-page">
         <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
           <div>
-            <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
-              Questões
+            <h1 className="arc-title">Questões</h1>
+            <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+              Escolha uma disciplina para começar.
             </p>
-            <h1 className="mt-2 text-4xl font-medium tracking-[-0.065em] sm:text-5xl">
-              Escolha uma disciplina.
-            </h1>
           </div>
           <a
             className="inline-flex items-center gap-2 text-sm font-medium text-[#46657a] hover:underline"
@@ -130,31 +128,34 @@ export default function ExplorePage() {
                       <BookOpen className="size-4" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium tracking-[-0.025em]">
-                        {subject.name}
-                      </p>
+                      <h2 className="arc-section-title">
+                        <a
+                          className="hover:underline"
+                          href={`/explore/${subject.slug}`}
+                        >
+                          {subject.name}
+                        </a>
+                      </h2>
                       <p className="mt-0.5 text-xs text-[var(--arc-text-muted)]">
-                        {questions.length} questão
-                        {questions.length === 1 ? '' : 'ões'} · {attemptedCount}{' '}
-                        feita{attemptedCount === 1 ? '' : 's'}
+                        {questions.length}{' '}
+                        {questions.length === 1 ? 'questão' : 'questões'} ·{' '}
+                        {attemptedCount} feita{attemptedCount === 1 ? '' : 's'}
                       </p>
                     </div>
                     <a
                       className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-                      href={`/explore/${subject.slug}`}
+                      href={`/questions?subject=${subject.slug}`}
                     >
                       Ver todas <ChevronRight className="size-4" />
                     </a>
                   </div>
                   <div className="p-5 sm:p-6">
-                    <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--arc-text-muted)]">
-                      Assuntos
-                    </p>
+                    <p className="arc-caption">Assuntos</p>
                     {topics.length ? (
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {topics.map((topic) => (
+                        {topics.slice(0, 4).map((topic) => (
                           <a
-                            className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1.5 text-xs text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
+                            className="inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
                             href={`/questions?subject=${subject.slug}&topic=${topic.slug}`}
                             key={topic.id}
                           >
@@ -164,6 +165,14 @@ export default function ExplorePage() {
                             </span>
                           </a>
                         ))}
+                        {topics.length > 4 && (
+                          <a
+                            className="arc-link inline-flex min-h-11 items-center px-2 text-sm"
+                            href={`/explore/${subject.slug}`}
+                          >
+                            +{topics.length - 4} assuntos
+                          </a>
+                        )}
                       </div>
                     ) : (
                       <p className="mt-3 text-sm text-[var(--arc-text-muted)]">

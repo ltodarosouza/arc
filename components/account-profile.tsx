@@ -80,10 +80,10 @@ export function AccountProfile() {
 
   return (
     <AppShell active="account">
-      <section className="mx-auto max-w-2xl px-5 py-10 sm:px-8">
-        <h1 className="text-4xl font-medium tracking-tight">Perfil</h1>
-        <p className="mt-3 text-[var(--arc-text-muted)]">
-          Seu nome, sua conta e seu acesso.
+      <section className="arc-page max-w-3xl">
+        <h1 className="arc-title">Perfil</h1>
+        <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+          Gerencie seus dados e a segurança da conta.
         </p>
         {auth.session.user.is_anonymous && (
           <ArcCard className="mt-6 p-5">
@@ -101,7 +101,7 @@ export function AccountProfile() {
           </ArcCard>
         )}
         <ArcCard className="mt-6 p-5 sm:p-6">
-          <h2 className="text-xl font-medium">Identidade</h2>
+          <h2 className="arc-section-title">Identidade</h2>
           {auth.session.user.email && (
             <p className="mt-2 break-all text-sm text-[var(--arc-text-muted)]">
               E-mail da conta: {auth.session.user.email}
@@ -154,8 +154,8 @@ export function AccountProfile() {
             </form>
           )}
         </ArcCard>
-        <ArcCard className="mt-5 p-5 sm:p-6">
-          <h2 className="text-xl font-medium">Sessão</h2>
+        <section className="arc-section border-t border-[var(--border)] pt-6">
+          <h2 className="arc-section-title">Sessão</h2>
           <p className="mt-2 text-[var(--arc-text-muted)]">
             Sair encerra o acesso neste navegador e preserva seus dados na
             conta.
@@ -168,15 +168,15 @@ export function AccountProfile() {
           >
             {leaving ? 'Saindo…' : 'Sair da conta'}
           </ArcButton>
-        </ArcCard>
+        </section>
         {!auth.session.user.is_anonymous && (
           <>
-            <ArcCard className="mt-5 p-5 sm:p-6">
-              <h2 className="text-xl font-medium">Segurança</h2>
+            <section className="arc-section border-t border-[var(--border)] pt-6">
+              <h2 className="arc-section-title">Segurança</h2>
               <PasswordUpdate />
-            </ArcCard>
-            <ArcCard className="mt-5 p-5 sm:p-6">
-              <h2 className="text-xl font-medium text-[var(--arc-error-text)]">
+            </section>
+            <section className="arc-section border-t border-[var(--border)] pt-6">
+              <h2 className="arc-section-title text-[var(--arc-error-text)]">
                 Zona de perigo
               </h2>
               <p className="mt-2">
@@ -184,7 +184,7 @@ export function AccountProfile() {
                 definitivamente.
               </p>
               <AccountDeletion />
-            </ArcCard>
+            </section>
           </>
         )}
         {feedback && (

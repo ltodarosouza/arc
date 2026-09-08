@@ -45,3 +45,31 @@ export function getAttemptNumber(
       .findIndex((item) => item.id === attempt.id) + 1
   );
 }
+
+/** Cumulative end-of-day snapshots: retries replace a result, never add a question. */
+export function getProgressTimeline(attempts: QuestionAttempt[]) {
+  const latest = new Map<string, QuestionAttempt>();
+  const days = new Map<
+    string,
+    { date: string; answered: number; correct: number; accuracy: number }
+  >();
+  const sorted = attempts
+    .filter((attempt) => Number.isFinite(Date.parse(attempt.createdAt)))
+    .toSorted((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+  for (const attempt of sorted) {
+    const date = new Date(attempt.createdAt).toLocaleDateString('en-CA', {
+      timeZone: 'America/Fortaleza',
+    });
+    latest.set(attempt.questionId, attempt);
+    const correct = [...latest.values()].filter(
+      (item) => item.outcome === 'correct',
+    ).length;
+    days.set(date, {
+      date,
+      answered: latest.size,
+      correct,
+      accuracy: Math.round((correct / latest.size) * 100),
+    });
+  }
+  return [...days.values()].slice(-14);
+}

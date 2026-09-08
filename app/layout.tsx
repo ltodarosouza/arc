@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { DM_Sans, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import 'katex/dist/katex.min.css';
 import { AuthProvider } from '@/components/auth-provider';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const sans = DM_Sans({
+  variable: '--font-arc-sans',
   subsets: ['latin'],
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
@@ -46,9 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${sans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

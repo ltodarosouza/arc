@@ -32,7 +32,7 @@ export default function RecoverPage() {
   return (
     <main className="mx-auto max-w-lg px-5 py-12">
       <ArcCard className="p-6">
-        <h1 className="text-3xl font-medium">Recuperar senha</h1>
+        <h1 className="arc-title !text-3xl">Recuperar senha</h1>
         <p className="mt-3 text-[var(--arc-text-muted)]">
           Enviaremos um link para você escolher uma nova senha.
         </p>

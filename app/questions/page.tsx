@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronDown,
+  ChevronRight,
+  SlidersHorizontal,
+  X,
+} from 'lucide-react';
 
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
@@ -25,7 +31,7 @@ import {
 import type { AttemptOutcome, Difficulty } from '@/lib/domain/questions';
 
 const selectTriggerClass =
-  'h-11 w-full rounded-2xl border-[#d4d9d6] bg-[var(--arc-surface)] px-4 text-sm font-medium text-[var(--foreground)] shadow-[0_1px_2px_rgba(38,57,80,0.03)] transition-all duration-200 hover:border-[#aebfba] hover:bg-[#fdfcf9] focus:border-[#718e9d] focus:ring-4 focus:ring-[#d8e3e1]/70';
+  'min-h-11 w-full rounded-lg border-[#d4d9d6] bg-[var(--arc-surface)] px-3 text-sm font-medium text-[var(--foreground)] shadow-none transition-colors duration-200 hover:border-[#aebfba] focus:border-[#718e9d]';
 const selectContentClass =
   'rounded-2xl border-[var(--border)] bg-[var(--arc-surface)] p-1.5 shadow-[0_16px_36px_rgba(38,57,80,0.14)]';
 const selectItemClass =
@@ -233,7 +239,7 @@ export default function QuestionsPage() {
   if (error)
     return (
       <AppShell active="explore">
-        <section className="mx-auto max-w-5xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
+        <section className="arc-page max-w-5xl">
           <FeedbackState
             action={
               <button
@@ -253,7 +259,7 @@ export default function QuestionsPage() {
   if (isLoading || !subject)
     return (
       <AppShell active="explore">
-        <section className="mx-auto max-w-5xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
+        <section className="arc-page max-w-5xl">
           <QuestionListSkeleton />
         </section>
       </AppShell>
@@ -261,7 +267,7 @@ export default function QuestionsPage() {
 
   return (
     <AppShell active="explore">
-      <section className="mx-auto max-w-5xl px-5 pb-10 pt-12 sm:px-8 sm:pt-16">
+      <section className="arc-page max-w-5xl">
         <div className="flex items-center gap-2 text-sm text-[var(--arc-text-muted)]">
           <a className="hover:text-[var(--foreground)]" href="/explore">
             Questões
@@ -274,15 +280,13 @@ export default function QuestionsPage() {
             <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
               {subject.name}
             </p>
-            <h1 className="mt-2 text-4xl font-medium tracking-[-0.065em] sm:text-5xl">
-              Questões.
-            </h1>
+            <h1 className="arc-title mt-2">Questões</h1>
             <p className="mt-3 text-[15px] text-[var(--arc-text-muted)]">
               {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
             </p>
           </div>
           <button
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--arc-accent)] px-5 text-sm font-medium text-[#263950] transition-colors hover:bg-[#c8d8d6] disabled:cursor-not-allowed disabled:opacity-50"
+            className="arc-action"
             disabled={!questions.length}
             onClick={startRandomQuestion}
             type="button"
@@ -290,7 +294,7 @@ export default function QuestionsPage() {
             Praticar uma questão <ArrowRight className="size-4" />
           </button>
         </div>
-        <ArcCard className="mt-8 bg-[color:color-mix(in_srgb,var(--arc-surface)_72%,var(--arc-surface-subtle))] p-4 shadow-none sm:p-5">
+        <ArcCard className="mt-8 p-4 shadow-none sm:p-5">
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="size-4 text-[#527184]" />
             <p className="text-sm font-medium">Filtrar questões</p>
@@ -313,150 +317,171 @@ export default function QuestionsPage() {
               </button>
             ))}
           </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
-              Unidade
-              <Select
-                onValueChange={(value) => selectUnit(value ?? '')}
-                value={unitId}
-              >
-                <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue placeholder="Todas">
-                    {units.find((unit) => unit.id === unitId)?.name ?? 'Todas'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent className={selectContentClass}>
-                  <SelectItem className={selectItemClass} value={null}>
-                    Todas
-                  </SelectItem>
-                  {units.map((unit) => (
-                    <SelectItem
-                      className={selectItemClass}
-                      key={unit.id}
-                      value={unit.id}
-                    >
-                      {unit.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
-              Assunto
-              <Select
-                disabled={!topics.length}
-                onValueChange={(value) => selectTopic(value ?? '')}
-                value={topicId}
-              >
-                <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue placeholder="Todos">
-                    {topics.find((topic) => topic.id === topicId)?.name ??
-                      'Todos'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent className={selectContentClass}>
-                  <SelectItem className={selectItemClass} value={null}>
-                    Todos
-                  </SelectItem>
-                  {topics.map((topic) => (
-                    <SelectItem
-                      className={selectItemClass}
-                      key={topic.id}
-                      value={topic.id}
-                    >
-                      {topic.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
-              Subassunto
-              <Select
-                disabled={!subtopics.length || !topicId}
-                onValueChange={(value) => setSubtopicId(value)}
-                value={subtopicId}
-              >
-                <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue placeholder="Todos">
-                    {subtopics.find((subtopic) => subtopic.id === subtopicId)
-                      ?.name ?? 'Todos'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent className={selectContentClass}>
-                  <SelectItem className={selectItemClass} value={null}>
-                    Todos
-                  </SelectItem>
-                  {subtopics.map((subtopic) => (
-                    <SelectItem
-                      className={selectItemClass}
-                      key={subtopic.id}
-                      value={subtopic.id}
-                    >
-                      {subtopic.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <fieldset className="mt-4">
-            <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
-              Dificuldade
-            </legend>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {(
-                [
-                  { id: 'easy', label: 'Fácil' },
-                  { id: 'medium', label: 'Média' },
-                  { id: 'hard', label: 'Difícil' },
-                ] as const
-              ).map((difficulty) => {
-                const selected = selectedDifficulties.includes(difficulty.id);
-                return (
-                  <button
-                    aria-pressed={selected}
-                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[#263950]'}`}
-                    key={difficulty.id}
-                    onClick={() => toggleDifficulty(difficulty.id)}
-                    type="button"
+          <details className="arc-disclosure mt-3 border-t border-[var(--border)]">
+            <summary className="flex min-h-12 items-center justify-between gap-2 text-sm font-medium">
+              Assuntos e filtros avançados{' '}
+              <ChevronDown className="disclosure-icon size-4" />
+            </summary>
+            <div className="disclosure-content">
+              <div className="mt-2 grid gap-3 sm:grid-cols-3">
+                <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+                  Unidade
+                  <Select
+                    onValueChange={(value) => selectUnit(value ?? '')}
+                    value={unitId}
                   >
-                    {difficulty.label}
-                  </button>
-                );
-              })}
-            </div>
-          </fieldset>
-          <fieldset className="mt-4">
-            <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
-              Status
-            </legend>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {(
-                [
-                  { id: 'all', label: 'Todas' },
-                  { id: 'not_attempted', label: 'Não feitas' },
-                  { id: 'attempted', label: 'Feitas' },
-                  { id: 'correct', label: 'Acertadas' },
-                  { id: 'incorrect', label: 'Erradas' },
-                  { id: 'redo', label: 'Refazer' },
-                ] as const
-              ).map((status) => {
-                const selected = selectedStatus === status.id;
-                return (
-                  <button
-                    aria-pressed={selected}
-                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[#263950]'}`}
-                    key={status.id}
-                    onClick={() => setSelectedStatus(status.id)}
-                    type="button"
+                    <SelectTrigger
+                      aria-label="Unidade"
+                      className={selectTriggerClass}
+                    >
+                      <SelectValue placeholder="Todas">
+                        {units.find((unit) => unit.id === unitId)?.name ??
+                          'Todas'}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      <SelectItem className={selectItemClass} value={null}>
+                        Todas
+                      </SelectItem>
+                      {units.map((unit) => (
+                        <SelectItem
+                          className={selectItemClass}
+                          key={unit.id}
+                          value={unit.id}
+                        >
+                          {unit.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+                  Assunto
+                  <Select
+                    disabled={!topics.length}
+                    onValueChange={(value) => selectTopic(value ?? '')}
+                    value={topicId}
                   >
-                    {status.label}
-                  </button>
-                );
-              })}
+                    <SelectTrigger
+                      aria-label="Assunto"
+                      className={selectTriggerClass}
+                    >
+                      <SelectValue placeholder="Todos">
+                        {topics.find((topic) => topic.id === topicId)?.name ??
+                          'Todos'}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      <SelectItem className={selectItemClass} value={null}>
+                        Todos
+                      </SelectItem>
+                      {topics.map((topic) => (
+                        <SelectItem
+                          className={selectItemClass}
+                          key={topic.id}
+                          value={topic.id}
+                        >
+                          {topic.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+                  Subassunto
+                  <Select
+                    disabled={!subtopics.length || !topicId}
+                    onValueChange={(value) => setSubtopicId(value)}
+                    value={subtopicId}
+                  >
+                    <SelectTrigger
+                      aria-label="Subassunto"
+                      className={selectTriggerClass}
+                    >
+                      <SelectValue placeholder="Todos">
+                        {subtopics.find(
+                          (subtopic) => subtopic.id === subtopicId,
+                        )?.name ?? 'Todos'}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className={selectContentClass}>
+                      <SelectItem className={selectItemClass} value={null}>
+                        Todos
+                      </SelectItem>
+                      {subtopics.map((subtopic) => (
+                        <SelectItem
+                          className={selectItemClass}
+                          key={subtopic.id}
+                          value={subtopic.id}
+                        >
+                          {subtopic.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <fieldset className="mt-4">
+                <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
+                  Dificuldade
+                </legend>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(
+                    [
+                      { id: 'easy', label: 'Fácil' },
+                      { id: 'medium', label: 'Média' },
+                      { id: 'hard', label: 'Difícil' },
+                    ] as const
+                  ).map((difficulty) => {
+                    const selected = selectedDifficulties.includes(
+                      difficulty.id,
+                    );
+                    return (
+                      <button
+                        aria-pressed={selected}
+                        className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[#263950]'}`}
+                        key={difficulty.id}
+                        onClick={() => toggleDifficulty(difficulty.id)}
+                        type="button"
+                      >
+                        {difficulty.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+              <fieldset className="mt-4">
+                <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
+                  Status
+                </legend>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(
+                    [
+                      { id: 'all', label: 'Todas' },
+                      { id: 'not_attempted', label: 'Não feitas' },
+                      { id: 'attempted', label: 'Feitas' },
+                      { id: 'correct', label: 'Acertadas' },
+                      { id: 'incorrect', label: 'Erradas' },
+                      { id: 'redo', label: 'Refazer' },
+                    ] as const
+                  ).map((status) => {
+                    const selected = selectedStatus === status.id;
+                    return (
+                      <button
+                        aria-pressed={selected}
+                        className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[#263950]'}`}
+                        key={status.id}
+                        onClick={() => setSelectedStatus(status.id)}
+                        type="button"
+                      >
+                        {status.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
             </div>
-          </fieldset>
+          </details>
           {(activeFilters.length > 0 ||
             selectedDifficulties.length > 0 ||
             selectedStatus !== 'all') && (
@@ -560,7 +585,7 @@ export default function QuestionsPage() {
                     role="link"
                     tabIndex={0}
                   >
-                    <ArcCard className="p-5 hover:-translate-y-0.5 hover:border-[#becdc9] hover:shadow-[0_20px_48px_rgba(38,57,80,0.09)] sm:p-6">
+                    <ArcCard className="p-5 hover:-translate-y-0.5 hover:border-[#a8bcbd] sm:p-6">
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
                           <span>
@@ -578,7 +603,7 @@ export default function QuestionsPage() {
                           <AttemptStatusBadge status={displayStatus} />
                         )}
                       </div>
-                      <div className="mt-5 max-w-3xl text-[17px] font-medium leading-8 tracking-[-0.02em]">
+                      <div className="mt-4 max-w-3xl text-base font-medium leading-8">
                         <MathContent value={question.statement.value} />
                       </div>
                       <div className="mt-5 flex flex-wrap items-center justify-between gap-4">

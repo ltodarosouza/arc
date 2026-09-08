@@ -5,15 +5,21 @@ import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
 
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
+import { Reveal } from '@/components/reveal';
+import { FeedbackState } from '@/components/feedback-state';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { useLearnerState } from '@/lib/data/use-learner-state';
-import type { AttemptOutcome } from '@/lib/domain/questions';
+import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
 
 export default function Home() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
-  const { catalogue } = useCatalogue();
-  const { state: learnerState, saveSelectedSubjectIds } = useLearnerState();
+  const { catalogue, isLoading, error } = useCatalogue();
+  const {
+    state: learnerState,
+    saveSelectedSubjectIds,
+    isLoading: learnerLoading,
+  } = useLearnerState();
 
   useEffect(() => {
     if (!catalogue) return;
@@ -33,10 +39,11 @@ export default function Home() {
       selectedSubjectIds.includes(subject.id),
     ) ?? [];
   const outcomeByQuestionId = useMemo(() => {
-    const outcomes = new Map<string, AttemptOutcome>();
-    for (const attempt of learnerState?.attempts ?? [])
-      outcomes.set(attempt.questionId, attempt.outcome);
-    return outcomes;
+    return new Map(
+      [
+        ...getLatestAttemptsByQuestion(learnerState?.attempts ?? []).values(),
+      ].map((attempt) => [attempt.questionId, attempt.outcome]),
+    );
   }, [learnerState]);
   const progress = useMemo(
     () => ({
@@ -66,18 +73,16 @@ export default function Home() {
 
   return (
     <AppShell active="home">
-      <section className="mx-auto max-w-6xl px-5 pb-10 pt-12 sm:px-8 sm:pt-20">
-        <div className="animate-enter flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
+      <section className="arc-page">
+        <div className="animate-enter flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
           <div>
             <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
               Início
             </p>
-            <h1 className="mt-2 max-w-xl text-4xl font-medium tracking-[-0.065em] sm:text-6xl">
-              Encontre uma questão e comece.
-            </h1>
+            <h1 className="arc-title mt-2 max-w-xl">O que vamos praticar?</h1>
           </div>
           <a
-            className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[var(--arc-accent)] px-5 text-sm font-medium text-[#263950] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c8d8d6]"
+            className="arc-action group shrink-0 self-start sm:self-auto"
             href={resumeHref}
           >
             {resumeSubject
@@ -88,22 +93,31 @@ export default function Home() {
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>
-        {progress.completed > 0 && (
-          <div className="mt-8 flex items-center gap-3 text-sm text-[var(--arc-text-muted)]">
-            <span>
-              {progress.completed} feita{progress.completed === 1 ? '' : 's'}
-            </span>
-            <span className="size-1 rounded-full bg-[#a9b4b9]" />
-            <span>
-              {progress.correct} acertada{progress.correct === 1 ? '' : 's'}
-            </span>
+        {progress.completed > 0 && !learnerLoading && (
+          <div className="arc-section flex flex-wrap items-center gap-x-10 gap-y-5 border-y border-[var(--border)] py-5">
+            <div>
+              <p className="text-2xl font-semibold tabular-nums">
+                {progress.completed}
+              </p>
+              <p className="arc-caption">Questões feitas</p>
+            </div>
+            <div>
+              <p className="text-2xl font-semibold tabular-nums">
+                {progress.correct}
+              </p>
+              <p className="arc-caption">Acertos</p>
+            </div>
+            <a
+              href="/progress"
+              className="arc-link ml-auto inline-flex min-h-11 items-center gap-2 text-sm"
+            >
+              Ver progresso <ArrowRight className="size-4" />
+            </a>
           </div>
         )}
-        <div className="mt-10 border-t border-[var(--border)] pt-5">
+        <div className="arc-section">
           <div className="flex items-center justify-between gap-4">
-            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--arc-text-muted)]">
-              Minhas disciplinas
-            </p>
+            <h2 className="arc-section-title">Minhas disciplinas</h2>
             <a
               className="text-sm font-medium text-[#46657a] hover:underline"
               href="/subjects"
@@ -111,9 +125,37 @@ export default function Home() {
               Gerenciar
             </a>
           </div>
-          {selectedSubjects.length ? (
+          {isLoading || learnerLoading ? (
+            <div
+              aria-label="Carregando disciplinas"
+              aria-busy="true"
+              className="mt-5 grid gap-4 sm:grid-cols-2"
+            >
+              {[0, 1].map((id) => (
+                <ArcCard
+                  key={id}
+                  className="h-48 animate-pulse bg-[var(--arc-surface-subtle)]"
+                />
+              ))}
+            </div>
+          ) : error ? (
+            <FeedbackState
+              className="mt-5"
+              title="As disciplinas não carregaram"
+              description="Tente novamente para abrir seu catálogo."
+              tone="error"
+              action={
+                <button
+                  className="arc-link"
+                  onClick={() => window.location.reload()}
+                >
+                  Tentar novamente
+                </button>
+              }
+            />
+          ) : selectedSubjects.length ? (
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {selectedSubjects.map((subject) => {
+              {selectedSubjects.map((subject, index) => {
                 const subjectQuestionIds =
                   catalogue?.questions
                     .filter((question) => question.subjectId === subject.id)
@@ -123,46 +165,56 @@ export default function Home() {
                 ).length;
                 const remaining = subjectQuestionIds.length - completed;
                 return (
-                  <ArcCard
-                    className="group relative p-5 hover:-translate-y-1 hover:border-[#b8c9c4] hover:shadow-[0_22px_52px_rgba(38,57,80,0.09)]"
-                    key={subject.id}
-                  >
-                    <a
-                      aria-label={`Abrir ${subject.name}`}
-                      className="absolute inset-0 rounded-[var(--arc-radius-card)]"
-                      href={`/explore/${subject.slug}`}
-                    />
-                    <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
-                      <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
-                    </span>
-                    <p className="mt-5 font-medium tracking-[-0.03em]">
-                      {subject.name}
-                    </p>
-                    <p className="mt-1 text-sm leading-5 text-[var(--arc-text-muted)]">
-                      {subject.description}
-                    </p>
-                    <p className="mt-4 text-xs font-medium text-[#527184]">
-                      {subjectQuestionIds.length
-                        ? remaining
-                          ? `${remaining} ${remaining === 1 ? 'questão para fazer' : 'questões para fazer'}`
-                          : 'Todas as questões concluídas'
-                        : 'Catálogo em preparação'}
-                    </p>
-                    <div className="relative z-10 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
+                  <Reveal key={subject.id} delay={index * 40}>
+                    <ArcCard className="group relative h-full p-6 hover:-translate-y-0.5 hover:border-[#a8bcbd]">
                       <a
-                        className="inline-flex items-center gap-1 hover:underline"
-                        href={`/questions?subject=${subject.slug}`}
-                      >
-                        Questões <ChevronRight className="size-4" />
-                      </a>
-                      <a
-                        className="inline-flex items-center gap-1 hover:underline"
+                        aria-label={`Abrir ${subject.name}`}
+                        className="absolute inset-0 rounded-[var(--arc-radius-card)]"
                         href={`/explore/${subject.slug}`}
+                      />
+                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
+                        <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
+                      </span>
+                      <h3 className="mt-5 text-lg font-semibold tracking-[-0.02em]">
+                        {subject.name}
+                      </h3>
+                      <p className="mt-1 text-sm leading-5 text-[var(--arc-text-muted)]">
+                        {subject.description}
+                      </p>
+                      <div
+                        aria-hidden="true"
+                        className="mt-5 h-1 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]"
                       >
-                        Assuntos <ChevronRight className="size-4" />
-                      </a>
-                    </div>
-                  </ArcCard>
+                        <div
+                          className="h-full bg-[var(--arc-accent-strong)]"
+                          style={{
+                            width: `${subjectQuestionIds.length ? (completed / subjectQuestionIds.length) * 100 : 0}%`,
+                          }}
+                        />
+                      </div>
+                      <p className="mt-2 text-xs text-[var(--arc-text-muted)]">
+                        {subjectQuestionIds.length
+                          ? remaining
+                            ? `${remaining} ${remaining === 1 ? 'questão para fazer' : 'questões para fazer'}`
+                            : 'Todas as questões concluídas'
+                          : 'Catálogo em preparação'}
+                      </p>
+                      <div className="relative z-10 mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-[#46657a]">
+                        <a
+                          className="inline-flex items-center gap-1 hover:underline"
+                          href={`/questions?subject=${subject.slug}`}
+                        >
+                          Questões <ChevronRight className="size-4" />
+                        </a>
+                        <a
+                          className="inline-flex items-center gap-1 hover:underline"
+                          href={`/explore/${subject.slug}`}
+                        >
+                          Assuntos <ChevronRight className="size-4" />
+                        </a>
+                      </div>
+                    </ArcCard>
+                  </Reveal>
                 );
               })}
             </div>

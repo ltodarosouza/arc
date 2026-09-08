@@ -231,10 +231,10 @@ export function PracticeSurface() {
         )}
       </div>
       <div className="p-5 sm:p-10">
-        <div className="max-w-3xl text-[1.35rem] font-medium leading-relaxed tracking-[-0.035em] sm:text-[1.625rem]">
+        <div className="arc-statement max-w-3xl">
           <MathContent value={question.statement.value} />
         </div>
-        <div className="mt-10 max-w-2xl">
+        <div className="mt-8 max-w-3xl">
           <p className="mb-3 text-xs text-[var(--arc-text-muted)]">
             Use o círculo ao lado para eliminar uma alternativa.
           </p>
@@ -269,14 +269,14 @@ export function PracticeSurface() {
               };
               return (
                 <div
-                  className={`flex items-center gap-2 rounded-2xl border p-1.5 transition-all duration-300 ${resultStyle ?? (chosen ? 'scale-[1.01] border-[#8aa7a1] bg-[#eef5f2] shadow-[0_8px_20px_rgba(82,113,132,0.1)]' : eliminated ? 'border-[#d8d4cc] bg-[#f1efea] shadow-none' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1] hover:bg-[#fdfcf9]')}`}
+                  className={`flex items-center gap-2 rounded-lg border p-1.5 transition-colors duration-200 ${resultStyle ?? (chosen ? 'border-[var(--primary)] bg-[var(--arc-accent)]/45' : eliminated ? 'border-dashed border-[#d8d4cc] bg-[#f1efea]' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1] hover:bg-[#fdfcf9]')}`}
                   key={option.id}
                 >
                   <button
                     aria-pressed={chosen}
                     disabled={resolved}
                     onClick={selectOption}
-                    className={`flex min-w-0 flex-1 items-center gap-3 rounded-xl px-2.5 py-2 text-left text-sm transition-colors ${eliminated ? 'text-[#7b817e]' : ''}`}
+                    className={`flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-md px-2.5 py-2 text-left text-base transition-colors ${eliminated ? 'text-[#68716e]' : ''}`}
                   >
                     <span
                       className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-white' : eliminated ? 'bg-[#dfdcd5] text-[#7b817e]' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}
@@ -297,7 +297,7 @@ export function PracticeSurface() {
                     aria-pressed={eliminated}
                     disabled={resolved}
                     onClick={toggleEliminated}
-                    className={`grid size-9 shrink-0 place-items-center rounded-xl transition-all ${eliminated ? 'bg-[#dfdcd5] text-[#5e6863] hover:bg-[#d4d0c8]' : 'text-[#78828a] hover:bg-[var(--arc-surface-subtle)] hover:text-[#485963]'}`}
+                    className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-[#dfdcd5] text-[#5e6863] hover:bg-[#d4d0c8]' : 'text-[#78828a] hover:bg-[var(--arc-surface-subtle)] hover:text-[#485963]'}`}
                   >
                     {eliminated ? (
                       <RotateCcw className="size-4" />
@@ -378,7 +378,7 @@ export function PracticeSurface() {
                   <ol className="mt-5 grid gap-3">
                     {solution.steps.map((step, index) => (
                       <li
-                        className="flex gap-3 rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)] p-4 text-[15px] leading-7"
+                        className="flex gap-4 border-b border-[var(--border)] py-5 text-[15px] leading-7 last:border-0"
                         key={step.id}
                       >
                         <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[var(--arc-accent)] text-xs font-medium text-[#405b6d]">
@@ -408,7 +408,7 @@ export function PracticeSurface() {
             {submissionError}
           </p>
         )}
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--border)] pt-6">
           {hasMoreHints && !resolved ? (
             <button
               aria-expanded={visibleHintCount > 0}
@@ -426,7 +426,7 @@ export function PracticeSurface() {
           ) : (
             <span />
           )}
-          <div className="flex items-center gap-3">
+          <div className="flex w-full flex-wrap items-center justify-end gap-x-5 gap-y-4 sm:w-auto">
             <a
               className="text-sm font-medium text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
               href={`/questions?subject=${subject?.slug ?? question.subjectId}`}

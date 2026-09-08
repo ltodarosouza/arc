@@ -89,7 +89,7 @@ export function AuthScreen() {
           arc
         </Link>
         <ArcCard className="mt-10 p-6 sm:p-8">
-          <h1 className="text-3xl font-medium tracking-tight">
+          <h1 className="arc-title !text-3xl">
             {signup ? 'Crie sua conta' : 'Entre na sua conta'}
           </h1>
           <p className="mt-3 text-[var(--arc-text-muted)]">

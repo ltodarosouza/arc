@@ -16,7 +16,7 @@ export function ArcButton({
     <Button
       {...props}
       className={cn(
-        'h-11 rounded-full px-5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0',
+        'min-h-11 rounded-[var(--arc-radius-control)] px-5 text-sm font-medium shadow-none transition-[background-color,transform] duration-200 active:translate-y-px',
         tone === 'primary' &&
           'bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[#354d68]',
         tone === 'accent' &&
@@ -34,7 +34,7 @@ export function ArcCard({
   children,
 }: {
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   return (
     <section
