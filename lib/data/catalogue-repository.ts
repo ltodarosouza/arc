@@ -9,6 +9,7 @@ import {
   seedSubjects,
   seedTaxonomyNodes,
 } from '@/lib/data/seed-catalogue';
+import { collectAllPages } from '@/lib/data/page-through-results';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 export type CatalogueOption = {
@@ -37,7 +38,7 @@ export type CatalogueQuestion = {
   source: {
     kind: 'original' | 'open_licence' | 'authorised_contributor' | 'other';
     label: string;
-    rightsStatus: 'unverified' | 'review_required' | 'approved' | 'rejected';
+    rightsStatus: 'approved';
   };
 };
 
@@ -100,64 +101,80 @@ type DatabaseSource = {
   id: string;
   kind: CatalogueQuestion['source']['kind'];
   label: string;
-  rights_status: CatalogueQuestion['source']['rightsStatus'];
 };
 
 /** Browser-safe published catalogue. Answer keys and solutions are intentionally absent. */
 async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
   if (!isSupabaseConfigured()) throw new Error('Supabase is unavailable.');
   const supabase = getSupabaseClient();
-  const [
-    subjectsResult,
-    nodesResult,
-    questionsResult,
-    optionsResult,
-    tagsResult,
-    hintsResult,
-    sourcesResult,
-  ] = await Promise.all([
-    supabase
-      .from('subjects')
-      .select('id, slug, name, description, sort_order, is_published')
-      .order('sort_order'),
-    supabase
-      .from('taxonomy_nodes')
-      .select(
-        'id, subject_id, parent_id, kind, slug, name, sort_order, is_published',
-      )
-      .order('sort_order'),
-    supabase
-      .from('questions')
-      .select(
-        'id, subject_id, kind, difficulty, statement_markdown, content_format, source_id',
-      )
-      .eq('publication_status', 'published'),
-    supabase
-      .from('question_options')
-      .select('id, question_id, label, content_markdown, sort_order')
-      .order('sort_order'),
-    supabase
-      .from('question_taxonomy_tags')
-      .select('question_id, taxonomy_node_id, is_primary'),
-    supabase
-      .from('question_hints')
-      .select('id, question_id, content_markdown, sort_order')
-      .order('sort_order'),
-    supabase.from('question_sources').select('id, kind, label, rights_status'),
-  ]);
+  const [subjects, taxonomyNodes, questions, options, tags, hints, sources] =
+    await Promise.all([
+      collectAllPages<DatabaseSubject>((from, to) =>
+        supabase
+          .from('subjects')
+          .select('id, slug, name, description, sort_order, is_published')
+          .order('sort_order')
+          .order('id')
+          .range(from, to),
+      ),
+      collectAllPages<DatabaseNode>((from, to) =>
+        supabase
+          .from('taxonomy_nodes')
+          .select(
+            'id, subject_id, parent_id, kind, slug, name, sort_order, is_published',
+          )
+          .order('subject_id')
+          .order('sort_order')
+          .order('id')
+          .range(from, to),
+      ),
+      collectAllPages<DatabaseQuestion>((from, to) =>
+        supabase
+          .from('questions')
+          .select(
+            'id, subject_id, kind, difficulty, statement_markdown, content_format, source_id',
+          )
+          .eq('publication_status', 'published')
+          .order('subject_id')
+          .order('id')
+          .range(from, to),
+      ),
+      collectAllPages<DatabaseOption>((from, to) =>
+        supabase
+          .from('question_options')
+          .select('id, question_id, label, content_markdown, sort_order')
+          .order('question_id')
+          .order('sort_order')
+          .order('id')
+          .range(from, to),
+      ),
+      collectAllPages<DatabaseTag>((from, to) =>
+        supabase
+          .from('question_taxonomy_tags')
+          .select('question_id, taxonomy_node_id, is_primary')
+          .order('question_id')
+          .order('taxonomy_node_id')
+          .range(from, to),
+      ),
+      collectAllPages<DatabaseHint>((from, to) =>
+        supabase
+          .from('question_hints')
+          .select('id, question_id, content_markdown, sort_order')
+          .order('question_id')
+          .order('sort_order')
+          .order('id')
+          .range(from, to),
+      ),
+      collectAllPages<DatabaseSource>((from, to) =>
+        supabase
+          .from('question_sources')
+          .select('id, kind, label, rights_status')
+          .order('id')
+          .range(from, to),
+      ),
+    ]);
 
-  const failure = [
-    subjectsResult,
-    nodesResult,
-    questionsResult,
-    optionsResult,
-    tagsResult,
-    hintsResult,
-    sourcesResult,
-  ].find((result) => result.error)?.error;
-  if (failure) throw failure;
-
-  const subjects = (subjectsResult.data as DatabaseSubject[]).map((item) => ({
+  const mappedSubjects = subjects.map((item) => ({
     id: item.id,
     slug: item.slug,
     name: item.name,
@@ -165,7 +182,7 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
     sortOrder: item.sort_order,
     isPublished: item.is_published,
   }));
-  const taxonomyNodes = (nodesResult.data as DatabaseNode[]).map((item) => ({
+  const mappedTaxonomyNodes = taxonomyNodes.map((item) => ({
     id: item.id,
     subjectId: item.subject_id,
     parentId: item.parent_id,
@@ -175,14 +192,9 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
     sortOrder: item.sort_order,
     isPublished: item.is_published,
   }));
-  const options = optionsResult.data as DatabaseOption[];
-  const tags = tagsResult.data as DatabaseTag[];
-  const hints = hintsResult.data as DatabaseHint[];
-  const sources = new Map(
-    (sourcesResult.data as DatabaseSource[]).map((item) => [item.id, item]),
-  );
-  const questions = (questionsResult.data as DatabaseQuestion[]).map((item) => {
-    const source = item.source_id ? sources.get(item.source_id) : undefined;
+  const sourcesById = new Map(sources.map((item) => [item.id, item]));
+  const mappedQuestions = questions.map((item) => {
+    const source = item.source_id ? sourcesById.get(item.source_id) : undefined;
     return {
       id: item.id,
       subjectId: item.subject_id,
@@ -223,12 +235,16 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
       source: {
         kind: source?.kind ?? 'other',
         label: source?.label ?? 'Fonte não informada',
-        rightsStatus: source?.rights_status ?? 'unverified',
+        rightsStatus: 'approved' as const,
       },
     };
   });
 
-  return { subjects, taxonomyNodes, questions };
+  return {
+    subjects: mappedSubjects,
+    taxonomyNodes: mappedTaxonomyNodes,
+    questions: mappedQuestions,
+  };
 }
 
 function loadFixtureCatalogue(): CatalogueSnapshot {

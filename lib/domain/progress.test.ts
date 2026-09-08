@@ -64,4 +64,16 @@ describe('progress summary', () => {
       'two',
     );
   });
+
+  it('uses the attempt id as a deterministic tie-breaker', () => {
+    const createdAt = '2026-01-01T10:00:00.000Z';
+    const attempts = [
+      attempt('a', 'question-a', 'incorrect', createdAt),
+      attempt('b', 'question-a', 'correct', createdAt),
+    ];
+
+    expect(
+      getLatestAttemptsByQuestion(attempts).get('question-a')?.outcome,
+    ).toBe('correct');
+  });
 });
