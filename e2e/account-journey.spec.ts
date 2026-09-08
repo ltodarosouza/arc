@@ -90,10 +90,10 @@ test.describe('real account flows in disposable local Supabase', () => {
     await expect(
       page.getByRole('heading', { name: 'Perfil', exact: true }),
     ).toBeVisible();
-    await Promise.all([
-      page.waitForEvent('load'),
-      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
-    ]);
+    await page
+      .getByRole('button', { name: 'Sair da conta', exact: true })
+      .click();
+    await expect(page.getByLabel('E-mail', { exact: true })).toBeVisible();
     await page.goto('/account/reset');
     await expect(
       page.getByRole('alert').filter({ hasText: 'Este link expirou' }),
@@ -214,10 +214,9 @@ test.describe('real account flows in disposable local Supabase', () => {
     await page.route('**/auth/v1/logout*', (route) =>
       route.fulfill({ status: 503, body: '{}' }),
     );
-    await Promise.all([
-      page.waitForEvent('load'),
-      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
-    ]);
+    await page
+      .getByRole('button', { name: 'Sair da conta', exact: true })
+      .click();
     await expect(
       page
         .getByRole('alert')
@@ -231,16 +230,18 @@ test.describe('real account flows in disposable local Supabase', () => {
     await page.getByLabel('Senha', { exact: true }).fill(password);
     await page.getByRole('button', { name: 'Entrar', exact: true }).click();
     await expect(
-      page.getByRole('heading', { name: 'Perfil', exact: true }),
+      page.getByRole('heading', { name: 'O que vamos praticar?' }),
     ).toBeVisible();
+    await page.goto('/account');
+    await expect(page.getByLabel('Como quer ser chamado')).toBeVisible();
     await expect(page.getByLabel('Como quer ser chamado')).toHaveValue('');
     await expect(
       page.getByRole('link', { name: 'Abrir perfil' }),
     ).not.toContainText('Ana Revisada');
-    await Promise.all([
-      page.waitForEvent('load'),
-      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
-    ]);
+    await page
+      .getByRole('button', { name: 'Sair da conta', exact: true })
+      .click();
+    await expect(page.getByLabel('E-mail', { exact: true })).toBeVisible();
     await page.goto('/account/recover');
     await page.getByLabel('E-mail', { exact: true }).fill(email);
     await page.getByRole('button', { name: 'Enviar link' }).click();
@@ -277,10 +278,10 @@ test.describe('real account flows in disposable local Supabase', () => {
     await page.getByRole('button', { name: 'Atualizar senha' }).click();
     await expect(page.getByRole('status')).toContainText('Senha atualizada');
     await page.goto('/account');
-    await Promise.all([
-      page.waitForEvent('load'),
-      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
-    ]);
+    await page
+      .getByRole('button', { name: 'Sair da conta', exact: true })
+      .click();
+    await expect(page.getByLabel('E-mail', { exact: true })).toBeVisible();
     await page.goto(link);
     await expect(
       page.getByRole('alert').filter({ hasText: 'Este link expirou' }),
@@ -293,8 +294,10 @@ test.describe('real account flows in disposable local Supabase', () => {
     await page.getByLabel('Senha', { exact: true }).fill(nextPassword);
     await page.getByRole('button', { name: 'Entrar', exact: true }).click();
     await expect(
-      page.getByRole('heading', { name: 'Perfil', exact: true }),
+      page.getByRole('heading', { name: 'O que vamos praticar?' }),
     ).toBeVisible();
+    await page.goto('/account');
+    await expect(page.getByLabel('Senha atual', { exact: true })).toBeVisible();
 
     await page
       .getByLabel('Senha atual', { exact: true })
@@ -318,16 +321,17 @@ test.describe('real account flows in disposable local Supabase', () => {
     await expect(
       page.getByRole('status').filter({ hasText: 'Senha atualizada' }),
     ).toBeVisible();
-    await Promise.all([
-      page.waitForEvent('load'),
-      page.getByRole('button', { name: 'Sair da conta', exact: true }).click(),
-    ]);
+    await page
+      .getByRole('button', { name: 'Sair da conta', exact: true })
+      .click();
+    await expect(page.getByLabel('E-mail', { exact: true })).toBeVisible();
     await page.getByLabel('E-mail', { exact: true }).fill(email);
     await page.getByLabel('Senha', { exact: true }).fill(profilePassword);
     await page.getByRole('button', { name: 'Entrar', exact: true }).click();
     await expect(
-      page.getByRole('heading', { name: 'Perfil', exact: true }),
+      page.getByRole('heading', { name: 'O que vamos praticar?' }),
     ).toBeVisible();
+    await page.goto('/account');
     const learner = createClient(url, key, options);
     const login = await learner.auth.signInWithPassword({
       email,
