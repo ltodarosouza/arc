@@ -13,15 +13,23 @@ import {
 } from '@/lib/domain/learner';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
+const learnerStateCache = new Map<string, LearnerState>();
+
 export function useLearnerState() {
   const { session, ready } = useAuth();
   const owner = session?.user.id ?? null;
   const remote = isSupabaseConfigured();
+  const cacheKey = remote ? owner : 'local';
   const [snapshot, setSnapshot] = useState<{
     owner: string | null;
     state: LearnerState;
-  } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  } | null>(() => {
+    const cachedState = cacheKey ? learnerStateCache.get(cacheKey) : null;
+    return cachedState ? { owner, state: cachedState } : null;
+  });
+  const [isLoading, setIsLoading] = useState(
+    () => !cacheKey || !learnerStateCache.has(cacheKey),
+  );
   const [error, setError] = useState<Error | null>(null);
   const generation = useRef(0);
   const refresh = useCallback(async () => {
@@ -32,12 +40,13 @@ export function useLearnerState() {
       setIsLoading(false);
       return;
     }
-    setIsLoading(true);
+    if (!learnerStateCache.has(cacheKey ?? '')) setIsLoading(true);
     try {
       const state = remote
         ? await loadSupabaseLearnerState()
         : createLocalLearnerRepository().getState();
       if (request !== generation.current) return;
+      if (cacheKey) learnerStateCache.set(cacheKey, state);
       setSnapshot({ owner, state });
       setError(null);
     } catch {
@@ -49,7 +58,7 @@ export function useLearnerState() {
     } finally {
       if (request === generation.current) setIsLoading(false);
     }
-  }, [owner, ready, remote]);
+  }, [cacheKey, owner, ready, remote]);
   useEffect(() => {
     void refresh();
     return () => {
@@ -75,6 +84,12 @@ export function useLearnerState() {
             selectedSubjectIds: ids,
           },
         }));
+        if (cacheKey) {
+          learnerStateCache.set(cacheKey, {
+            ...(learnerStateCache.get(cacheKey) ?? createEmptyLearnerState()),
+            selectedSubjectIds: ids,
+          });
+        }
         setError(null);
         return true;
       } catch {
@@ -87,7 +102,7 @@ export function useLearnerState() {
         return false;
       }
     },
-    [owner, remote],
+    [cacheKey, owner, remote],
   );
   const setRedo = useCallback(
     async (questionId: string, enabled: boolean) => {
@@ -113,6 +128,16 @@ export function useLearnerState() {
             },
           };
         });
+        if (cacheKey) {
+          const state =
+            learnerStateCache.get(cacheKey) ?? createEmptyLearnerState();
+          learnerStateCache.set(cacheKey, {
+            ...state,
+            redoQuestionIds: enabled
+              ? [...new Set([...state.redoQuestionIds, questionId])]
+              : state.redoQuestionIds.filter((id) => id !== questionId),
+          });
+        }
         setError(null);
         return true;
       } catch {
@@ -123,7 +148,7 @@ export function useLearnerState() {
         return false;
       }
     },
-    [owner, remote],
+    [cacheKey, owner, remote],
   );
   return {
     state: snapshot?.owner === owner ? snapshot.state : null,

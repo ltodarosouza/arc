@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+
 import type { QuestionAttempt } from '@/lib/domain/questions';
 import { getProgressTimeline } from '@/lib/domain/progress';
 
@@ -9,6 +13,27 @@ const dateLabel = (date: string) =>
 
 export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
   const days = getProgressTimeline(attempts);
+  const chartRef = useRef<SVGSVGElement>(null);
+  const [isDrawn, setIsDrawn] = useState(false);
+  const [activeDate, setActiveDate] = useState<string | null>(null);
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIsDrawn(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setIsDrawn(true);
+        observer.disconnect();
+      },
+      { threshold: 0.18 },
+    );
+    observer.observe(chart);
+    return () => observer.disconnect();
+  }, []);
   if (!days.length) return null;
   const firstTime = Date.parse(days[0].date);
   const span = Date.parse(days.at(-1)!.date) - firstTime;
@@ -18,6 +43,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
   const points = days
     .map((day) => `${x(day.date)},${y(day.accuracy)}`)
     .join(' ');
+  const activeDay = days.find((day) => day.date === activeDate) ?? null;
   return (
     <section
       className="arc-section border-y border-[var(--border)] py-6"
@@ -33,8 +59,10 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
         Resultado acumulado ao fim de cada dia · horário de Brasília.
       </p>
       <svg
+        ref={chartRef}
         viewBox="0 0 680 200"
-        className="mt-5 w-full max-h-64"
+        className="arc-progress-chart mt-5 max-h-64 w-full"
+        data-drawn={isDrawn}
         role="img"
         aria-label={`Aproveitamento acumulado: ${days.map((day) => `${dateLabel(day.date)}, ${day.accuracy}% em ${day.answered} questões`).join('; ')}.`}
       >
@@ -60,6 +88,8 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
         ))}
         {days.length > 1 && (
           <polyline
+            className="arc-progress-chart-line"
+            pathLength="1"
             points={points}
             fill="none"
             stroke="var(--arc-accent-strong)"
@@ -70,6 +100,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
         )}
         {days.map((day) => (
           <circle
+            className="arc-progress-chart-dot"
             key={day.date}
             cx={x(day.date)}
             cy={y(day.accuracy)}
@@ -77,6 +108,11 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
             fill="var(--primary)"
             stroke="var(--background)"
             strokeWidth="2"
+            tabIndex={0}
+            onBlur={() => setActiveDate(null)}
+            onFocus={() => setActiveDate(day.date)}
+            onMouseEnter={() => setActiveDate(day.date)}
+            onMouseLeave={() => setActiveDate(null)}
           >
             <title>
               {dateLabel(day.date)}: {day.correct} acertos em {day.answered}{' '}
@@ -105,6 +141,14 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
           </text>
         )}
       </svg>
+      <p
+        aria-live="polite"
+        className="mt-2 min-h-6 text-sm text-[var(--arc-text-muted)]"
+      >
+        {activeDay
+          ? `${dateLabel(activeDay.date)} · ${activeDay.correct} ${activeDay.correct === 1 ? 'acerto' : 'acertos'} em ${activeDay.answered} ${activeDay.answered === 1 ? 'questão' : 'questões'} · ${activeDay.accuracy}% de aproveitamento`
+          : 'Passe o cursor sobre um ponto para ver os detalhes.'}
+      </p>
       {days.length === 1 && (
         <p className="arc-caption">
           Seu primeiro registro. A evolução aparece conforme você pratica em

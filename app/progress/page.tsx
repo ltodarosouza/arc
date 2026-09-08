@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { ProgressChart } from '@/components/progress-chart';
 import { FeedbackState } from '@/components/feedback-state';
+import { Reveal } from '@/components/reveal';
 
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
@@ -269,89 +270,92 @@ export default function ProgressPage() {
               <section className="arc-section">
                 <h2 className="arc-section-title">Por disciplina</h2>
                 <div className="mt-4 grid gap-3">
-                  {performance.map((subject) => (
-                    <ArcCard className="p-5 sm:p-6" key={subject.id}>
-                      <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <a
-                          className="font-medium tracking-[-0.025em] transition-colors hover:text-[#46657a]"
-                          href={`/questions?subject=${subject.slug}`}
-                        >
-                          {subject.name}
-                        </a>
-                        <p className="text-sm text-[var(--arc-text-muted)]">
-                          {subject.attempted >= minimumReliableSampleSize
-                            ? `${percentage(subject.correct, subject.attempted)}% de acerto`
-                            : `${subject.attempted} respondida${subject.attempted === 1 ? '' : 's'}`}
-                        </p>
-                      </div>
-                      <div
-                        aria-hidden="true"
-                        className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]"
-                      >
+                  {performance.map((subject, index) => (
+                    <Reveal delay={index * 45} key={subject.id}>
+                      <ArcCard className="p-5 sm:p-6">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
+                          <a
+                            className="font-medium tracking-[-0.025em] transition-colors hover:text-[#46657a]"
+                            href={`/questions?subject=${subject.slug}`}
+                          >
+                            {subject.name}
+                          </a>
+                          <p className="text-sm text-[var(--arc-text-muted)]">
+                            {subject.attempted >= minimumReliableSampleSize
+                              ? `${percentage(subject.correct, subject.attempted)}% de acerto`
+                              : `${subject.attempted} respondida${subject.attempted === 1 ? '' : 's'}`}
+                          </p>
+                        </div>
                         <div
-                          className="h-full rounded-full bg-[var(--arc-accent-strong)]"
-                          style={{
-                            width: `${percentage(subject.correct, subject.attempted)}%`,
-                          }}
-                        />
-                      </div>
-                      <p className="arc-caption mt-2">
-                        {subject.correct}{' '}
-                        {subject.correct === 1 ? 'acerto' : 'acertos'} em{' '}
-                        {subject.attempted}{' '}
-                        {subject.attempted === 1 ? 'questão' : 'questões'}
-                      </p>
-                      <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-                        {subject.attempted > subject.correct && (
+                          aria-hidden="true"
+                          className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]"
+                        >
+                          <div
+                            className="h-full rounded-full bg-[var(--arc-accent-strong)]"
+                            style={{
+                              width: `${percentage(subject.correct, subject.attempted)}%`,
+                            }}
+                          />
+                        </div>
+                        <p className="arc-caption mt-2">
+                          {subject.correct}{' '}
+                          {subject.correct === 1 ? 'acerto' : 'acertos'} em{' '}
+                          {subject.attempted}{' '}
+                          {subject.attempted === 1 ? 'questão' : 'questões'}
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                          {subject.attempted > subject.correct && (
+                            <a
+                              className="arc-link inline-flex min-h-11 items-center"
+                              href={`/questions?subject=${subject.slug}&status=incorrect`}
+                            >
+                              Revisar erros
+                            </a>
+                          )}
                           <a
                             className="arc-link inline-flex min-h-11 items-center"
-                            href={`/questions?subject=${subject.slug}&status=incorrect`}
+                            href={`/questions?subject=${subject.slug}&status=redo`}
                           >
-                            Revisar erros
+                            Para refazer
                           </a>
-                        )}
-                        <a
-                          className="arc-link inline-flex min-h-11 items-center"
-                          href={`/questions?subject=${subject.slug}&status=redo`}
-                        >
-                          Para refazer
-                        </a>
-                      </div>
-                      <details className="arc-disclosure mt-2 border-t border-[var(--border)]">
-                        <summary className="flex min-h-12 items-center justify-between gap-2 text-sm font-medium">
-                          Desempenho por assunto{' '}
-                          <ChevronDown className="disclosure-icon size-4" />
-                        </summary>
-                        <div className="disclosure-content divide-y divide-[var(--border)]">
-                          {subject.topics.map((topic) => (
-                            <div
-                              className="flex items-center justify-between gap-4 py-3"
-                              key={topic.id}
-                            >
-                              <div>
+                        </div>
+                        <details className="arc-disclosure mt-2 border-t border-[var(--border)]">
+                          <summary className="flex min-h-12 items-center justify-between gap-2 text-sm font-medium">
+                            Desempenho por assunto{' '}
+                            <ChevronDown className="disclosure-icon size-4" />
+                          </summary>
+                          <div className="disclosure-content divide-y divide-[var(--border)]">
+                            {subject.topics.map((topic) => (
+                              <div
+                                className="flex items-center justify-between gap-4 py-3"
+                                key={topic.id}
+                              >
+                                <div>
+                                  <a
+                                    className="text-sm font-medium transition-colors hover:text-[#46657a]"
+                                    href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
+                                  >
+                                    {topic.name}
+                                  </a>
+                                  <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
+                                    {topic.attempted >=
+                                    minimumReliableSampleSize
+                                      ? `${percentage(topic.correct, topic.attempted)}% de acerto em ${topic.attempted} questões`
+                                      : `${topic.attempted} resposta${topic.attempted === 1 ? '' : 's'} · percentual após 3 questões`}
+                                  </p>
+                                </div>
                                 <a
-                                  className="text-sm font-medium transition-colors hover:text-[#46657a]"
+                                  className="shrink-0 text-sm font-medium text-[#46657a] hover:underline"
                                   href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                                 >
-                                  {topic.name}
+                                  Praticar
                                 </a>
-                                <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
-                                  {topic.attempted >= minimumReliableSampleSize
-                                    ? `${percentage(topic.correct, topic.attempted)}% de acerto em ${topic.attempted} questões`
-                                    : `${topic.attempted} resposta${topic.attempted === 1 ? '' : 's'} · percentual após 3 questões`}
-                                </p>
                               </div>
-                              <a
-                                className="shrink-0 text-sm font-medium text-[#46657a] hover:underline"
-                                href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
-                              >
-                                Praticar
-                              </a>
-                            </div>
-                          ))}
-                        </div>
-                      </details>
-                    </ArcCard>
+                            ))}
+                          </div>
+                        </details>
+                      </ArcCard>
+                    </Reveal>
                   ))}
                 </div>
               </section>

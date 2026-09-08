@@ -108,13 +108,15 @@ export function PracticeSurface() {
         if (submitError) throw submitError;
         const attempt = (data as RpcAttempt[] | null)?.[0];
         if (!attempt) throw new Error('A resposta não foi registrada.');
-        setOutcome(attempt.outcome);
         const { data: solutionData, error: solutionError } = await supabase.rpc(
           'get_question_solution',
           { p_question_id: question.id },
         );
         if (solutionError) throw solutionError;
         setSolution(solutionData as Solution);
+        // Reveal the result only after the correct option arrives. Otherwise a
+        // correct choice briefly has no matching solution and flashes as wrong.
+        setOutcome(attempt.outcome);
       } else {
         const fixture = seedQuestions.find((item) => item.id === question.id);
         if (!fixture || fixture.kind !== 'multiple_choice')

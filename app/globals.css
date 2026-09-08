@@ -231,6 +231,33 @@ a {
     opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+.arc-progress-chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arc-progress-chart-dot {
+  cursor: pointer;
+  opacity: 0;
+  transform-origin: center;
+  transform: scale(0.35);
+  transition:
+    opacity 220ms ease-out 620ms,
+    transform 360ms cubic-bezier(0.16, 1, 0.3, 1) 620ms;
+}
+.arc-progress-chart-dot:hover,
+.arc-progress-chart-dot:focus {
+  stroke: var(--arc-accent-strong);
+  stroke-width: 3;
+  outline: none;
+}
+.arc-progress-chart[data-drawn='true'] .arc-progress-chart-line {
+  stroke-dashoffset: 0;
+}
+.arc-progress-chart[data-drawn='true'] .arc-progress-chart-dot {
+  opacity: 1;
+  transform: scale(1);
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

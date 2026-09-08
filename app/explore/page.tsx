@@ -6,6 +6,7 @@ import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
+import { Reveal } from '@/components/reveal';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
 import { useCatalogue } from '@/lib/data/use-catalogue';
 import { useLearnerState } from '@/lib/data/use-learner-state';
@@ -17,7 +18,12 @@ export default function ExplorePage() {
     [],
   );
   const { catalogue, error, isLoading } = useCatalogue();
-  const { state: learnerState, saveSelectedSubjectIds } = useLearnerState();
+  const {
+    state: learnerState,
+    saveSelectedSubjectIds,
+    isLoading: learnerLoading,
+  } = useLearnerState();
+  const isInitialLoading = isLoading || learnerLoading || !learnerState;
 
   useEffect(() => {
     if (!catalogue) return;
@@ -89,7 +95,7 @@ export default function ExplorePage() {
             <SlidersHorizontal className="size-4" /> Gerenciar disciplinas
           </a>
         </div>
-        {isLoading ? (
+        {isInitialLoading ? (
           <div
             aria-busy="true"
             aria-label="Carregando disciplinas"
@@ -121,66 +127,69 @@ export default function ExplorePage() {
         ) : subjectDetails.length ? (
           <div className="mt-9 grid gap-4 lg:grid-cols-2">
             {subjectDetails.map(
-              ({ subject, questions, topics, attemptedCount }) => (
-                <ArcCard className="overflow-hidden" key={subject.id}>
-                  <div className="flex items-center gap-3 border-b border-[var(--border)] px-5 py-5 sm:px-6">
-                    <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
-                      <BookOpen className="size-4" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <h2 className="arc-section-title">
-                        <a
-                          className="hover:underline"
-                          href={`/explore/${subject.slug}`}
-                        >
-                          {subject.name}
-                        </a>
-                      </h2>
-                      <p className="mt-0.5 text-xs text-[var(--arc-text-muted)]">
-                        {questions.length}{' '}
-                        {questions.length === 1 ? 'questão' : 'questões'} ·{' '}
-                        {attemptedCount} feita{attemptedCount === 1 ? '' : 's'}
-                      </p>
-                    </div>
-                    <a
-                      className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
-                      href={`/questions?subject=${subject.slug}`}
-                    >
-                      Ver todas <ChevronRight className="size-4" />
-                    </a>
-                  </div>
-                  <div className="p-5 sm:p-6">
-                    <p className="arc-caption">Assuntos</p>
-                    {topics.length ? (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {topics.slice(0, 4).map((topic) => (
+              ({ subject, questions, topics, attemptedCount }, index) => (
+                <Reveal delay={index * 45} key={subject.id}>
+                  <ArcCard className="overflow-hidden">
+                    <div className="flex items-center gap-3 border-b border-[var(--border)] px-5 py-5 sm:px-6">
+                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
+                        <BookOpen className="size-4" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <h2 className="arc-section-title">
                           <a
-                            className="inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
-                            href={`/questions?subject=${subject.slug}&topic=${topic.slug}`}
-                            key={topic.id}
-                          >
-                            {topic.name}{' '}
-                            <span className="ml-1 opacity-60">
-                              {topic.count}
-                            </span>
-                          </a>
-                        ))}
-                        {topics.length > 4 && (
-                          <a
-                            className="arc-link inline-flex min-h-11 items-center px-2 text-sm"
+                            className="hover:underline"
                             href={`/explore/${subject.slug}`}
                           >
-                            +{topics.length - 4} assuntos
+                            {subject.name}
                           </a>
-                        )}
+                        </h2>
+                        <p className="mt-0.5 text-xs text-[var(--arc-text-muted)]">
+                          {questions.length}{' '}
+                          {questions.length === 1 ? 'questão' : 'questões'} ·{' '}
+                          {attemptedCount} feita
+                          {attemptedCount === 1 ? '' : 's'}
+                        </p>
                       </div>
-                    ) : (
-                      <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
-                        Assuntos em preparação.
-                      </p>
-                    )}
-                  </div>
-                </ArcCard>
+                      <a
+                        className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                        href={`/questions?subject=${subject.slug}`}
+                      >
+                        Ver todas <ChevronRight className="size-4" />
+                      </a>
+                    </div>
+                    <div className="p-5 sm:p-6">
+                      <p className="arc-caption">Assuntos</p>
+                      {topics.length ? (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {topics.slice(0, 4).map((topic) => (
+                            <a
+                              className="inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
+                              href={`/questions?subject=${subject.slug}&topic=${topic.slug}`}
+                              key={topic.id}
+                            >
+                              {topic.name}{' '}
+                              <span className="ml-1 opacity-60">
+                                {topic.count}
+                              </span>
+                            </a>
+                          ))}
+                          {topics.length > 4 && (
+                            <a
+                              className="arc-link inline-flex min-h-11 items-center px-2 text-sm"
+                              href={`/explore/${subject.slug}`}
+                            >
+                              +{topics.length - 4} assuntos
+                            </a>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+                          Assuntos em preparação.
+                        </p>
+                      )}
+                    </div>
+                  </ArcCard>
+                </Reveal>
               ),
             )}
           </div>
