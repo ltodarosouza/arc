@@ -1,7 +1,8 @@
 {
-  "name": "sites-project",
+  "name": "arc",
   "version": "0.1.0",
   "private": true,
+  "description": "Plataforma universitária de prática por questões.",
   "engines": {
     "node": ">=22.13.0"
   },
