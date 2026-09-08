@@ -57,9 +57,12 @@ export function PracticeSurface() {
   );
   const [outcome, setOutcome] = useState<'correct' | 'incorrect' | null>(null);
   const [solution, setSolution] = useState<Solution | null>(null);
+  const [solutionError, setSolutionError] = useState<string | null>(null);
+  const [isLoadingSolution, setIsLoadingSolution] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [visibleHintCount, setVisibleHintCount] = useState(0);
   const submissionInFlight = useRef(false);
+  const solutionInFlight = useRef(false);
 
   const requestedSubject = catalogue?.subjects.find(
     (item) =>
@@ -129,6 +132,29 @@ export function PracticeSurface() {
     );
   };
 
+  const loadSolution = async () => {
+    if (!question || !isSupabaseConfigured() || solutionInFlight.current)
+      return;
+    solutionInFlight.current = true;
+    setSolutionError(null);
+    setIsLoadingSolution(true);
+    try {
+      const { data, error: solutionError } = await getSupabaseClient().rpc(
+        'get_question_solution',
+        { p_question_id: question.id },
+      );
+      if (solutionError) throw solutionError;
+      setSolution(data as Solution);
+    } catch {
+      setSolutionError(
+        'Sua resposta foi registrada. Não foi possível carregar o gabarito agora.',
+      );
+    } finally {
+      solutionInFlight.current = false;
+      setIsLoadingSolution(false);
+    }
+  };
+
   const submitAnswer = async () => {
     if (!question || !selectedOptionId || outcome || submissionInFlight.current)
       return;
@@ -147,15 +173,11 @@ export function PracticeSurface() {
         if (submitError) throw submitError;
         const attempt = (data as RpcAttempt[] | null)?.[0];
         if (!attempt) throw new Error('A resposta não foi registrada.');
-        const { data: solutionData, error: solutionError } = await supabase.rpc(
-          'get_question_solution',
-          { p_question_id: question.id },
-        );
-        if (solutionError) throw solutionError;
-        setSolution(solutionData as Solution);
-        // Reveal the result only after the correct option arrives. Otherwise a
-        // correct choice briefly has no matching solution and flashes as wrong.
+        // The attempt is durable independently of the explanation. Keeping the
+        // result lets the learner retry only the explanation request on a
+        // transient failure, without submitting another attempt.
         setOutcome(attempt.outcome);
+        await loadSolution();
       } else {
         const fixture = seedQuestions.find((item) => item.id === question.id);
         if (!fixture || fixture.kind !== 'multiple_choice')
@@ -318,6 +340,7 @@ export function PracticeSurface() {
               const eliminated = eliminatedOptionIds.has(option.id);
               const resultStyle =
                 resolved &&
+                solution &&
                 (chosen || correct
                   ? correct
                     ? 'border-[#8fb59f] bg-[#eef6f0]'
@@ -467,6 +490,29 @@ export function PracticeSurface() {
                     ))}
                   </ol>
                 )}
+              </section>
+            )}
+            {isLoadingSolution && !solution && (
+              <p
+                className="mt-6 text-sm text-[var(--arc-text-muted)]"
+                role="status"
+              >
+                Carregando gabarito comentado…
+              </p>
+            )}
+            {solutionError && !solution && (
+              <section
+                aria-live="polite"
+                className="mt-6 max-w-2xl rounded-2xl border border-[var(--arc-error-border)] bg-[var(--arc-error-bg)] p-4 text-sm leading-6 text-[var(--arc-error-text)]"
+              >
+                <p>{solutionError}</p>
+                <button
+                  className="arc-link mt-3 inline-flex min-h-11 items-center"
+                  disabled={isLoadingSolution}
+                  onClick={() => void loadSolution()}
+                >
+                  Tentar carregar gabarito
+                </button>
               </section>
             )}
           </>
