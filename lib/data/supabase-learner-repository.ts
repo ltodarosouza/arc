@@ -120,12 +120,13 @@ export async function setSupabaseRedo(questionId: string, enabled: boolean) {
   const supabase = getSupabaseClient();
   const userId = await currentUserId();
   const result = enabled
-    ? await supabase
-        .from('redo_questions')
-        .upsert(
-          { user_id: userId, question_id: questionId },
-          { onConflict: 'user_id,question_id' },
-        )
+    ? await supabase.from('redo_questions').upsert(
+        { user_id: userId, question_id: questionId },
+        {
+          onConflict: 'user_id,question_id',
+          ignoreDuplicates: true,
+        },
+      )
     : await supabase
         .from('redo_questions')
         .delete()

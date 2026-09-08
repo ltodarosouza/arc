@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   ChevronDown,
@@ -50,6 +50,11 @@ export default function QuestionsPage() {
   const [redoQuestionIds, setRedoQuestionIds] = useState<Set<string>>(
     new Set(),
   );
+  const [savingRedoQuestionIds, setSavingRedoQuestionIds] = useState<
+    Set<string>
+  >(new Set());
+  const pendingRedoQuestionIds = useRef(new Set<string>());
+  const [redoFeedback, setRedoFeedback] = useState<string | null>(null);
   const [outcomeByQuestionId, setOutcomeByQuestionId] = useState<
     Map<string, AttemptOutcome>
   >(new Map());
@@ -218,15 +223,31 @@ export default function QuestionsPage() {
     setSelectedDifficulties([]);
     setSelectedStatus('all');
   };
-  const toggleRedo = (questionId: string) => {
+  const toggleRedo = async (questionId: string) => {
+    if (pendingRedoQuestionIds.current.has(questionId)) return;
     const enabled = !redoQuestionIds.has(questionId);
-    void setRedo(questionId, enabled);
-    setRedoQuestionIds((current) => {
-      const next = new Set(current);
-      if (enabled) next.add(questionId);
-      else next.delete(questionId);
-      return next;
-    });
+    pendingRedoQuestionIds.current.add(questionId);
+    setSavingRedoQuestionIds((current) => new Set([...current, questionId]));
+    setRedoFeedback(null);
+    try {
+      if (!(await setRedo(questionId, enabled))) {
+        setRedoFeedback('Não foi possível salvar a marcação. Tente novamente.');
+        return;
+      }
+      setRedoQuestionIds((current) => {
+        const next = new Set(current);
+        if (enabled) next.add(questionId);
+        else next.delete(questionId);
+        return next;
+      });
+    } finally {
+      pendingRedoQuestionIds.current.delete(questionId);
+      setSavingRedoQuestionIds((current) => {
+        const next = new Set(current);
+        next.delete(questionId);
+        return next;
+      });
+    }
   };
   const startRandomQuestion = () => {
     const question = questions[Math.floor(Math.random() * questions.length)];
@@ -544,11 +565,17 @@ export default function QuestionsPage() {
         <p aria-atomic="true" aria-live="polite" className="sr-only">
           {questions.length} questões encontradas.
         </p>
+        {redoFeedback && (
+          <p role="alert" className="mt-4 text-sm text-[var(--arc-error-text)]">
+            {redoFeedback}
+          </p>
+        )}
         {questions.length ? (
           <div className="mt-6 grid gap-3">
             {questions.map((question, index) => {
               const outcome = outcomeByQuestionId.get(question.id);
               const markedForRedo = redoQuestionIds.has(question.id);
+              const isSavingRedo = savingRedoQuestionIds.has(question.id);
               const displayStatus = markedForRedo
                 ? 'redo'
                 : outcome === 'correct'
@@ -621,11 +648,14 @@ export default function QuestionsPage() {
                           <button
                             aria-pressed={markedForRedo}
                             className="text-sm text-[var(--arc-text-muted)] hover:text-[var(--foreground)]"
-                            onClick={() => toggleRedo(question.id)}
+                            disabled={isSavingRedo}
+                            onClick={() => void toggleRedo(question.id)}
                           >
-                            {markedForRedo
-                              ? 'Remover de refazer'
-                              : 'Marcar para refazer'}
+                            {isSavingRedo
+                              ? 'Salvando marcação…'
+                              : markedForRedo
+                                ? 'Remover de refazer'
+                                : 'Marcar para refazer'}
                           </button>
                           <a
                             className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"

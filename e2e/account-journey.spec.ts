@@ -347,9 +347,20 @@ test.describe('real account flows in disposable local Supabase', () => {
       p_selected_option_id: choices.data![0].id,
     });
     expect(attempt.error).toBeNull();
-    await learner
+    const redo = await learner
       .from('redo_questions')
-      .upsert({ user_id: userId, question_id: questionId });
+      .upsert(
+        { user_id: userId, question_id: questionId },
+        { onConflict: 'user_id,question_id', ignoreDuplicates: true },
+      );
+    expect(redo.error).toBeNull();
+    const persistedRedo = await learner
+      .from('redo_questions')
+      .select('question_id')
+      .eq('user_id', userId)
+      .eq('question_id', questionId);
+    expect(persistedRedo.error).toBeNull();
+    expect(persistedRedo.data).toHaveLength(1);
     const forbidden = await request.post('/api/account/delete', {
       headers: {
         Origin: 'https://untrusted.invalid',
