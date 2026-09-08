@@ -25,7 +25,8 @@ export function AuthScreen() {
     );
   }, []);
   useEffect(() => {
-    if (session?.user.email && !session.user.is_anonymous) router.replace('/');
+    if (session?.user.email && !session.user.is_anonymous)
+      router.replace('/account');
   }, [session, router]);
   async function submit(event: SyntheticEvent) {
     event.preventDefault();
@@ -66,7 +67,7 @@ export function AuthScreen() {
         } catch {
           /* optional local preference */
         }
-        router.replace('/');
+        router.replace('/account');
       } else
         setMessage(
           'Confira seu e-mail para confirmar o acesso e depois entre por aqui.',
