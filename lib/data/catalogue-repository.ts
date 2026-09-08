@@ -296,15 +296,21 @@ export function normalizeSelectedSubjectIds(
     .filter((id): id is string => Boolean(id));
 }
 
+/** Revalidate published content at navigation boundaries without request storms. */
+export const catalogueCacheTtlMs = 60_000;
+
 let cachedCatalogue: CatalogueSnapshot | null = null;
+let cachedCatalogueAt = 0;
 let pendingCatalogue: Promise<CatalogueSnapshot> | null = null;
 
 export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
-  if (cachedCatalogue) return cachedCatalogue;
+  if (cachedCatalogue && Date.now() - cachedCatalogueAt < catalogueCacheTtlMs)
+    return cachedCatalogue;
   pendingCatalogue ??= createCatalogueRepository()
     .loadPublished()
     .then((catalogue) => {
       cachedCatalogue = catalogue;
+      cachedCatalogueAt = Date.now();
       return catalogue;
     })
     .finally(() => {
