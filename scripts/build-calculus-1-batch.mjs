@@ -24,6 +24,13 @@ const batches = {
     sourceId: '10000000-0000-4000-8000-000000000005',
     label: 'Arc original Cálculo I — lote 02',
   },
+  '03': {
+    input: '../content/calculus-1/batch-03.mjs',
+    migration: '20260909150000_seed_calculus_1_batch_03.sql',
+    questionStart: 30001,
+    sourceId: '10000000-0000-4000-8000-000000000006',
+    label: 'Arc original Cálculo I — lote 03',
+  },
 };
 const configuration = batches[selectedBatch];
 if (!configuration)
