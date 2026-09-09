@@ -11,7 +11,8 @@ const padded = String(batchNumber).padStart(2, '0');
 const outputPath = resolve(root, `supabase/migrations/2026090918${batchNumber + 20}000_diversify_calculus_1_batch_${padded}.sql`);
 const subjectId = '20000000-0000-4000-8000-000000000004';
 const sourceId = `10000000-0000-4000-8000-${String(241 + batchNumber).padStart(12, '0')}`;
-const questionStart = 60001 + (batchNumber - 1) * 125;
+// Faixa exclusiva do banco renovado; não reutiliza os IDs 10k–80k dos lotes legados.
+const questionStart = 96001 + (batchNumber - 1) * 125;
 const topics = {
   'representacoes-de-funcoes': '30000000-0000-4000-8000-000000000012', 'modelos-e-funcoes-elementares': '30000000-0000-4000-8000-000000000013', 'composicao-e-transformacoes': '30000000-0000-4000-8000-000000000014', 'funcoes-inversas-e-logaritmicas': '30000000-0000-4000-8000-000000000015', 'nocao-de-limite': '30000000-0000-4000-8000-000000000017', 'calculo-de-limites': '30000000-0000-4000-8000-000000000018', continuidade: '30000000-0000-4000-8000-000000000019', 'limites-no-infinito-e-assintotas': '30000000-0000-4000-8000-000000000020', 'taxa-de-variacao-e-derivada': '30000000-0000-4000-8000-000000000022', 'regras-basicas-de-derivacao': '30000000-0000-4000-8000-000000000023', 'produto-e-quociente': '30000000-0000-4000-8000-000000000024', 'regra-da-cadeia': '30000000-0000-4000-8000-000000000025', 'derivacao-implicita-e-logaritmica': '30000000-0000-4000-8000-000000000026', 'taxas-relacionadas-e-aproximacoes': '30000000-0000-4000-8000-000000000027', 'extremos-e-valor-medio': '30000000-0000-4000-8000-000000000029', 'analise-de-graficos': '30000000-0000-4000-8000-000000000030', 'regra-de-lhopital': '30000000-0000-4000-8000-000000000031', otimizacao: '30000000-0000-4000-8000-000000000032', 'metodo-de-newton': '30000000-0000-4000-8000-000000000033',
 };
