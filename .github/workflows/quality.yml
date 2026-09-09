@@ -135,7 +135,7 @@ jobs:
             echo "Applying $migration"
             psql -v ON_ERROR_STOP=1 -f "$migration"
           done
-      - name: Check private profiles and unpublished content
+      - name: Check database behavior contracts
         run: |
           for test in supabase/tests/*.sql; do
             psql -v ON_ERROR_STOP=1 -f "$test"
