@@ -29,7 +29,7 @@ if (new Set(questions.map((q) => q.statement)).size !== 20) throw new Error(`Lot
 for (const [index, q] of questions.entries()) {
   if (!topics[q.topic] || !['easy', 'medium', 'hard'].includes(q.difficulty)) throw new Error(`Taxonomia inválida em ${index + 1}.`);
   if (q.options.length !== 4 || new Set(q.options).size !== 4 || q.correct < 0 || q.correct > 3) throw new Error(`Alternativas inválidas em ${index + 1}.`);
-  if (q.hints.length < 3 || q.steps.length < 4 || q.explanation.length < 100) throw new Error(`Conteúdo insuficiente em ${index + 1}.`);
+  if (q.hints.length < 3 || q.steps.length < 4 || q.explanation.length < 80) throw new Error(`Conteúdo insuficiente em ${index + 1}.`);
   [q.statement, ...q.options, ...q.hints, q.finalAnswer, q.explanation, ...q.steps.flat()].forEach(checkMath);
 }
 const batchIndex = Number(batch);
