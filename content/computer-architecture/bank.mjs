@@ -117,13 +117,13 @@ const topics = [
     key: 'flip-flops-e-registradores',
     facts: [
       [
-        'O comportamento típico de um flip-flop D na borda ativa do clock',
+        'No diagrama abaixo, qual é o comportamento típico de um flip-flop D na borda ativa do clock? [[diagram:flip-flop-d]]',
         'Copia o valor de D para Q.',
         ['Inverte Q.', 'Soma D a Q.', 'Zera Q sempre.'],
         'O flip-flop D amostra uma entrada e conserva esse valor até a próxima borda.',
       ],
       [
-        'A condição proibida de um latch SR implementado com NOR',
+        'No latch SR abaixo, qual condição é proibida? [[diagram:latch-sr]]',
         '$S=R=1$',
         ['$S=R=0$', '$S=1,R=0$', '$S=0,R=1$'],
         'Ativar set e reset simultaneamente cria uma saída sem interpretação estável.',
@@ -145,7 +145,7 @@ const topics = [
         'Cada flip-flop D armazena um único bit.',
       ],
       [
-        'A utilidade de um registrador com deslocamento',
+        'Qual é a utilidade de um registrador com deslocamento como o representado abaixo? [[diagram:shift-register]]',
         'Mover bits uma posição a cada pulso.',
         [
           'Converter toda RAM em ROM.',
@@ -452,33 +452,54 @@ const topics = [
   },
 ];
 
-const modes = [
-  [
-    'direct',
-    'Qual alternativa está correta?',
-    'Aplicar a definição diretamente.',
-  ],
-  [
-    'diagnosis',
-    'Um estudante afirmou a opção destacada. Qual avaliação é adequada?',
-    'Conferir a afirmação com a definição do conceito.',
-  ],
-  [
-    'strategy',
-    'Qual é a estratégia conceitualmente correta para analisar a situação?',
-    'Identificar primeiro a função de cada componente.',
-  ],
-  [
-    'verification',
-    'Qual conclusão permanece válida após uma verificação cuidadosa?',
-    'Separar o que o conceito garante do que ele não garante.',
-  ],
-  [
-    'context',
-    'Em uma revisão de projeto, qual decisão é compatível com esse princípio?',
-    'Relacionar o princípio ao comportamento observado.',
-  ],
+const directCommands = [
+  'Assinale a alternativa correta.',
+  'Qual conclusão está correta?',
+  'Qual alternativa descreve corretamente esse caso?',
 ];
+
+const topicHints = {
+  'representacao-e-aritmetica': [
+    'Escreva os pesos das posições: $2^0,2^1,2^2,\ldots$.',
+    'Some apenas os pesos das posições cujo bit vale $1$.',
+  ],
+  'logica-booleana': [
+    'Monte uma tabela verdade curta ou aplique a lei booleana indicada.',
+    'Não confunda XOR com OR: XOR vale $1$ somente para entradas diferentes.',
+  ],
+  'circuitos-combinacionais': [
+    'Pergunte se o circuito escolhe, transforma, compara ou armazena informação.',
+    'Circuitos combinacionais dependem apenas das entradas atuais.',
+  ],
+  'flip-flops-e-registradores': [
+    'Separe entrada de dados, clock e saída: eles não têm a mesma função.',
+    'Um flip-flop guarda um bit; um registrador reúne vários flip-flops.',
+  ],
+  'memoria-e-cache': [
+    'Diferencie um acerto de cache de uma busca no nível de memória seguinte.',
+    'Pense em localidade temporal e espacial para avaliar a utilidade da cache.',
+  ],
+  'memoria-principal-e-enderecamento': [
+    'Linhas de endereço selecionam posições; linhas de dados transportam conteúdo.',
+    'Para $n$ linhas de endereço, conte $2^n$ posições distintas.',
+  ],
+  'processador-e-instrucoes': [
+    'Separe quem calcula, quem controla e quem aponta a próxima instrução.',
+    'A execução segue busca, decodificação e execução; cada etapa tem um papel.',
+  ],
+  'modos-de-enderecamento': [
+    'Identifique se o campo da instrução contém um valor ou localiza um valor.',
+    'Um registrador pode conter o operando ou o endereço do operando.',
+  ],
+  'desempenho-e-pipeline': [
+    'Pipeline sobrepõe etapas, mas não elimina dependências entre instruções.',
+    'Relacione clock, CPI e quantidade de instruções antes de concluir sobre desempenho.',
+  ],
+  'barramentos-e-entrada-saida': [
+    'Diferencie o barramento que seleciona um destino do que transporta valores.',
+    'Interrupção avisa a CPU; DMA transfere dados com pouca intervenção dela.',
+  ],
+};
 
 function makeOptions(answer, distractors, offset) {
   const values = [answer, ...distractors];
@@ -489,20 +510,8 @@ function makeOptions(answer, distractors, offset) {
 
 function makeQuestion(topic, factIndex, difficultyIndex) {
   const [statement, answer, distractors, reason] = topic.facts[factIndex];
-  const [mode, command, action] =
-    modes[(factIndex + difficultyIndex) % modes.length];
   const difficulty = ['easy', 'medium', 'hard'][difficultyIndex];
-  const intro = [
-    'Considere uma atividade de laboratório sobre arquitetura de computadores.',
-    'Durante uma revisão de código e hardware, a equipe precisa interpretar corretamente um conceito.',
-    'Em uma questão de projeto, é importante distinguir termos próximos sem confundir suas funções.',
-  ][(factIndex + difficultyIndex) % 3];
-  const prompt =
-    difficulty === 'easy'
-      ? `${intro} ${statement}. ${command}`
-      : difficulty === 'medium'
-        ? `${intro} Um colega usa essa ideia para justificar uma decisão. ${statement}. ${command}`
-        : `${intro} A decisão proposta depende de interpretar a propriedade sem generalizações indevidas. ${statement}. ${command}`;
+  const prompt = `${statement} ${directCommands[difficultyIndex]}`;
   const { options, correct } = makeOptions(
     answer,
     distractors,
@@ -515,11 +524,7 @@ function makeQuestion(topic, factIndex, difficultyIndex) {
     statement: prompt,
     options,
     correct,
-    hints: [
-      `Nomeie o conceito principal antes de avaliar as alternativas.`,
-      action,
-      `Compare cada alternativa com a propriedade essencial, não apenas com palavras parecidas.`,
-    ],
+    hints: [topicHints[topic.key][0], topicHints[topic.key][1], reason],
     finalAnswer: answer,
     explanation: `${reason} A alternativa ${label} expressa essa propriedade de modo preciso; as demais trocam o papel de componentes, extrapolam a definição ou descrevem outra técnica.`,
     steps: [
@@ -538,7 +543,6 @@ function makeQuestion(topic, factIndex, difficultyIndex) {
         `A resposta permanece coerente com a definição; portanto, a alternativa ${label} é a correta.`,
       ],
     ],
-    mode,
   };
 }
 
