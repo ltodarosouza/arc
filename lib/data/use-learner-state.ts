@@ -62,9 +62,18 @@ export function useLearnerState() {
     }
   }, [cacheKey, owner, ready, remote]);
   useEffect(() => {
-    void refresh();
+    const generationRef = generation;
+    let cancelled = false;
+
+    // Defer the refresh so state updates happen outside the effect body. The
+    // cancellation guard also prevents a queued refresh after unmount.
+    void Promise.resolve().then(() => {
+      if (!cancelled) return refresh();
+    });
+
     return () => {
-      generation.current++;
+      cancelled = true;
+      generationRef.current++;
     };
   }, [refresh]);
 
