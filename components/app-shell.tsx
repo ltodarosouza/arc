@@ -78,7 +78,7 @@ export function AppShell({
             <span className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-sm text-[var(--primary-foreground)]">
               a
             </span>
-            <span className="text-[18px]">arc</span>
+            <span className="text-[18px]">arte</span>
           </Link>
           <nav
             aria-label="Navegação principal"
