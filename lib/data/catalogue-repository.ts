@@ -48,6 +48,13 @@ export type CatalogueSnapshot = {
   questions: CatalogueQuestion[];
 };
 
+/** Lightweight public view used by overview pages that do not render question content. */
+export type CatalogueSummary = {
+  subjects: Subject[];
+  taxonomyNodes: TaxonomyNode[];
+  questions: Pick<CatalogueQuestion, 'id' | 'subjectId' | 'taxonomyTags'>[];
+};
+
 export type CatalogueRepository = {
   loadPublished(): Promise<CatalogueSnapshot>;
 };
@@ -247,6 +254,86 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
   };
 }
 
+async function loadSupabaseCatalogueSummary(): Promise<CatalogueSummary> {
+  if (!isSupabaseConfigured()) throw new Error('Supabase is unavailable.');
+  const supabase = getSupabaseClient();
+  const [subjects, taxonomyNodes, questions, tags] = await Promise.all([
+    collectAllPages<DatabaseSubject>((from, to) =>
+      supabase
+        .from('subjects')
+        .select('id, slug, name, description, sort_order, is_published')
+        .order('sort_order')
+        .order('id')
+        .range(from, to),
+    ),
+    collectAllPages<DatabaseNode>((from, to) =>
+      supabase
+        .from('taxonomy_nodes')
+        .select(
+          'id, subject_id, parent_id, kind, slug, name, sort_order, is_published',
+        )
+        .order('subject_id')
+        .order('sort_order')
+        .order('id')
+        .range(from, to),
+    ),
+    collectAllPages<Pick<DatabaseQuestion, 'id' | 'subject_id'>>((from, to) =>
+      supabase
+        .from('questions')
+        .select('id, subject_id')
+        .eq('publication_status', 'published')
+        .order('subject_id')
+        .order('id')
+        .range(from, to),
+    ),
+    collectAllPages<DatabaseTag>((from, to) =>
+      supabase
+        .from('question_taxonomy_tags')
+        .select('question_id, taxonomy_node_id, is_primary')
+        .order('question_id')
+        .order('taxonomy_node_id')
+        .range(from, to),
+    ),
+  ]);
+
+  const tagsByQuestionId = new Map<string, CatalogueQuestion['taxonomyTags']>();
+  for (const tag of tags) {
+    const questionTags = tagsByQuestionId.get(tag.question_id) ?? [];
+    questionTags.push({
+      questionId: tag.question_id,
+      taxonomyNodeId: tag.taxonomy_node_id,
+      isPrimary: tag.is_primary,
+    });
+    tagsByQuestionId.set(tag.question_id, questionTags);
+  }
+
+  return {
+    subjects: subjects.map((item) => ({
+      id: item.id,
+      slug: item.slug,
+      name: item.name,
+      description: item.description ?? '',
+      sortOrder: item.sort_order,
+      isPublished: item.is_published,
+    })),
+    taxonomyNodes: taxonomyNodes.map((item) => ({
+      id: item.id,
+      subjectId: item.subject_id,
+      parentId: item.parent_id,
+      kind: item.kind,
+      slug: item.slug,
+      name: item.name,
+      sortOrder: item.sort_order,
+      isPublished: item.is_published,
+    })),
+    questions: questions.map((item) => ({
+      id: item.id,
+      subjectId: item.subject_id,
+      taxonomyTags: tagsByQuestionId.get(item.id) ?? [],
+    })),
+  };
+}
+
 function loadFixtureCatalogue(): CatalogueSnapshot {
   return {
     subjects: seedSubjects.filter((subject) => subject.isPublished),
@@ -297,7 +384,7 @@ export function createCatalogueRepository(): CatalogueRepository {
 /** Maps the original fixture ids to the durable subject records by slug. */
 export function normalizeSelectedSubjectIds(
   subjectIds: string[],
-  catalogue: CatalogueSnapshot,
+  catalogue: Pick<CatalogueSnapshot, 'subjects'>,
 ): string[] {
   return subjectIds
     .map((savedId) => {
@@ -319,6 +406,9 @@ export const catalogueCacheTtlMs = 60_000;
 let cachedCatalogue: CatalogueSnapshot | null = null;
 let cachedCatalogueAt = 0;
 let pendingCatalogue: Promise<CatalogueSnapshot> | null = null;
+let cachedCatalogueSummary: CatalogueSummary | null = null;
+let cachedCatalogueSummaryAt = 0;
+let pendingCatalogueSummary: Promise<CatalogueSummary> | null = null;
 
 export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
   if (cachedCatalogue && Date.now() - cachedCatalogueAt < catalogueCacheTtlMs)
@@ -334,4 +424,36 @@ export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
       pendingCatalogue = null;
     });
   return pendingCatalogue;
+}
+
+export async function loadPublishedCatalogueSummary(): Promise<CatalogueSummary> {
+  if (
+    cachedCatalogueSummary &&
+    Date.now() - cachedCatalogueSummaryAt < catalogueCacheTtlMs
+  )
+    return cachedCatalogueSummary;
+  pendingCatalogueSummary ??= (
+    isSupabaseConfigured()
+      ? loadSupabaseCatalogueSummary()
+      : Promise.resolve({
+          subjects: seedSubjects.filter((subject) => subject.isPublished),
+          taxonomyNodes: seedTaxonomyNodes.filter((node) => node.isPublished),
+          questions: seedQuestions
+            .filter((question) => question.status === 'published')
+            .map((question) => ({
+              id: question.id,
+              subjectId: question.subjectId,
+              taxonomyTags: question.taxonomyTags,
+            })),
+        })
+  )
+    .then((catalogue) => {
+      cachedCatalogueSummary = catalogue;
+      cachedCatalogueSummaryAt = Date.now();
+      return catalogue;
+    })
+    .finally(() => {
+      pendingCatalogueSummary = null;
+    });
+  return pendingCatalogueSummary;
 }

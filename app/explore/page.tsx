@@ -8,7 +8,7 @@ import { ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { Reveal } from '@/components/reveal';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
-import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getTaxonomyBranch } from '@/lib/domain/taxonomy';
 
@@ -17,7 +17,7 @@ export default function ExplorePage() {
   const [attemptedQuestionIds, setAttemptedQuestionIds] = useState<string[]>(
     [],
   );
-  const { catalogue, error, isLoading } = useCatalogue();
+  const { catalogue, error, isLoading } = useCatalogueSummary();
   const {
     state: learnerState,
     saveSelectedSubjectIds,
@@ -53,14 +53,14 @@ export default function ExplorePage() {
             (question) => question.subjectId === subject.id,
           ) ?? [];
         const nodes = catalogue?.taxonomyNodes ?? [];
-        const topics = nodes
+        const units = nodes
           .filter(
-            (node) => node.subjectId === subject.id && node.kind === 'topic',
+            (node) => node.subjectId === subject.id && node.kind === 'unit',
           )
-          .map((topic) => ({
-            ...topic,
+          .map((unit) => ({
+            ...unit,
             count: questions.filter((question) => {
-              const branch = getTaxonomyBranch(topic.id, nodes);
+              const branch = getTaxonomyBranch(unit.id, nodes);
               return question.taxonomyTags.some((tag) =>
                 branch.includes(tag.taxonomyNodeId),
               );
@@ -69,7 +69,7 @@ export default function ExplorePage() {
         return {
           subject,
           questions,
-          topics,
+          units,
           attemptedCount: questions.filter((question) =>
             attemptedQuestionIds.includes(question.id),
           ).length,
@@ -127,7 +127,7 @@ export default function ExplorePage() {
         ) : subjectDetails.length ? (
           <div className="mt-9 grid gap-4 lg:grid-cols-2">
             {subjectDetails.map(
-              ({ subject, questions, topics, attemptedCount }, index) => (
+              ({ subject, questions, units, attemptedCount }, index) => (
                 <Reveal delay={index * 45} key={subject.id}>
                   <ArcCard className="overflow-hidden">
                     <div className="flex items-center gap-3 border-b border-[var(--border)] px-5 py-5 sm:px-6">
@@ -158,33 +158,33 @@ export default function ExplorePage() {
                       </a>
                     </div>
                     <div className="p-5 sm:p-6">
-                      <p className="arc-caption">Assuntos</p>
-                      {topics.length ? (
+                      <p className="arc-caption">Áreas</p>
+                      {units.length ? (
                         <div className="mt-3 flex flex-wrap gap-2">
-                          {topics.slice(0, 4).map((topic) => (
+                          {units.slice(0, 3).map((unit) => (
                             <a
                               className="inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
-                              href={`/questions?subject=${subject.slug}&topic=${topic.slug}`}
-                              key={topic.id}
+                              href={`/questions?subject=${subject.slug}&unit=${unit.slug}`}
+                              key={unit.id}
                             >
-                              {topic.name}{' '}
+                              {unit.name}{' '}
                               <span className="ml-1 opacity-60">
-                                {topic.count}
+                                {unit.count}
                               </span>
                             </a>
                           ))}
-                          {topics.length > 4 && (
+                          {units.length > 3 && (
                             <a
                               className="arc-link inline-flex min-h-11 items-center px-2 text-sm"
                               href={`/explore/${subject.slug}`}
                             >
-                              +{topics.length - 4} assuntos
+                              +{units.length - 3} áreas
                             </a>
                           )}
                         </div>
                       ) : (
                         <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
-                          Assuntos em preparação.
+                          Áreas em preparação.
                         </p>
                       )}
                     </div>
