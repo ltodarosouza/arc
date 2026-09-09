@@ -1,0 +1,30 @@
+// Lote 01 autoral: funções, domínio, composição e transformações.
+import { q } from '../computer-architecture/replacement/batch-01.mjs';
+const make=(n,d,f,s,a,x,p)=>q(`c1-r01-${n}`,d,f,s,a,x,p,'Escreva a condição e opere somente depois de fixar domínio e representação.','Substitua a resposta na condição original para validá-la.');
+export default [
+make('001','easy','domínio','Qual é o domínio de $f(x)=\sqrt{x-3}$?','$[3,\infty)$',['$(-\infty,3]$','$\mathbb R$','$(3,\infty)$'],'Radicando de raiz real deve ser não negativo.'),
+make('002','medium','domínio','Qual é o domínio de $g(x)=1/(x^2-9)$?','$\mathbb R\setminus\{-3,3\}$',['$\mathbb R$','$(-3,3)$','$\{-3,3\}$'],'Denominador não pode ser zero.'),
+make('003','hard','domínio','Qual condição define o domínio de $h(x)=\ln(5-2x)$?','$x<5/2$',['$x\le5/2$','$x>5/2$','$x\ne5/2$'],'Argumento de logaritmo precisa ser positivo.'),
+make('004','easy','avaliação','Se $f(x)=2x^2-3$, qual é $f(-2)$?','$5$',['$-11$','$11$','$1$'],'Substituição preserva parênteses no argumento negativo.'),
+make('005','medium','função por partes','Para $f(x)=x+1$ se $x<0$ e $x^2$ se $x\ge0$, qual é $f(-3)$?','$-2$',['$9$','$-9$','$3$'],'Escolha primeiro o ramo cuja condição contém o argumento.'),
+make('006','hard','função por partes','Para a função do item anterior, qual é $f(0)$?','$0$',['$1$','Indefinida','$-1$'],'O ponto de fronteira pertence ao ramo com $x\ge0$.'),
+make('007','easy','composição','Se $f(x)=x+2$ e $g(x)=3x$, qual é $(f\circ g)(1)$?','$5$',['$9$','$3$','$6$'],'Composição aplica primeiro a função interna.'),
+make('008','medium','composição','Com as mesmas funções, qual expressão é $(g\circ f)(x)$?','$3x+6$',['$3x+2$','$x+6$','$3x$'],'Substitua $f(x)$ como argumento de $g$.'),
+make('009','hard','composição','Se $f(x)=\sqrt{x}$ e $g(x)=x-4$, qual domínio de $(f\circ g)(x)$?','$[4,\infty)$',['$[0,\infty)$','$(-\infty,4]$','$\mathbb R$'],'A saída de $g$ deve pertencer ao domínio de $f$.'),
+make('010','easy','transformação','O gráfico de $y=f(x-2)$ é obtido de $f$ por qual deslocamento?','2 unidades para a direita.',['2 para a esquerda.','2 para cima.','Reflexão no eixo y.'],'Alteração interna tem sinal oposto ao deslocamento visual.'),
+make('011','medium','transformação','O que $y=-f(x)$ faz ao gráfico de $f$?','Reflete-o no eixo x.',['Reflete no eixo y.','Desloca para baixo.','Comprime horizontalmente.'],'Multiplicar valores de saída por $-1$ troca alturas por seus opostos.'),
+make('012','hard','transformação','Como $y=f(2x)$ altera o gráfico de $f$?','Comprime-o horizontalmente por fator 2.',['Estica horizontalmente por 2.','Estica verticalmente por 2.','Desloca 2 à direita.'],'Multiplicar a entrada exige metade do x para o mesmo valor de saída.'),
+make('013','easy','injetividade','Que teste gráfico ajuda a decidir se uma função tem inversa?','Teste da reta horizontal.',['Teste da reta vertical.','Teste do eixo x.','Teste de continuidade.'],'Inversa como função exige uma saída para cada valor de entrada invertida.'),
+make('014','medium','inversa','Qual é a inversa de $f(x)=3x-7$?','$f^{-1}(x)=(x+7)/3$',['$3x+7$','$(x-7)/3$','$7-3x$'],'Troque x e y e isole a nova saída.'),
+make('015','hard','inversa','Por que $x^2$ em todo $\mathbb R$ não tem inversa funcional?','Valores positivos possuem duas pré-imagens.',['Não é contínua.','Não tem domínio.','Não é polinômio.'],'Falha no teste horizontal impede uma relação inversa ser função.'),
+make('016','easy','exponencial','Qual é $2^0$?','$1$',['$0$','$2$','Indefinido'],'Expoente zero de base não nula vale um.'),
+make('017','medium','logaritmo','Qual é $\log_2 32$?','$5$',['$16$','$6$','$2$'],'Logaritmo pergunta o expoente que produz o argumento.'),
+make('018','hard','modelo exponencial','Uma quantidade dobra a cada 3 horas. Qual fator aparece após 9 horas?','$8$',['$3$','$6$','$9$'],'Nove horas correspondem a três períodos de duplicação.'),
+make('019','easy','paridade','Qual simetria possui $f(x)=x^3$?','Ímpar, simétrica à origem.',['Par, simétrica ao eixo y.','Nenhuma.','Periódica.'],'Compare $f(-x)$ com $f(x)$ e $-f(x)$.'),
+make('020','medium','taxa média','Qual é a taxa média de $f(x)=x^2$ de 1 a 3?','$4$',['$2$','$3$','$8$'],'Use quociente de diferenças.'),
+make('021','hard','modelo linear','Uma reta passa por $(2,5)$ e $(6,17)$. Qual é seu coeficiente angular?','$3$',['$2$','$4$','$12$'],'Inclinação é variação de y dividida por variação de x.'),
+make('022','easy','valor absoluto','Qual é o conjunto solução de $|x-1|=4$?','$\{-3,5\}$',['$\{3,5\}$','$\{4\}$','$[-3,5]$'],'Distância quatro de um pode ocorrer em dois lados.'),
+make('023','medium','racional','Qual assíntota vertical tem $f(x)=1/(x-2)$?','$x=2$',['$y=2$','$x=-2$','$y=0$'],'Zero do denominador sinaliza a reta vertical excluída.'),
+make('024','hard','assíntota','Qual é a assíntota horizontal de $(3x^2+1)/(x^2-4)$?','$y=3$',['$x=3$','$y=0$','$y=1$'],'Graus iguais usam razão dos coeficientes líderes.'),
+make('025','medium','interpretação','Uma função tem $f(2)=7$. O que isso afirma?','A entrada 2 é associada à saída 7.',['A raiz é 7.','O domínio é só 2.','A derivada é 7.'],'Notação de função descreve correspondência de entrada e saída.'),
+];
