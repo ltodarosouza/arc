@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   Check,
   ChevronRight,
@@ -32,8 +33,7 @@ type Solution = {
 };
 type RpcAttempt = { attempt_id: string; outcome: 'correct' | 'incorrect' };
 
-function requestedPracticeContext() {
-  const search = new URLSearchParams(window.location.search);
+function requestedPracticeContext(search: URLSearchParams) {
   return {
     questionId: search.get('question'),
     subject: search.get('subject'),
@@ -52,7 +52,11 @@ function hasInteractiveKeyboardFocus(target: EventTarget | null) {
 
 export function PracticeSurface() {
   const { catalogue, error, isLoading } = useCatalogue();
-  const requestedContext = useMemo(requestedPracticeContext, []);
+  const searchParams = useSearchParams();
+  const requestedContext = useMemo(
+    () => requestedPracticeContext(searchParams),
+    [searchParams],
+  );
   const practiceSession = useMemo(
     () => getPracticeSession(requestedContext.session),
     [requestedContext.session],
@@ -148,6 +152,18 @@ export function PracticeSurface() {
     () => practiceQuestions[questionIndex + 1],
     [practiceQuestions, questionIndex],
   );
+
+  useEffect(() => {
+    setSelectedOptionId(null);
+    setEliminatedOptionIds(new Set());
+    setOutcome(null);
+    setSolution(null);
+    setSolutionError(null);
+    setSubmissionError(null);
+    setVisibleHintCount(0);
+    submissionInFlight.current = false;
+    solutionInFlight.current = false;
+  }, [question?.id]);
 
   const goToQuestion = (nextQuestionId: string, subjectSlug: string) => {
     window.location.assign(
