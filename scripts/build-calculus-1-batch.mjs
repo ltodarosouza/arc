@@ -31,6 +31,20 @@ const batches = {
     sourceId: '10000000-0000-4000-8000-000000000006',
     label: 'Arc original Cálculo I — lote 03',
   },
+  '04': {
+    input: '../content/calculus-1/batch-04.mjs',
+    migration: '20260909170000_seed_calculus_1_batch_04.sql',
+    questionStart: 50001,
+    sourceId: '10000000-0000-4000-8000-000000000007',
+    label: 'Arc original Cálculo I — lote 04',
+  },
+  '05': {
+    input: '../content/calculus-1/batch-05.mjs',
+    migration: '20260909171000_seed_calculus_1_batch_05.sql',
+    questionStart: 60001,
+    sourceId: '10000000-0000-4000-8000-000000000008',
+    label: 'Arc original Cálculo I — lote 05',
+  },
 };
 const configuration = batches[selectedBatch];
 if (!configuration)
@@ -88,6 +102,7 @@ const texCommands = [
   'le',
   'circ',
   'big',
+  'Rightarrow',
 ];
 const normalizeMath = (text) =>
   text.replace(/\$([^$]+)\$/g, (_, source) => {
@@ -161,6 +176,10 @@ batch.forEach((question, index) => {
   ensure(
     question.options.length === 4,
     `A questão ${questionNumber} precisa de quatro alternativas.`,
+  );
+  ensure(
+    new Set(question.options).size === question.options.length,
+    `A questão ${questionNumber} possui alternativas repetidas.`,
   );
   ensure(
     Number.isInteger(question.correct) &&
