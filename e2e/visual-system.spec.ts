@@ -120,6 +120,31 @@ test('advanced filters disclose accessibly and reduced motion keeps content visi
   await expect(page.locator('.reveal-pending')).toHaveCount(0);
 });
 
+test('persistent navigation remains usable by keyboard after a long scroll', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/progress');
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+  const navigation = page.getByRole('navigation', {
+    name: 'Navegação principal',
+    exact: true,
+  });
+  const questions = navigation.getByRole('link', {
+    name: 'Questões',
+    exact: true,
+  });
+  await questions.focus();
+  await expect(questions).toBeFocused();
+  await page.keyboard.press('Enter');
+
+  await expect(page).toHaveURL(/\/explore$/);
+  await expect(
+    page.getByRole('heading', { name: 'Questões', exact: true }),
+  ).toBeVisible();
+});
+
 test('a subject opens by academic area before showing its subtopics', async ({
   page,
 }) => {
