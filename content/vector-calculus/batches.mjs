@@ -730,7 +730,189 @@ const batch04 = [
   ...boxVolumes,
 ];
 
+const lineExplanation =
+  'Uma reta espacial fica determinada por um ponto e um vetor diretor não nulo. A forma paramétrica soma ao ponto um múltiplo real da direção; por isso, substituir o parâmetro ou comparar componentes permite verificar cada resultado sem ambiguidade.';
+const lineEvaluation = parameters.map((n) => {
+  const p = [n, 1, -1],
+    d = [1, 2, -1],
+    answer = p.map((value, index) => value + n * d[index]);
+  return item({
+    topic: 'equacoes-de-retas',
+    difficulty: 'easy',
+    statement:
+      'Na reta ' +
+      math('r(t)=' + vector(p) + '+t' + vector(d)) +
+      ', qual ponto corresponde a ' +
+      math('t=' + n) +
+      '?',
+    options: [
+      math(vector(answer)),
+      math(vector(p.map((value, index) => value - d[index]))),
+      math(vector(d)),
+      math(vector(p)),
+    ],
+    correct: 0,
+    hints: [
+      'Substitua o parâmetro na expressão vetorial.',
+      'Multiplique t por todas as componentes da direção antes de somar o ponto.',
+    ],
+    finalAnswer: math('r(' + n + ')=' + vector(answer)) + '.',
+    explanation: lineExplanation,
+    steps: [
+      [
+        'Substitua t',
+        math('r(' + n + ')=' + vector(p) + '+' + n + vector(d) + '.'),
+      ],
+      [
+        'Distribua',
+        math(n + vector(d) + '=' + vector(d.map((value) => n * value)) + '.'),
+      ],
+      ['Some', math('r(' + n + ')=' + vector(answer) + '.')],
+    ],
+  });
+});
+const lineDirections = parameters.map((n) => {
+  const a = [n, 0, 1],
+    b = [n + 2, n, -1],
+    answer = b.map((value, index) => value - a[index]);
+  return item({
+    topic: 'equacoes-de-retas',
+    difficulty: 'easy',
+    statement:
+      'Qual vetor pode ser usado como direção da reta que passa por ' +
+      math('A=' + vector(a)) +
+      ' e ' +
+      math('B=' + vector(b)) +
+      '?',
+    options: [
+      math(vector(answer)),
+      math(vector(b)),
+      math(vector(a)),
+      math(vector(a.map((value, index) => value + b[index]))),
+    ],
+    correct: 0,
+    hints: [
+      'Uma direção é obtida ligando um ponto ao outro.',
+      'Faça B menos A componente a componente.',
+    ],
+    finalAnswer: math('d=' + vector(answer)) + '.',
+    explanation: lineExplanation,
+    steps: [
+      ['Escolha o sentido', math('d=B-A.')],
+      ['Subtraia', math('d=' + vector(b) + '-' + vector(a) + '.')],
+      ['Confira', math('A+d=B.')],
+    ],
+  });
+});
+const lineParameters = parameters.map((n) => {
+  const p = [1, -1, 2],
+    d = [2, 1, -1],
+    q = p.map((value, index) => value + n * d[index]);
+  return item({
+    topic: 'equacoes-de-retas',
+    difficulty: 'medium',
+    statement:
+      'O ponto ' +
+      math('Q=' + vector(q)) +
+      ' pertence a ' +
+      math('r(t)=' + vector(p) + '+t' + vector(d)) +
+      '. Qual é o parâmetro correspondente?',
+    options: [
+      math('t=' + n),
+      math('t=' + -n),
+      math('t=' + (n + 1)),
+      math('t=' + 3 * n + 1),
+    ],
+    correct: 0,
+    hints: [
+      'Iguale uma componente do ponto à componente correspondente da reta.',
+      'Depois confira o mesmo t nas outras duas equações.',
+    ],
+    finalAnswer: math('t=' + n) + '.',
+    explanation: lineExplanation,
+    steps: [
+      ['Compare a primeira componente', math('1+2t=' + (1 + 2 * n) + '.')],
+      ['Resolva', math('t=' + n + '.')],
+      ['Verifique', 'A segunda e a terceira componentes também produzem Q.'],
+    ],
+  });
+});
+const lineForms = parameters.map((n) => {
+  const p = [n, 1 - n, 2],
+    d = [1, n, 2];
+  return item({
+    topic: 'equacoes-de-retas',
+    difficulty: 'medium',
+    statement:
+      'Qual equação paramétrica representa a reta que passa por ' +
+      math('P=' + vector(p)) +
+      ' com direção ' +
+      math('d=' + vector(d)) +
+      '?',
+    options: [
+      math('r(t)=' + vector(p) + '+t' + vector(d)),
+      math('r(t)=' + vector(d) + '+t' + vector(p)),
+      math('r(t)=' + vector(p) + '+t' + vector(d.map((value) => -value))),
+      math('r(t)=t' + vector(p)),
+    ],
+    correct: 0,
+    hints: [
+      'Use a forma ponto mais parâmetro vezes direção.',
+      'O vetor constante deve ser o ponto dado e o coeficiente de t deve ser a direção.',
+    ],
+    finalAnswer: math('r(t)=' + vector(p) + '+t' + vector(d)) + '.',
+    explanation: lineExplanation,
+    steps: [
+      ['Recorde o modelo', math('r(t)=P+td.')],
+      [
+        'Substitua os dados',
+        math('r(t)=' + vector(p) + '+t' + vector(d) + '.'),
+      ],
+      ['Confira', 'Em t igual a zero, a reta passa exatamente por P.'],
+    ],
+  });
+});
+const xyIntersections = parameters.map((n) => {
+  const p = [n, 1, 2 * n],
+    d = [1, -1, -2],
+    answer = [2 * n, 1 - n, 0];
+  return item({
+    topic: 'equacoes-de-retas',
+    difficulty: 'medium',
+    statement:
+      'Onde a reta ' +
+      math('r(t)=' + vector(p) + '+t' + vector(d)) +
+      ' encontra o plano xy?',
+    options: [
+      math(vector(answer)),
+      math(vector(p)),
+      math(vector([0, 1 - n, 2 * n])),
+      math(vector([2 * n, 1, 0])),
+    ],
+    correct: 0,
+    hints: [
+      'No plano xy, a coordenada z é zero.',
+      'Use a terceira equação para encontrar t e depois calcule x e y.',
+    ],
+    finalAnswer: math(vector(answer)) + '.',
+    explanation: lineExplanation,
+    steps: [
+      ['Imponha z igual a zero', math(2 * n + '-2t=0.')],
+      ['Encontre t', math('t=' + n + '.')],
+      ['Calcule o ponto', math('r(' + n + ')=' + vector(answer) + '.')],
+    ],
+  });
+});
+const batch05 = [
+  ...lineEvaluation,
+  ...lineDirections,
+  ...lineParameters,
+  ...lineForms,
+  ...xyIntersections,
+];
+
 export function createVectorBatch(number) {
+  if (number === '05') return batch05;
   if (number === '04') return batch04;
   if (number === '03') return batch03;
   if (number === '02') return batch02;
