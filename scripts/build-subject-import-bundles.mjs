@@ -49,6 +49,11 @@ const groups = {
     '20260909172000_seed_calculus_1_batch_06.sql',
     '20260909173000_seed_calculus_1_batch_07.sql',
   ],
+  'calculo-1-renovado': [
+    '202609091821000_diversify_calculus_1_batch_01.sql',
+    '202609091822000_diversify_calculus_1_batch_02.sql',
+    '202609091823000_cleanup_superseded_calculus_1_drafts.sql',
+  ],
   'calculo-vetorial': [
     '20260909160000_expand_vector_calculus_catalogue.sql',
     '20260909161000_seed_vector_calculus_batch_01.sql',
