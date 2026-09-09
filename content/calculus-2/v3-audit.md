@@ -9,12 +9,12 @@ enunciado, conjunto de dados, solução ou diagrama do livro foi reproduzido.
 
 ## Cobertura
 
-| Bloco | Subassuntos | Questões |
-| --- | --- | ---: |
-| Integrais | Antiderivadas, definida, substituição, por partes, frações parciais e trigonométricas | 96 |
-| Integrais impróprias | Intervalos infinitos e descontinuidades | 32 |
-| Sequências | Limite, monotonicidade e convergência | 30 |
-| Séries | Geométricas, convergência, testes, alternadas, potências e Taylor/Maclaurin | 92 |
+| Bloco                | Subassuntos                                                                           | Questões |
+| -------------------- | ------------------------------------------------------------------------------------- | -------: |
+| Integrais            | Antiderivadas, definida, substituição, por partes, frações parciais e trigonométricas |       96 |
+| Integrais impróprias | Intervalos infinitos e descontinuidades                                               |       32 |
+| Sequências           | Limite, monotonicidade e convergência                                                 |       30 |
+| Séries               | Geométricas, convergência, testes, alternadas, potências e Taylor/Maclaurin           |       92 |
 
 Distribuição de dificuldade: 82 fáceis, 86 médias e 82 difíceis.
 
