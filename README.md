@@ -28,6 +28,7 @@ configured.
 Included in the MVP:
 
 - a reusable, multi-subject catalogue;
+- automatic production deployment through Vercel after a successful build;
 - topic/subtopic navigation and question filters;
 - multiple-choice questions with automatic feedback;
 - correct/incorrect feedback, commented solutions, and hints;
