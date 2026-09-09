@@ -32,7 +32,12 @@ export default [
     commandType: 'leitura de representação',
     commonError: 'tratar coordenadas como componentes na base padrão',
     statement: r`Se $B=(b_1,b_2)$ é uma base e $[v]_B=(0,4)$, qual igualdade descreve $v$?`,
-    options: ['$v=4b_2$', '$v=4b_1$', '$v=(0,4)$ na base padrão', '$v=b_1+4b_2$'],
+    options: [
+      '$v=4b_2$',
+      '$v=4b_1$',
+      '$v=(0,4)$ na base padrão',
+      '$v=b_1+4b_2$',
+    ],
     correct: 0,
     hints: [
       'As entradas de $[v]_B$ são pesos dos vetores da base, na ordem indicada.',
@@ -266,10 +271,16 @@ export default [
     explanation:
       'A matriz fornecida leva coordenadas da base $B$ para a base padrão. Para voltar de $E$ para $B$, resolvemos o sistema matricial indicado, sem trocar a direção da transformação.',
     steps: [
-      ['Escreva a relação', r`$\begin{pmatrix}5\\2\end{pmatrix}=\begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}a\\b\end{pmatrix}$.`],
+      [
+        'Escreva a relação',
+        r`$\begin{pmatrix}5\\2\end{pmatrix}=\begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}a\\b\end{pmatrix}$.`,
+      ],
       ['Leia a segunda linha', '$b=2$.'],
       ['Use a primeira linha', '$a+2b=5$, então $a=1$.'],
-      ['Verifique no sentido direto', r`$\begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}1\\2\end{pmatrix}=\begin{pmatrix}5\\2\end{pmatrix}$.`],
+      [
+        'Verifique no sentido direto',
+        r`$\begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}1\\2\end{pmatrix}=\begin{pmatrix}5\\2\end{pmatrix}$.`,
+      ],
     ],
   }),
   q({

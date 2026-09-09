@@ -4,26 +4,26 @@ Unidade: **Espaços vetoriais**. Total: **18 questões autorais**. Distribuiçã
 
 ## Matriz de cobertura
 
-| # | Assunto | Dificuldade | Habilidade | Tipo de comando | Erro provável |
-| -: | --- | --- | --- | --- | --- |
-| 1 | Subespaços vetoriais | easy | reconhecer subespaço definido por equação homogênea | classificação por propriedade | confundir reta afim com subespaço |
-| 2 | Combinações lineares e conjuntos geradores | easy | testar pertinência a subespaço gerado por um vetor | classificação por proporcionalidade | comparar apenas uma componente dos vetores |
-| 3 | Dependência e independência linear | easy | detectar dependência imediata | identificação de contraexemplo | considerar o vetor zero independente |
-| 4 | Bases e dimensão | easy | reconhecer base de espaço bidimensional | verificação estrutural | confundir dois vetores distintos com independentes |
-| 5 | Bases e dimensão | easy | determinar dimensão de espaço polinomial | leitura de representação | contar o grau em vez dos coeficientes |
-| 6 | Espaços linha, coluna e nulo | easy | selecionar base do espaço coluna | seleção de colunas pivô | usar colunas da forma escalonada como base original |
-| 7 | Subespaços vetoriais | medium | mostrar que união de subespaços pode falhar | análise de fechamento | confundir união com soma de subespaços |
-| 8 | Combinações lineares e conjuntos geradores | medium | decidir pertinência ao espaço gerado | resolução de representação | comparar apenas duas coordenadas |
-| 9 | Dependência e independência linear | medium | encontrar parâmetro de dependência | análise paramétrica | testar somente vetores aos pares |
-| 10 | Bases e dimensão | medium | estender conjunto independente a uma base | escolha de complemento | adicionar vetor já gerado |
-| 11 | Espaços linha, coluna e nulo | medium | aplicar teorema posto-nulidade | dedução por dimensão | subtrair do contradomínio |
-| 12 | Somas e somas diretas | medium | calcular dimensão de interseção | uso de fórmula dimensional | somar dimensões sem descontar interseção |
-| 13 | Bases e dimensão | hard | construir base de matrizes simétricas | reconstrução de espaço | contar quatro entradas independentes |
-| 14 | Subespaços vetoriais | hard | determinar dimensão por restrição linear | análise de condição funcional | tratar a restrição como eliminação de dois graus |
-| 15 | Somas e somas diretas | hard | escolher complemento direto | projeto de decomposição | escolher subespaço com interseção não trivial |
-| 16 | Espaços linha, coluna e nulo | hard | relacionar espaço linha e núcleo | dedução ortogonal | usar colunas em vez de linhas |
-| 17 | Dependência e independência linear | hard | analisar unicidade de representação | argumento conceitual | atribuir unicidade a conjunto apenas gerador |
-| 18 | Subespaços vetoriais | hard | distinguir conjunto afim de subespaço | análise de estrutura de solução | chamar todo conjunto solução de subespaço |
+|   # | Assunto                                    | Dificuldade | Habilidade                                          | Tipo de comando                     | Erro provável                                       |
+| --: | ------------------------------------------ | ----------- | --------------------------------------------------- | ----------------------------------- | --------------------------------------------------- |
+|   1 | Subespaços vetoriais                       | easy        | reconhecer subespaço definido por equação homogênea | classificação por propriedade       | confundir reta afim com subespaço                   |
+|   2 | Combinações lineares e conjuntos geradores | easy        | testar pertinência a subespaço gerado por um vetor  | classificação por proporcionalidade | comparar apenas uma componente dos vetores          |
+|   3 | Dependência e independência linear         | easy        | detectar dependência imediata                       | identificação de contraexemplo      | considerar o vetor zero independente                |
+|   4 | Bases e dimensão                           | easy        | reconhecer base de espaço bidimensional             | verificação estrutural              | confundir dois vetores distintos com independentes  |
+|   5 | Bases e dimensão                           | easy        | determinar dimensão de espaço polinomial            | leitura de representação            | contar o grau em vez dos coeficientes               |
+|   6 | Espaços linha, coluna e nulo               | easy        | selecionar base do espaço coluna                    | seleção de colunas pivô             | usar colunas da forma escalonada como base original |
+|   7 | Subespaços vetoriais                       | medium      | mostrar que união de subespaços pode falhar         | análise de fechamento               | confundir união com soma de subespaços              |
+|   8 | Combinações lineares e conjuntos geradores | medium      | decidir pertinência ao espaço gerado                | resolução de representação          | comparar apenas duas coordenadas                    |
+|   9 | Dependência e independência linear         | medium      | encontrar parâmetro de dependência                  | análise paramétrica                 | testar somente vetores aos pares                    |
+|  10 | Bases e dimensão                           | medium      | estender conjunto independente a uma base           | escolha de complemento              | adicionar vetor já gerado                           |
+|  11 | Espaços linha, coluna e nulo               | medium      | aplicar teorema posto-nulidade                      | dedução por dimensão                | subtrair do contradomínio                           |
+|  12 | Somas e somas diretas                      | medium      | calcular dimensão de interseção                     | uso de fórmula dimensional          | somar dimensões sem descontar interseção            |
+|  13 | Bases e dimensão                           | hard        | construir base de matrizes simétricas               | reconstrução de espaço              | contar quatro entradas independentes                |
+|  14 | Subespaços vetoriais                       | hard        | determinar dimensão por restrição linear            | análise de condição funcional       | tratar a restrição como eliminação de dois graus    |
+|  15 | Somas e somas diretas                      | hard        | escolher complemento direto                         | projeto de decomposição             | escolher subespaço com interseção não trivial       |
+|  16 | Espaços linha, coluna e nulo               | hard        | relacionar espaço linha e núcleo                    | dedução ortogonal                   | usar colunas em vez de linhas                       |
+|  17 | Dependência e independência linear         | hard        | analisar unicidade de representação                 | argumento conceitual                | atribuir unicidade a conjunto apenas gerador        |
+|  18 | Subespaços vetoriais                       | hard        | distinguir conjunto afim de subespaço               | análise de estrutura de solução     | chamar todo conjunto solução de subespaço           |
 
 ## Contagens e validações
 

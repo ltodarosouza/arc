@@ -59,8 +59,14 @@ export default [
     steps: [
       ['Use a definição de gerador', r`$L=\{c(2,-1):c\in\mathbb R\}$.`],
       ['Teste a primeira alternativa', '$3(2,-1)=(6,-3)$.'],
-      ['Verifique as duas componentes', 'O mesmo escalar $3$ produz simultaneamente $6$ e $-3$.'],
-      ['Elimine os demais', 'Eles não são múltiplos de $(2,-1)$ com um único escalar.'],
+      [
+        'Verifique as duas componentes',
+        'O mesmo escalar $3$ produz simultaneamente $6$ e $-3$.',
+      ],
+      [
+        'Elimine os demais',
+        'Eles não são múltiplos de $(2,-1)$ com um único escalar.',
+      ],
     ],
   }),
   q({
