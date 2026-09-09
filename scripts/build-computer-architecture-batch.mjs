@@ -68,7 +68,7 @@ if (batchNumber === 1)
     `('30000000-0000-4000-8000-000000001101', ${sql(subjectId)}, null, 'unit', 'fundamentos-digitais', 'Fundamentos digitais', 1, true),`,
     `('30000000-0000-4000-8000-000000001102', ${sql(subjectId)}, null, 'unit', 'memoria-e-processamento', 'Memória e processamento', 2, true),`,
     `('30000000-0000-4000-8000-000000001103', ${sql(subjectId)}, null, 'unit', 'sistemas-e-desempenho', 'Sistemas e desempenho', 3, true),`,
-    ...(Object.entries(topicIds)
+    Object.entries(topicIds)
       .map(([key, nodeId], index) => {
         const unit = index < 4 ? '1101' : index < 8 ? '1102' : '1103';
         const names = [
@@ -87,7 +87,7 @@ if (batchNumber === 1)
       })
       .join(',\n') +
       '\n' +
-      'on conflict (id) do update set subject_id=excluded.subject_id, parent_id=excluded.parent_id, slug=excluded.slug, name=excluded.name, sort_order=excluded.sort_order, is_published=excluded.is_published;'),
+      'on conflict (id) do update set subject_id=excluded.subject_id, parent_id=excluded.parent_id, slug=excluded.slug, name=excluded.name, sort_order=excluded.sort_order, is_published=excluded.is_published;',
   );
 lines.push(
   '',
