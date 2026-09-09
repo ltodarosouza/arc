@@ -4,7 +4,7 @@
 
 Every question should be traceable, correctly classified, and useful after the learner submits an answer. The goal is not maximum volume; it is a reliable bank that students trust.
 
-Start every new item from [content/question-template.md](../content/question-template.md) and apply the [difficulty rubric](difficulty-rubric.md).
+Start every new item from [content/question-template.md](../content/question-template.md), follow the mandatory [question generation protocol](question-generation-protocol.md), and apply the [difficulty rubric](difficulty-rubric.md).
 
 ## Required metadata
 
@@ -57,10 +57,12 @@ Use for unusable, duplicate, incorrect, or rights-unclear submissions. Record a 
 
 ## Mathematical notation
 
-Arc stores content as Markdown with LaTex:
+Arc stores content as Markdown with LaTeX:
 
-- inline: `$\\lim_{x \\to 0} \\sin(x)/x$`;
-- display: `$$\\int_a^b f(x)\\,dx$$`.
+- all expressions: `$\\lim_{x \\to 0} \\sin(x)/x$` or `$\\int_a^b f(x)\\,dx$`.
+
+Use exactly one matched pair of dollar signs per expression. Do not use `$$`,
+leave dollar signs loose, or omit the backslash from LaTeX commands.
 
 Preview every question on a small screen as well as desktop. If an expression is ambiguous, long, or visually broken, fix the source before review.
 

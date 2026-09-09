@@ -1,0 +1,22 @@
+---
+description: Mandatory quality and provenance protocol for question-bank content
+globs: "{content/**,supabase/migrations/**}"
+alwaysApply: false
+---
+
+# Question generation protocol
+
+Before creating or changing questions, read
+`docs/question-generation-protocol.md` and use `content/question-template.md`.
+
+- Use a PDF or other reference only to map skills, difficulty, and variety;
+  never reproduce or closely paraphrase protected exercises or solutions.
+- Plan coverage by subject, topic, subtopic, difficulty, and command type
+  before drafting a batch.
+- Every item must be original, multiple choice with four distinct options and
+  one verified answer, three progressive hints, plausible distractors, and a
+  self-contained commented solution.
+- Write every mathematical expression as valid `$...$`; never use `$$`.
+- Run the protocol audit before creating a migration. Do not publish or import
+  content that fails provenance, answer, formatting, diversity, or taxonomy
+  checks.

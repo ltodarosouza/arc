@@ -24,11 +24,10 @@ reviewed_at: ''
 
 ## Statement
 
-Write the complete question here. Use inline mathematical notation as `$x^2$` and display notation as:
-
-$$
-\\int 2x\\cos(x^2)\\,dx
-$$
+Write the complete question here. Use valid mathematical notation inside one
+pair of dollar signs, including longer expressions: `$\\int 2x\\cos(x^2)\\,dx$`.
+Never use `$$`, unmatched dollar signs, or a LaTeX command without its
+backslash.
 
 State every assumption, convention, unit, interval, or condition needed to answer the question.
 
@@ -53,12 +52,14 @@ Write the expected result.
 
 ## Hints
 
-Every question requires at least two progressive hints. They must help a student
-make the next decision, not simply restate the answer or paste a step from the
-resolution.
+Every question requires at least three progressive hints. They must help a
+student make the next decision, not simply restate the answer or paste a step
+from the resolution.
 
 1. First hint: identify the concept, theorem, representation, or common trap.
 2. Second hint: direct the first mathematical action without completing it.
+3. Third hint: help the student check an intermediate result without revealing
+   the final alternative.
 
 ## Commented solution
 
@@ -87,7 +88,7 @@ algebraic line into artificial micro-steps merely to reach a target count.
 - [ ] Every multiple-choice distractor is plausible but clearly incorrect.
 - [ ] The final answer was independently checked.
 - [ ] The solution teaches the method, not only the result.
-- [ ] I included two progressive hints that do not reveal the answer.
+- [ ] I included three progressive hints that do not reveal the answer.
 - [ ] The commented solution has enough meaningful steps for this question,
       without artificial fragmentation.
 - [ ] Mathematical notation renders correctly, with matched `$` delimiters and LaTeX commands that preserve their backslash (for example, `\int`).

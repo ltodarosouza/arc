@@ -91,6 +91,7 @@ layers rather than embedded in screens.
 - Do not add a feature just because it is technically interesting; it must solve a real study or content-quality problem.
 - Preserve the universal subject model. Do not create course- or university-specific copies of questions.
 - Keep content source, licence, taxonomy, difficulty, and solution quality explicit.
+- Before generating or importing questions, follow the mandatory [question generation protocol](docs/question-generation-protocol.md).
 - Make each change small, verifiable, and tied to one GitHub issue.
 - Use a descriptive commit and close the completed issue after its work is merged to `main`.
 
