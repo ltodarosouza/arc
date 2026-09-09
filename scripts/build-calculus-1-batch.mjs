@@ -45,6 +45,20 @@ const batches = {
     sourceId: '10000000-0000-4000-8000-000000000008',
     label: 'Arc original Cálculo I — lote 05',
   },
+  '06': {
+    input: '../content/calculus-1/batch-06.mjs',
+    migration: '20260909172000_seed_calculus_1_batch_06.sql',
+    questionStart: 70001,
+    sourceId: '10000000-0000-4000-8000-000000000009',
+    label: 'Arc original Cálculo I — lote 06',
+  },
+  '07': {
+    input: '../content/calculus-1/batch-07.mjs',
+    migration: '20260909173000_seed_calculus_1_batch_07.sql',
+    questionStart: 80001,
+    sourceId: '10000000-0000-4000-8000-000000000010',
+    label: 'Arc original Cálculo I — lote 07',
+  },
 };
 const configuration = batches[selectedBatch];
 if (!configuration)
@@ -84,6 +98,18 @@ const topics = {
   'integral-definida': '30000000-0000-4000-8000-000000000036',
   'teorema-fundamental-do-calculo': '30000000-0000-4000-8000-000000000037',
   substituicao: '30000000-0000-4000-8000-000000000038',
+  'areas-entre-curvas': '30000000-0000-4000-8000-000000000040',
+  volumes: '30000000-0000-4000-8000-000000000041',
+  'cascas-cilindricas': '30000000-0000-4000-8000-000000000042',
+  'trabalho-e-valor-medio': '30000000-0000-4000-8000-000000000043',
+  'integracao-por-partes': '30000000-0000-4000-8000-000000000045',
+  'integrais-trigonometricas': '30000000-0000-4000-8000-000000000046',
+  'fracoes-parciais': '30000000-0000-4000-8000-000000000047',
+  'integrais-improprias': '30000000-0000-4000-8000-000000000048',
+  'comprimento-de-arco-e-area-de-superficie':
+    '30000000-0000-4000-8000-000000000050',
+  'modelos-em-fisica-economia-e-probabilidade':
+    '30000000-0000-4000-8000-000000000051',
 };
 
 const texCommands = [

@@ -160,7 +160,8 @@ test('a subject opens by academic area before showing its subtopics', async ({
   );
   await expect(
     page.getByRole('link', { name: /funções e modelos/i }),
-  ).toContainText(/4 subassuntos/i);
+  ).toContainText(/questões?/i);
+  await expect(page.getByText(/subassuntos?/i)).toHaveCount(0);
   await expect(page.getByText('Representações de funções')).toHaveCount(0);
 });
 

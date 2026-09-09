@@ -78,6 +78,8 @@ jobs:
       - run: node scripts/build-calculus-1-batch.mjs --batch=03 --check
       - run: node scripts/build-calculus-1-batch.mjs --batch=04 --check
       - run: node scripts/build-calculus-1-batch.mjs --batch=05 --check
+      - run: node scripts/build-calculus-1-batch.mjs --batch=06 --check
+      - run: node scripts/build-calculus-1-batch.mjs --batch=07 --check
       - run: node scripts/build-vector-calculus-batch.mjs --batch=01 --check
       - run: node scripts/build-vector-calculus-batch.mjs --batch=02 --check
       - run: node scripts/build-vector-calculus-batch.mjs --batch=03 --check

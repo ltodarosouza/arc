@@ -20,9 +20,6 @@ export default function SubjectPage() {
     ) ?? [];
   const units = unitNodes.map((unit) => {
     const branch = getTaxonomyBranch(unit.id, catalogue?.taxonomyNodes ?? []);
-    const subtopicCount = (catalogue?.taxonomyNodes ?? []).filter(
-      (item) => item.parentId === unit.id,
-    ).length;
     const count = (catalogue?.questions ?? []).filter(
       (question) =>
         question.subjectId === subject?.id &&
@@ -30,7 +27,7 @@ export default function SubjectPage() {
           branch.includes(tag.taxonomyNodeId),
         ),
     ).length;
-    return { ...unit, count, subtopicCount };
+    return { ...unit, count };
   });
   return (
     <AppShell active="explore">
@@ -98,9 +95,7 @@ export default function SubjectPage() {
                   <span className="font-medium">
                     {unit.name}{' '}
                     <span className="mt-1 block text-sm font-normal text-[var(--arc-text-muted)]">
-                      {unit.subtopicCount}{' '}
-                      {unit.subtopicCount === 1 ? 'subassunto' : 'subassuntos'}{' '}
-                      · {unit.count} {unit.count === 1 ? 'questão' : 'questões'}
+                      {unit.count} {unit.count === 1 ? 'questão' : 'questões'}
                     </span>
                   </span>
                   <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
