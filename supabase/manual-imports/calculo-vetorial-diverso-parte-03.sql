@@ -413,3 +413,46 @@ insert into public.question_solutions (question_id, final_answer_markdown, expla
 insert into public.question_solution_steps (id, question_id, title, content_markdown, sort_order) values ('70000000-0000-4000-8000-000000494501', '40000000-0000-4000-8000-000000049450', 'Reconheça a tarefa', 'Leia o comando e nomeie a propriedade geométrica ou operação vetorial que ele solicita.', 1), ('70000000-0000-4000-8000-000000494502', '40000000-0000-4000-8000-000000049450', 'Examine os quadrados', 'As parcelas que dependem de x e y nunca são negativas.', 2), ('70000000-0000-4000-8000-000000494503', '40000000-0000-4000-8000-000000049450', 'Encontre o vértice', '$x=0 e y=0 fornecem z=0.$', 3), ('70000000-0000-4000-8000-000000494504', '40000000-0000-4000-8000-000000049450', 'Conclua', 'As seções horizontais crescem como elipses; a superfície abre no sentido positivo de z.', 4), ('70000000-0000-4000-8000-000000494505', '40000000-0000-4000-8000-000000049450', 'Cheque a interpretação', 'O resultado precisa satisfazer a relação original; essa verificação também elimina erros plausíveis das alternativas.', 5) on conflict (id) do update set question_id = excluded.question_id, title = excluded.title, content_markdown = excluded.content_markdown, sort_order = excluded.sort_order;
 
 commit;
+
+-- ===== 20260909190000_simplify_vector_question_prompts.sql =====
+-- Remove the repeated instructional suffix from the renewed Vector Calculus bank.
+-- Prerequisite: run this after the five 20260909180x00 diversify migrations.
+-- The mathematical command, options, hints, answer key, and solution remain unchanged.
+
+update public.questions
+set statement_markdown = regexp_replace(
+  statement_markdown,
+  '[[:space:]]+Para decidir,.*$',
+  '',
+  'i'
+)
+where source_id in (
+  '10000000-0000-4000-8000-000000000232',
+  '10000000-0000-4000-8000-000000000233',
+  '10000000-0000-4000-8000-000000000234',
+  '10000000-0000-4000-8000-000000000235',
+  '10000000-0000-4000-8000-000000000236'
+)
+  and statement_markdown ~* '[[:space:]]Para decidir,';
+
+do $validation$
+declare
+  remaining_count integer;
+begin
+  select count(*)
+  into remaining_count
+  from public.questions
+  where source_id in (
+    '10000000-0000-4000-8000-000000000232',
+    '10000000-0000-4000-8000-000000000233',
+    '10000000-0000-4000-8000-000000000234',
+    '10000000-0000-4000-8000-000000000235',
+    '10000000-0000-4000-8000-000000000236'
+  )
+    and statement_markdown ~* '[[:space:]]Para decidir,';
+
+  if remaining_count <> 0 then
+    raise exception 'Vector prompt cleanup left % repeated suffixes', remaining_count;
+  end if;
+end;
+$validation$;

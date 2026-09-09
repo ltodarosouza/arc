@@ -71,6 +71,7 @@ const groups = {
     '20260909180300_diversify_vector_calculus_batch_03.sql',
     '20260909180400_diversify_vector_calculus_batch_04.sql',
     '20260909180500_diversify_vector_calculus_batch_05.sql',
+    '20260909190000_simplify_vector_question_prompts.sql',
   ],
 };
 
