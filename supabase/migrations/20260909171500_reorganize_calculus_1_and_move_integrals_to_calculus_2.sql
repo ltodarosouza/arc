@@ -74,7 +74,7 @@ where id in (
 -- Reaproveita os tópicos de integrais já existentes em Cálculo II quando há
 -- equivalência direta, para evitar duas taxonomias para o mesmo conceito.
 update public.question_taxonomy_tags
-set taxonomy_node_id = case taxonomy_node_id
+set taxonomy_node_id = (case taxonomy_node_id::text
   when '30000000-0000-4000-8000-000000000034' then '30000000-0000-4000-8000-000000000015'
   when '30000000-0000-4000-8000-000000000036' then '30000000-0000-4000-8000-000000000004'
   when '30000000-0000-4000-8000-000000000037' then '30000000-0000-4000-8000-000000000016'
@@ -82,7 +82,7 @@ set taxonomy_node_id = case taxonomy_node_id
   when '30000000-0000-4000-8000-000000000045' then '30000000-0000-4000-8000-000000000011'
   when '30000000-0000-4000-8000-000000000046' then '30000000-0000-4000-8000-000000000102'
   when '30000000-0000-4000-8000-000000000047' then '30000000-0000-4000-8000-000000000101'
-end
+end)::uuid
 where taxonomy_node_id in (
   '30000000-0000-4000-8000-000000000034',
   '30000000-0000-4000-8000-000000000036',
