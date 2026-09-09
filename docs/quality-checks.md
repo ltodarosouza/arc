@@ -69,3 +69,13 @@ Para auditar uma publicação, compare o SHA exibido em **Source** no deployment
 da Vercel com o `headSha` da execução `Quality` na `main`. Os quatro trabalhos
 devem estar concluídos com `success` antes de o deployment aparecer como
 **Current**.
+
+## Limite dos previews no plano Hobby
+
+Em repositórios privados, a Vercel Hobby bloqueia o Preview quando o autor do
+commit não possui acesso ao projeto da Vercel. O status aparece como
+`Deployment was blocked` antes do build e não representa falha no código ou nos
+quatro trabalhos do workflow `Quality`. Habilitar colaboração nesse cenário
+exige o plano Pro; a alternativa sem mudança de plano é o proprietário do
+projeto criar o commit. Não alterar autoria de commits para contornar esse
+controle.

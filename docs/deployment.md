@@ -77,3 +77,12 @@ Depois do merge, conferir a execução `Quality` disparada pelo evento `push`. O
 SHA dessa execução deve ser igual ao campo **Source** do deployment. Um resultado
 falho ou pendente não autoriza `Force Promote`; corrija o commit ou reverta a
 mudança.
+
+## Previews de colaboradores
+
+O plano Hobby não permite colaboração em projetos ligados a repositórios
+privados. Por isso, um commit cujo autor não tem acesso ao projeto da Vercel
+pode receber `Deployment was blocked` no Preview antes de executar o build.
+Esse limite é independente dos quatro trabalhos do workflow `Quality`. Não
+reescrever a autoria do commit para obter um Preview; para habilitar previews de
+colaboradores, migrar o projeto para um plano com suporte a colaboração.
