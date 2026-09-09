@@ -312,7 +312,7 @@ const originDistances = parameters.map((n) =>
       math(String(3 * n)),
       math(String(5 * n)),
       math(String(9 * n)),
-      math(String(2 * n)),
+      math(String(n + 7)),
     ],
     correct: 0,
     hints: [
@@ -911,7 +911,180 @@ const batch05 = [
   ...xyIntersections,
 ];
 
+const planeExplanation =
+  'Um plano é identificado por um ponto e um vetor normal. Na equação cartesiana, os coeficientes de x, y e z formam esse normal; substituir um ponto ou comparar normais é uma forma direta de conferir pertencimento, paralelismo e perpendicularidade.';
+const planeMembership = parameters.map((n) => {
+  const normal = [1, 2, -1],
+    point = [n, 1, n + 2],
+    constant =
+      normal[0] * point[0] + normal[1] * point[1] + normal[2] * point[2];
+  const candidate = [n + 1, 1, n + 3];
+  return item({
+    topic: 'equacoes-de-planos',
+    difficulty: 'easy',
+    statement:
+      'O ponto ' +
+      math('P=' + vector(point)) +
+      ' pertence ao plano ' +
+      math('x+2y-z=' + constant) +
+      '. Qual dos pontos abaixo também pertence a ele?',
+    options: [
+      math(vector(candidate)),
+      math(vector([n, 2, n + 1])),
+      math(vector([n + 1, 1, n + 2])),
+      math(vector([n, 0, n + 2])),
+    ],
+    correct: 0,
+    hints: [
+      'Substitua as coordenadas de cada candidato na equação do plano.',
+      'O ponto pertence quando os dois lados da igualdade coincidem.',
+    ],
+    finalAnswer: math(vector(candidate)) + '.',
+    explanation: planeExplanation,
+    steps: [
+      [
+        'Calcule o lado esquerdo',
+        math(n + 1 + '+2-(' + (n + 3) + ')=' + constant + '.'),
+      ],
+      ['Compare', math(constant + '=' + constant + '.')],
+      ['Conclua', 'Esse ponto satisfaz a equação do plano.'],
+    ],
+  });
+});
+const planeNormals = parameters.map((n) =>
+  item({
+    topic: 'equacoes-de-planos',
+    difficulty: 'easy',
+    statement:
+      'Qual vetor é normal ao plano ' +
+      math(n + 'x-' + (n + 1) + 'y+2z=5') +
+      '?',
+    options: [
+      math(vector([n, -(n + 1), 2])),
+      math(vector([2, n, -(n + 1)])),
+      math(vector([n, n + 1, -2])),
+      math(vector([1, 1, 1])),
+    ],
+    correct: 0,
+    hints: [
+      'Os coeficientes de x, y e z formam um vetor normal.',
+      'Mantenha o sinal do coeficiente de y.',
+    ],
+    finalAnswer: math('n=' + vector([n, -(n + 1), 2])) + '.',
+    explanation: planeExplanation,
+    steps: [
+      [
+        'Leia os coeficientes',
+        'A equação está na forma ax mais by mais cz igual a d.',
+      ],
+      ['Forme o normal', math('n=' + vector([n, -(n + 1), 2]) + '.')],
+      [
+        'Verifique',
+        'Esse vetor é perpendicular a qualquer direção contida no plano.',
+      ],
+    ],
+  }),
+);
+const parallelPlanes = parameters.map((n) =>
+  item({
+    topic: 'paralelismo-e-intersecao',
+    difficulty: 'medium',
+    statement: 'Qual plano é paralelo a ' + math('' + n + 'x+2y-z=4') + '?',
+    options: [
+      math('' + n + 'x+2y-z=' + (n + 5)),
+      math('2x+' + n + 'y-z=4'),
+      math('' + n + 'x-2y-z=4'),
+      math('x+2y-' + n + 'z=4'),
+    ],
+    correct: 0,
+    hints: [
+      'Planos paralelos têm vetores normais proporcionais.',
+      'Mudar apenas o termo independente desloca o plano sem girá-lo.',
+    ],
+    finalAnswer: math('' + n + 'x+2y-z=' + (n + 5)) + '.',
+    explanation: planeExplanation,
+    steps: [
+      ['Leia o normal', math('n_1=' + vector([n, 2, -1]) + '.')],
+      ['Compare candidatos', 'O primeiro mantém os mesmos coeficientes.'],
+      ['Conclua', 'Ele tem a mesma orientação e termo independente diferente.'],
+    ],
+  }),
+);
+const planeDistances = parameters.map((n) => {
+  const point = [n, 0, 0];
+  return item({
+    topic: 'distancias-e-angulos',
+    difficulty: 'medium',
+    statement:
+      'Calcule a distância do ponto ' +
+      math('P=' + vector(point)) +
+      ' ao plano ' +
+      math('x=0') +
+      '.',
+    options: [
+      math(String(n)),
+      math(String(n + 3)),
+      math('0'),
+      math(String(n + 7)),
+    ],
+    correct: 0,
+    hints: [
+      'O plano x igual a zero é o plano yz.',
+      'A distância perpendicular é o valor absoluto da coordenada x.',
+    ],
+    finalAnswer: math('d=' + n) + '.',
+    explanation: planeExplanation,
+    steps: [
+      ['Identifique a normal', math('n=' + vector([1, 0, 0]) + '.')],
+      [
+        'Meça o afastamento',
+        'A projeção perpendicular zera apenas a coordenada x.',
+      ],
+      ['Calcule', math('d=|' + n + '|=' + n + '.')],
+    ],
+  });
+});
+const planeIntersections = parameters.map((n) => {
+  const y = n + 1;
+  return item({
+    topic: 'equacoes-de-planos',
+    difficulty: 'medium',
+    statement:
+      'A reta ' +
+      math('r(t)=' + vector([0, n, 0]) + '+t' + vector([1, 1, 1])) +
+      ' encontra o plano ' +
+      math('x+y+z=' + (4 * n + 3)) +
+      '. Qual é o parâmetro t?',
+    options: [
+      math('t=' + (n + 1)),
+      math('t=' + n),
+      math('t=' + (2 * n + 1)),
+      math('t=0'),
+    ],
+    correct: 0,
+    hints: [
+      'Substitua as coordenadas paramétricas da reta no plano.',
+      'A soma das três coordenadas será n mais 3t.',
+    ],
+    finalAnswer: math('t=' + (n + 1)) + '.',
+    explanation: planeExplanation,
+    steps: [
+      ['Escreva as coordenadas', math('x=t, y=' + n + '+t, z=t.')],
+      ['Substitua no plano', math('t+(' + n + '+t)+t=' + (4 * n + 3) + '.')],
+      ['Resolva', math('3t=' + (3 * n + 3) + ' Rightarrow t=' + (n + 1) + '.')],
+    ],
+  });
+});
+const batch06 = [
+  ...planeMembership,
+  ...planeNormals,
+  ...parallelPlanes,
+  ...planeDistances,
+  ...planeIntersections,
+];
+
 export function createVectorBatch(number) {
+  if (number === '06') return batch06;
   if (number === '05') return batch05;
   if (number === '04') return batch04;
   if (number === '03') return batch03;
