@@ -120,6 +120,25 @@ test('advanced filters disclose accessibly and reduced motion keeps content visi
   await expect(page.locator('.reveal-pending')).toHaveCount(0);
 });
 
+test('a subject opens by academic area before showing its subtopics', async ({
+  page,
+}) => {
+  await page.goto('/explore/calculo-1');
+  await expect(
+    page.getByRole('heading', { name: /Áreas de estudo/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: /funções e modelos/i }),
+  ).toHaveAttribute(
+    'href',
+    '/questions?subject=calculo-1&unit=funcoes-e-modelos',
+  );
+  await expect(
+    page.getByRole('link', { name: /funções e modelos/i }),
+  ).toContainText(/4 subassuntos/i);
+  await expect(page.getByText('Representações de funções')).toHaveCount(0);
+});
+
 test('rapid subject changes preserve the final selection', async ({ page }) => {
   await page.goto('/subjects');
   await expect(

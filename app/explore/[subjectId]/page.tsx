@@ -14,12 +14,15 @@ export default function SubjectPage() {
   const subject = catalogue?.subjects.find(
     (item) => item.id === subjectId || item.slug === subjectId,
   );
-  const topicNodes =
+  const unitNodes =
     catalogue?.taxonomyNodes.filter(
-      (item) => item.subjectId === subject?.id && item.kind === 'topic',
+      (item) => item.subjectId === subject?.id && item.kind === 'unit',
     ) ?? [];
-  const topics = topicNodes.map((topic) => {
-    const branch = getTaxonomyBranch(topic.id, catalogue?.taxonomyNodes ?? []);
+  const units = unitNodes.map((unit) => {
+    const branch = getTaxonomyBranch(unit.id, catalogue?.taxonomyNodes ?? []);
+    const subtopicCount = (catalogue?.taxonomyNodes ?? []).filter(
+      (item) => item.parentId === unit.id,
+    ).length;
     const count = (catalogue?.questions ?? []).filter(
       (question) =>
         question.subjectId === subject?.id &&
@@ -27,7 +30,7 @@ export default function SubjectPage() {
           branch.includes(tag.taxonomyNodeId),
         ),
     ).length;
-    return { ...topic, count };
+    return { ...unit, count, subtopicCount };
   });
   return (
     <AppShell active="explore">
@@ -80,30 +83,32 @@ export default function SubjectPage() {
         ) : (
           <section className="arc-section">
             <h2 className="arc-section-title">
-              Assuntos{' '}
+              Áreas de estudo{' '}
               <span className="ml-2 text-sm font-normal text-[var(--arc-text-muted)]">
-                {topics.length}
+                {units.length}
               </span>
             </h2>
             <div className="mt-4 divide-y divide-[var(--border)]">
-              {topics.map((topic) => (
+              {units.map((unit) => (
                 <a
                   className="group flex items-center justify-between gap-4 rounded-lg px-3 py-5 transition-colors hover:bg-[var(--arc-surface)]"
-                  href={`/questions?subject=${subject?.slug ?? subjectId}&topic=${topic.slug}`}
-                  key={topic.id}
+                  href={`/questions?subject=${subject?.slug ?? subjectId}&unit=${unit.slug}`}
+                  key={unit.id}
                 >
                   <span className="font-medium">
-                    {topic.name}{' '}
+                    {unit.name}{' '}
                     <span className="mt-1 block text-sm font-normal text-[var(--arc-text-muted)]">
-                      {topic.count} {topic.count === 1 ? 'questão' : 'questões'}
+                      {unit.subtopicCount}{' '}
+                      {unit.subtopicCount === 1 ? 'subassunto' : 'subassuntos'}{' '}
+                      · {unit.count} {unit.count === 1 ? 'questão' : 'questões'}
                     </span>
                   </span>
                   <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
                 </a>
               ))}
             </div>
-            {!topics.length && (
-              <p className="arc-caption py-5">Assuntos em preparação.</p>
+            {!units.length && (
+              <p className="arc-caption py-5">Áreas em preparação.</p>
             )}
           </section>
         )}
