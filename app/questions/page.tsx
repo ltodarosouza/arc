@@ -42,7 +42,6 @@ export default function QuestionsPage() {
   const [subjectId, setSubjectId] = useState<string | null>(null);
   const [unitId, setUnitId] = useState<string | null>(null);
   const [topicId, setTopicId] = useState<string | null>(null);
-  const [subtopicId, setSubtopicId] = useState<string | null>(null);
   const [selectedDifficulties, setSelectedDifficulties] = useState<
     Difficulty[]
   >([]);
@@ -74,7 +73,6 @@ export default function QuestionsPage() {
     const requestedSubjectId = search.get('subject');
     const requestedUnitId = search.get('unit');
     const requestedTopicId = search.get('topic');
-    const requestedSubtopicId = search.get('subtopic');
     const requestedDifficulties = search.get('difficulty')?.split(',') ?? [];
     const requestedStatus = search.get('status');
     const requestedSubject = catalogue.subjects.find(
@@ -87,10 +85,7 @@ export default function QuestionsPage() {
     const subjectNodes = catalogue.taxonomyNodes.filter(
       (node) => node.subjectId === resolvedSubjectId,
     );
-    const resolveNodeId = (
-      value: string | null,
-      kind: 'unit' | 'topic' | 'subtopic',
-    ) =>
+    const resolveNodeId = (value: string | null, kind: 'unit' | 'topic') =>
       subjectNodes.find(
         (node) =>
           node.kind === kind && (node.id === value || node.slug === value),
@@ -98,7 +93,6 @@ export default function QuestionsPage() {
     setSubjectId(resolvedSubjectId);
     setUnitId(resolveNodeId(requestedUnitId, 'unit'));
     setTopicId(resolveNodeId(requestedTopicId, 'topic'));
-    setSubtopicId(resolveNodeId(requestedSubtopicId, 'subtopic'));
     setSelectedDifficulties(
       requestedDifficulties.filter(
         (difficulty): difficulty is Difficulty =>
@@ -136,7 +130,6 @@ export default function QuestionsPage() {
     search.set('subject', selectedSubject.slug);
     if (unitId) search.set('unit', slugForNode(unitId));
     if (topicId) search.set('topic', slugForNode(topicId));
-    if (subtopicId) search.set('subtopic', slugForNode(subtopicId));
     if (selectedDifficulties.length)
       search.set('difficulty', selectedDifficulties.join(','));
     if (selectedStatus !== 'all') search.set('status', selectedStatus);
@@ -146,7 +139,6 @@ export default function QuestionsPage() {
     selectedDifficulties,
     selectedStatus,
     subjectId,
-    subtopicId,
     topicId,
     unitId,
   ]);
@@ -165,12 +157,8 @@ export default function QuestionsPage() {
   const topics = nodes.filter(
     (node) => node.kind === 'topic' && (!unitId || node.parentId === unitId),
   );
-  const subtopics = nodes.filter(
-    (node) =>
-      node.kind === 'subtopic' && (!topicId || node.parentId === topicId),
-  );
-  const selectedNodeIds = [unitId, topicId, subtopicId].filter(
-    (id): id is string => Boolean(id),
+  const selectedNodeIds = [unitId, topicId].filter((id): id is string =>
+    Boolean(id),
   );
   const questions = useMemo(
     () =>
@@ -201,23 +189,14 @@ export default function QuestionsPage() {
   const selectUnit = (value: string) => {
     setUnitId(value || null);
     setTopicId(null);
-    setSubtopicId(null);
   };
-  const selectTopic = (value: string) => {
-    setTopicId(value || null);
-    setSubtopicId(null);
-  };
-  const clearFilter = (kind: 'unit' | 'topic' | 'subtopic') => {
+  const selectTopic = (value: string) => setTopicId(value || null);
+  const clearFilter = (kind: 'unit' | 'topic') => {
     if (kind === 'unit') {
       setUnitId(null);
       setTopicId(null);
-      setSubtopicId(null);
     }
-    if (kind === 'topic') {
-      setTopicId(null);
-      setSubtopicId(null);
-    }
-    if (kind === 'subtopic') setSubtopicId(null);
+    if (kind === 'topic') setTopicId(null);
   };
   const toggleDifficulty = (difficulty: Difficulty) =>
     setSelectedDifficulties((current) =>
@@ -379,15 +358,15 @@ export default function QuestionsPage() {
               <ChevronDown className="disclosure-icon size-4" />
             </summary>
             <div className="disclosure-content">
-              <div className="mt-2 grid gap-3 sm:grid-cols-3">
+              <div className="mt-2 grid gap-3 sm:grid-cols-2">
                 <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
-                  Unidade
+                  Assunto
                   <Select
                     onValueChange={(value) => selectUnit(value ?? '')}
                     value={unitId}
                   >
                     <SelectTrigger
-                      aria-label="Unidade"
+                      aria-label="Assunto"
                       className={selectTriggerClass}
                     >
                       <SelectValue placeholder="Todas">
@@ -412,14 +391,14 @@ export default function QuestionsPage() {
                   </Select>
                 </div>
                 <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
-                  Assunto
+                  Subassunto
                   <Select
                     disabled={!topics.length}
                     onValueChange={(value) => selectTopic(value ?? '')}
                     value={topicId}
                   >
                     <SelectTrigger
-                      aria-label="Assunto"
+                      aria-label="Subassunto"
                       className={selectTriggerClass}
                     >
                       <SelectValue placeholder="Todos">
@@ -438,39 +417,6 @@ export default function QuestionsPage() {
                           value={topic.id}
                         >
                           {topic.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
-                  Subassunto
-                  <Select
-                    disabled={!subtopics.length || !topicId}
-                    onValueChange={(value) => setSubtopicId(value)}
-                    value={subtopicId}
-                  >
-                    <SelectTrigger
-                      aria-label="Subassunto"
-                      className={selectTriggerClass}
-                    >
-                      <SelectValue placeholder="Todos">
-                        {subtopics.find(
-                          (subtopic) => subtopic.id === subtopicId,
-                        )?.name ?? 'Todos'}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent className={selectContentClass}>
-                      <SelectItem className={selectItemClass} value={null}>
-                        Todos
-                      </SelectItem>
-                      {subtopics.map((subtopic) => (
-                        <SelectItem
-                          className={selectItemClass}
-                          key={subtopic.id}
-                          value={subtopic.id}
-                        >
-                          {subtopic.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -549,7 +495,9 @@ export default function QuestionsPage() {
                 <button
                   className="inline-flex items-center gap-1 rounded-full bg-[var(--arc-accent)] px-2.5 py-1 text-xs font-medium text-[#405b6d]"
                   key={filter.id}
-                  onClick={() => clearFilter(filter.kind)}
+                  onClick={() => {
+                    if (filter.kind !== 'subtopic') clearFilter(filter.kind);
+                  }}
                 >
                   {filter.name}
                   <X className="size-3" />
