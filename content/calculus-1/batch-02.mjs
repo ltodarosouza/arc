@@ -62,7 +62,7 @@ const compositionQuestions = [
     options: [
       tex`$${answer}$`,
       tex`$${a * input + b}$`,
-      tex`$${inner}$`,
+      tex`$${inner + 1}$`,
       tex`$${answer + a}$`,
     ],
     correct: 0,

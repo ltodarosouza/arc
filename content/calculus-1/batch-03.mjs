@@ -22,9 +22,9 @@ const continuity = [1, 2, 3, 4, 5].map((a) =>
       '?',
     options: [
       math(String(a ** 2)),
-      math(String(a)),
+      math(String(a ** 2 + 1)),
       math('0'),
-      math(String(2 * a)),
+      math(String(3 * a + 2)),
     ],
     correct: 0,
     hints: [
@@ -174,7 +174,7 @@ const rates = [
     options: [
       math(String(2 * side * velocity)) + ' cm²/s',
       math(String(side * velocity)) + ' cm²/s',
-      math(String(2 * side)) + ' cm²/s',
+      math(String(2 * side + velocity + 1)) + ' cm²/s',
       math(String(velocity ** 2)) + ' cm²/s',
     ],
     correct: 0,
@@ -226,7 +226,7 @@ const extrema = [1, 2, 3, 4, 5].map((a) =>
       math('x=-' + a),
       math('x=' + a),
       math('x=0'),
-      math('x=-' + a ** 2),
+      math('x=-' + (a + 2)),
     ],
     correct: 0,
     hints: [
@@ -346,7 +346,12 @@ const definite = [1, 2, 3, 4, 5].map((power) => {
       'Calcule ' +
       math(slash + 'int_0^1 x^' + power + ' ' + slash + ',dx') +
       '.',
-    options: [math(String(result)), math(String(power)), math('1'), math('0')],
+    options: [
+      math(String(result)),
+      math(String(power + 2)),
+      math('1'),
+      math('0'),
+    ],
     correct: 0,
     hints: [
       'Encontre uma primitiva pela regra da potência.',
