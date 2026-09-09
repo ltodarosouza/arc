@@ -37,11 +37,13 @@ const selectContentClass =
   'rounded-2xl border-[var(--border)] bg-[var(--arc-surface)] p-1.5 shadow-[0_16px_36px_rgba(38,57,80,0.14)]';
 const selectItemClass =
   'min-h-10 rounded-xl px-3 py-2 text-sm text-[var(--foreground)] data-highlighted:bg-[var(--arc-accent)] data-highlighted:text-[#263950]';
+const questionsPerPage = 16;
 
 export default function QuestionsPage() {
   const [subjectId, setSubjectId] = useState<string | null>(null);
   const [unitId, setUnitId] = useState<string | null>(null);
   const [topicId, setTopicId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedDifficulties, setSelectedDifficulties] = useState<
     Difficulty[]
   >([]);
@@ -183,6 +185,17 @@ export default function QuestionsPage() {
       nodes,
     ],
   );
+  const totalPages = Math.max(
+    1,
+    Math.ceil(questions.length / questionsPerPage),
+  );
+  const visibleQuestions = questions.slice(
+    (currentPage - 1) * questionsPerPage,
+    currentPage * questionsPerPage,
+  );
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages));
+  }, [totalPages]);
   const activeFilters = selectedNodeIds
     .map((id) => nodes.find((node) => node.id === id))
     .filter((node): node is NonNullable<typeof node> => Boolean(node));
@@ -208,6 +221,7 @@ export default function QuestionsPage() {
     clearFilter('unit');
     setSelectedDifficulties([]);
     setSelectedStatus('all');
+    setCurrentPage(1);
   };
   const toggleRedo = async (questionId: string) => {
     if (pendingRedoQuestionIds.current.has(questionId)) return;
@@ -555,7 +569,9 @@ export default function QuestionsPage() {
         )}
         {questions.length ? (
           <div className="mt-6 grid gap-3">
-            {questions.map((question, index) => {
+            {visibleQuestions.map((question, index) => {
+              const questionIndex =
+                (currentPage - 1) * questionsPerPage + index;
               const outcome = outcomeByQuestionId.get(question.id);
               const markedForRedo = redoQuestionIds.has(question.id);
               const isSavingRedo = savingRedoQuestionIds.has(question.id);
@@ -575,7 +591,7 @@ export default function QuestionsPage() {
               return (
                 <Reveal delay={(index % 5) * 45} key={question.id}>
                   <div
-                    aria-label={`Resolver questão ${index + 1}`}
+                    aria-label={`Resolver questão ${questionIndex + 1}`}
                     className="cursor-pointer rounded-[var(--arc-radius-card)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]"
                     onClick={(event) => {
                       if ((event.target as HTMLElement).closest('a, button'))
@@ -595,7 +611,7 @@ export default function QuestionsPage() {
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
                           <span>
-                            Questão {String(index + 1).padStart(2, '0')}
+                            Questão {String(questionIndex + 1).padStart(2, '0')}
                           </span>
                           <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 capitalize">
                             {question.difficulty === 'easy'
@@ -669,6 +685,32 @@ export default function QuestionsPage() {
             description="Ajuste os filtros ou escolha outro assunto desta disciplina."
             title="Nenhuma questão encontrada"
           />
+        )}
+        {questions.length > questionsPerPage && (
+          <nav
+            aria-label="Paginação das questões"
+            className="mt-7 flex items-center justify-between gap-3"
+          >
+            <button
+              className="arc-action"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((page) => page - 1)}
+              type="button"
+            >
+              Anterior
+            </button>
+            <p className="text-sm text-[var(--arc-text-muted)]">
+              Página {currentPage} de {totalPages}
+            </p>
+            <button
+              className="arc-action"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((page) => page + 1)}
+              type="button"
+            >
+              Próxima
+            </button>
+          </nav>
         )}
       </section>
     </AppShell>
