@@ -374,7 +374,180 @@ const batch02 = [
   ...directionFactors,
 ];
 
+const productExplanation =
+  'O produto escalar combina componentes correspondentes e produz um número real. Ele conecta a álgebra à geometria por meio de ortogonalidade, ângulos, projeções e trabalho; por isso conferimos também o significado do resultado.';
+const dotQuestions = parameters.map((n) => {
+  const u = [n, 1, -1],
+    v = [2, n, 1],
+    answer = 3 * n - 1;
+  return item({
+    topic: 'produto-escalar-e-projecao',
+    difficulty: 'easy',
+    statement:
+      'Calcule ' +
+      math('u cdot v') +
+      ' para ' +
+      math('u=' + vector(u)) +
+      ' e ' +
+      math('v=' + vector(v)) +
+      '.',
+    options: [
+      math(String(answer)),
+      math(String(3 * n + 1)),
+      math(String(3 * n)),
+      math(String(-answer)),
+    ],
+    correct: 0,
+    hints: [
+      'Multiplique componentes correspondentes.',
+      'Some os três produtos, preservando o sinal negativo.',
+    ],
+    finalAnswer: math('u cdot v=' + answer) + '.',
+    explanation: productExplanation,
+    steps: [
+      ['Multiplique', math(n + ' cdot2+1 cdot' + n + '+(-1) cdot1.')],
+      ['Some', math(2 * n + '+' + n + '-1.')],
+      ['Conclua', math('u cdot v=' + answer + '.')],
+    ],
+  });
+});
+const orthogonalQuestions = parameters.map((n) =>
+  item({
+    topic: 'produto-escalar-e-projecao',
+    difficulty: 'medium',
+    statement:
+      'Para qual valor de k os vetores ' +
+      math('u=' + vector([n, 1])) +
+      ' e ' +
+      math('v=' + vector([1, 'k'])) +
+      ' são ortogonais?',
+    options: [
+      math('k=' + -n),
+      math('k=' + n),
+      math('k=' + (n + 1)),
+      math('k=0'),
+    ],
+    correct: 0,
+    hints: [
+      'Vetores ortogonais têm produto escalar zero.',
+      'Escreva n vezes 1 mais 1 vezes k igual a zero.',
+    ],
+    finalAnswer: math('k=' + -n) + '.',
+    explanation: productExplanation,
+    steps: [
+      ['Imponha ortogonalidade', math('u cdot v=0.')],
+      ['Monte a equação', math(n + '+k=0.')],
+      ['Isole k', math('k=' + -n + '.')],
+    ],
+  }),
+);
+const projectionQuestions = parameters.map((n) => {
+  const u = [n, n + 1, 1 - n];
+  return item({
+    topic: 'produto-escalar-e-projecao',
+    difficulty: 'easy',
+    statement:
+      'Qual é a projeção ortogonal de ' +
+      math('u=' + vector(u)) +
+      ' sobre o eixo x?',
+    options: [
+      math(vector([n, 0, 0])),
+      math(vector([0, n + 1, 0])),
+      math(vector(u)),
+      math(vector([0, 0, 1 - n])),
+    ],
+    correct: 0,
+    hints: [
+      'O eixo x é gerado pelo vetor unitário da primeira coordenada.',
+      'A projeção mantém a componente paralela ao eixo e zera as demais.',
+    ],
+    finalAnswer: math('proj_x u=' + vector([n, 0, 0])) + '.',
+    explanation: productExplanation,
+    steps: [
+      ['Identifique a direção', math('e_1=' + vector([1, 0, 0]) + '.')],
+      ['Calcule a componente', math('u cdot e_1=' + n + '.')],
+      ['Monte a projeção', math(n + 'e_1=' + vector([n, 0, 0]) + '.')],
+    ],
+  });
+});
+const angleQuestions = parameters.map((n) =>
+  item({
+    topic: 'produto-escalar-e-projecao',
+    difficulty: 'easy',
+    statement:
+      'Qual é o ângulo entre ' +
+      math('u=' + vector([n, 0, 0])) +
+      ' e ' +
+      math('v=' + vector([0, n + 1, 0])) +
+      '?',
+    options: [
+      math('90^circ'),
+      math('0^circ'),
+      math('45^circ'),
+      math('180^circ'),
+    ],
+    correct: 0,
+    hints: [
+      'Calcule o produto escalar.',
+      'Produto escalar zero entre vetores não nulos indica perpendicularidade.',
+    ],
+    finalAnswer: math('90^circ') + '.',
+    explanation: productExplanation,
+    steps: [
+      ['Calcule o produto', math('u cdot v=0.')],
+      ['Use a relação angular', math('u cdot v=|u||v|cos theta.')],
+      ['Conclua', math('cos theta=0 Rightarrow theta=90^circ.')],
+    ],
+  }),
+);
+const workQuestions = parameters.map((n) => {
+  const force = [n, 2, 1],
+    move = [2, n, -1],
+    answer = 4 * n - 1;
+  return item({
+    topic: 'produto-escalar-e-projecao',
+    difficulty: 'medium',
+    statement:
+      'Uma força constante ' +
+      math('F=' + vector(force)) +
+      ' desloca um objeto por ' +
+      math('d=' + vector(move)) +
+      ' metros. Calcule o trabalho ' +
+      math('W=F cdot d') +
+      '.',
+    options: [
+      math(String(answer)) + ' J',
+      math(String(4 * n + 1)) + ' J',
+      math(String(2 * n)) + ' J',
+      math(String(-answer)) + ' J',
+    ],
+    correct: 0,
+    hints: [
+      'Trabalho de uma força constante é produto escalar.',
+      'Multiplique as componentes correspondentes e some.',
+    ],
+    finalAnswer: math('W=' + answer) + ' J.',
+    explanation: productExplanation,
+    steps: [
+      [
+        'Escreva o produto',
+        math('W=' + n + ' cdot2+2 cdot' + n + '+1 cdot(-1).'),
+      ],
+      ['Some as parcelas', math('W=' + 2 * n + '+' + 2 * n + '-1.')],
+      ['Inclua a unidade', math('W=' + answer) + ' joules.'],
+    ],
+  });
+});
+const batch03 = [
+  ...dotQuestions,
+  ...orthogonalQuestions,
+  ...projectionQuestions,
+  ...angleQuestions,
+  ...workQuestions,
+];
+
 export function createVectorBatch(number) {
+  if (number === '03') return batch03;
   if (number === '02') return batch02;
   if (number === '01')
     return [
