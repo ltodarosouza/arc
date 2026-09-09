@@ -28,6 +28,26 @@ const nodes: TaxonomyNode[] = [
     sortOrder: 1,
     isPublished: true,
   },
+  {
+    id: 'subtopic',
+    subjectId: 'calc',
+    parentId: 'topic',
+    kind: 'subtopic',
+    slug: 'change-of-variable',
+    name: 'Mudança de variável',
+    sortOrder: 1,
+    isPublished: true,
+  },
+  {
+    id: 'other-topic',
+    subjectId: 'calc',
+    parentId: 'unit',
+    kind: 'topic',
+    slug: 'definite-integrals',
+    name: 'Integrais definidas',
+    sortOrder: 2,
+    isPublished: true,
+  },
 ];
 const question = (
   id: string,
@@ -86,6 +106,36 @@ describe('question filters', () => {
         }),
       ).map((item) => item.id),
     ).toEqual(['correct']);
+  });
+
+  it('includes descendants when filtering a subject or topic', () => {
+    const taxonomyQuestions = [
+      question('at-topic', 'easy', 'topic'),
+      question('at-subtopic', 'easy', 'subtopic'),
+      question('at-other-topic', 'easy', 'other-topic'),
+    ];
+
+    expect(
+      filterQuestions(
+        taxonomyQuestions,
+        nodes,
+        filters({ selectedNodeIds: ['unit'] }),
+      ).map((item) => item.id),
+    ).toEqual(['at-topic', 'at-subtopic', 'at-other-topic']);
+    expect(
+      filterQuestions(
+        taxonomyQuestions,
+        nodes,
+        filters({ selectedNodeIds: ['topic'] }),
+      ).map((item) => item.id),
+    ).toEqual(['at-topic', 'at-subtopic']);
+    expect(
+      filterQuestions(
+        taxonomyQuestions,
+        nodes,
+        filters({ selectedNodeIds: ['subtopic'] }),
+      ).map((item) => item.id),
+    ).toEqual(['at-subtopic']);
   });
 
   it('returns an intentional empty result when no question matches', () => {

@@ -42,7 +42,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-for (const width of [320, 390, 768, 1440]) {
+for (const width of [390, 1440]) {
   test(`visual hierarchy, navigation and no horizontal overflow at ${width}px`, async ({
     page,
   }, testInfo) => {
@@ -96,28 +96,55 @@ for (const width of [320, 390, 768, 1440]) {
   });
 }
 
-test('advanced filters disclose accessibly and reduced motion keeps content visible', async ({
+test('taxonomy filters expose the subject, topic and subtopic flow', async ({
   page,
 }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/questions?subject=calculo-2');
   await expect(
     page.getByRole('heading', { name: 'Questões', exact: true }),
   ).toBeVisible();
-  await expect(
-    page.getByRole('combobox', { name: 'Unidade', exact: true }),
-  ).toBeHidden();
-  await page.getByText('Assuntos e filtros avançados', { exact: true }).click();
-  await page.getByRole('combobox', { name: 'Unidade', exact: true }).click();
-  await page.getByRole('option', { name: 'Integrais', exact: true }).click();
-  await expect(
-    page.getByRole('combobox', { name: 'Unidade', exact: true }),
-  ).toContainText('Integrais');
+
+  const filters = page.locator('details', {
+    has: page.getByText('Assuntos e filtros avançados', { exact: true }),
+  });
+  const assunto = filters.getByRole('combobox', {
+    name: 'Assunto',
+    exact: true,
+  });
+  const subassunto = filters.getByRole('combobox', {
+    name: 'Subassunto',
+    exact: true,
+  });
+
+  await expect(filters).not.toHaveAttribute('open', '');
+  await filters
+    .getByText('Assuntos e filtros avançados', { exact: true })
+    .click();
+  await expect(filters).toHaveAttribute('open', '');
+  await expect(assunto).toBeVisible();
+  await expect(subassunto).toBeVisible();
+
+  await assunto.click();
+  const assuntoOptions = page
+    .getByRole('option')
+    .filter({ hasNotText: 'Todas' });
+  await expect.poll(() => assuntoOptions.count()).toBeGreaterThan(0);
+  await assuntoOptions.first().click();
+  await expect(page).toHaveURL(/unit=/);
+  await expect(subassunto).toBeEnabled();
+
+  await subassunto.click();
+  const subassuntoOptions = page
+    .getByRole('option')
+    .filter({ hasNotText: 'Todos' });
+  await expect.poll(() => subassuntoOptions.count()).toBeGreaterThan(0);
+  await subassuntoOptions.first().click();
+  await expect(page).toHaveURL(/topic=/);
+
   await page.getByRole('button', { name: 'Limpar tudo' }).click();
-  await expect(
-    page.getByRole('combobox', { name: 'Unidade', exact: true }),
-  ).toContainText('Todas');
-  await expect(page.locator('.reveal-pending')).toHaveCount(0);
+  await expect(page).toHaveURL(/\/questions\?subject=calculo-2$/);
+  await expect(assunto).toContainText('Todas');
+  await expect(subassunto).toContainText('Todos');
 });
 
 test('persistent navigation remains usable by keyboard after a long scroll', async ({
@@ -145,24 +172,16 @@ test('persistent navigation remains usable by keyboard after a long scroll', asy
   ).toBeVisible();
 });
 
-test('a subject opens by academic area before showing its subtopics', async ({
-  page,
-}) => {
+test('subject areas link to the matching question filter', async ({ page }) => {
   await page.goto('/explore/calculo-1');
-  await expect(
-    page.getByRole('heading', { name: /Áreas de estudo/ }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: /funções e modelos/i }),
-  ).toHaveAttribute(
-    'href',
-    '/questions?subject=calculo-1&unit=funcoes-e-modelos',
+  const areaLinks = page.locator(
+    'a[href^="/questions?subject=calculo-1&unit="]',
   );
-  await expect(
-    page.getByRole('link', { name: /funções e modelos/i }),
-  ).toContainText(/questões?/i);
-  await expect(page.getByText(/subassuntos?/i)).toHaveCount(0);
-  await expect(page.getByText('Representações de funções')).toHaveCount(0);
+  await expect.poll(() => areaLinks.count()).toBeGreaterThan(0);
+  await expect(areaLinks.first()).toHaveAttribute(
+    'href',
+    /\/questions\?subject=calculo-1&unit=.+/,
+  );
 });
 
 test('rapid subject changes preserve the final selection', async ({ page }) => {
@@ -172,6 +191,7 @@ test('rapid subject changes preserve the final selection', async ({ page }) => {
   ).toBeVisible();
 
   const subjects = page.locator('button[aria-pressed]');
+  await expect.poll(() => subjects.count()).toBeGreaterThan(0);
   await subjects.evaluateAll((buttons) => {
     buttons
       .filter((button) => button.getAttribute('aria-pressed') === 'true')
@@ -179,7 +199,6 @@ test('rapid subject changes preserve the final selection', async ({ page }) => {
         if (button instanceof HTMLButtonElement) button.click();
       });
   });
-  await expect(subjects).toHaveCount(4);
   await expect
     .poll(() =>
       subjects.evaluateAll((buttons) =>

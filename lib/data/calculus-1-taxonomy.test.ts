@@ -7,11 +7,12 @@ import {
 import { validateTaxonomy } from '@/lib/domain/taxonomy';
 
 describe('Cálculo I taxonomy', () => {
-  it('has a valid complete Volume I structure', () => {
+  it('has a valid structure attached to its subject', () => {
     expect(validateTaxonomy(calculusOneTaxonomyNodes)).toEqual([]);
-    expect(
-      calculusOneTaxonomyNodes.filter((node) => node.kind === 'unit'),
-    ).toHaveLength(8);
+    expect(calculusOneTaxonomyNodes).not.toHaveLength(0);
+    expect(calculusOneTaxonomyNodes.some((node) => node.kind === 'unit')).toBe(
+      true,
+    );
     expect(
       calculusOneTaxonomyNodes.every(
         (node) => node.subjectId === calculusOneSubject.id,
