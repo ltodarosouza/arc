@@ -77,22 +77,9 @@ export function AppShell({
           >
             <span
               aria-hidden="true"
-              className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-[var(--primary-foreground)]"
+              className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-sm font-semibold text-[var(--primary-foreground)]"
             >
-              <svg
-                className="size-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 16.5 12 5l8 11.5M7.2 12h9.6"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                />
-              </svg>
+              a
             </span>
             <span className="text-[18px]">arc</span>
           </Link>

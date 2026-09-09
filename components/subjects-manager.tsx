@@ -80,7 +80,7 @@ export function SubjectsManager() {
           {catalogue.subjects.map((subject, index) => {
             const isSelected = selectedSubjectIds.includes(subject.id);
             return (
-              <Reveal delay={index * 35} key={subject.id}>
+              <Reveal delay={index * 45} key={subject.id} variant="slide">
                 <button
                   aria-pressed={isSelected}
                   className={`flex min-h-20 items-center gap-4 rounded-lg border p-4 text-left transition-colors ${isSelected ? 'border-[#a8bcbd] bg-[var(--arc-accent)]/40' : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--arc-surface-subtle)]/50'}`}

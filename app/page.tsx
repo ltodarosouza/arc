@@ -178,7 +178,7 @@ export default function Home() {
                 ).length;
                 const remaining = subjectQuestionIds.length - completed;
                 return (
-                  <Reveal key={subject.id} delay={index * 40}>
+                  <Reveal key={subject.id} delay={index * 70} variant="card">
                     <ArcCard className="group relative h-full p-6 hover:-translate-y-0.5 hover:border-[#a8bcbd]">
                       <a
                         aria-label={`Abrir ${subject.name}`}

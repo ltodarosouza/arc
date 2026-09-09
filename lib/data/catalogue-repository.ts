@@ -400,8 +400,9 @@ export function normalizeSelectedSubjectIds(
     .filter((id): id is string => Boolean(id));
 }
 
-/** Revalidate published content at navigation boundaries without request storms. */
-export const catalogueCacheTtlMs = 60_000;
+/** Keep a loaded catalogue while the learner moves between tabs. A full refresh
+ * still fetches new published content immediately. */
+export const catalogueCacheTtlMs = 5 * 60_000;
 
 let cachedCatalogue: CatalogueSnapshot | null = null;
 let cachedCatalogueAt = 0;

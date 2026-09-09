@@ -5,9 +5,11 @@ import { useEffect, useRef, type ReactNode } from 'react';
 export function Reveal({
   children,
   delay = 0,
+  variant = 'rise',
 }: {
   children: ReactNode;
   delay?: number;
+  variant?: 'rise' | 'card' | 'slide';
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -18,8 +20,14 @@ export function Reveal({
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     )
       return;
-    // Never hide content already on screen; progressively enhance only below the fold.
-    if (node.getBoundingClientRect().top < window.innerHeight) return;
+    // Content is visible without JavaScript. Once the page is ready, animate the
+    // first viewport too; lower content still waits until it enters the viewport.
+    if (node.getBoundingClientRect().top < window.innerHeight) {
+      const frame = window.requestAnimationFrame(() => {
+        node.classList.add('reveal-in');
+      });
+      return () => window.cancelAnimationFrame(frame);
+    }
     node.classList.add('reveal-pending');
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -38,7 +46,11 @@ export function Reveal({
     };
   }, []);
   return (
-    <div ref={ref} style={{ transitionDelay: `${delay}ms` }}>
+    <div
+      className={`reveal-${variant}`}
+      ref={ref}
+      style={{ animationDelay: `${delay}ms`, transitionDelay: `${delay}ms` }}
+    >
       {children}
     </div>
   );

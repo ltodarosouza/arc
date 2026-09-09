@@ -81,7 +81,7 @@ export default function ExplorePage() {
   return (
     <AppShell active="explore">
       <section className="arc-page">
-        <div className="max-w-2xl">
+        <div className="animate-enter max-w-2xl">
           <div>
             <h1 className="arc-title">Questões</h1>
             <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
@@ -128,7 +128,7 @@ export default function ExplorePage() {
           <div className="mt-9 grid gap-4 lg:grid-cols-2">
             {subjectDetails.map(
               ({ subject, questions, units, attemptedCount }, index) => (
-                <Reveal delay={index * 45} key={subject.id}>
+                <Reveal delay={index * 65} key={subject.id} variant="card">
                   <ArcCard className="overflow-hidden">
                     <div className="flex items-center gap-3 border-b border-[var(--border)] px-5 py-5 sm:px-6">
                       <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">

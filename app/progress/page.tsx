@@ -174,11 +174,13 @@ export default function ProgressPage() {
   return (
     <AppShell active="progress">
       <section className="arc-page arc-page--reading">
-        <h1 className="arc-title">Seu progresso</h1>
-        <p className="mt-3 max-w-lg text-[15px] leading-6 text-[var(--arc-text-muted)]">
-          Cada questão conta uma vez. Ao refazer, o resultado mais recente
-          substitui o anterior.
-        </p>
+        <div className="animate-enter">
+          <h1 className="arc-title">Seu progresso</h1>
+          <p className="mt-3 max-w-lg text-[15px] leading-6 text-[var(--arc-text-muted)]">
+            Cada questão conta uma vez. Ao refazer, o resultado mais recente
+            substitui o anterior.
+          </p>
+        </div>
         {isLoading || catalogueLoading ? (
           <ArcCard className="mt-10 p-6 text-sm text-[var(--arc-text-muted)]">
             Carregando seu progresso…
@@ -281,7 +283,7 @@ export default function ProgressPage() {
                 <h2 className="arc-section-title">Por disciplina</h2>
                 <div className="mt-4 grid gap-3">
                   {performance.map((subject, index) => (
-                    <Reveal delay={index * 45} key={subject.id}>
+                    <Reveal delay={index * 55} key={subject.id} variant="card">
                       <ArcCard className="p-5 sm:p-6">
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
                           <a
