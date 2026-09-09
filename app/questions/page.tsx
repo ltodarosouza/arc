@@ -223,6 +223,10 @@ export default function QuestionsPage() {
     setSelectedStatus('all');
     setCurrentPage(1);
   };
+  const changePage = (nextPage: number) => {
+    setCurrentPage(nextPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const toggleRedo = async (questionId: string) => {
     if (pendingRedoQuestionIds.current.has(questionId)) return;
     const enabled = !redoQuestionIds.has(questionId);
@@ -694,7 +698,7 @@ export default function QuestionsPage() {
             <button
               className="arc-action"
               disabled={currentPage === 1}
-              onClick={() => setCurrentPage((page) => page - 1)}
+              onClick={() => changePage(currentPage - 1)}
               type="button"
             >
               Anterior
@@ -705,7 +709,7 @@ export default function QuestionsPage() {
             <button
               className="arc-action"
               disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((page) => page + 1)}
+              onClick={() => changePage(currentPage + 1)}
               type="button"
             >
               Próxima
