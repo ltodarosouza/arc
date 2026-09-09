@@ -3,7 +3,10 @@ import { expect, test } from '@playwright/test';
 test('learner can answer, see the solution and review progress', async ({
   page,
 }) => {
-  await page.goto('/questions?subject=20000000-0000-4000-8000-000000000001');
+  // Fixtures use stable slugs, while production uses database UUIDs. The
+  // public route accepts both, but the slug keeps this browser journey tied
+  // to the question fixture it is meant to exercise.
+  await page.goto('/questions?subject=calculo-2');
   await expect(
     page.getByRole('heading', { name: 'Questões', exact: true }),
   ).toBeVisible();
