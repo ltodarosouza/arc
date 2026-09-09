@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 
 import { ArcCard } from '@/components/arc-ui';
@@ -11,25 +11,30 @@ import { useLearnerState } from '@/lib/data/use-learner-state';
 
 export function SubjectsManager() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
+  const selectedSubjectIdsRef = useRef<string[]>([]);
   const { catalogue, error, isLoading } = useCatalogue();
   const {
     state: learnerState,
     saveSelectedSubjectIds,
     isLoading: learnerLoading,
+    error: learnerError,
   } = useLearnerState();
   const isInitialLoading = isLoading || learnerLoading || !learnerState;
   useEffect(() => {
     if (!catalogue) return;
     const savedIds = learnerState?.selectedSubjectIds ?? [];
     const subjectIds = normalizeSelectedSubjectIds(savedIds, catalogue);
+    selectedSubjectIdsRef.current = subjectIds;
     setSelectedSubjectIds(subjectIds);
     if (subjectIds.join(',') !== savedIds.join(','))
       void saveSelectedSubjectIds(subjectIds);
   }, [catalogue, learnerState, saveSelectedSubjectIds]);
   const toggleSubject = (subjectId: string) => {
-    const nextSubjectIds = selectedSubjectIds.includes(subjectId)
-      ? selectedSubjectIds.filter((id) => id !== subjectId)
-      : [...selectedSubjectIds, subjectId];
+    const currentSubjectIds = selectedSubjectIdsRef.current;
+    const nextSubjectIds = currentSubjectIds.includes(subjectId)
+      ? currentSubjectIds.filter((id) => id !== subjectId)
+      : [...currentSubjectIds, subjectId];
+    selectedSubjectIdsRef.current = nextSubjectIds;
     setSelectedSubjectIds(nextSubjectIds);
     void saveSelectedSubjectIds(nextSubjectIds);
   };
@@ -55,6 +60,20 @@ export function SubjectsManager() {
         <p className="mt-5 text-sm text-[var(--arc-error-text)]">
           Não foi possível carregar as disciplinas publicadas.
         </p>
+      )}
+      {learnerError && (
+        <div className="mt-5 text-sm text-[var(--arc-error-text)]" role="alert">
+          <p>{learnerError.message}</p>
+          <button
+            className="mt-2 underline underline-offset-4"
+            onClick={() =>
+              void saveSelectedSubjectIds(selectedSubjectIdsRef.current)
+            }
+            type="button"
+          >
+            Tentar salvar novamente
+          </button>
+        </div>
       )}
       {catalogue && !isInitialLoading && (
         <div className="mt-5 grid gap-2">

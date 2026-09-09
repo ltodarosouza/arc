@@ -32,6 +32,8 @@ export function useLearnerState() {
   );
   const [error, setError] = useState<Error | null>(null);
   const generation = useRef(0);
+  const selectedSubjectsWrite = useRef(Promise.resolve());
+  const selectedSubjectsVersion = useRef(0);
   const refresh = useCallback(async () => {
     const request = ++generation.current;
     if (!ready) return;
@@ -68,39 +70,56 @@ export function useLearnerState() {
 
   const saveSelectedSubjectIds = useCallback(
     async (ids: string[]) => {
-      const request = generation.current;
-      try {
-        if (remote) {
-          if (!owner) throw new Error('Entre para salvar.');
-          await saveSupabaseSelectedSubjects(ids);
-        } else createLocalLearnerRepository().saveSelectedSubjectIds(ids);
-        if (request !== generation.current) return false;
-        setSnapshot((current) => ({
-          owner,
-          state: {
-            ...(current?.owner === owner
-              ? current.state
-              : createEmptyLearnerState()),
-            selectedSubjectIds: ids,
-          },
-        }));
-        if (cacheKey) {
-          learnerStateCache.set(cacheKey, {
-            ...(learnerStateCache.get(cacheKey) ?? createEmptyLearnerState()),
-            selectedSubjectIds: ids,
-          });
-        }
-        setError(null);
-        return true;
-      } catch {
-        if (request === generation.current)
-          setError(
-            new Error(
-              'Não foi possível salvar suas disciplinas. Tente novamente.',
-            ),
-          );
-        return false;
+      const version = ++selectedSubjectsVersion.current;
+      const selectedSubjectIds = [...new Set(ids)];
+
+      // Update the UI and cache before the request completes. The writes below
+      // are serialized because each request replaces the complete selection.
+      // Without the queue, a slower earlier request can undo a faster click.
+      setSnapshot((current) => ({
+        owner,
+        state: {
+          ...(current?.owner === owner
+            ? current.state
+            : createEmptyLearnerState()),
+          selectedSubjectIds,
+        },
+      }));
+      if (cacheKey) {
+        learnerStateCache.set(cacheKey, {
+          ...(learnerStateCache.get(cacheKey) ?? createEmptyLearnerState()),
+          selectedSubjectIds,
+        });
       }
+
+      const write = selectedSubjectsWrite.current.then(async () => {
+        try {
+          if (remote) {
+            if (!owner) throw new Error('Entre para salvar.');
+            await saveSupabaseSelectedSubjects(selectedSubjectIds);
+          } else
+            createLocalLearnerRepository().saveSelectedSubjectIds(
+              selectedSubjectIds,
+            );
+          return true;
+        } catch {
+          return false;
+        }
+      });
+      selectedSubjectsWrite.current = write.then(() => undefined);
+      const saved = await write;
+
+      // A failed older write must not overwrite feedback for a newer choice.
+      if (version === selectedSubjectsVersion.current) {
+        setError(
+          saved
+            ? null
+            : new Error(
+                'Não foi possível salvar suas disciplinas. Tente novamente.',
+              ),
+        );
+      }
+      return saved;
     },
     [cacheKey, owner, remote],
   );

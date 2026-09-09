@@ -4,6 +4,11 @@ import { AxeBuilder } from '@axe-core/playwright';
 // Local fixture catalogue only. Never create attempts in a production account.
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
+    if (sessionStorage.getItem('arc:visual-fixture-seeded')) {
+      return;
+    }
+
+    sessionStorage.setItem('arc:visual-fixture-seeded', 'true');
     localStorage.setItem(
       'arc:learner-state',
       JSON.stringify({
@@ -113,4 +118,35 @@ test('advanced filters disclose accessibly and reduced motion keeps content visi
     page.getByRole('combobox', { name: 'Unidade', exact: true }),
   ).toContainText('Todas');
   await expect(page.locator('.reveal-pending')).toHaveCount(0);
+});
+
+test('rapid subject changes preserve the final selection', async ({ page }) => {
+  await page.goto('/subjects');
+  await expect(
+    page.getByRole('heading', { name: 'Minhas disciplinas', exact: true }),
+  ).toBeVisible();
+
+  const subjects = page.locator('button[aria-pressed]');
+  await subjects.evaluateAll((buttons) => {
+    buttons.forEach((button) => {
+      if (button instanceof HTMLButtonElement) button.click();
+    });
+  });
+  await expect(subjects).toHaveCount(3);
+  await expect
+    .poll(() =>
+      subjects.evaluateAll((buttons) =>
+        buttons.map((button) => button.getAttribute('aria-pressed')),
+      ),
+    )
+    .toEqual(['false', 'false', 'false']);
+
+  await page.reload();
+  await expect
+    .poll(() =>
+      subjects.evaluateAll((buttons) =>
+        buttons.map((button) => button.getAttribute('aria-pressed')),
+      ),
+    )
+    .toEqual(['false', 'false', 'false']);
 });
