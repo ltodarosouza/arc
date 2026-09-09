@@ -1,6 +1,7 @@
 import type { LearnerState } from '@/lib/domain/learner';
 import type { AttemptOutcome, QuestionAttempt } from '@/lib/domain/questions';
 import { createEmptyLearnerState } from '@/lib/domain/learner';
+import { collectAllPages } from '@/lib/data/page-through-results';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import { seedSubjects } from '@/lib/data/seed-catalogue';
 
@@ -47,28 +48,40 @@ function toAttempt(row: DatabaseAttempt): QuestionAttempt {
 export async function loadSupabaseLearnerState(): Promise<LearnerState> {
   const supabase = getSupabaseClient();
   const userId = await currentUserId();
-  const [subjectsResult, attemptsResult, redoResult] = await Promise.all([
-    supabase.from('user_subjects').select('subject_id').eq('user_id', userId),
-    supabase
-      .from('question_attempts')
-      .select(
-        'id, question_id, selected_option_id, outcome, grading_method, created_at',
-      )
-      .eq('user_id', userId)
-      .order('created_at'),
-    supabase.from('redo_questions').select('question_id').eq('user_id', userId),
+  const [subjects, attempts, redoQuestionIds] = await Promise.all([
+    collectAllPages<{ subject_id: string }>((from, to) =>
+      supabase
+        .from('user_subjects')
+        .select('subject_id')
+        .eq('user_id', userId)
+        .order('subject_id')
+        .range(from, to),
+    ),
+    collectAllPages<DatabaseAttempt>((from, to) =>
+      supabase
+        .from('question_attempts')
+        .select(
+          'id, question_id, selected_option_id, outcome, grading_method, created_at',
+        )
+        .eq('user_id', userId)
+        .order('created_at')
+        .order('id')
+        .range(from, to),
+    ),
+    collectAllPages<{ question_id: string }>((from, to) =>
+      supabase
+        .from('redo_questions')
+        .select('question_id')
+        .eq('user_id', userId)
+        .order('question_id')
+        .range(from, to),
+    ),
   ]);
-  const error = [subjectsResult, attemptsResult, redoResult].find(
-    (result) => result.error,
-  )?.error;
-  if (error) throw error;
   return {
     version: 1,
-    selectedSubjectIds: (subjectsResult.data ?? []).map(
-      (row) => row.subject_id,
-    ),
-    attempts: ((attemptsResult.data as DatabaseAttempt[]) ?? []).map(toAttempt),
-    redoQuestionIds: (redoResult.data ?? []).map((row) => row.question_id),
+    selectedSubjectIds: subjects.map((row) => row.subject_id),
+    attempts: attempts.map(toAttempt),
+    redoQuestionIds: redoQuestionIds.map((row) => row.question_id),
   };
 }
 

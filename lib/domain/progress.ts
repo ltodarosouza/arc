@@ -6,10 +6,14 @@ export function getLatestAttemptsByQuestion(attempts: QuestionAttempt[]) {
 
   for (const attempt of attempts) {
     const existing = latestByQuestionId.get(attempt.questionId);
+    const createdAt = new Date(attempt.createdAt).getTime();
+    const existingCreatedAt = existing
+      ? new Date(existing.createdAt).getTime()
+      : Number.NEGATIVE_INFINITY;
     if (
       !existing ||
-      new Date(attempt.createdAt).getTime() >=
-        new Date(existing.createdAt).getTime()
+      createdAt > existingCreatedAt ||
+      (createdAt === existingCreatedAt && attempt.id > existing.id)
     ) {
       latestByQuestionId.set(attempt.questionId, attempt);
     }
@@ -40,7 +44,8 @@ export function getAttemptNumber(
       .sort(
         (first, second) =>
           new Date(first.createdAt).getTime() -
-          new Date(second.createdAt).getTime(),
+            new Date(second.createdAt).getTime() ||
+          first.id.localeCompare(second.id),
       )
       .findIndex((item) => item.id === attempt.id) + 1
   );
@@ -55,7 +60,11 @@ export function getProgressTimeline(attempts: QuestionAttempt[]) {
   >();
   const sorted = attempts
     .filter((attempt) => Number.isFinite(Date.parse(attempt.createdAt)))
-    .toSorted((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+    .toSorted(
+      (first, second) =>
+        Date.parse(first.createdAt) - Date.parse(second.createdAt) ||
+        first.id.localeCompare(second.id),
+    );
   for (const attempt of sorted) {
     const date = new Date(attempt.createdAt).toLocaleDateString('en-CA', {
       timeZone: 'America/Fortaleza',
