@@ -25,7 +25,7 @@ const make = (
       'Confira o resultado por traço, determinante, dimensão ou substituição.',
     ],
     finalAnswer,
-    explanation: `${explanation} A checagem indicada na resolução também elimina as alternativas incompatíveis com os dados.`,
+    explanation: `${explanation} ${steps.at(-1)[1]}`,
     steps,
   });
 

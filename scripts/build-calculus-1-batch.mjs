@@ -167,6 +167,10 @@ const validateText = (text, questionNumber) => {
     (normalized.match(/\$/g) ?? []).length % 2 === 0,
     `Delimitador matemático sem par na questão ${questionNumber}.`,
   );
+  ensure(
+    !/\$[^$]*[\r\n][^$]*\$/.test(normalized),
+    `Expressão matemática com quebra de linha na questão ${questionNumber}.`,
+  );
   for (const match of normalized.matchAll(/\$([^$]+)\$/g)) {
     katex.renderToString(match[1], {
       throwOnError: true,

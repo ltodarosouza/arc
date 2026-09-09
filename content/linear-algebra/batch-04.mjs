@@ -9,7 +9,7 @@ export default [
     commonError: 'aceitar toda função dada por fórmula simples',
     statement: r`A função $F:\mathbb R^2\to\mathbb R^2$ é dada por $F(x,y)=(x+1,y)$. Qual fato prova imediatamente que $F$ não é linear?`,
     options: [
-      '$F(0,0)\ne(0,0)$',
+      '$F(0,0)\\ne(0,0)$',
       '$F(1,0)=(2,0)$',
       '$F$ é injetiva',
       '$F$ preserva a segunda componente',
@@ -20,7 +20,7 @@ export default [
       'Aplique a função ao vetor nulo.',
       'Compare o resultado com o vetor nulo do contradomínio.',
     ],
-    finalAnswer: '$F(0,0)\ne(0,0)$',
+    finalAnswer: '$F(0,0)\\ne(0,0)$',
     explanation:
       'Transformações lineares sempre enviam o vetor nulo ao vetor nulo, consequência direta da homogeneidade. O termo constante na primeira componente viola essa condição necessária.',
     steps: [

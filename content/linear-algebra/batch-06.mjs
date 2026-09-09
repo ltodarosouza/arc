@@ -25,7 +25,7 @@ const make = (
       'Verifique sinal, dimensão e ortogonalidade no resultado.',
     ],
     finalAnswer,
-    explanation: `${explanation} A verificação geométrica ou algébrica da resolução confirma a única alternativa compatível.`,
+    explanation: `${explanation} ${steps.at(-1)[1]}`,
     steps,
   });
 
@@ -216,7 +216,7 @@ export default [
     [
       ['Observe os coeficientes', '$3>0$ e $2>0$.'],
       ['Use os quadrados', '$x^2,y^2\ge0$.'],
-      ['Teste não nulidade', 'Se $(x,y)\ne0$, ao menos um termo é positivo.'],
+      ['Teste não nulidade', 'Se $(x,y)\\ne0$, ao menos um termo é positivo.'],
       ['Conclua', '$Q(x,y)>0$ fora da origem.'],
     ],
   ),

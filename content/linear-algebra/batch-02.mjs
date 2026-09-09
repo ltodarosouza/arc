@@ -42,28 +42,25 @@ export default [
   q({
     topic: 'combinacoes-e-geradores',
     difficulty: 'easy',
-    skill: 'encontrar coeficientes de combinação linear',
-    commandType: 'decomposição de vetor',
-    commonError: 'usar os coeficientes como coordenadas usuais',
-    statement: r`Escreva $(4,2)$ como combinação de $u=(1,1)$ e $v=(1,-1)$. Quais coeficientes multiplicam, respectivamente, $u$ e $v$?`,
-    options: ['$(3,1)$', '$(1,3)$', '$(4,2)$', '$(2,2)$'],
+    skill: 'testar pertinência a subespaço gerado por um vetor',
+    commandType: 'classificação por proporcionalidade',
+    commonError: 'comparar apenas uma componente dos vetores',
+    statement: r`Seja $L=\operatorname{span}\{(2,-1)\}\subset\mathbb R^2$. Qual vetor pertence a $L$?`,
+    options: ['$(6,-3)$', '$(6,3)$', '$(-2,-2)$', '$(2,1)$'],
     correct: 0,
     hints: [
-      'Escreva $au+bv=(4,2)$.',
-      'Compare separadamente as duas coordenadas.',
-      'Some e subtraia as equações obtidas para isolar os coeficientes.',
+      'Um vetor em $L$ precisa ser múltiplo de $(2,-1)$.',
+      'Teste se o mesmo escalar transforma as duas componentes.',
+      'Procure um múltiplo inteiro simples do gerador.',
     ],
-    finalAnswer: '$(3,1)$',
+    finalAnswer: '$(6,-3)$',
     explanation:
-      'Os coeficientes de uma combinação dependem dos vetores geradores escolhidos. Comparar componentes transforma a igualdade vetorial em um sistema de duas equações.',
+      'Um subespaço gerado por um único vetor é a reta formada por todos os seus múltiplos escalares. É preciso verificar as duas componentes com o mesmo escalar.',
     steps: [
-      ['Monte a igualdade', '$a(1,1)+b(1,-1)=(4,2)$.'],
-      ['Compare componentes', 'Obtemos $a+b=4$ e $a-b=2$.'],
-      [
-        'Resolva o sistema',
-        'Somando as equações, $2a=6$, então $a=3$ e $b=1$.',
-      ],
-      ['Confira', '$3u+v=(3,3)+(1,-1)=(4,2)$.'],
+      ['Use a definição de gerador', r`$L=\{c(2,-1):c\in\mathbb R\}$.`],
+      ['Teste a primeira alternativa', '$3(2,-1)=(6,-3)$.'],
+      ['Verifique as duas componentes', 'O mesmo escalar $3$ produz simultaneamente $6$ e $-3$.'],
+      ['Elimine os demais', 'Eles não são múltiplos de $(2,-1)$ com um único escalar.'],
     ],
   }),
   q({
@@ -544,21 +541,21 @@ export default [
     hints: [
       'Compare duas soluções e observe o que sua diferença satisfaz.',
       'Toda solução pode ser escrita como uma particular mais uma solução homogênea.',
-      'Com $b\ne0$, o vetor zero não resolve o sistema.',
+      'Com $b\\ne0$, o vetor zero não resolve o sistema.',
     ],
     finalAnswer: r`$x_p+\operatorname{Nul}(A)$`,
     explanation:
       'O conjunto solução é uma translação do núcleo por uma solução particular. A translação preserva a forma afim, mas com lado direito não nulo ela afasta o conjunto da origem, impedindo que seja subespaço.',
     steps: [
       ['Compare soluções', 'Se $Ax=b$ e $Ax_p=b$, então $A(x-x_p)=0$.'],
-      ['Identifique a diferença', '$x-x_p\in\operatorname{Nul}(A)$.'],
+      ['Identifique a diferença', r`$x-x_p\in\operatorname{Nul}(A)$.`],
       [
         'Descreva todas as soluções',
-        '$x=x_p+z$ com $z\in\operatorname{Nul}(A)$.',
+        r`$x=x_p+z$ com $z\in\operatorname{Nul}(A)$.`,
       ],
       [
         'Teste o zero',
-        'Como $A0=0\ne b$, a origem não pertence ao conjunto e ele não é subespaço.',
+        'Como $A0=0\\ne b$, a origem não pertence ao conjunto e ele não é subespaço.',
       ],
     ],
   }),

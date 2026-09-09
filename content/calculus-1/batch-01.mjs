@@ -825,7 +825,7 @@ export default [
     correct: 0,
     hints: [
       'Procure uma função cuja derivada seja $6x^2$.',
-      'A integral de $x^n$ é $x^{n+1}/(n+1)$, com $n\ne-1$.',
+      'A integral de $x^n$ é $x^{n+1}/(n+1)$, com $n\\ne-1$.',
     ],
     finalAnswer: '$2x^3+C$',
     explanation:

@@ -229,6 +229,10 @@ function validateMath(text, label) {
   );
   assert(!normalized.includes('$$'), `${label}: use apenas $...$`);
   assert(
+    !/\$[^$]*[\r\n][^$]*\$/.test(normalized),
+    `${label}: expressão matemática não pode conter quebra de linha`,
+  );
+  assert(
     ![...normalized].some(
       (character) =>
         character.charCodeAt(0) < 32 && !['\n', '\r', '\t'].includes(character),

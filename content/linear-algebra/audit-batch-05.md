@@ -4,26 +4,26 @@ Unidade: **Determinantes, autovalores e diagonalização**. Total: **18 questõe
 
 ## Matriz de cobertura
 
-|   # | Assunto                   | Dificuldade | Habilidade                                     | Tipo de comando                   | Erro provável                                  |
-| --: | ------------------------- | ----------- | ---------------------------------------------- | --------------------------------- | ---------------------------------------------- |
-|   1 | Determinantes             | easy        | calcular determinante triangular               | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   2 | Determinantes             | easy        | acompanhar troca de linhas                     | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   3 | Determinantes             | easy        | interpretar área por determinante              | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   4 | Autovalores e autovetores | easy        | verificar autovetor                            | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   5 | Autovalores e autovetores | easy        | ler autovalores diagonais                      | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   6 | Autovalores e autovetores | easy        | usar traço e determinante                      | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   7 | Determinantes             | medium      | combinar operações elementares                 | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   8 | Determinantes             | medium      | determinar invertibilidade com parâmetro       | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|   9 | Autovalores e autovetores | medium      | obter polinômio característico                 | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  10 | Autovalores e autovetores | medium      | calcular autoespaço                            | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  11 | Diagonalização            | medium      | reconhecer diagonalização por espectro simples | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  12 | Diagonalização            | medium      | usar Cayley-Hamilton                           | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  13 | Determinantes             | hard        | explorar multilinearidade                      | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  14 | Autovalores e autovetores | hard        | comparar multiplicidades                       | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  15 | Diagonalização            | hard        | construir diagonalização                       | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  16 | Diagonalização            | hard        | calcular potência por decomposição espectral   | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  17 | Diagonalização            | hard        | usar projetores espectrais                     | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
-|  18 | Determinantes             | hard        | relacionar determinante e volume orientado     | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| # | Assunto | Dificuldade | Habilidade | Tipo de comando | Erro provável |
+| -: | --- | --- | --- | --- | --- |
+| 1 | Determinantes | easy | calcular determinante triangular | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 2 | Determinantes | easy | acompanhar troca de linhas | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 3 | Determinantes | easy | interpretar área por determinante | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 4 | Autovalores e autovetores | easy | verificar autovetor | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 5 | Autovalores e autovetores | easy | ler autovalores diagonais | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 6 | Autovalores e autovetores | easy | usar traço e determinante | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 7 | Determinantes | medium | combinar operações elementares | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 8 | Determinantes | medium | determinar invertibilidade com parâmetro | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 9 | Autovalores e autovetores | medium | obter polinômio característico | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 10 | Autovalores e autovetores | medium | calcular autoespaço | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 11 | Diagonalização | medium | reconhecer diagonalização por espectro simples | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 12 | Diagonalização | medium | usar Cayley-Hamilton | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 13 | Determinantes | hard | explorar multilinearidade | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 14 | Autovalores e autovetores | hard | comparar multiplicidades | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 15 | Diagonalização | hard | construir diagonalização | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 16 | Diagonalização | hard | calcular potência por decomposição espectral | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 17 | Diagonalização | hard | usar projetores espectrais | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
+| 18 | Determinantes | hard | relacionar determinante e volume orientado | análise espectral e determinantal | aplicar uma regra sem verificar suas hipóteses |
 
 ## Contagens e validações
 

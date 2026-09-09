@@ -413,7 +413,7 @@ export default [
       ['Monte a matriz', r`$A=\begin{pmatrix}1&a\\a&1\end{pmatrix}$.`],
       [
         'Use o critério de unicidade',
-        'Há solução única se e somente se $\det A\ne0$.',
+        'Há solução única se e somente se $\\det A\\ne0$.',
       ],
       [
         'Encontre os valores críticos',
