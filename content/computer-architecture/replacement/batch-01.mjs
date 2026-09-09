@@ -1,7 +1,7 @@
 // Lote 01 — 25 questões autorais. Referência curricular: Tanenbaum/Austin.
 // Não contém enunciados, exemplos ou soluções reproduzidos da obra.
 
-const q = (id, difficulty, focus, statement, answer, distractors, principle, action, check) => ({
+export const q = (id, difficulty, focus, statement, answer, distractors, principle, action, check) => ({
   id, difficulty, focus, statement, answer, distractors, principle, action, check,
   hints: [
     `Primeiro separe o nível ou componente que está sendo analisado: ${focus}.`,
