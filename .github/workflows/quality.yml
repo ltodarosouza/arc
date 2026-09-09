@@ -73,6 +73,8 @@ jobs:
           python-version: '3.12'
       - run: npm ci
       - run: python -m pip install sympy==1.14.0
+      - run: node scripts/build-calculus-1-batch.mjs --check
+      - run: node scripts/build-calculus-1-batch.mjs --batch=02 --check
       - run: node scripts/build-content-batches.mjs --check
       - run: python scripts/verify-content.py
 

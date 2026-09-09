@@ -1,18 +1,43 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import katex from 'katex';
 import { dirname, resolve } from 'node:path';
-import batch from '../content/calculus-1/batch-01.mjs';
 
 const root = resolve(import.meta.dirname, '..');
+const selectedBatch =
+  process.argv.find((argument) => argument.startsWith('--batch='))?.slice(8) ??
+  '01';
 const repair = process.argv.includes('--repair');
+const batches = {
+  '01': {
+    input: '../content/calculus-1/batch-01.mjs',
+    migration: '20260909133000_seed_calculus_1_batch_01.sql',
+    repairMigration:
+      '20260909140000_repair_calculus_1_batch_01_math_markup.sql',
+    questionStart: 10001,
+    sourceId: '10000000-0000-4000-8000-000000000004',
+    label: 'Arc original Cálculo I — lote 01',
+  },
+  '02': {
+    input: '../content/calculus-1/batch-02.mjs',
+    migration: '20260909143000_seed_calculus_1_batch_02.sql',
+    questionStart: 20001,
+    sourceId: '10000000-0000-4000-8000-000000000005',
+    label: 'Arc original Cálculo I — lote 02',
+  },
+};
+const configuration = batches[selectedBatch];
+if (!configuration)
+  throw new Error(`Lote de Cálculo I desconhecido: ${selectedBatch}.`);
+if (repair && !configuration.repairMigration)
+  throw new Error(`O lote ${selectedBatch} não possui migration de reparo.`);
+const { default: batch } = await import(configuration.input);
 const outputPath = resolve(
   root,
   repair
-    ? 'supabase/migrations/20260909140000_repair_calculus_1_batch_01_math_markup.sql'
-    : 'supabase/migrations/20260909133000_seed_calculus_1_batch_01.sql',
+    ? `supabase/migrations/${configuration.repairMigration}`
+    : `supabase/migrations/${configuration.migration}`,
 );
 const subjectId = '20000000-0000-4000-8000-000000000004';
-const sourceId = '10000000-0000-4000-8000-000000000004';
 
 const topics = {
   'representacoes-de-funcoes': '30000000-0000-4000-8000-000000000012',
@@ -80,7 +105,7 @@ const ensure = (condition, message) => {
 
 ensure(
   batch.length === 50,
-  `O lote precisa ter 50 questões; recebeu ${batch.length}.`,
+  `O lote ${selectedBatch} precisa ter 50 questões; recebeu ${batch.length}.`,
 );
 ensure(
   new Set(batch.map((question) => question.statement)).size === batch.length,
@@ -104,19 +129,19 @@ const validateText = (text, questionNumber) => {
 
 const lines = [
   repair
-    ? '-- Reaplica o lote 01 de Cálculo I com marcação matemática canônica.'
-    : '-- Lote 01 de Cálculo I: 50 questões autorais revisadas para a Arc.',
+    ? `-- Reaplica o lote ${selectedBatch} de Cálculo I com marcação matemática canônica.`
+    : `-- Lote ${selectedBatch} de Cálculo I: 50 questões autorais revisadas para a Arc.`,
   '-- Pré-requisito: execute primeiro 20260909130000_add_calculus_1_catalogue.sql.',
   'begin;',
   '',
   'insert into public.question_sources (id, kind, label, licence_note, rights_holder, rights_status, verified_by, verified_at)',
-  `values (${sql(sourceId)}, 'original', 'Arc original Cálculo I — lote 01', ${sql('Questões originais da Arc. Não reproduzem exercícios de fontes externas; revisão editorial interna concluída.')}, 'Arc', 'approved', 'Equipe editorial Arc', '2026-09-09T00:00:00Z')`,
+  `values (${sql(configuration.sourceId)}, 'original', ${sql(configuration.label)}, ${sql('Questões originais da Arc. Não reproduzem exercícios de fontes externas; revisão editorial interna concluída.')}, 'Arc', 'approved', 'Equipe editorial Arc', '2026-09-09T00:00:00Z')`,
   'on conflict (id) do update set label = excluded.label, licence_note = excluded.licence_note, rights_status = excluded.rights_status, verified_by = excluded.verified_by, verified_at = excluded.verified_at;',
   '',
 ];
 
 batch.forEach((question, index) => {
-  const questionNumber = 10001 + index;
+  const questionNumber = configuration.questionStart + index;
   const questionId = id(4, questionNumber);
   const optionIds = question.options.map((_, optionIndex) =>
     id(5, questionNumber * 10 + optionIndex + 1),
@@ -160,7 +185,7 @@ batch.forEach((question, index) => {
   }
 
   lines.push(
-    `insert into public.questions (id, subject_id, source_id, kind, difficulty, publication_status, statement_markdown) values (${sql(questionId)}, ${sql(subjectId)}, ${sql(sourceId)}, 'multiple_choice', ${sql(question.difficulty)}, 'published', ${sql(question.statement)})`,
+    `insert into public.questions (id, subject_id, source_id, kind, difficulty, publication_status, statement_markdown) values (${sql(questionId)}, ${sql(subjectId)}, ${sql(configuration.sourceId)}, 'multiple_choice', ${sql(question.difficulty)}, 'published', ${sql(question.statement)})`,
     'on conflict (id) do update set subject_id = excluded.subject_id, source_id = excluded.source_id, kind = excluded.kind, difficulty = excluded.difficulty, publication_status = excluded.publication_status, statement_markdown = excluded.statement_markdown;',
     `insert into public.question_options (id, question_id, label, content_markdown, sort_order) values ${question.options.map((option, optionIndex) => `(${sql(optionIds[optionIndex])}, ${sql(questionId)}, ${sql(String.fromCharCode(65 + optionIndex))}, ${sql(option)}, ${optionIndex + 1})`).join(', ')}`,
     'on conflict (id) do update set question_id = excluded.question_id, label = excluded.label, content_markdown = excluded.content_markdown, sort_order = excluded.sort_order;',
@@ -183,7 +208,7 @@ if (process.argv.includes('--check')) {
     'A migration está desatualizada. Execute npm run content:build:calc1.',
   );
   console.log(
-    'Lote de Cálculo I validado: 50 questões e migration sincronizada.',
+    `Lote ${selectedBatch} de Cálculo I validado: 50 questões e migration sincronizada.`,
   );
 } else {
   mkdirSync(dirname(outputPath), { recursive: true });
