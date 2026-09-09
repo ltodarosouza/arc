@@ -1083,7 +1083,182 @@ const batch06 = [
   ...planeIntersections,
 ];
 
+const relationExplanation =
+  'Relações espaciais são determinadas pelas direções: vetores diretores descrevem retas e vetores normais descrevem planos. Comparar proporcionalidade e produto escalar permite decidir paralelismo e perpendicularidade sem depender de um desenho em perspectiva.';
+const lineParallel = parameters.map((n) =>
+  item({
+    topic: 'paralelismo-e-intersecao',
+    difficulty: 'medium',
+    statement:
+      'A reta r tem vetor diretor ' +
+      math('d=' + vector([n, 1, -1])) +
+      '. Qual vetor pode ser diretor de uma reta paralela a r?',
+    options: [
+      math(vector([2 * n, 2, -2])),
+      math(vector([2 * n, 1, -2])),
+      math(vector([n, -1, 1])),
+      math(vector([1, 2 * n, -2])),
+    ],
+    correct: 0,
+    hints: [
+      'Retas paralelas têm vetores diretores proporcionais.',
+      'Multiplique todas as três coordenadas do vetor pelo mesmo número.',
+    ],
+    finalAnswer: math(vector([2 * n, 2, -2])) + '.',
+    explanation: relationExplanation,
+    steps: [
+      ['Leia a direção', math('d=' + vector([n, 1, -1]) + '.')],
+      ['Use um mesmo fator', math('2d=' + vector([2 * n, 2, -2]) + '.')],
+      [
+        'Conclua',
+        'Como todos os componentes foram multiplicados por 2, a direção é a mesma.',
+      ],
+    ],
+  }),
+);
+const linePlanePerpendicular = parameters.map((n) =>
+  item({
+    topic: 'paralelismo-e-intersecao',
+    difficulty: 'medium',
+    statement:
+      'A reta r tem vetor diretor ' +
+      math('d=' + vector([n, 1, -1])) +
+      ' e o plano pi tem equação ' +
+      math(n + 'x+y-z=4') +
+      '. Qual relação é garantida?',
+    options: [
+      'A reta é perpendicular ao plano.',
+      'A reta é paralela ao plano.',
+      'A reta está contida no plano.',
+      'Não é possível concluir nenhuma relação.',
+    ],
+    correct: 0,
+    hints: [
+      'Os coeficientes do plano formam seu vetor normal.',
+      'Uma reta é perpendicular a um plano quando seu diretor é paralelo ao normal.',
+    ],
+    finalAnswer: 'A reta é perpendicular ao plano.',
+    explanation: relationExplanation,
+    steps: [
+      ['Extraia o normal', math('n_{pi}=' + vector([n, 1, -1]) + '.')],
+      ['Compare', math('d=n_{pi}.')],
+      [
+        'Conclua',
+        'O diretor da reta tem a direção normal ao plano; portanto, a reta o corta perpendicularmente.',
+      ],
+    ],
+  }),
+);
+const planeOrthogonal = parameters.map((n) =>
+  item({
+    topic: 'paralelismo-e-intersecao',
+    difficulty: 'medium',
+    statement:
+      'Considere os planos ' +
+      math('pi_1:' + n + 'x+y=2') +
+      ' e ' +
+      math('pi_2:x-' + n + 'y=3') +
+      '. Como eles se relacionam?',
+    options: [
+      'São perpendiculares.',
+      'São paralelos distintos.',
+      'São o mesmo plano.',
+      'Não se pode comparar planos por suas equações.',
+    ],
+    correct: 0,
+    hints: [
+      'Use os normais ' +
+        math('n_1=' + vector([n, 1, 0])) +
+        ' e ' +
+        math('n_2=' + vector([1, -n, 0])) +
+        '.',
+      'Planos são perpendiculares quando seus normais têm produto escalar zero.',
+    ],
+    finalAnswer: 'São perpendiculares.',
+    explanation: relationExplanation,
+    steps: [
+      [
+        'Liste os normais',
+        math('n_1=' + vector([n, 1, 0]) + ', n_2=' + vector([1, -n, 0]) + '.'),
+      ],
+      ['Calcule o produto', math('n_1 cdot n_2=' + n + '-' + n + '=0.')],
+      ['Conclua', 'Normais ortogonais determinam planos perpendiculares.'],
+    ],
+  }),
+);
+const pointPlaneDistances = parameters.map((n) =>
+  item({
+    topic: 'distancias-e-angulos',
+    difficulty: 'easy',
+    statement:
+      'Qual é a distância do ponto ' +
+      math('P=' + vector([n, 1, n + 2])) +
+      ' ao plano ' +
+      math('z=0') +
+      '?',
+    options: [
+      math(String(n + 2)),
+      math(String(n + 5)),
+      math('1'),
+      math(String(3 * n + 8)),
+    ],
+    correct: 0,
+    hints: [
+      'O plano z igual a zero é o plano xy.',
+      'A distância perpendicular é o valor absoluto da coordenada z.',
+    ],
+    finalAnswer: math('d=' + (n + 2)) + '.',
+    explanation: relationExplanation,
+    steps: [
+      ['Localize o plano', 'No plano xy, toda coordenada z vale zero.'],
+      ['Compare a altura', math('z_P=' + (n + 2) + '.')],
+      ['Aplique valor absoluto', math('d=|' + (n + 2) + '|=' + (n + 2) + '.')],
+    ],
+  }),
+);
+const linePlaneAngles = parameters.map((n) =>
+  item({
+    topic: 'distancias-e-angulos',
+    difficulty: 'hard',
+    statement:
+      'A reta r tem diretor ' +
+      math('d=' + vector([n, 1, 0])) +
+      ' e o plano pi tem normal ' +
+      math('n=' + vector([1, -n, 0])) +
+      '. Qual é o ângulo entre r e pi?',
+    options: [
+      math('0^circ'),
+      math('90^circ'),
+      math('45^circ'),
+      math('180^circ'),
+    ],
+    correct: 0,
+    hints: [
+      'Calcule o produto escalar entre o diretor da reta e o normal do plano.',
+      'Se esse produto é zero, a reta é paralela ao plano e o ângulo reta-plano é zero.',
+    ],
+    finalAnswer: math('0^circ') + '.',
+    explanation: relationExplanation,
+    steps: [
+      ['Calcule o produto', math('d cdot n=' + n + '-' + n + '=0.')],
+      ['Interprete', 'O diretor da reta é ortogonal ao normal do plano.'],
+      [
+        'Conclua',
+        'A reta é paralela ao plano; assim, o menor ângulo entre eles é zero grau.',
+      ],
+    ],
+  }),
+);
+const batch07 = [
+  ...lineParallel,
+  ...linePlanePerpendicular,
+  ...planeOrthogonal,
+  ...pointPlaneDistances,
+  ...linePlaneAngles,
+];
+
 export function createVectorBatch(number) {
+  if (number === '07') return batch07;
   if (number === '06') return batch06;
   if (number === '05') return batch05;
   if (number === '04') return batch04;
