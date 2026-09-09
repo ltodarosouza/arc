@@ -1,7 +1,7 @@
 const restoreMath = (text) =>
   typeof text === 'string'
     ? text.replace(/\$([^$]+)\$/g, (_, math) =>
-        `$${math.replace(/(?<![A-Za-z\\])(overrightarrow|mathbb|frac|sqrt)(?![A-Za-z])/g, '\\$1')}$`,
+        `$${math.replace(/\f/g, '\\f').replace(/(?<![A-Za-z\\])(overrightarrow|mathbb|frac|sqrt)(?![A-Za-z])/g, '\\$1')}$`,
       )
     : text;
 const restore = (value) => Array.isArray(value) ? value.map(restore) : restoreMath(value);
