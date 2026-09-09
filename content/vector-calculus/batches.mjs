@@ -207,7 +207,175 @@ const midpoints = parameters.map((n) => {
   });
 });
 
+const moduleExplanation =
+  'O cálculo preserva a ordem das componentes e distingue o vetor de seu módulo e de sua direção. A verificação recompõe a definição utilizada, confirmando o resultado numérico e sua interpretação geométrica.';
+const normQuestions = parameters.map((n) =>
+  item({
+    topic: 'norma-e-versores',
+    difficulty: 'easy',
+    statement:
+      'Calcule o módulo de ' + math('u=' + vector([n, 2 * n, 2 * n])) + '.',
+    options: [
+      math(String(3 * n)),
+      math(String(5 * n)),
+      math(String(9 * n)),
+      math(String(n)),
+    ],
+    correct: 0,
+    hints: [
+      'Eleve cada componente ao quadrado e some.',
+      'O módulo é a raiz quadrada da soma obtida.',
+    ],
+    finalAnswer: math('|u|=' + 3 * n) + '.',
+    explanation: moduleExplanation,
+    steps: [
+      [
+        'Aplique a definição',
+        math('|u|=sqrt{' + n + '^2+(' + 2 * n + ')^2+(' + 2 * n + ')^2}.'),
+      ],
+      ['Some os quadrados', math('|u|=sqrt{' + 9 * n * n + '}.')],
+      ['Extraia a raiz', math('|u|=' + 3 * n + '.')],
+    ],
+  }),
+);
+const unitQuestions = parameters.map((n) =>
+  item({
+    topic: 'norma-e-versores',
+    difficulty: 'medium',
+    statement:
+      'Qual é o versor de ' + math('u=' + vector([3 * n, 4 * n, 0])) + '?',
+    options: [
+      math(vector(['3/5', '4/5', 0])),
+      math(vector(['4/5', '3/5', 0])),
+      math(vector([3, 4, 0])),
+      math(vector(['-3/5', '-4/5', 0])),
+    ],
+    correct: 0,
+    hints: [
+      'Um versor tem módulo 1 e o mesmo sentido do vetor original.',
+      'Divida todas as componentes pelo módulo de u.',
+    ],
+    finalAnswer: math(vector(['3/5', '4/5', 0])) + '.',
+    explanation: moduleExplanation,
+    steps: [
+      ['Calcule o módulo', math('|u|=' + 5 * n + '.')],
+      [
+        'Normalize',
+        math(
+          'u/|u|=' +
+            vector([3 * n + '/' + 5 * n, 4 * n + '/' + 5 * n, 0]) +
+            '.',
+        ),
+      ],
+      ['Simplifique', math(vector(['3/5', '4/5', 0])) + ' tem módulo 1.'],
+    ],
+  }),
+);
+const scalarQuestions = parameters.map((n) => {
+  const u = [n, -2, 3],
+    k = n + 1,
+    answer = u.map((value) => k * value);
+  return item({
+    topic: 'norma-e-versores',
+    difficulty: 'easy',
+    statement:
+      'Calcule ' + math(k + 'u') + ' para ' + math('u=' + vector(u)) + '.',
+    options: [
+      math(vector(answer)),
+      math(vector(u.map((value) => value + k))),
+      math(vector(u.map((value) => -k * value))),
+      math(vector([k, k, k])),
+    ],
+    correct: 0,
+    hints: [
+      'Multiplique todas as componentes pelo escalar.',
+      'Preserve o sinal da componente negativa.',
+    ],
+    finalAnswer: math(k + 'u=' + vector(answer)) + '.',
+    explanation: moduleExplanation,
+    steps: [
+      ['Distribua o escalar', math(k + 'u=' + k + vector(u) + '.')],
+      ['Multiplique as entradas', 'Aplique o mesmo fator às três componentes.'],
+      ['Confira', math(k + 'u=' + vector(answer) + '.')],
+    ],
+  });
+});
+const originDistances = parameters.map((n) =>
+  item({
+    topic: 'norma-e-versores',
+    difficulty: 'easy',
+    statement:
+      'Qual é a distância da origem ao ponto ' +
+      math('P=' + vector([2 * n, -2 * n, n])) +
+      '?',
+    options: [
+      math(String(3 * n)),
+      math(String(5 * n)),
+      math(String(9 * n)),
+      math(String(2 * n)),
+    ],
+    correct: 0,
+    hints: [
+      'A distância da origem é o módulo do vetor posição.',
+      'Some os quadrados das coordenadas antes da raiz.',
+    ],
+    finalAnswer: math('d(O,P)=' + 3 * n) + '.',
+    explanation: moduleExplanation,
+    steps: [
+      ['Forme o vetor posição', math('OP=' + vector([2 * n, -2 * n, n]) + '.')],
+      ['Some os quadrados', math('d=sqrt{' + 9 * n * n + '}.')],
+      ['Extraia a raiz', math('d=' + 3 * n + '.')],
+    ],
+  }),
+);
+const directionFactors = parameters.map((n) => {
+  const u = [n, 2 * n, -n],
+    k = n + 2,
+    v = u.map((value) => k * value);
+  return item({
+    topic: 'norma-e-versores',
+    difficulty: 'medium',
+    statement:
+      'Determine k em ' +
+      math('v=ku') +
+      ', com ' +
+      math('u=' + vector(u)) +
+      ' e ' +
+      math('v=' + vector(v)) +
+      '.',
+    options: [
+      math('k=' + k),
+      math('k=' + n),
+      math('k=' + -k),
+      math('k=' + 2 * k),
+    ],
+    correct: 0,
+    hints: [
+      'Compare componentes correspondentes não nulas.',
+      'O mesmo fator precisa funcionar nas três coordenadas.',
+    ],
+    finalAnswer: math('k=' + k) + '.',
+    explanation: moduleExplanation,
+    steps: [
+      ['Compare uma componente', math(k * n + '=k' + n + '.')],
+      ['Isole o escalar', math('k=' + k + '.')],
+      [
+        'Verifique',
+        'As outras duas componentes recebem exatamente o mesmo fator.',
+      ],
+    ],
+  });
+});
+const batch02 = [
+  ...normQuestions,
+  ...unitQuestions,
+  ...scalarQuestions,
+  ...originDistances,
+  ...directionFactors,
+];
+
 export function createVectorBatch(number) {
+  if (number === '02') return batch02;
   if (number === '01')
     return [
       ...displacement,
