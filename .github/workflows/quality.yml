@@ -48,6 +48,7 @@ jobs:
       - run: node scripts/build-diverse-calculus-2-batch.mjs --batch=03 --check
       - run: node scripts/build-diverse-calculus-2-batch.mjs --batch=04 --check
       - run: node scripts/build-diverse-calculus-2-batch.mjs --batch=05 --check
+      - run: node scripts/build-refine-calculus-2-questions.mjs --check
       - run: node scripts/build-computer-architecture-batch.mjs --batch=01 --check
       - run: node scripts/build-computer-architecture-batch.mjs --batch=02 --check
       - run: node scripts/build-computer-architecture-batch.mjs --batch=03 --check
