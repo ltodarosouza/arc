@@ -22,16 +22,16 @@ const siteOrigin =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin),
-  title: 'arte',
+  title: 'arc',
   description: 'Prática universitária para aprender no seu ritmo.',
   openGraph: {
-    title: 'arte',
+    title: 'arc',
     description: 'Prática universitária para aprender no seu ritmo.',
     images: ['/og.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'arte',
+    title: 'arc',
     description: 'Prática universitária para aprender no seu ritmo.',
     images: ['/og.png'],
   },

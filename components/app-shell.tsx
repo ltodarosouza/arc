@@ -94,7 +94,7 @@ export function AppShell({
                 />
               </svg>
             </span>
-            <span className="text-[18px]">arte</span>
+            <span className="text-[18px]">arc</span>
           </Link>
           <nav
             aria-label="Navegação principal"
