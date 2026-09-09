@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import katex from 'katex';
 import { dirname, resolve } from 'node:path';
 import { createRefreshedVectorBatch } from '../content/vector-calculus/refreshed-bank.mjs';
+import { createDiverseVectorBatch } from '../content/vector-calculus/diverse-bank-v2.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const selectedBatch =
@@ -12,13 +13,17 @@ if (!Number.isInteger(batchNumber) || batchNumber < 1 || batchNumber > 5)
   throw new Error(`Lote renovado desconhecido: ${selectedBatch}.`);
 
 const paddedBatch = String(batchNumber).padStart(2, '0');
+const edition = process.argv.includes('--edition=v2') ? 'v2' : 'v1';
 const outputPath = resolve(
   root,
-  `supabase/migrations/2026090917${String(batchNumber).padStart(2, '0')}00_refresh_vector_calculus_batch_${paddedBatch}.sql`,
+  edition === 'v2'
+    ? `supabase/migrations/2026090918${String(batchNumber).padStart(2, '0')}00_diversify_vector_calculus_batch_${paddedBatch}.sql`
+    : `supabase/migrations/2026090917${String(batchNumber).padStart(2, '0')}00_refresh_vector_calculus_batch_${paddedBatch}.sql`,
 );
 const subjectId = '20000000-0000-4000-8000-000000000003';
-const sourceId = `10000000-0000-4000-8000-${String(221 + batchNumber).padStart(12, '0')}`;
-const questionStart = 48001 + (batchNumber - 1) * 100;
+const sourceId = `10000000-0000-4000-8000-${String((edition === 'v2' ? 231 : 221) + batchNumber).padStart(12, '0')}`;
+const questionStart =
+  (edition === 'v2' ? 49001 : 48001) + (batchNumber - 1) * 100;
 const topics = {
   'componentes-e-base': '30000000-0000-4000-8000-000000000209',
   'norma-e-versores': '30000000-0000-4000-8000-000000000210',
@@ -86,7 +91,10 @@ const validateText = (text, number) => {
       strict: 'error',
     });
 };
-const batch = createRefreshedVectorBatch(paddedBatch);
+const batch =
+  edition === 'v2'
+    ? createDiverseVectorBatch(paddedBatch)
+    : createRefreshedVectorBatch(paddedBatch);
 ensure(batch.length === 50, `O lote ${paddedBatch} precisa ter 50 questões.`);
 ensure(
   new Set(batch.map((question) => question.statement)).size === 50,
@@ -102,7 +110,7 @@ const lines = [
 if (batchNumber === 1)
   lines.push(
     '-- Preserva tentativas já registradas, mas tira da navegação as questões antigas do banco vetorial.',
-    `update public.questions set publication_status = 'draft' where subject_id = ${sql(subjectId)} and publication_status = 'published' and coalesce(source_id::text, '') not in ('10000000-0000-4000-8000-000000000222', '10000000-0000-4000-8000-000000000223', '10000000-0000-4000-8000-000000000224', '10000000-0000-4000-8000-000000000225', '10000000-0000-4000-8000-000000000226');`,
+    `update public.questions set publication_status = 'draft' where subject_id = ${sql(subjectId)} and publication_status = 'published' and coalesce(source_id::text, '') not in (${Array.from({ length: 5 }, (_, index) => sql(`10000000-0000-4000-8000-${String((edition === 'v2' ? 232 : 222) + index).padStart(12, '0')}`)).join(', ')});`,
     '',
   );
 lines.push(

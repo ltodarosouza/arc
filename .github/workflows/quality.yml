@@ -93,6 +93,11 @@ jobs:
       - run: node scripts/build-refreshed-vector-calculus-batch.mjs --batch=03 --check
       - run: node scripts/build-refreshed-vector-calculus-batch.mjs --batch=04 --check
       - run: node scripts/build-refreshed-vector-calculus-batch.mjs --batch=05 --check
+      - run: node scripts/build-refreshed-vector-calculus-batch.mjs --edition=v2 --batch=01 --check
+      - run: node scripts/build-refreshed-vector-calculus-batch.mjs --edition=v2 --batch=02 --check
+      - run: node scripts/build-refreshed-vector-calculus-batch.mjs --edition=v2 --batch=03 --check
+      - run: node scripts/build-refreshed-vector-calculus-batch.mjs --edition=v2 --batch=04 --check
+      - run: node scripts/build-refreshed-vector-calculus-batch.mjs --edition=v2 --batch=05 --check
       - run: node scripts/build-content-batches.mjs --check
       - run: python scripts/verify-content.py
 
