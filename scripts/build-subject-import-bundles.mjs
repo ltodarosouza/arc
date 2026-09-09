@@ -1,4 +1,10 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
@@ -56,30 +62,56 @@ const groups = {
   ],
 };
 
+const maxBytesPerPackage = 650_000;
 mkdirSync(outputDirectory, { recursive: true });
+for (const file of readdirSync(outputDirectory)) {
+  if (file.endsWith('.sql')) rmSync(resolve(outputDirectory, file));
+}
 
 for (const [name, migrations] of Object.entries(groups)) {
-  const body = migrations
-    .map((migration) => {
-      const content = readFileSync(
-        resolve(root, 'supabase/migrations', migration),
-        'utf8',
-      ).trim();
-      return `-- ===== ${migration} =====\n${content}`;
-    })
-    .join('\n\n');
-  const header = [
-    `-- Pacote consolidado: ${name}.`,
-    '-- Execute este arquivo uma única vez no SQL Editor do Supabase.',
-    '-- Não execute depois as migrations individuais já incorporadas aqui.',
-    '-- Pré-requisito: o schema base da Arc já deve existir.',
-    '-- Ordem segura dos pacotes: calculo-2, calculo-1, calculo-vetorial.',
-    '',
-  ].join('\n');
-  writeFileSync(
-    resolve(outputDirectory, `${name}-completo.sql`),
-    header + body + '\n',
-  );
+  const entries = migrations.map((migration) => {
+    const content = readFileSync(
+      resolve(root, 'supabase/migrations', migration),
+      'utf8',
+    ).trim();
+    return { migration, content, bytes: Buffer.byteLength(content) };
+  });
+  const parts = [];
+  let current = [];
+  let currentBytes = 0;
+  for (const entry of entries) {
+    if (current.length && currentBytes + entry.bytes > maxBytesPerPackage) {
+      parts.push(current);
+      current = [];
+      currentBytes = 0;
+    }
+    current.push(entry);
+    currentBytes += entry.bytes;
+  }
+  if (current.length) parts.push(current);
+
+  for (const [index, part] of parts.entries()) {
+    const header = [
+      `-- Pacote ${name}: parte ${index + 1} de ${parts.length}.`,
+      '-- Execute cada parte uma única vez, sempre em ordem numérica.',
+      '-- Não execute depois as migrations individuais já incorporadas aqui.',
+      '-- Pré-requisito: o schema base da Arc já deve existir.',
+      '-- Ordem segura dos conjuntos: calculo-2, calculo-1, calculo-vetorial.',
+      '',
+    ].join('\n');
+    const body = part
+      .map(
+        ({ migration, content }) => `-- ===== ${migration} =====\n${content}`,
+      )
+      .join('\n\n');
+    writeFileSync(
+      resolve(
+        outputDirectory,
+        `${name}-parte-${String(index + 1).padStart(2, '0')}.sql`,
+      ),
+      header + body + '\n',
+    );
+  }
 }
 
 console.log(`Pacotes criados em ${outputDirectory}`);
