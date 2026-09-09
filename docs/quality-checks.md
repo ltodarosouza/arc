@@ -5,7 +5,7 @@ Em 7 de setembro de 2026, o [PR de teste #110](https://github.com/ltodarosouza/a
 Cada alteração enviada ao repositório executa automaticamente quatro trabalhos:
 
 1. `Format, lint, test and build`: formatação, análise estática, testes de
-   domínio, build e jornada de aprendizagem no navegador;
+   domínio e build de produção;
 2. `Validate database migrations`: aplicação das migrations em ordem e testes
    SQL de acesso e integridade;
 3. `Verify authored mathematics`: geração do conteúdo, renderização das
@@ -19,7 +19,6 @@ Os comandos equivalentes para desenvolvimento são:
 - `npm run lint:core`
 - `npm test`
 - `npm run build`
-- `npm run test:e2e`
 
 O lint obrigatório cobre todo o diretório `lib`: regras de domínio, acesso a
 dados, repositórios local e Supabase, paginação e cliente de infraestrutura.
@@ -44,8 +43,8 @@ limitações forem resolvidas pelo administrador, exigir os quatro checks:
 As migrations são acompanhadas por testes SQL de RLS e isolamento de conteúdo
 não publicado. A matemática autoral é verificada com SymPy 1.14.0, e a
 consistência dos artefatos e suas fórmulas com os geradores e KaTeX. A jornada de
-conta usa Supabase local descartável, incluindo entrega de e-mail, sem
-credenciais de produção. Veja [os resultados e limites da QA](account-qa.md).
+conta usa Supabase local descartável, incluindo entrega de e-mail e Chromium,
+sem credenciais de produção. Veja [os resultados e limites da QA](account-qa.md).
 
 ## Merge e publicação
 

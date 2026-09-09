@@ -65,13 +65,13 @@ For durable data and Supabase setup, see [docs/supabase-setup.md](docs/supabase-
 
 ## Available commands
 
-| Command            | Purpose                               |
-| ------------------ | ------------------------------------- |
-| `npm run dev`      | Start the local development server.   |
-| `npm run build`    | Create a production build.            |
-| `npm run lint`     | Run the code-quality checks.          |
-| `npm run format`   | Format supported source files.        |
-| `npm run test:e2e` | Run the learner journey in a browser. |
+| Command          | Purpose                             |
+| ---------------- | ----------------------------------- |
+| `npm run dev`    | Start the local development server. |
+| `npm run build`  | Create a production build.          |
+| `npm run lint`   | Run the code-quality checks.        |
+| `npm run format` | Format supported source files.      |
+| `npm test`       | Run the domain behavior contracts.  |
 
 ## Project structure
 

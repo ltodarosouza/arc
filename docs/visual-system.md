@@ -40,7 +40,7 @@ Implementação da issue #132. A identidade bege/azul permanece; o foco é prát
 ## Verificação
 
 - `npm test`: regras de contagem e snapshots, incluindo repetição entre dias e limite de fuso.
-- `npm run test:e2e`: jornada de resposta/gabarito e verificação das telas em 320, 390, 768 e 1440px, ausência de overflow horizontal, navegação após scroll, menu sem cobrir o fim do conteúdo, filtros e reduced-motion.
-- Axe WCAG A/AA automatizado nessas telas. Isso complementa, não substitui, revisão manual com tecnologias assistivas.
+- `npm test`: contratos de domínio, incluindo filtragem por matéria, assunto e subassunto.
+- O fluxo autenticado de conta é exercitado na pipeline isolada com Supabase local e Chromium. A revisão visual de telas e tecnologias assistivas permanece manual.
 - Testes de conta real usam apenas Supabase descartável na pipeline separada. Não criar dados de teste em contas de produção.
 - Cursos, períodos e listas ainda não existentes não foram simulados. Conteúdo, migrações e publicação de questões estão fora desta refatoração.
