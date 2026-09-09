@@ -75,8 +75,24 @@ export function AppShell({
             className="flex min-h-11 items-center gap-2.5 font-semibold tracking-[-0.045em]"
             href="/"
           >
-            <span className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-sm text-[var(--primary-foreground)]">
-              a
+            <span
+              aria-hidden="true"
+              className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-[var(--primary-foreground)]"
+            >
+              <svg
+                className="size-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 16.5 12 5l8 11.5M7.2 12h9.6"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                />
+              </svg>
             </span>
             <span className="text-[18px]">arte</span>
           </Link>

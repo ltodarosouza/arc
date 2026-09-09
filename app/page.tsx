@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
 
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
@@ -76,12 +75,15 @@ export default function Home() {
   return (
     <AppShell active="home">
       <section className="arc-page">
-        <div className="animate-enter grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_15rem] md:gap-10">
-          <div className="max-w-2xl">
+        <div className="animate-enter max-w-2xl">
+          <div>
             <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
               Início
             </p>
-            <h1 aria-label="O que vamos praticar?" className="arc-title mt-2 max-w-xl">
+            <h1
+              aria-label="O que vamos praticar?"
+              className="arc-title mt-2 max-w-xl"
+            >
               <span aria-hidden="true">
                 {[...'O que vamos praticar?'].map((letter, index) => (
                   <span
@@ -102,9 +104,6 @@ export default function Home() {
                   : 'Escolher disciplinas'}{' '}
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </a>
-          </div>
-          <div className="home-hero-image hidden overflow-hidden rounded-[1.4rem] border border-[var(--border)] bg-[var(--arc-surface)] p-1.5 shadow-[var(--arc-shadow-card)] md:block">
-            <Image alt="Caderno aberto com desenhos geométricos e gráficos" className="h-48 w-full rounded-[1rem] object-cover object-right" height={864} priority src="/images/arte-study-hero.png" width={1536} />
           </div>
         </div>
         {progress.completed > 0 && !learnerLoading && (

@@ -81,10 +81,19 @@ function enrich(question, position) {
     ].slice(0, 3),
     explanation: `Esta questão foi revisada para avaliar a habilidade de interpretar a estrutura do problema antes de operar símbolos. ${question.explanation} A alternativa ${correctLabel} é a única que preserva a definição e todos os dados fornecidos. A alternativa ${distractingLabel} representa um tropeço plausível — como trocar uma ordem, um sinal, uma condição de domínio ou uma etapa algébrica. Compare cada opção com a condição inicial para validar o resultado.`,
     steps: [
-      ['Identifique a habilidade', 'Leia o que deve ser decidido e separe os dados que realmente entram na definição ou na fórmula.'],
+      [
+        'Identifique a habilidade',
+        'Leia o que deve ser decidido e separe os dados que realmente entram na definição ou na fórmula.',
+      ],
       ...existingSteps,
-      ['Substitua com atenção', 'Aplique a relação escolhida aos dados do enunciado, mantendo sinais, restrições e parênteses visíveis.'],
-      ['Verifique a conclusão', `Teste o resultado na condição original. Isso confirma a alternativa ${correctLabel} e descarta os distratores plausíveis.`],
+      [
+        'Substitua com atenção',
+        'Aplique a relação escolhida aos dados do enunciado, mantendo sinais, restrições e parênteses visíveis.',
+      ],
+      [
+        'Verifique a conclusão',
+        `Teste o resultado na condição original. Isso confirma a alternativa ${correctLabel} e descarta os distratores plausíveis.`,
+      ],
     ].slice(0, 5),
   };
 }
@@ -113,7 +122,9 @@ for (let offset = 0; selected.length < 250; offset += 1) {
 }
 
 if (selected.length !== 250)
-  throw new Error(`O banco Cálculo I v2 precisa ter 250 questões; recebeu ${selected.length}.`);
+  throw new Error(
+    `O banco Cálculo I v2 precisa ter 250 questões; recebeu ${selected.length}.`,
+  );
 
 const bank = selected.map(enrich);
 if (new Set(bank.map((question) => question.statement)).size !== 250)
