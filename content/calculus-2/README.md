@@ -2,19 +2,19 @@
 
 Os sete arquivos `batch-62.mjs` a `batch-68.mjs` contêm 84 questões originais produzidas com assistência de Codex em 7 de setembro de 2026, por solicitação do responsável pelo projeto. Nenhuma questão foi transcrita de um banco externo. Não foi atribuída aprovação a uma pessoa ou equipe que não realizou a revisão.
 
-| Issue | Tema                              | Quantidade | Documento de revisão    |
-| ----- | --------------------------------- | ---------: | ----------------------- |
-| #62   | Técnicas de integração            |         20 | [Lote 62](review-62.md) |
-| #63   | Integrais impróprias              |         12 | [Lote 63](review-63.md) |
-| #64   | Sequências                        |         10 | [Lote 64](review-64.md) |
-| #65   | Séries geométricas e convergência |         12 | [Lote 65](review-65.md) |
-| #66   | Testes de convergência            |         12 | [Lote 66](review-66.md) |
-| #67   | Séries alternadas                 |          5 | [Lote 67](review-67.md) |
-| #68   | Potências, Taylor e Maclaurin     |         13 | [Lote 68](review-68.md) |
+| Issue | Tema                              | Quantidade |
+| ----- | --------------------------------- | ---------: |
+| #62   | Técnicas de integração            |         20 |
+| #63   | Integrais impróprias              |         12 |
+| #64   | Sequências                        |         10 |
+| #65   | Séries geométricas e convergência |         12 |
+| #66   | Testes de convergência            |         12 |
+| #67   | Séries alternadas                 |          5 |
+| #68   | Potências, Taylor e Maclaurin     |         13 |
 
 Cada questão tem quatro alternativas, dificuldade proposta, assunto, resposta, duas dicas progressivas e uma resolução comentada com estratégia, desenvolvimento e checagem. Os gabaritos são distribuídos entre A, B, C e D. As migrations inserem apenas rascunhos e fontes com `rights_status=review_required`; não publicam os lotes.
 
-Execute `node scripts/build-content-batches.mjs` para regenerar documentos de revisão, o relatório editorial e os dados de verificação. Use `--check` para detectar divergência entre fontes e arquivos gerados. O gerador confere contagens, duplicatas textuais, alternativas distintas, duas dicas progressivas, resolução didática, delimitadores matemáticos e a renderização de cada expressão com KaTeX estrito.
+Execute `node scripts/build-content-batches.mjs` para regenerar o relatório editorial e os dados de verificação. Use `--check` para detectar divergência entre fontes e arquivos gerados. O gerador confere contagens, duplicatas textuais, alternativas distintas, duas dicas progressivas, resolução didática, delimitadores matemáticos e a renderização de cada expressão com KaTeX estrito.
 
 As migrations iniciais são registros históricos e não devem ser reescritas. Quando uma questão já migrada precisa ser corrigida, execute `node scripts/build-content-corrections.mjs`: ele gera a migration incremental `20260908120000_improve_calc2_draft_editorial_quality.sql`. Essa migration atualiza os 84 rascunhos sem criar duplicatas, sem publicar conteúdo e sem mudar os gabaritos.
 
