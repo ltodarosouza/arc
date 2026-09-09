@@ -61,6 +61,12 @@ const texCommands = [
   'le',
   'circ',
   'big',
+  'times',
+  'Rightarrow',
+  'theta',
+  'mapsto',
+  'left',
+  'right',
 ];
 const normalizeMath = (text) =>
   text.replace(/\$([^$]+)\$/g, (_, source) => {

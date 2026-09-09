@@ -546,7 +546,192 @@ const batch03 = [
   ...workQuestions,
 ];
 
+const crossExplanation =
+  'O produto vetorial produz um vetor perpendicular aos dois fatores, com sentido determinado pela regra da mão direita. Seu módulo também mede a área do paralelogramo; o produto misto acrescenta um terceiro vetor e mede volume orientado.';
+const crossBasic = parameters.map((n) => {
+  const value = n * (n + 1);
+  return item({
+    topic: 'produto-vetorial-e-misto',
+    difficulty: 'easy',
+    statement:
+      'Calcule ' +
+      math('u times v') +
+      ' para ' +
+      math('u=' + vector([n, 0, 0])) +
+      ' e ' +
+      math('v=' + vector([0, n + 1, 0])) +
+      '.',
+    options: [
+      math(vector([0, 0, value])),
+      math(vector([0, 0, -value])),
+      math(vector([value, 0, 0])),
+      math(vector([0, value, 0])),
+    ],
+    correct: 0,
+    hints: [
+      'Use a orientação positiva dos eixos coordenados.',
+      'O produto do eixo x pelo eixo y aponta para o eixo z.',
+    ],
+    finalAnswer: math('u times v=' + vector([0, 0, value])) + '.',
+    explanation: crossExplanation,
+    steps: [
+      [
+        'Monte o determinante',
+        'As duas primeiras direções são os eixos x e y.',
+      ],
+      ['Calcule o módulo', math(n + ' cdot' + (n + 1) + '=' + value + '.')],
+      [
+        'Defina o sentido',
+        'Pela regra da mão direita, o resultado aponta para z positivo.',
+      ],
+    ],
+  });
+});
+const reverseCross = parameters.map((n) => {
+  const value = n * (n + 2);
+  return item({
+    topic: 'produto-vetorial-e-misto',
+    difficulty: 'medium',
+    statement:
+      'Calcule ' +
+      math('v times u') +
+      ' para ' +
+      math('u=' + vector([n, 0, 0])) +
+      ' e ' +
+      math('v=' + vector([0, n + 2, 0])) +
+      '.',
+    options: [
+      math(vector([0, 0, -value])),
+      math(vector([0, 0, value])),
+      math(vector([-value, 0, 0])),
+      math(vector([0, -value, 0])),
+    ],
+    correct: 0,
+    hints: [
+      'A ordem dos fatores altera o sinal do produto vetorial.',
+      'Primeiro calcule u vezes v e depois use a anticomutatividade.',
+    ],
+    finalAnswer: math('v times u=' + vector([0, 0, -value])) + '.',
+    explanation: crossExplanation,
+    steps: [
+      [
+        'Calcule na ordem direta',
+        math('u times v=' + vector([0, 0, value]) + '.'),
+      ],
+      ['Inverta a ordem', math('v times u=-(u times v).')],
+      ['Conclua', math('v times u=' + vector([0, 0, -value]) + '.')],
+    ],
+  });
+});
+const parallelogramAreas = parameters.map((n) => {
+  const area = n * (n + 3);
+  return item({
+    topic: 'volumes-e-areas',
+    difficulty: 'easy',
+    statement:
+      'Qual é a área do paralelogramo gerado por ' +
+      math('u=' + vector([n, 0, 0])) +
+      ' e ' +
+      math('v=' + vector([0, n + 3, 0])) +
+      '?',
+    options: [
+      math(String(area)),
+      math(String(area / 2)),
+      math(String(2 * area)),
+      math(String(area + n + 1)),
+    ],
+    correct: 0,
+    hints: [
+      'A área do paralelogramo é o módulo do produto vetorial.',
+      'Os vetores são perpendiculares, então a área também é o produto dos módulos.',
+    ],
+    finalAnswer: math('A=' + area) + '.',
+    explanation: crossExplanation,
+    steps: [
+      ['Calcule o produto', math('u times v=' + vector([0, 0, area]) + '.')],
+      ['Tome o módulo', math('|u times v|=' + area + '.')],
+      ['Interprete', 'Esse módulo é a área do paralelogramo.'],
+    ],
+  });
+});
+const triangleAreas = parameters.map((n) => {
+  const cross = 2 * n * (n + 1),
+    area = cross / 2;
+  return item({
+    topic: 'volumes-e-areas',
+    difficulty: 'medium',
+    statement:
+      'Calcule a área do triângulo formado por ' +
+      math('u=' + vector([2 * n, 0, 0])) +
+      ' e ' +
+      math('v=' + vector([0, n + 1, 0])) +
+      ' a partir da mesma origem.',
+    options: [
+      math(String(area)),
+      math(String(cross)),
+      math(String(area + n)),
+      math(String(area + 2 * n + 1)),
+    ],
+    correct: 0,
+    hints: [
+      'O módulo do produto vetorial fornece a área do paralelogramo.',
+      'O triângulo ocupa metade do paralelogramo.',
+    ],
+    finalAnswer: math('A=' + area) + '.',
+    explanation: crossExplanation,
+    steps: [
+      ['Encontre o produto', math('|u times v|=' + cross + '.')],
+      ['Divida por dois', math('A=' + cross + '/2.')],
+      ['Simplifique', math('A=' + area + '.')],
+    ],
+  });
+});
+const boxVolumes = parameters.map((n) => {
+  const volume = n * (n + 1) * (n + 2);
+  return item({
+    topic: 'produto-vetorial-e-misto',
+    difficulty: 'medium',
+    statement:
+      'Qual é o volume do paralelepípedo gerado por ' +
+      math('u=' + vector([n, 0, 0])) +
+      ', ' +
+      math('v=' + vector([0, n + 1, 0])) +
+      ' e ' +
+      math('w=' + vector([0, 0, n + 2])) +
+      '?',
+    options: [
+      math(String(volume)),
+      math(String(volume / 2)),
+      math(String(2 * volume)),
+      math(String(volume + n)),
+    ],
+    correct: 0,
+    hints: [
+      'O volume é o valor absoluto do produto misto.',
+      'Como os vetores estão nos eixos, o determinante é o produto das entradas não nulas.',
+    ],
+    finalAnswer: math('V=' + volume) + '.',
+    explanation: crossExplanation,
+    steps: [
+      ['Monte o produto misto', math('V=|(u times v) cdot w|.')],
+      [
+        'Use a estrutura diagonal',
+        math('V=|' + n + ' cdot' + (n + 1) + ' cdot' + (n + 2) + '|.'),
+      ],
+      ['Calcule', math('V=' + volume + '.')],
+    ],
+  });
+});
+const batch04 = [
+  ...crossBasic,
+  ...reverseCross,
+  ...parallelogramAreas,
+  ...triangleAreas,
+  ...boxVolumes,
+];
+
 export function createVectorBatch(number) {
+  if (number === '04') return batch04;
   if (number === '03') return batch03;
   if (number === '02') return batch02;
   if (number === '01')
