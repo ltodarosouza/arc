@@ -1,5 +1,9 @@
 import type { Question, QuestionAttempt } from '@/lib/domain/questions';
 import type { Subject, TaxonomyNode } from '@/lib/domain/taxonomy';
+import {
+  calculusOneSubject,
+  calculusOneTaxonomyNodes,
+} from '@/lib/data/calculus-1-taxonomy';
 
 const originalSource = {
   kind: 'original' as const,
@@ -8,12 +12,13 @@ const originalSource = {
 };
 
 export const seedSubjects: Subject[] = [
+  calculusOneSubject,
   {
     id: 'subject-calculus-2',
     slug: 'calculo-2',
     name: 'Cálculo II',
     description: 'Integrais, sequências e séries.',
-    sortOrder: 1,
+    sortOrder: 2,
     isPublished: true,
   },
   {
@@ -21,7 +26,7 @@ export const seedSubjects: Subject[] = [
     slug: 'algebra-linear',
     name: 'Álgebra Linear',
     description: 'Vetores, matrizes e transformações lineares.',
-    sortOrder: 2,
+    sortOrder: 3,
     isPublished: true,
   },
   {
@@ -29,12 +34,13 @@ export const seedSubjects: Subject[] = [
     slug: 'calculo-vetorial',
     name: 'Cálculo Vetorial',
     description: 'Vetores, curvas e campos.',
-    sortOrder: 3,
+    sortOrder: 4,
     isPublished: true,
   },
 ];
 
 export const seedTaxonomyNodes: TaxonomyNode[] = [
+  ...calculusOneTaxonomyNodes,
   {
     id: 'calc2-unit-integrals',
     subjectId: 'subject-calculus-2',

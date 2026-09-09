@@ -64,12 +64,12 @@ resolution.
 
 Write a self-contained explanation that teaches the method, not only the
 answer. State why the chosen method applies, show the transformation or
-calculation, and include a final check or interpretation. A resolution must
-have at least five meaningful steps, independent of difficulty; headings should
-describe the student's goal in that step. Use a progression such as preparing
-the data, choosing a method, developing it, carrying out the calculation, and
-checking or interpreting the result. Do not split one algebraic line into
-artificial micro-steps merely to reach the minimum.
+calculation, and include a final check or interpretation when it adds value.
+A short direct question may use fewer steps when each step genuinely teaches
+something. Questions that require selecting a method, combining transformations,
+or modelling a situation should normally use five or more meaningful steps.
+Headings should describe the student's goal in that step. Do not split one
+algebraic line into artificial micro-steps merely to reach a target count.
 
 1. Prepare the data, notation, domain, or structure that will be used.
 2. Recognize the method and justify why it applies.
@@ -88,5 +88,6 @@ artificial micro-steps merely to reach the minimum.
 - [ ] The final answer was independently checked.
 - [ ] The solution teaches the method, not only the result.
 - [ ] I included two progressive hints that do not reveal the answer.
-- [ ] The commented solution has the required number of meaningful steps.
+- [ ] The commented solution has enough meaningful steps for this question,
+      without artificial fragmentation.
 - [ ] Mathematical notation renders correctly, with matched `$` delimiters and LaTeX commands that preserve their backslash (for example, `\int`).

@@ -128,18 +128,20 @@ test('rapid subject changes preserve the final selection', async ({ page }) => {
 
   const subjects = page.locator('button[aria-pressed]');
   await subjects.evaluateAll((buttons) => {
-    buttons.forEach((button) => {
-      if (button instanceof HTMLButtonElement) button.click();
-    });
+    buttons
+      .filter((button) => button.getAttribute('aria-pressed') === 'true')
+      .forEach((button) => {
+        if (button instanceof HTMLButtonElement) button.click();
+      });
   });
-  await expect(subjects).toHaveCount(3);
+  await expect(subjects).toHaveCount(4);
   await expect
     .poll(() =>
       subjects.evaluateAll((buttons) =>
         buttons.map((button) => button.getAttribute('aria-pressed')),
       ),
     )
-    .toEqual(['false', 'false', 'false']);
+    .toEqual(['false', 'false', 'false', 'false']);
 
   await page.reload();
   await expect
@@ -148,5 +150,5 @@ test('rapid subject changes preserve the final selection', async ({ page }) => {
         buttons.map((button) => button.getAttribute('aria-pressed')),
       ),
     )
-    .toEqual(['false', 'false', 'false']);
+    .toEqual(['false', 'false', 'false', 'false']);
 });

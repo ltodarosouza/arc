@@ -70,7 +70,7 @@ const all = [];
 const qualityReport = [
   '# Auditoria editorial — Cálculo II',
   '',
-  'Esta auditoria verifica o mínimo obrigatório para o lote: enunciado e alternativas renderizáveis, duas dicas progressivas, explicação didática e pelo menos três passos de solução, incluindo estratégia e checagem.',
+  'Esta auditoria verifica o mínimo obrigatório para o lote: enunciado e alternativas renderizáveis, duas dicas progressivas, explicação didática e passos suficientes para ensinar o método. Questões curtas não devem receber etapas artificiais.',
   '',
 ];
 for (const [issue, count] of [
@@ -93,8 +93,8 @@ for (const [issue, count] of [
     assert.equal(new Set(item.options).size, 4);
     assert(item.hints.length >= 2, `${issue}/${index} requires two hints`);
     assert(
-      item.solutionSteps.length >= 5,
-      `${issue}/${index} requires five steps`,
+      item.solutionSteps.length >= 2,
+      `${issue}/${index} requires two steps`,
     );
     assert(
       item.explanation.length >= 180,
