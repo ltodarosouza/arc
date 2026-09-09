@@ -23,16 +23,19 @@ This code lives in `lib/data/local-learner-repository.ts`. Browser state is tran
 
 - Every database change gets a new chronologically named SQL file in `supabase/migrations/`.
 - An applied migration is immutable. Fixes use a new migration, never a rewrite of history.
-- Migrations must be schema-only: no large question-bank seeds, production user backfills, or ad hoc data fixes.
+- Migrations may include small, reviewed catalogue corrections when required by
+  the MVP. They must never include credentials or ad-hoc changes to private
+  learner data.
 - Before applying, review indexes, constraints, RLS policies, and rollback implications.
 - Apply the migration to a development project first, verify it, then apply the exact committed file to production.
 - Record the applied migration in the related GitHub issue.
 
-## Moving local progress to a durable account
+## Legacy local progress
 
-The MVP can create an anonymous Supabase identity. When the learner adds email, OAuth, or another permanent identity, the application links that identity to the existing anonymous account instead of copying attempts into a new user.
-
-If local browser state exists from before Supabase integration, import attempts idempotently: use stable attempt IDs, skip records already stored remotely, and keep the latest state only after the remote write succeeds. The import must show a recoverable error rather than clearing local data on failure.
+The deployed MVP requires an e-mail account. Local browser state belongs only to
+development fallback and must never silently replace remote data. If a future
+import for pre-authentication data is introduced, it must be explicit,
+idempotent, and leave the local copy intact until the remote write succeeds.
 
 ## Backups and recovery
 

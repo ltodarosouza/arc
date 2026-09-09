@@ -1,122 +1,66 @@
-# Arc — initial architecture decision record
+# Arc — arquitetura atual
 
-## Decision
+## Decisão
 
-Arc starts as a multi-subject web application using the existing Vinext/React project. The first release uses curated local content and device-local learner data. It deliberately does not require an account or a backend.
+Arc é uma aplicação multi-disciplina em Next.js App Router. O catálogo é
+compartilhado; cada estudante entra com e-mail e senha no Supabase Auth e tem
+suas disciplinas, tentativas, itens para refazer e nome de perfil persistidos
+no Supabase. A aplicação não oferece acesso anônimo ao produto.
 
-This is a validation decision, not a permanent storage decision: the product can prove that students find and solve the right questions before adding the cost and friction of authentication, sync, and server infrastructure.
+## Limites da aplicação
 
-## Application boundaries
+### Catálogo compartilhado
 
-### Content catalogue
+As tabelas `subjects`, `taxonomy_nodes`, `questions`, `question_options`,
+`question_solutions`, `question_solution_steps` e `question_hints` guardam o
+conteúdo. Uma questão pode servir a várias disciplinas e nunca contém dados de
+um estudante. Apenas questões com `publication_status='published'` aparecem
+para estudantes.
 
-The catalogue is shared, versioned product content:
+### Dados privados do estudante
 
-- subjects;
-- taxonomy nodes: unit, topic, subtopic;
-- questions, options, answers, solutions, hints, difficulty, and source metadata.
+O Supabase aplica Row Level Security às tabelas privadas: `profiles`,
+`user_subjects`, `question_attempts` e `redo_questions`. Uma tentativa é
+registrada por uma função do banco que avalia a alternativa no servidor; a
+interface não recebe a chave correta antes da resposta.
 
-Content never contains learner-specific fields. A question is reusable by every learner and may be tagged with more than one taxonomy node.
+`profiles.display_name` é o nome privado mostrado na interface. O e-mail é
+usado para autenticação e não é apresentado como identidade principal.
 
-### Learner state
+### Interface e estado transitório
 
-The learner owns these device-local records:
+Filtros, alternativa marcada e painéis abertos vivem somente na interface. O
+repositório local existe como fallback de desenvolvimento quando as variáveis
+do Supabase não estão configuradas; não é uma opção para produção.
 
-- selected subject IDs;
-- immutable question attempts;
-- questions marked for redo;
-- local data-schema version.
+## Rotas principais
 
-The initial persistence adapter will use browser storage behind a small interface. UI code must not access browser storage directly.
+- `/`: início e resumo de estudo;
+- `/questions`: lista, filtros e entrada para prática;
+- `/practice`: resolução, dicas e solução comentada;
+- `/progress`: desempenho e revisão;
+- `/subjects`: disciplinas selecionadas;
+- `/account`: nome, senha, sessão e exclusão da conta;
+- `/account/sign-in`, `/account/reset` e `/account/recover`: autenticação e
+  recuperação.
 
-### Ephemeral interface state
+O topo persistente permite navegar entre essas áreas em páginas longas, sem
+substituir os controles de teclado e foco semântico de cada página.
 
-This state does not need persistence:
+## Segurança e operação
 
-- active subject, topic, and filters;
-- current question/session position;
-- an answer selected but not submitted;
-- open hint or solution panels.
+- Somente `NEXT_PUBLIC_SUPABASE_URL` e
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` vão ao navegador.
+- `SUPABASE_SERVICE_ROLE_KEY` só existe no ambiente servidor da Vercel e é
+  usado exclusivamente pela rota de exclusão de conta após reautenticação.
+- O banco, as migrations e as políticas RLS são a fonte de verdade; nenhuma
+  tela deve assumir sucesso de uma gravação sem confirmar a resposta.
+- Cada alteração de schema ou conteúdo é uma nova migration versionada. Uma
+  migration aplicada não é editada.
 
-## Attempt and status model
+## Qualidade de conteúdo
 
-Each completed interaction creates a `QuestionAttempt` record. It references a question but does not mutate it.
-
-```ts
-type AttemptOutcome = 'correct' | 'incorrect' | 'revealed';
-
-type QuestionAttempt = {
-  id: string;
-  questionId: string;
-  outcome: AttemptOutcome;
-  gradingMethod: 'automatic'; // MVP; other modes remain a future-compatible domain option
-  selectedOptionId?: string;
-  createdAt: string;
-};
-```
-
-The question list and question header derive a learner-facing status from attempt history:
-
-- **Not attempted:** no completed attempt exists.
-- **Attempted:** at least one completed attempt exists.
-- **Correct:** the latest automatically graded attempt is correct.
-- **Incorrect:** the latest automatically graded attempt is incorrect.
-- **Redo:** the learner explicitly marked the question for another pass.
-
-A learner who fixes a previous error is shown as currently correct. A later review feature may additionally expose “ever incorrect” as a separate historical filter; it must not overload the meaning of the current status. Open-answer modes remain deferred until they can be graded reliably.
-
-## Required question-state UI
-
-When a learner opens a question they have already completed, the top context bar shows a small, non-intrusive status chip:
-
-- `Acertou` uses a muted green treatment;
-- `Errou` uses a muted warm/red treatment;
-- `Refazer` uses a neutral/amber treatment;
-- a never-attempted question shows no result chip.
-
-The status remains secondary to the statement and never reveals an answer before the learner chooses to review it. The same derived state powers the filters in the question bank, so the badge and results list cannot disagree.
-
-## Initial interfaces
-
-The UI should depend on three focused interfaces:
-
-```ts
-interface QuestionCatalogue {
-  listSubjects(): Subject[];
-  listQuestions(query: QuestionQuery): Question[];
-  getQuestion(questionId: string): Question | undefined;
-}
-
-interface LearnerRepository {
-  getSelectedSubjectIds(): string[];
-  saveSelectedSubjectIds(subjectIds: string[]): void;
-  listAttempts(): QuestionAttempt[];
-  recordAttempt(attempt: QuestionAttempt): void;
-  getRedoQuestionIds(): string[];
-  setRedo(questionId: string, enabled: boolean): void;
-}
-
-interface ProgressService {
-  getQuestionStatus(questionId: string): QuestionStatus;
-  getSubjectProgress(subjectId: string): SubjectProgress;
-}
-```
-
-The local implementations satisfy these interfaces now. A future server implementation should preserve the contracts rather than force a UI rewrite.
-
-## Future migration path
-
-When authentication becomes valuable, the same domain shapes move to persistent storage:
-
-- `subjects`, `taxonomy_nodes`, `questions`, `answer_options`, `solutions`, and `question_tags` remain shared content tables;
-- `users`, `user_subjects`, `question_attempts`, and `redo_questions` become user-owned tables;
-- an authenticated repository replaces the local repository, with an explicit local-progress import/merge step.
-
-University, course, and curriculum data can later connect to `subjects` through mapping tables. They must not duplicate questions or subject taxonomies.
-
-## Consequences
-
-- The MVP stays quick to access and inexpensive to operate.
-- Device-local progress does not sync between browsers or devices yet; the interface must not imply otherwise.
-- All content and progress code is designed around multiple subjects from the first implementation.
-- Login, database selection, and syncing are deferred until user behaviour validates their cost.
+Toda questão publicada precisa ser de múltipla escolha, ter duas dicas
+progressivas e uma solução comentada com pelo menos cinco etapas significativas
+e fórmulas compatíveis com KaTeX. O fluxo detalhado está em
+[question-authoring.md](question-authoring.md).

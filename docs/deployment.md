@@ -30,6 +30,16 @@ NEXT_PUBLIC_SITE_URL=https://seu-dominio.vercel.app
 Elas são públicas para o navegador. Nunca adicionar senha do banco,
 `service_role` ou outra chave secreta.
 
+Além delas, criar somente no ambiente de servidor (nunca com prefixo
+`NEXT_PUBLIC_`):
+
+```text
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+Ela é exigida pela rota de exclusão de conta. Não a copie para `.env.local`
+compartilhado, logs, issue ou qualquer valor exibido ao navegador.
+
 No Supabase, adicionar a URL da Vercel em **Authentication → URL
 Configuration**, tanto em Site URL quanto em Redirect URLs.
 
@@ -37,6 +47,8 @@ Configuration**, tanto em Site URL quanto em Redirect URLs.
 
 - [ ] A Vercel detecta Next.js e não há Output Directory personalizado.
 - [ ] As três variáveis públicas estão configuradas em Preview e Production.
+- [ ] `SUPABASE_SERVICE_ROLE_KEY` está configurada somente no servidor para
+      os ambientes em que exclusão de conta será oferecida.
 - [ ] URLs de Preview e Production estão nas Redirect URLs do Supabase.
 - [ ] Início, Questões, disciplina, Prática, Progresso e Conta abrem sem 404.
 - [ ] Cadastro, entrada, saída e persistência de tentativa foram testados.

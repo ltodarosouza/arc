@@ -1,37 +1,51 @@
-# Arc — Supabase setup
+# Arc — configuração do Supabase
 
-Arc uses Supabase Postgres for durable data and Supabase Auth anonymous users for learner progress before email login exists.
+Arc usa Supabase Postgres para o catálogo e os dados privados de estudo, e
+Supabase Auth com e-mail e senha para as contas.
 
-## 1. Apply the schema
+## 1. Configure autenticação
 
-1. In the Supabase project dashboard, open **SQL Editor**.
-2. Create a new query.
-3. Copy the complete contents of `supabase/migrations/20260905120000_initial_arc_schema.sql`.
-4. Run it once.
+Em **Authentication → URL Configuration**, defina a URL do ambiente (local,
+Preview ou Production) como Site URL e Redirect URL. Inclua também as URLs de
+Preview usadas para testar recuperação de senha.
 
-This creates the academic catalogue tables, private learner-progress tables, database indexes, Row Level Security policies, and the secure functions that grade an answer and record an attempt.
+Em **Authentication → Providers**, mantenha Email habilitado. A confirmação de
+e-mail é recomendada antes de convidar estudantes reais. Para produção,
+configure SMTP próprio; o remetente padrão é apropriado apenas para testes.
 
-## 2. Enable anonymous sign-ins
+## 2. Aplique as migrations em ordem
 
-In **Authentication → Providers / General configuration**, enable **Anonymous sign-ins**.
+No **SQL Editor**, execute os arquivos de `supabase/migrations/` em ordem
+cronológica, exatamente como estão no Git. Não execute apenas a primeira
+migration e não edite um arquivo já aplicado. O catálogo atual também possui
+migrations de conteúdo; elas são necessárias para a experiência visual de
+prática, embora não alterem tentativas de estudantes.
 
-This does not ask the learner for email or password. It gives the current browser a private Supabase identity so attempts and selected subjects are stored on the server and can be protected by Row Level Security. The user can later link an email or other login method to that identity.
+Antes de Production, aplique o mesmo conjunto em um projeto descartável e
+execute os testes SQL em `supabase/tests/` quando houver ambiente local de
+Postgres disponível.
 
-Anonymous identity is intentionally not the same as the public publishable key. The publishable key only identifies the project; the database policies determine which records a browser may read or write.
+## 3. Configure a aplicação
 
-## 3. Configure the application
-
-Add these public values to `.env.local`:
+Em desenvolvimento, copie `.env.example` para `.env.local` e preencha:
 
 ```text
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-Never put the database password, `service_role`, or a secret key in `.env.local` for browser code, Git, or this document.
+Para exclusão de conta, configure também `SUPABASE_SERVICE_ROLE_KEY` somente
+no ambiente servidor. Ela nunca pode ter o prefixo `NEXT_PUBLIC_`, aparecer no
+Git ou ser informada no navegador.
 
-## 4. Verification
+## 4. Verificação mínima
 
-After running the migration, the Table Editor should show tables including `subjects`, `questions`, `question_attempts`, `user_subjects`, and `redo_questions`.
+1. Crie uma conta de teste e entre novamente.
+2. Salve um nome de perfil e confira em outro navegador.
+3. Selecione uma disciplina e responda uma questão.
+4. Recarregue e confirme que disciplina, tentativa e progresso persistem.
+5. Teste o e-mail de recuperação usando uma URL permitida.
 
-The next implementation step will connect the catalog and learner repository to these tables. Until then, the local development fixtures remain the active visual data source.
+Use contas descartáveis para testar exclusão. A exclusão remove dados privados
+daquela conta; não use uma conta real de estudante na validação.

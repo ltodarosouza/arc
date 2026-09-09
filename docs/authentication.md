@@ -24,8 +24,11 @@ Supabase projects and is recommended before inviting real learners. Production
 email delivery needs a configured SMTP provider; the built-in sender is only
 appropriate for early testing.
 
-## Scope boundary
+## Persisted study data
 
-This first slice creates the identity layer only. Moving selected subjects,
-attempts and redo items from the local development repository to Supabase is a
-separate data-migration task.
+After authentication, selected subjects, attempts and items marked for review
+are stored under the authenticated user in Supabase. The browser never selects
+another user's records: Row Level Security enforces ownership in the database.
+
+The local repository is only a development fallback when Supabase configuration
+is absent; it is not a migration path for a deployed environment.

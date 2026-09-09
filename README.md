@@ -15,12 +15,13 @@ A question belongs to a reusable subject taxonomy, not directly to a university,
 The initial experience includes three areas:
 
 - **Início:** choose the subjects currently being studied and quickly resume practice.
-- **Explorar:** open all questions in a subject or filter by topic, difficulty, and prior result.
+- **Questões:** open all questions in a subject or filter by topic, difficulty, and prior result.
 - **Progresso:** see answered, correct, incorrect, and redo questions; then return directly to review.
 
-Learners can create an account or sign in with Supabase. Their selected
-subjects, attempts, and redo list are saved to their account; the local store
-remains only as a development fallback when Supabase is not configured.
+Learners sign in with Supabase before accessing the study areas. Their selected
+subjects, attempts, redo list, and profile name are saved to their account; the
+local store remains only as a development fallback when Supabase is not
+configured.
 
 ## MVP scope
 
@@ -80,7 +81,8 @@ docs/         Product and architecture decisions
 public/       Static assets
 ```
 
-As the product is implemented, content data, learner-state adapters, and domain services will be added as separate layers rather than embedded in screens.
+Content data, learner-state adapters, and domain services are kept in separate
+layers rather than embedded in screens.
 
 ## Working conventions
 
