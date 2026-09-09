@@ -60,6 +60,13 @@ const groups = {
     '20260909167000_seed_vector_calculus_batch_07.sql',
     '20260909168000_seed_vector_calculus_batch_08.sql',
   ],
+  'calculo-vetorial-diverso': [
+    '20260909180100_diversify_vector_calculus_batch_01.sql',
+    '20260909180200_diversify_vector_calculus_batch_02.sql',
+    '20260909180300_diversify_vector_calculus_batch_03.sql',
+    '20260909180400_diversify_vector_calculus_batch_04.sql',
+    '20260909180500_diversify_vector_calculus_batch_05.sql',
+  ],
 };
 
 const maxBytesPerPackage = 650_000;
