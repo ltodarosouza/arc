@@ -1,4 +1,4 @@
--- Lote 01 de Cálculo I: 50 questões autorais revisadas para a Arc.
+-- Reaplica o lote 01 de Cálculo I com marcação matemática canônica.
 -- Pré-requisito: execute primeiro 20260909130000_add_calculus_1_catalogue.sql.
 begin;
 

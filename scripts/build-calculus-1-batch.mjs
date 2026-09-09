@@ -4,9 +4,12 @@ import { dirname, resolve } from 'node:path';
 import batch from '../content/calculus-1/batch-01.mjs';
 
 const root = resolve(import.meta.dirname, '..');
+const repair = process.argv.includes('--repair');
 const outputPath = resolve(
   root,
-  'supabase/migrations/20260909133000_seed_calculus_1_batch_01.sql',
+  repair
+    ? 'supabase/migrations/20260909140000_repair_calculus_1_batch_01_math_markup.sql'
+    : 'supabase/migrations/20260909133000_seed_calculus_1_batch_01.sql',
 );
 const subjectId = '20000000-0000-4000-8000-000000000004';
 const sourceId = '10000000-0000-4000-8000-000000000004';
@@ -62,7 +65,7 @@ const normalizeMath = (text) =>
       .replace(/\t(?=o\b)/g, '\\t');
     for (const command of texCommands) {
       math = math.replace(
-        new RegExp(`(?<!\\\\)\\b${command}\\b`, 'g'),
+        new RegExp(`(?<![A-Za-z\\\\])${command}(?![A-Za-z])`, 'g'),
         `\\\\${command}`,
       );
     }
@@ -100,7 +103,9 @@ const validateText = (text, questionNumber) => {
 };
 
 const lines = [
-  '-- Lote 01 de Cálculo I: 50 questões autorais revisadas para a Arc.',
+  repair
+    ? '-- Reaplica o lote 01 de Cálculo I com marcação matemática canônica.'
+    : '-- Lote 01 de Cálculo I: 50 questões autorais revisadas para a Arc.',
   '-- Pré-requisito: execute primeiro 20260909130000_add_calculus_1_catalogue.sql.',
   'begin;',
   '',

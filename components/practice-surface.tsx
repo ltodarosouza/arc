@@ -506,7 +506,9 @@ export function PracticeSurface() {
                         </span>
                         <div>
                           <p className="font-medium text-[var(--foreground)]">
-                            {step.title ?? `Passo ${index + 1}`}
+                            <MathContent
+                              value={step.title ?? `Passo ${index + 1}`}
+                            />
                           </p>
                           <MathContent value={step.content} />
                         </div>
