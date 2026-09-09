@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
@@ -88,12 +89,12 @@ export default function ExplorePage() {
               Escolha uma disciplina para começar.
             </p>
           </div>
-          <a
+          <Link
             className="arc-link mt-4 inline-flex min-h-11 items-center gap-2 text-sm"
             href="/subjects"
           >
             <SlidersHorizontal className="size-4" /> Gerenciar disciplinas
-          </a>
+          </Link>
         </div>
         {isInitialLoading ? (
           <div
@@ -136,12 +137,12 @@ export default function ExplorePage() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <h2 className="arc-section-title">
-                          <a
+                          <Link
                             className="hover:underline"
                             href={`/explore/${subject.slug}`}
                           >
                             {subject.name}
-                          </a>
+                          </Link>
                         </h2>
                         <p className="mt-0.5 text-xs text-[var(--arc-text-muted)]">
                           {questions.length}{' '}
@@ -150,19 +151,19 @@ export default function ExplorePage() {
                           {attemptedCount === 1 ? '' : 's'}
                         </p>
                       </div>
-                      <a
+                      <Link
                         className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
                         href={`/questions?subject=${subject.slug}`}
                       >
                         Ver todas <ChevronRight className="size-4" />
-                      </a>
+                      </Link>
                     </div>
                     <div className="p-5 sm:p-6">
                       <p className="arc-caption">Áreas</p>
                       {units.length ? (
                         <div className="mt-3 flex flex-wrap gap-2">
                           {units.slice(0, 3).map((unit) => (
-                            <a
+                            <Link
                               className="inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[#4f606d] transition-colors hover:bg-[var(--arc-accent)] hover:text-[#263950]"
                               href={`/questions?subject=${subject.slug}&unit=${unit.slug}`}
                               key={unit.id}
@@ -171,15 +172,15 @@ export default function ExplorePage() {
                               <span className="ml-1 opacity-60">
                                 {unit.count}
                               </span>
-                            </a>
+                            </Link>
                           ))}
                           {units.length > 3 && (
-                            <a
+                            <Link
                               className="arc-link inline-flex min-h-11 items-center px-2 text-sm"
                               href={`/explore/${subject.slug}`}
                             >
                               +{units.length - 3} áreas
-                            </a>
+                            </Link>
                           )}
                         </div>
                       ) : (
@@ -196,12 +197,12 @@ export default function ExplorePage() {
         ) : (
           <FeedbackState
             action={
-              <a
+              <Link
                 className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas <ChevronRight className="size-4" />
-              </a>
+              </Link>
             }
             className="mt-9"
             description="Elas aparecerão aqui para você chegar às questões mais rápido."

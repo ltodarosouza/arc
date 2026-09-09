@@ -110,6 +110,16 @@ type DatabaseSource = {
   label: string;
 };
 
+function groupByQuestionId<T extends { question_id: string }>(rows: T[]) {
+  const grouped = new Map<string, T[]>();
+  for (const row of rows) {
+    const questionRows = grouped.get(row.question_id) ?? [];
+    questionRows.push(row);
+    grouped.set(row.question_id, questionRows);
+  }
+  return grouped;
+}
+
 /** Browser-safe published catalogue. Answer keys and solutions are intentionally absent. */
 async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
   if (!isSupabaseConfigured()) throw new Error('Supabase is unavailable.');
@@ -200,6 +210,9 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
     isPublished: item.is_published,
   }));
   const sourcesById = new Map(sources.map((item) => [item.id, item]));
+  const optionsByQuestionId = groupByQuestionId(options);
+  const tagsByQuestionId = groupByQuestionId(tags);
+  const hintsByQuestionId = groupByQuestionId(hints);
   const mappedQuestions = questions.map((item) => {
     const source = item.source_id ? sourcesById.get(item.source_id) : undefined;
     return {
@@ -211,34 +224,28 @@ async function loadSupabaseCatalogue(): Promise<CatalogueSnapshot> {
         format: item.content_format,
         value: item.statement_markdown,
       },
-      options: options
-        .filter((option) => option.question_id === item.id)
-        .map((option) => ({
-          id: option.id,
-          label: option.label,
-          content: {
-            format: 'markdown_latex' as const,
-            value: option.content_markdown,
-          },
-          sortOrder: option.sort_order,
-        })),
-      taxonomyTags: tags
-        .filter((tag) => tag.question_id === item.id)
-        .map((tag) => ({
-          questionId: tag.question_id,
-          taxonomyNodeId: tag.taxonomy_node_id,
-          isPrimary: tag.is_primary,
-        })),
-      hints: hints
-        .filter((hint) => hint.question_id === item.id)
-        .map((hint) => ({
-          id: hint.id,
-          content: {
-            format: 'markdown_latex' as const,
-            value: hint.content_markdown,
-          },
-          sortOrder: hint.sort_order,
-        })),
+      options: (optionsByQuestionId.get(item.id) ?? []).map((option) => ({
+        id: option.id,
+        label: option.label,
+        content: {
+          format: 'markdown_latex' as const,
+          value: option.content_markdown,
+        },
+        sortOrder: option.sort_order,
+      })),
+      taxonomyTags: (tagsByQuestionId.get(item.id) ?? []).map((tag) => ({
+        questionId: tag.question_id,
+        taxonomyNodeId: tag.taxonomy_node_id,
+        isPrimary: tag.is_primary,
+      })),
+      hints: (hintsByQuestionId.get(item.id) ?? []).map((hint) => ({
+        id: hint.id,
+        content: {
+          format: 'markdown_latex' as const,
+          value: hint.content_markdown,
+        },
+        sortOrder: hint.sort_order,
+      })),
       source: {
         kind: source?.kind ?? 'other',
         label: source?.label ?? 'Fonte não informada',
@@ -411,14 +418,44 @@ let cachedCatalogueSummary: CatalogueSummary | null = null;
 let cachedCatalogueSummaryAt = 0;
 let pendingCatalogueSummary: Promise<CatalogueSummary> | null = null;
 
+function catalogueToSummary(catalogue: CatalogueSnapshot): CatalogueSummary {
+  return {
+    subjects: catalogue.subjects,
+    taxonomyNodes: catalogue.taxonomyNodes,
+    questions: catalogue.questions.map((question) => ({
+      id: question.id,
+      subjectId: question.subjectId,
+      taxonomyTags: question.taxonomyTags,
+    })),
+  };
+}
+
+export function getCachedPublishedCatalogue() {
+  return cachedCatalogue && Date.now() - cachedCatalogueAt < catalogueCacheTtlMs
+    ? cachedCatalogue
+    : null;
+}
+
+export function getCachedPublishedCatalogueSummary() {
+  if (
+    cachedCatalogueSummary &&
+    Date.now() - cachedCatalogueSummaryAt < catalogueCacheTtlMs
+  )
+    return cachedCatalogueSummary;
+  const fullCatalogue = getCachedPublishedCatalogue();
+  return fullCatalogue ? catalogueToSummary(fullCatalogue) : null;
+}
+
 export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
-  if (cachedCatalogue && Date.now() - cachedCatalogueAt < catalogueCacheTtlMs)
-    return cachedCatalogue;
+  const cached = getCachedPublishedCatalogue();
+  if (cached) return cached;
   pendingCatalogue ??= createCatalogueRepository()
     .loadPublished()
     .then((catalogue) => {
       cachedCatalogue = catalogue;
       cachedCatalogueAt = Date.now();
+      cachedCatalogueSummary = catalogueToSummary(catalogue);
+      cachedCatalogueSummaryAt = cachedCatalogueAt;
       return catalogue;
     })
     .finally(() => {
@@ -428,11 +465,8 @@ export async function loadPublishedCatalogue(): Promise<CatalogueSnapshot> {
 }
 
 export async function loadPublishedCatalogueSummary(): Promise<CatalogueSummary> {
-  if (
-    cachedCatalogueSummary &&
-    Date.now() - cachedCatalogueSummaryAt < catalogueCacheTtlMs
-  )
-    return cachedCatalogueSummary;
+  const cached = getCachedPublishedCatalogueSummary();
+  if (cached) return cached;
   pendingCatalogueSummary ??= (
     isSupabaseConfigured()
       ? loadSupabaseCatalogueSummary()

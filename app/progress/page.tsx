@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 import { ProgressChart } from '@/components/progress-chart';
 import { FeedbackState } from '@/components/feedback-state';
 import { Reveal } from '@/components/reveal';
@@ -9,11 +10,9 @@ import { Reveal } from '@/components/reveal';
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { AnimatedProgressBar } from '@/components/animated-progress-bar';
-import type {
-  CatalogueQuestion,
-  CatalogueSnapshot,
-} from '@/lib/data/catalogue-repository';
-import { useCatalogue } from '@/lib/data/use-catalogue';
+import { AnimatedNumber } from '@/components/animated-number';
+import type { CatalogueSummary } from '@/lib/data/catalogue-repository';
+import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import {
   getAttemptNumber,
@@ -52,8 +51,8 @@ function formatAttemptDate(value: string) {
 }
 
 function getPrimaryTopic(
-  question: CatalogueQuestion,
-  catalogue: CatalogueSnapshot,
+  question: CatalogueSummary['questions'][number],
+  catalogue: CatalogueSummary,
 ) {
   const primaryTag =
     question.taxonomyTags.find((tag) => tag.isPrimary) ??
@@ -68,20 +67,22 @@ function getPrimaryTopic(
 
 function buildPerformance(
   attempts: QuestionAttempt[],
-  catalogue: CatalogueSnapshot | null,
+  catalogue: CatalogueSummary | null,
 ): SubjectPerformance[] {
   if (!catalogue) return [];
   const subjects = new Map<string, SubjectPerformance>();
   const topics = new Map<string, TopicPerformance>();
+  const questionsById = new Map(
+    catalogue.questions.map((question) => [question.id, question]),
+  );
+  const subjectsById = new Map(
+    catalogue.subjects.map((subject) => [subject.id, subject]),
+  );
 
   for (const attempt of getLatestAttemptsByQuestion(attempts).values()) {
-    const question = catalogue.questions.find(
-      (item) => item.id === attempt.questionId,
-    );
+    const question = questionsById.get(attempt.questionId);
     if (!question) continue;
-    const subject = catalogue.subjects.find(
-      (item) => item.id === question.subjectId,
-    );
+    const subject = subjectsById.get(question.subjectId);
     if (!subject) continue;
     const subjectItem = subjects.get(subject.id) ?? {
       id: subject.id,
@@ -132,7 +133,7 @@ export default function ProgressPage() {
     catalogue,
     isLoading: catalogueLoading,
     error: catalogueError,
-  } = useCatalogue();
+  } = useCatalogueSummary();
 
   const attempts = useMemo(() => learnerState?.attempts ?? [], [learnerState]);
   const summary = summarizeProgress(attempts);
@@ -159,17 +160,18 @@ export default function ProgressPage() {
     () => performance.filter((subject) => subject.correct < subject.attempted),
     [performance],
   );
-  const subjectsToRedo = useMemo(
-    () =>
-      catalogue?.subjects.filter((subject) =>
-        catalogue.questions.some(
-          (question) =>
-            question.subjectId === subject.id &&
-            learnerState?.redoQuestionIds.includes(question.id),
-        ),
-      ) ?? [],
-    [catalogue, learnerState?.redoQuestionIds],
-  );
+  const subjectsToRedo = useMemo(() => {
+    if (!catalogue) return [];
+    const redoQuestionIds = new Set(learnerState?.redoQuestionIds ?? []);
+    const redoSubjectIds = new Set(
+      catalogue.questions
+        .filter((question) => redoQuestionIds.has(question.id))
+        .map((question) => question.subjectId),
+    );
+    return catalogue.subjects.filter((subject) =>
+      redoSubjectIds.has(subject.id),
+    );
+  }, [catalogue, learnerState?.redoQuestionIds]);
 
   return (
     <AppShell active="progress">
@@ -204,36 +206,54 @@ export default function ProgressPage() {
           />
         ) : (
           <>
-            <dl className="arc-section grid max-w-2xl grid-cols-2 gap-x-8 gap-y-6 border-y border-[var(--border)] py-6">
+            <dl className="arc-section grid grid-cols-2 gap-x-6 gap-y-7 border-y border-[var(--border)] py-6 sm:grid-cols-5">
               {[
                 {
                   label: 'Questões feitas',
                   value: summary.answered,
-                  detail: `${summary.correct} ${summary.correct === 1 ? 'acerto' : 'acertos'} · ${summary.incorrect} ${summary.incorrect === 1 ? 'erro' : 'erros'}`,
+                  detail: 'Total respondido',
+                  tone: 'text-[var(--foreground)]',
                 },
                 {
                   label: 'Aproveitamento',
-                  value: accuracy === null ? '—' : `${accuracy}%`,
+                  value: accuracy ?? 0,
+                  suffix: '%',
                   detail: 'Resultado mais recente',
+                  tone: 'text-[var(--arc-accent-strong)]',
+                },
+                {
+                  label: 'Acertos',
+                  value: summary.correct,
+                  detail: 'Respostas corretas',
+                  tone: 'text-[var(--arc-success-text)]',
                 },
                 {
                   label: 'Erros',
                   value: summary.incorrect,
-                  detail: 'Revise por disciplina abaixo',
+                  detail: 'Para revisar',
+                  tone: 'text-[var(--arc-error-text)]',
                 },
                 {
                   label: 'Para refazer',
                   value: redoCount,
-                  detail: 'Questões marcadas por você',
+                  detail: 'Marcadas por você',
+                  tone: 'text-[var(--arc-redo-text)]',
                 },
-              ].map((metric) => (
-                <div key={metric.label}>
-                  <dt className="text-sm text-[var(--arc-text-muted)]">
-                    {metric.label}
-                  </dt>
-                  <dd className="arc-metric mt-2">{metric.value}</dd>
-                  <dd className="arc-caption mt-2">{metric.detail}</dd>
-                </div>
+              ].map((metric, index) => (
+                <Reveal delay={index * 85} key={metric.label} variant="card">
+                  <div>
+                    <dt className="text-sm text-[var(--arc-text-muted)]">
+                      {metric.label}
+                    </dt>
+                    <dd className={`arc-metric mt-2 ${metric.tone}`}>
+                      <AnimatedNumber
+                        suffix={metric.suffix}
+                        value={metric.value}
+                      />
+                    </dd>
+                    <dd className="arc-caption mt-2">{metric.detail}</dd>
+                  </div>
+                </Reveal>
               ))}
             </dl>
             {subjectsWithErrors.length > 0 && (
@@ -270,12 +290,12 @@ export default function ProgressPage() {
                     ? 'Continue praticando para atualizar seus resultados.'
                     : 'Escolha uma disciplina e resolva a primeira questão.'}
                 </p>
-                <a
+                <Link
                   className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
                   href="/explore"
                 >
                   Ir para questões <ArrowRight className="size-4" />
-                </a>
+                </Link>
               </ArcCard>
             )}
             {performance.length > 0 && (
@@ -286,12 +306,12 @@ export default function ProgressPage() {
                     <Reveal delay={index * 55} key={subject.id} variant="card">
                       <ArcCard className="p-5 sm:p-6">
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <a
+                          <Link
                             className="font-medium tracking-[-0.025em] transition-colors hover:text-[#46657a]"
                             href={`/questions?subject=${subject.slug}`}
                           >
                             {subject.name}
-                          </a>
+                          </Link>
                           <p className="text-sm text-[var(--arc-text-muted)]">
                             {subject.attempted >= minimumReliableSampleSize
                               ? `${percentage(subject.correct, subject.attempted)}% de acerto`
@@ -311,19 +331,19 @@ export default function ProgressPage() {
                         </p>
                         <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                           {subject.attempted > subject.correct && (
-                            <a
+                            <Link
                               className="arc-link inline-flex min-h-11 items-center"
                               href={`/questions?subject=${subject.slug}&status=incorrect`}
                             >
                               Revisar erros
-                            </a>
+                            </Link>
                           )}
-                          <a
+                          <Link
                             className="arc-link inline-flex min-h-11 items-center"
                             href={`/questions?subject=${subject.slug}&status=redo`}
                           >
                             Para refazer
-                          </a>
+                          </Link>
                         </div>
                         <details className="arc-disclosure mt-2 border-t border-[var(--border)]">
                           <summary className="flex min-h-12 items-center justify-between gap-2 text-sm font-medium">
@@ -337,12 +357,12 @@ export default function ProgressPage() {
                                 key={topic.id}
                               >
                                 <div>
-                                  <a
+                                  <Link
                                     className="text-sm font-medium transition-colors hover:text-[#46657a]"
                                     href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                                   >
                                     {topic.name}
-                                  </a>
+                                  </Link>
                                   <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
                                     {topic.attempted >=
                                     minimumReliableSampleSize
@@ -350,12 +370,12 @@ export default function ProgressPage() {
                                       : `${topic.attempted} resposta${topic.attempted === 1 ? '' : 's'} · percentual após 3 questões`}
                                   </p>
                                 </div>
-                                <a
+                                <Link
                                   className="shrink-0 text-sm font-medium text-[#46657a] hover:underline"
                                   href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                                 >
                                   Praticar
-                                </a>
+                                </Link>
                               </div>
                             ))}
                           </div>
@@ -398,13 +418,13 @@ function ReviewSubjectLinks({
   return (
     <div className="disclosure-content flex flex-wrap gap-3 py-2">
       {subjects.map((subject) => (
-        <a
+        <Link
           key={subject.id}
           className="arc-link inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3"
           href={`/questions?subject=${subject.slug}&status=${status}`}
         >
           {subject.name} <ArrowRight className="ml-2 size-4" />
-        </a>
+        </Link>
       ))}
     </div>
   );
@@ -417,7 +437,7 @@ function AttemptRow({
 }: {
   attempt: QuestionAttempt;
   attempts: QuestionAttempt[];
-  catalogue: CatalogueSnapshot | null;
+  catalogue: CatalogueSummary | null;
 }) {
   const question = catalogue?.questions.find(
     (item) => item.id === attempt.questionId,
@@ -427,14 +447,6 @@ function AttemptRow({
   );
   const topic =
     question && catalogue ? getPrimaryTopic(question, catalogue) : undefined;
-  const selectedOptionId =
-    attempt.answer.kind === 'selected_option'
-      ? attempt.answer.selectedOptionId
-      : null;
-  const option =
-    question && selectedOptionId
-      ? question.options.find((item) => item.id === selectedOptionId)
-      : null;
   const status =
     attempt.outcome === 'correct'
       ? 'correct'
@@ -443,7 +455,7 @@ function AttemptRow({
         : 'redo';
 
   return (
-    <a
+    <Link
       className="group block rounded-[var(--arc-radius-card)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]"
       href={
         question && subject
@@ -458,13 +470,12 @@ function AttemptRow({
             {topic ? ` · ${topic.name}` : ''}
           </p>
           <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
-            Tentativa {getAttemptNumber(attempt, attempts)}
-            {option ? ` · alternativa ${option.label}` : ''} ·{' '}
+            Tentativa {getAttemptNumber(attempt, attempts)} ·{' '}
             {formatAttemptDate(attempt.createdAt)}
           </p>
         </div>
         <AttemptStatusBadge status={status} />
       </div>
-    </a>
+    </Link>
   );
 }

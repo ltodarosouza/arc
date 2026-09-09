@@ -2,20 +2,22 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
 import { AnimatedProgressBar } from '@/components/animated-progress-bar';
+import { AnimatedNumber } from '@/components/animated-number';
 import { Reveal } from '@/components/reveal';
 import { FeedbackState } from '@/components/feedback-state';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
-import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
 
 export default function Home() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
-  const { catalogue, isLoading, error } = useCatalogue();
+  const { catalogue, isLoading, error } = useCatalogueSummary();
   const {
     state: learnerState,
     saveSelectedSubjectIds,
@@ -96,47 +98,47 @@ export default function Home() {
                 ))}
               </span>
             </h1>
-            <a className="arc-action group mt-5" href={resumeHref}>
+            <Link className="arc-action group mt-5" href={resumeHref}>
               {resumeSubject
                 ? `Continuar em ${resumeSubject.name}`
                 : selectedSubjects.length
                   ? 'Ir para questões'
                   : 'Escolher disciplinas'}{' '}
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </div>
         </div>
         {progress.completed > 0 && !learnerLoading && (
           <div className="arc-section flex max-w-xl flex-wrap items-center gap-x-10 gap-y-5 border-y border-[var(--border)] py-5">
             <div>
               <p className="text-2xl font-semibold tabular-nums">
-                {progress.completed}
+                <AnimatedNumber value={progress.completed} />
               </p>
               <p className="arc-caption">Questões feitas</p>
             </div>
             <div>
               <p className="text-2xl font-semibold tabular-nums">
-                {progress.correct}
+                <AnimatedNumber value={progress.correct} />
               </p>
               <p className="arc-caption">Acertos</p>
             </div>
-            <a
+            <Link
               href="/progress"
               className="arc-link inline-flex min-h-11 items-center gap-2 text-sm"
             >
               Ver progresso <ArrowRight className="size-4" />
-            </a>
+            </Link>
           </div>
         )}
         <div className="arc-section">
           <div className="flex items-center justify-between gap-4">
             <h2 className="arc-section-title">Minhas disciplinas</h2>
-            <a
+            <Link
               className="text-sm font-medium text-[#46657a] hover:underline"
               href="/subjects"
             >
               Gerenciar
-            </a>
+            </Link>
           </div>
           {isLoading || learnerLoading ? (
             <div
@@ -180,7 +182,7 @@ export default function Home() {
                 return (
                   <Reveal key={subject.id} delay={index * 70} variant="card">
                     <ArcCard className="group relative h-full p-6 hover:-translate-y-0.5 hover:border-[#a8bcbd]">
-                      <a
+                      <Link
                         aria-label={`Abrir ${subject.name}`}
                         className="absolute inset-0 rounded-[var(--arc-radius-card)]"
                         href={`/explore/${subject.slug}`}
@@ -224,12 +226,12 @@ export default function Home() {
               <p className="text-sm text-[var(--arc-text-muted)]">
                 Nenhuma disciplina selecionada.
               </p>
-              <a
+              <Link
                 className="mt-3 inline-flex text-sm font-medium text-[#46657a] hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas
-              </a>
+              </Link>
             </ArcCard>
           )}
         </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import {
+  getCachedPublishedCatalogue,
   loadPublishedCatalogue,
   type CatalogueSnapshot,
 } from '@/lib/data/catalogue-repository';
@@ -14,10 +15,9 @@ type CatalogueState = {
 };
 
 export function useCatalogue(): CatalogueState {
-  const [state, setState] = useState<CatalogueState>({
-    catalogue: null,
-    error: null,
-    isLoading: true,
+  const [state, setState] = useState<CatalogueState>(() => {
+    const catalogue = getCachedPublishedCatalogue();
+    return { catalogue, error: null, isLoading: !catalogue };
   });
 
   useEffect(() => {

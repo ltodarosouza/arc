@@ -8,6 +8,8 @@ import {
   SlidersHorizontal,
   X,
 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { AppShell } from '@/components/app-shell';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
@@ -40,6 +42,7 @@ const selectItemClass =
 const questionsPerPage = 16;
 
 export default function QuestionsPage() {
+  const router = useRouter();
   const [subjectId, setSubjectId] = useState<string | null>(null);
   const [unitId, setUnitId] = useState<string | null>(null);
   const [topicId, setTopicId] = useState<string | null>(null);
@@ -264,7 +267,7 @@ export default function QuestionsPage() {
       questionIds: questions.map((question) => question.id),
       returnPath,
     });
-    window.location.assign(
+    router.push(
       `/practice?subject=${subject?.slug ?? ''}&question=${questionId}&session=${sessionId}`,
     );
   };
@@ -322,9 +325,9 @@ export default function QuestionsPage() {
     <AppShell active="explore">
       <section className="arc-page">
         <div className="flex items-center gap-2 text-sm text-[var(--arc-text-muted)]">
-          <a className="hover:text-[var(--foreground)]" href="/explore">
+          <Link className="hover:text-[var(--foreground)]" href="/explore">
             Questões
-          </a>
+          </Link>
           <ChevronRight className="size-4" />
           <span>{subject.name}</span>
         </div>

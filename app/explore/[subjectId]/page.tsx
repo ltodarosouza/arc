@@ -1,16 +1,17 @@
 'use client';
 
 import { ArrowLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { AppShell } from '@/components/app-shell';
 import { ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
-import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { getTaxonomyBranch } from '@/lib/domain/taxonomy';
 
 export default function SubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>();
-  const { catalogue, isLoading, error } = useCatalogue();
+  const { catalogue, isLoading, error } = useCatalogueSummary();
   const subject = catalogue?.subjects.find(
     (item) => item.id === subjectId || item.slug === subjectId,
   );
@@ -32,12 +33,12 @@ export default function SubjectPage() {
   return (
     <AppShell active="explore">
       <section className="arc-page arc-page--reading">
-        <a
+        <Link
           className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
           href="/explore"
         >
           <ArrowLeft className="size-4" /> Minhas disciplinas
-        </a>
+        </Link>
         <h1 className="arc-title mt-5">{subject?.name ?? 'Disciplina'}</h1>
         {subject && (
           <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
@@ -45,12 +46,12 @@ export default function SubjectPage() {
           </p>
         )}
         {subject && (
-          <a
+          <Link
             className="arc-action mt-6"
             href={`/questions?subject=${subject?.slug ?? subjectId}`}
           >
             Ver todas <ChevronRight className="size-4" />
-          </a>
+          </Link>
         )}
         {isLoading ? (
           <ArcCard className="mt-8 h-56 animate-pulse bg-[var(--arc-surface-subtle)]">
@@ -87,7 +88,7 @@ export default function SubjectPage() {
             </h2>
             <div className="mt-4 divide-y divide-[var(--border)]">
               {units.map((unit) => (
-                <a
+                <Link
                   className="group flex items-center justify-between gap-4 rounded-lg px-3 py-5 transition-colors hover:bg-[var(--arc-surface)]"
                   href={`/questions?subject=${subject?.slug ?? subjectId}&unit=${unit.slug}`}
                   key={unit.id}
@@ -99,7 +100,7 @@ export default function SubjectPage() {
                     </span>
                   </span>
                   <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
-                </a>
+                </Link>
               ))}
             </div>
             {!units.length && (

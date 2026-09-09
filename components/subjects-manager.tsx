@@ -6,13 +6,13 @@ import { Check } from 'lucide-react';
 import { ArcCard } from '@/components/arc-ui';
 import { Reveal } from '@/components/reveal';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
-import { useCatalogue } from '@/lib/data/use-catalogue';
+import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 
 export function SubjectsManager() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
   const selectedSubjectIdsRef = useRef<string[]>([]);
-  const { catalogue, error, isLoading } = useCatalogue();
+  const { catalogue, error, isLoading } = useCatalogueSummary();
   const {
     state: learnerState,
     saveSelectedSubjectIds,
