@@ -30,8 +30,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Escolha $u=x$ e $dv=e^x dx$, logo $du=dx$ e $v=e^x$. Por partes, $\\int xe^x dx=xe^x-\\int e^x dx=e^x(x-1)+C$. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -89,8 +97,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Use $u=\\ln x$ e $dv=dx$, de modo que $du=dx/x$ e $v=x$. A fórmula dá $x\\ln x-\\int 1\\,dx=x\\ln x-x+C$. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -148,8 +164,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Tome $u=x$, $dv=\\cos x\\,dx$. Então $v=\\sin x$. Obtemos $x\\sin x-\\int\\sin x\\,dx=x\\sin x+\\cos x+C$. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -207,8 +231,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Com $u=x$ e $dv=e^{2x}dx$, temos $v=e^{2x}/2$. Subtraia $\\frac12\\int e^{2x}dx$ de $xe^{2x}/2$, obtendo $e^{2x}(x/2-1/4)+C$. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -266,8 +298,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Escolha $u=\\ln x$ e $dv=x\\,dx$, com $v=x^2/2$. O termo restante é $\\frac12\\int x\\,dx=x^2/4$, que deve ser subtraído de $x^2\\ln x/2$. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -325,8 +365,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Uma integração por partes resulta em $x^2e^x-2\\int xe^x dx$. Repita por partes: $\\int xe^x dx=e^x(x-1)$. Substituindo, resulta $e^x(x^2-2x+2)+C$. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -384,8 +432,16 @@
     "explanation": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes. Defina $I=\\int e^x\\sin x dx$. Por partes, $I=e^x\\sin x-\\int e^x\\cos x dx$. A segunda integral é $e^x\\cos x+I$. Logo $2I=e^x(\\sin x-\\cos x)$; divida por dois. Derive a expressão final. Se a derivada não reproduzir o integrando, revise principalmente o sinal do termo subtraído.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe os fatores do produto e identifique qual deles simplifica ao ser derivado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Procure um produto em que derivar um fator o simplifique e integrar o outro seja direto. Esse é o sinal de integração por partes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Antes de calcular, escolha qual fator fica em $u$. Em geral, prefira o fator que fica mais simples quando derivado."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -443,8 +499,16 @@
     "explanation": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador. Decomponha $1/[x(x+1)]=1/x-1/(x+1)$. Integre cada fração: $\\ln|x|-\\ln|x+1|+C$. Os módulos permitem os intervalos admissíveis. Diferencie o resultado e observe o domínio dos logaritmos. Em intervalos que cruzam raízes do denominador, os módulos são importantes.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Compare os graus do numerador e do denominador antes de escolher a decomposição."
+      },
+      {
         "title": "Escolha o método",
         "content": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Compare os graus do numerador e do denominador; se necessário, faça a divisão polinomial antes das frações parciais."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -502,8 +566,16 @@
     "explanation": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador. Busque $A/(x-2)+B/(x+1)$. A identidade $3=A(x+1)+B(x-2)$ dá $A=1$, $B=-1$. Integre as duas parcelas; como $x>2$, os argumentos dos logaritmos são positivos. Diferencie o resultado e observe o domínio dos logaritmos. Em intervalos que cruzam raízes do denominador, os módulos são importantes.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Compare os graus do numerador e do denominador antes de escolher a decomposição."
+      },
+      {
         "title": "Escolha o método",
         "content": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Compare os graus do numerador e do denominador; se necessário, faça a divisão polinomial antes das frações parciais."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -561,8 +633,16 @@
     "explanation": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador. A identidade $2x+3=A(x+1)+Bx$ fornece $A=3$ e $B=-1$. Integre $3/x-1/(x+1)$ para obter $3\\ln x-\\ln(x+1)+C$. Diferencie o resultado e observe o domínio dos logaritmos. Em intervalos que cruzam raízes do denominador, os módulos são importantes.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Compare os graus do numerador e do denominador antes de escolher a decomposição."
+      },
+      {
         "title": "Escolha o método",
         "content": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Compare os graus do numerador e do denominador; se necessário, faça a divisão polinomial antes das frações parciais."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -620,8 +700,16 @@
     "explanation": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador. Fatore $x^2-1=(x-1)(x+1)$. As frações têm coeficientes $1/2$ e $-1/2$. Integre $1/[2(x-1)]-1/[2(x+1)]$, conservando o fator $1/2$. Diferencie o resultado e observe o domínio dos logaritmos. Em intervalos que cruzam raízes do denominador, os módulos são importantes.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Compare os graus do numerador e do denominador antes de escolher a decomposição."
+      },
+      {
         "title": "Escolha o método",
         "content": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Compare os graus do numerador e do denominador; se necessário, faça a divisão polinomial antes das frações parciais."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -679,8 +767,16 @@
     "explanation": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador. O fator repetido exige $A/x+B/(x+1)+D/(x+1)^2$. A identidade dos numeradores dá $A=1$, $B=-1$, $D=-1$. A primitiva de $-(x+1)^{-2}$ é $+(x+1)^{-1}$. Some esse termo aos dois logaritmos. Diferencie o resultado e observe o domínio dos logaritmos. Em intervalos que cruzam raízes do denominador, os módulos são importantes.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Compare os graus do numerador e do denominador antes de escolher a decomposição."
+      },
+      {
         "title": "Escolha o método",
         "content": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Compare os graus do numerador e do denominador; se necessário, faça a divisão polinomial antes das frações parciais."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -738,8 +834,16 @@
     "explanation": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador. Faça primeiro a divisão: $(x^2+1)/(x^2+x)=1+(1-x)/(x(x+1))$. A parte própria é $1/x-2/(x+1)$. Integrando com o termo polinomial, resulta $x+\\ln x-2\\ln(x+1)+C$. Diferencie o resultado e observe o domínio dos logaritmos. Em intervalos que cruzam raízes do denominador, os módulos são importantes.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Compare os graus do numerador e do denominador antes de escolher a decomposição."
+      },
+      {
         "title": "Escolha o método",
         "content": "Transforme a função racional em parcelas mais simples antes de integrar. A decomposição deve ser conferida recompondo o numerador."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Compare os graus do numerador e do denominador; se necessário, faça a divisão polinomial antes das frações parciais."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -797,8 +901,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. Use a identidade $\\sin^2x=(1-\\cos2x)/2$. A primitiva de $\\cos2x$ é $\\sin2x/2$; logo o segundo termo é $-\\sin2x/4$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -856,8 +968,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. Escreva $\\cos^2x=(1+\\cos2x)/2$. Integre termo a termo, incluindo o fator da regra da cadeia: $x/2+\\sin2x/4+C$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -915,8 +1035,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. Separe $\\sin x$ e use $\\sin^2x=1-\\cos^2x$. Com $u=\\cos x$, $du=-\\sin x dx$. Integre $-\\int(1-u^2)du=-u+u^3/3+C$ e retorne a $x$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -974,8 +1102,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. Escreva $\\cos^3x=(1-\\sin^2x)\\cos x$. Use $u=\\sin x$. A integral vira $\\int(1-u^2)du=u-u^3/3+C$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1033,8 +1169,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. A identidade $1+\\tan^2x=\\sec^2x$ fornece $\\tan^2x=\\sec^2x-1$. Integre as parcelas: a primitiva de $\\sec^2x$ é $\\tan x$, resultando $\\tan x-x+C$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1092,8 +1236,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. Use $\\sin x\\cos x=\\sin2x/2$, depois $\\sin^22x=(1-\\cos4x)/2$. O integrando é $(1-\\cos4x)/8$. Integre; a frequência quatro introduz mais um fator $1/4$, dando $x/8-\\sin4x/32+C$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1151,8 +1303,16 @@
     "explanation": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar. Separe $\\sec^2x\\,dx$ e substitua $u=\\tan x$, usando $\\sec^2x=1+\\tan^2x$. Resta $\\int(1+u^2)du=u+u^3/3+C$. Volte a $x$. Derive o resultado usando as mesmas identidades. Preste atenção aos fatores internos, como o $2$ em $\\sin(2x)$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Observe as potências e os fatores trigonométricos presentes antes de aplicar uma identidade."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use identidades trigonométricas para criar uma derivada presente no integrando ou reduzir as potências antes de integrar."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Verifique se há uma potência ímpar de seno ou cosseno que pode ser separada para uma substituição."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1207,8 +1367,16 @@
     "explanation": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva. Substitua o limite infinito por $b$ e use a primitiva $-1/x$. O valor é $\\lim_{b\\to\\infty}(1-1/b)=1$. Confira se o resultado respeita a comparação com integrais de potência, especialmente o limiar $p=1$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Identifique qual extremo é infinito e reescreva a integral como um limite."
+      },
+      {
         "title": "Escolha o método",
         "content": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Troque o extremo infinito por $b$ e escreva o limite quando $b$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1263,8 +1431,16 @@
     "explanation": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva. A primitiva é $-e^{-2x}/2$. Avalie entre $0$ e $b$. Como $e^{-2b}\\to0$, a integral vale $1/2$. Confira se o resultado respeita a comparação com integrais de potência, especialmente o limiar $p=1$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Identifique qual extremo é infinito e reescreva a integral como um limite."
+      },
+      {
         "title": "Escolha o método",
         "content": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Troque o extremo infinito por $b$ e escreva o limite quando $b$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1319,8 +1495,16 @@
     "explanation": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva. Em $[1,b]$, a integral é $\\ln b$. Embora $1/x\\to0$, $\\ln b\\to+\\infty$; portanto a integral diverge. Confira se o resultado respeita a comparação com integrais de potência, especialmente o limiar $p=1$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Identifique qual extremo é infinito e reescreva a integral como um limite."
+      },
+      {
         "title": "Escolha o método",
         "content": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Troque o extremo infinito por $b$ e escreva o limite quando $b$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1375,8 +1559,16 @@
     "explanation": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva. Use a primitiva $-3/x$ em $[2,b]$. O limite de $3/2-3/b$ é $3/2$. Confira se o resultado respeita a comparação com integrais de potência, especialmente o limiar $p=1$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Identifique qual extremo é infinito e reescreva a integral como um limite."
+      },
+      {
         "title": "Escolha o método",
         "content": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Troque o extremo infinito por $b$ e escreva o limite quando $b$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1431,8 +1623,16 @@
     "explanation": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva. Por partes, uma primitiva é $-(\\ln x+1)/x$. Como $\\ln b/b\\to0$, o limite da avaliação entre $1$ e $b$ é $1$. Confira se o resultado respeita a comparação com integrais de potência, especialmente o limiar $p=1$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Identifique qual extremo é infinito e reescreva a integral como um limite."
+      },
+      {
         "title": "Escolha o método",
         "content": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Troque o extremo infinito por $b$ e escreva o limite quando $b$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1487,8 +1687,16 @@
     "explanation": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva. Separe em $0$: ambas as integrais laterais precisam convergir. A primitiva é $\\arctan x$. Cada lado vale $\\pi/2$; somando, o resultado é $\\pi$. Confira se o resultado respeita a comparação com integrais de potência, especialmente o limiar $p=1$.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Identifique qual extremo é infinito e reescreva a integral como um limite."
+      },
+      {
         "title": "Escolha o método",
         "content": "Uma integral imprópria é definida por limite. Nunca substitua um limite infinito diretamente na primitiva."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Troque o extremo infinito por $b$ e escreva o limite quando $b$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1543,8 +1751,16 @@
     "explanation": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes. Use $a>0$ no lugar de zero. A primitiva é $2\\sqrt{x}$. O limite de $2-2\\sqrt a$ quando $a\\to0^+$ é $2$. Teste os limites laterais separadamente. Uma soma só converge se todos os trechos necessários forem finitos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Encontre primeiro os pontos internos em que a expressão não está definida."
+      },
+      {
         "title": "Escolha o método",
         "content": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Localize os pontos em que o denominador zera ou a expressão deixa de estar definida antes de integrar."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1599,8 +1815,16 @@
     "explanation": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes. Em $[a,1]$ a integral é $-\\ln a$. Quando $a\\to0^+$, $-\\ln a\\to+\\infty$. Teste os limites laterais separadamente. Uma soma só converge se todos os trechos necessários forem finitos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Encontre primeiro os pontos internos em que a expressão não está definida."
+      },
+      {
         "title": "Escolha o método",
         "content": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Localize os pontos em que o denominador zera ou a expressão deixa de estar definida antes de integrar."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1655,8 +1879,16 @@
     "explanation": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes. A singularidade fica no limite superior; integre até $b<4$ usando $-2\\sqrt{4-x}$. A avaliação é $4-2\\sqrt{4-b}$, que tende a $4$. Teste os limites laterais separadamente. Uma soma só converge se todos os trechos necessários forem finitos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Encontre primeiro os pontos internos em que a expressão não está definida."
+      },
+      {
         "title": "Escolha o método",
         "content": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Localize os pontos em que o denominador zera ou a expressão deixa de estar definida antes de integrar."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1711,8 +1943,16 @@
     "explanation": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes. Uma primitiva é $x\\ln x-x$. Avalie de $a>0$ até $1$. Como $a\\ln a\\to0$, o resultado é $-1$. Um integrando ilimitado pode ter integral finita. Teste os limites laterais separadamente. Uma soma só converge se todos os trechos necessários forem finitos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Encontre primeiro os pontos internos em que a expressão não está definida."
+      },
+      {
         "title": "Escolha o método",
         "content": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Localize os pontos em que o denominador zera ou a expressão deixa de estar definida antes de integrar."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1767,8 +2007,16 @@
     "explanation": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes. Separe no ponto singular $0$. Por simetria, cada integral lateral equivale a $\\int_0^1x^{-1/2}dx$. Cada lado vale $2$; os limites existem separadamente e a soma é $4$. Teste os limites laterais separadamente. Uma soma só converge se todos os trechos necessários forem finitos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Encontre primeiro os pontos internos em que a expressão não está definida."
+      },
+      {
         "title": "Escolha o método",
         "content": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Localize os pontos em que o denominador zera ou a expressão deixa de estar definida antes de integrar."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1823,8 +2071,16 @@
     "explanation": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes. A integral de $-1$ até $-a$ tende a $-\\infty$, enquanto a de $a$ até $1$ tende a $+\\infty$. Não se pode cancelar infinitos. O valor principal simétrico é zero, mas a integral imprópria usual não existe. Teste os limites laterais separadamente. Uma soma só converge se todos os trechos necessários forem finitos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Encontre primeiro os pontos internos em que a expressão não está definida."
+      },
+      {
         "title": "Escolha o método",
         "content": "Quando o integrando não está definido dentro do intervalo, separe a integral nos pontos problemáticos e calcule limites independentes."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Localize os pontos em que o denominador zera ou a expressão deixa de estar definida antes de integrar."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1877,8 +2133,16 @@
     "explanation": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Divida numerador e denominador por $n$. A razão vira $(3+2/n)/(1+5/n)$ e tende a $3$. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Localize os termos de maior crescimento no numerador e no denominador."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1931,8 +2195,16 @@
     "explanation": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Para $n\\ge1$, temos $0<1/n^2\\le1/n$. Como $1/n\\to0$, o confronto fornece limite zero. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Localize os termos de maior crescimento no numerador e no denominador."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -1985,8 +2257,16 @@
     "explanation": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Racionalize: a diferença é $n/(\\sqrt{n^2+n}+n)$. Divida por $n$, obtendo $1/(\\sqrt{1+1/n}+1)\\to1/2$. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Localize os termos de maior crescimento no numerador e no denominador."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2039,8 +2319,16 @@
     "explanation": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Para $a_n=n/2^n$, a razão $a_{n+1}/a_n=(n+1)/(2n)$ tende a $1/2$. A partir de algum índice, essa razão é menor que $3/4$, permitindo comparação com uma sequência geométrica que tende a zero. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Localize os termos de maior crescimento no numerador e no denominador."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2093,8 +2381,16 @@
     "explanation": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite. Escreva $n\\ln(1+2/n)=2\\,\\ln(1+2/n)/(2/n)$. Use $\\lim_{t\\to0}\\ln(1+t)/t=1$. O limite é $2$, não sua exponencial. Confira se o valor proposto é compatível com alguns termos grandes da sequência; isso ajuda a detectar sinais e coeficientes trocados.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Localize os termos de maior crescimento no numerador e no denominador."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para limites de sequências, exponha o comportamento dominante ou aplique uma transformação que preserve o limite."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Em quocientes de polinômios, divida numerador e denominador pela maior potência de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2148,8 +2444,16 @@
     "explanation": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. A diferença $a_{n+1}-a_n=1/[n(n+1)]$ é positiva. Além disso, $a_n<1$ e $1/n\\to0$, portanto o limite é $1$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva os termos consecutivos que serão comparados e indique o domínio do índice."
+      },
+      {
         "title": "Escolha o método",
         "content": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2203,8 +2507,16 @@
     "explanation": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. A diferença entre termos consecutivos é $-1/[n(n+1)]<0$. A sequência é limitada inferiormente por $2$, e $1/n\\to0$ fornece o limite $2$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva os termos consecutivos que serão comparados e indique o domínio do índice."
+      },
+      {
         "title": "Escolha o método",
         "content": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2258,8 +2570,16 @@
     "explanation": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. Escreva $a_n=1-2/(n+2)$: a parcela subtraída diminui quando $n$ aumenta. Logo $a_n$ cresce e permanece abaixo de $1$. Seu limite é $1$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva os termos consecutivos que serão comparados e indique o domínio do índice."
+      },
+      {
         "title": "Escolha o método",
         "content": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2313,8 +2633,16 @@
     "explanation": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. Racionalize: $a_n=1/(\\sqrt{n+1}+\\sqrt n)$. O denominador é positivo, cresce estritamente e tende a infinito. Portanto os termos decrescem para zero. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva os termos consecutivos que serão comparados e indique o domínio do índice."
+      },
+      {
         "title": "Escolha o método",
         "content": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2368,8 +2696,16 @@
     "explanation": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência. Considere $f(x)=x\\ln(1+1/x)$. Sua derivada é $\\ln(1+1/x)-1/(x+1)>0$, pois $\\ln(1+t)>t/(1+t)$ para $t>0$. Assim $a_n=e^{f(n)}$ cresce. Como $f(n)\\to1$, temos $a_n\\to e$. Verifique o sentido da desigualdade em alguns índices iniciais e confirme que a cota vale para todo índice do domínio.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva os termos consecutivos que serão comparados e indique o domínio do índice."
+      },
+      {
         "title": "Escolha o método",
         "content": "Compare termos consecutivos para decidir monotonicidade e combine essa informação com um limite ou cota para concluir sobre convergência."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva $a_{n+1}-a_n$ ou a razão $a_{n+1}/a_n$; escolha a forma que simplifica melhor."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2423,8 +2759,16 @@
     "explanation": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um. A razão é $1/4$, com módulo menor que um, e o primeiro termo é $1$. A soma é $1/(1-1/4)=4/3$. Compare a soma encontrada com as primeiras somas parciais. Elas devem se aproximar do valor final.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva explicitamente o primeiro termo e a razão entre dois termos consecutivos."
+      },
+      {
         "title": "Escolha o método",
         "content": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Calcule a razão entre dois termos consecutivos; ela deve ser constante em uma série geométrica."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2478,8 +2822,16 @@
     "explanation": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um. O primeiro termo é $1/2$ e a razão é $1/2$. Use primeiro termo dividido por $1-r$: $(1/2)/(1-1/2)=1$. Compare a soma encontrada com as primeiras somas parciais. Elas devem se aproximar do valor final.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva explicitamente o primeiro termo e a razão entre dois termos consecutivos."
+      },
+      {
         "title": "Escolha o método",
         "content": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Calcule a razão entre dois termos consecutivos; ela deve ser constante em uma série geométrica."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2533,8 +2885,16 @@
     "explanation": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um. Apesar dos sinais alternados, $|r|=1/2<1$. A soma é $3/(1+1/2)=2$. Compare a soma encontrada com as primeiras somas parciais. Elas devem se aproximar do valor final.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva explicitamente o primeiro termo e a razão entre dois termos consecutivos."
+      },
+      {
         "title": "Escolha o método",
         "content": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Calcule a razão entre dois termos consecutivos; ela deve ser constante em uma série geométrica."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2588,8 +2948,16 @@
     "explanation": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um. O índice inicial faz o primeiro termo ser $1/9$. Divida por $1-1/3$: $(1/9)/(2/3)=1/6$. Compare a soma encontrada com as primeiras somas parciais. Elas devem se aproximar do valor final.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva explicitamente o primeiro termo e a razão entre dois termos consecutivos."
+      },
+      {
         "title": "Escolha o método",
         "content": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Calcule a razão entre dois termos consecutivos; ela deve ser constante em uma série geométrica."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2643,8 +3011,16 @@
     "explanation": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um. Separe em $2\\sum(2/5)^n+\\sum(1/5)^n$. Ambas as razões têm módulo menor que um. Some $2/(1-2/5)+1/(1-1/5)=10/3+5/4=55/12$. Compare a soma encontrada com as primeiras somas parciais. Elas devem se aproximar do valor final.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva explicitamente o primeiro termo e a razão entre dois termos consecutivos."
+      },
+      {
         "title": "Escolha o método",
         "content": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Calcule a razão entre dois termos consecutivos; ela deve ser constante em uma série geométrica."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2698,8 +3074,16 @@
     "explanation": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um. As duas séries geométricas convergem absolutamente, então podem ser subtraídas. Desde $n=1$, suas somas são $1$ e $1/3$. O resultado é $3\\cdot1-2\\cdot(1/3)=7/3$. Compare a soma encontrada com as primeiras somas parciais. Elas devem se aproximar do valor final.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Escreva explicitamente o primeiro termo e a razão entre dois termos consecutivos."
+      },
+      {
         "title": "Escolha o método",
         "content": "Reconheça o primeiro termo e a razão constante. A fórmula de soma infinita só é válida quando o módulo da razão é menor que um."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Calcule a razão entre dois termos consecutivos; ela deve ser constante em uma série geométrica."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2753,8 +3137,16 @@
     "explanation": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero. A convergência de uma série exige que seu termo geral tenda a zero. Aqui $n/(n+1)\\to1$, violando essa condição necessária. Diga explicitamente qual condição do teste foi usada e por que ela se aplica à série deste enunciado.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Isole o termo geral da série para decidir qual teste pode ser aplicado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva o termo geral $a_n$ e calcule seu limite quando $n$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2808,8 +3200,16 @@
     "explanation": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero. Agrupe os termos em blocos entre potências de dois. Cada bloco após o primeiro soma pelo menos $1/2$. Há infinitos blocos; as somas parciais crescem sem limite. Ter termo geral tendendo a zero não basta. Diga explicitamente qual condição do teste foi usada e por que ela se aplica à série deste enunciado.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Isole o termo geral da série para decidir qual teste pode ser aplicado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva o termo geral $a_n$ e calcule seu limite quando $n$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2863,8 +3263,16 @@
     "explanation": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero. Trata-se de uma série $\\sum n^{-p}$, com $p=3/2$. O critério das séries desse tipo garante convergência quando $p>1$; não determina soma zero. Diga explicitamente qual condição do teste foi usada e por que ela se aplica à série deste enunciado.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Isole o termo geral da série para decidir qual teste pode ser aplicado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva o termo geral $a_n$ e calcule seu limite quando $n$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2918,8 +3326,16 @@
     "explanation": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero. Decomponha $1/[n(n+1)]=1/n-1/(n+1)$. A soma parcial é $1-1/(N+1)$; seu limite é $1$. Diga explicitamente qual condição do teste foi usada e por que ela se aplica à série deste enunciado.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Isole o termo geral da série para decidir qual teste pode ser aplicado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva o termo geral $a_n$ e calcule seu limite quando $n$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -2973,8 +3389,16 @@
     "explanation": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero. Use $1/[n(n+2)]=(1/n-1/(n+2))/2$. Após cancelar os termos, a soma parcial é $(1+1/2-1/(N+1)-1/(N+2))/2$. O limite é $3/4$. Diga explicitamente qual condição do teste foi usada e por que ela se aplica à série deste enunciado.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Isole o termo geral da série para decidir qual teste pode ser aplicado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva o termo geral $a_n$ e calcule seu limite quando $n$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3028,8 +3452,16 @@
     "explanation": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero. A soma dos logaritmos é o logaritmo do produto. Esse produto até $N$ se simplifica para $2(N+1)/(N+2)$. Quando $N\\to\\infty$, o produto tende a $2$, e a soma tende a $\\ln2$. Diga explicitamente qual condição do teste foi usada e por que ela se aplica à série deste enunciado.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Isole o termo geral da série para decidir qual teste pode ser aplicado."
+      },
+      {
         "title": "Escolha o método",
         "content": "Antes de escolher um teste, verifique a condição necessária: os termos da série precisam tender a zero."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva o termo geral $a_n$ e calcule seu limite quando $n$ tende ao infinito."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3084,8 +3516,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. Como $n^2+1\\ge n^2$, o inverso é menor ou igual a $1/n^2$. A série maior é convergente, com $p=2$; a comparação direta conclui. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3140,8 +3580,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. Para $n\\ge1$, $\\sqrt n\\le n$, então $1/\\sqrt n\\ge1/n$. A série menor já diverge; as somas parciais da maior também são ilimitadas. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3196,8 +3644,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $(3n^3+n^2)/(n^3+2)$ e tende a $3$. Esse limite é positivo e finito; as duas séries têm o mesmo comportamento. Como $\\sum1/n^2$ converge, a série proposta também converge. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3252,8 +3708,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $n/\\sqrt{n^2+3n}=1/\\sqrt{1+3/n}\\to1$. A comparação pelo limite com a série harmônica garante divergência, apesar de cada termo ser menor que $1/n$. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3308,8 +3772,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão entre termos consecutivos é $(n+1)/(3n)$. Seu limite é $1/3<1$; a série converge. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3364,8 +3836,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. Usando $(n+1)!=(n+1)n!$, a razão é $2/(n+1)$. Ela tende a zero, menor que um, garantindo convergência. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3420,8 +3900,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $(n+1)/4$. Ela ultrapassa um e tende a infinito; em particular os termos não tendem a zero. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3476,8 +3964,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A razão é $n^2/(n+1)^2\\to1$. O teste da razão não decide nesse caso. Outro critério resolve: a série tem $p=2>1$, logo converge. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3532,8 +4028,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz de ordem $n$ do termo positivo é exatamente $2/5$. Como $2/5<1$, o teste garante convergência. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3588,8 +4092,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz de ordem $n$ cancela a potência, deixando $(n+1)/(3n)$. Esse valor tende a $1/3<1$. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3644,8 +4156,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz de ordem $n$ é $2n/(n+1)$. Seu limite é $2>1$, o que implica divergência. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3700,8 +4220,16 @@
     "explanation": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação. A raiz é $n^{3/n}/2$. Escreva $n^{3/n}=e^{3\\ln n/n}$. Como $\\ln n/n\\to0$, o numerador tende a $1$. O limite é $1/2<1$. Confira se as hipóteses do teste valem, especialmente positividade para comparações e termos não nulos para razão ou raiz.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Classifique o formato do termo geral antes de iniciar qualquer simplificação."
+      },
+      {
         "title": "Escolha o método",
         "content": "Escolha o teste pelo formato do termo geral: razões e fatoriais favorecem razão; raízes em potência favorecem raiz; termos positivos comparáveis favorecem comparação."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva a expressão que o teste pede antes de simplificar, mantendo todos os fatores dependentes de $n$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3754,8 +4282,16 @@
     "explanation": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. Os módulos $1/n$ decrescem para zero; o teste de Leibniz garante convergência. A série dos módulos é a harmônica e diverge. Logo a convergência é condicional. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe o sinal alternado do módulo do termo para estudar as duas partes com clareza."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Ignore temporariamente o sinal alternado e estude o módulo dos termos."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3808,8 +4344,16 @@
     "explanation": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. A série dos módulos é $\\sum1/n^2$, convergente pois $p=2>1$. Convergência absoluta implica convergência da série com sinais. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe o sinal alternado do módulo do termo para estudar as duas partes com clareza."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Ignore temporariamente o sinal alternado e estude o módulo dos termos."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3863,8 +4407,16 @@
     "explanation": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. Os módulos decrescem para zero, satisfazendo as hipóteses do teorema do resto. O erro é no máximo o módulo do primeiro termo omitido: $1/(10+1)=1/11$. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe o sinal alternado do módulo do termo para estudar as duas partes com clareza."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Ignore temporariamente o sinal alternado e estude o módulo dos termos."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3918,8 +4470,16 @@
     "explanation": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. A cota é $1/(N+1)^2$. Exija $1/(N+1)^2\\le1/100$. Temos $N+1\\ge10$, logo $N\\ge9$. Para $N=8$, a cota é $1/81>0{,}01$. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe o sinal alternado do módulo do termo para estudar as duas partes com clareza."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Ignore temporariamente o sinal alternado e estude o módulo dos termos."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -3973,8 +4533,16 @@
     "explanation": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz. Após um número par de termos, o próximo termo é positivo. O resto tem esse sinal. Seu módulo não supera $1/21$. Portanto $0\\le S-S_{20}\\le1/21$. Diferencie convergência condicional de absoluta: examine também a série formada pelos módulos.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Separe o sinal alternado do módulo do termo para estudar as duas partes com clareza."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para uma série alternada, separe o sinal de $b_n$ e verifique se $b_n$ decresce para zero antes de aplicar Leibniz."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Ignore temporariamente o sinal alternado e estude o módulo dos termos."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4032,8 +4600,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. A série é geométrica, de razão $x/3$. A condição $|x/3|<1$ equivale a $|x|<3$, logo $R=3$. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4091,8 +4667,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. A condição geométrica é $|x-2|<4$, isto é, $-2<x<6$. Nos extremos, os termos são $(-1)^n$ ou $1$ e não tendem a zero. Os extremos são excluídos. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4150,8 +4734,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. O teste da razão fornece limite $|x|/2$, pois $(n+1)/n\\to1$. A condição é $|x|<2$, portanto $R=2$. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4209,8 +4801,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. A razão fornece $R=1$. Os extremos precisam de análise separada. Em $x=1$ surge a harmônica divergente. Em $x=-1$ surge uma harmônica alternada convergente. Logo o intervalo é $[-1,1)$. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4268,8 +4868,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. O raio calculado pela razão é $1$. Em ambos os extremos, os módulos formam $\\sum1/n^2$, que converge. Inclua os dois extremos. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4327,8 +4935,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. A razão dá $|x-1|/2<1$, logo $R=2$. Em $x=-1$ temos $\\sum(-1)^n/n$, convergente; em $x=3$, a harmônica diverge. O intervalo é $[-1,3)$. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4383,8 +4999,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. Para cada $x$ fixo, a razão dos módulos é $|x|/(n+1)$. O limite é zero para todo $x$, portanto a série converge em toda a reta e $R=\\infty$. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4439,8 +5063,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. Se $x\\ne0$, a razão dos módulos é $(n+1)|x|\\to\\infty$, causando divergência. Em $x=0$, todos os termos são zero. Só há convergência no centro, então $R=0$. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4498,8 +5130,16 @@
     "explanation": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados. O centro é $-2$ e a razão fornece raio $3$, com interior $(-5,1)$. Nos extremos, os módulos são $1/n^2$ e somam uma série convergente. Ambos pertencem ao intervalo. Não transfira automaticamente o resultado de um extremo para o outro: os sinais podem mudar a convergência.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Destaque a variável que aparece elevada a potências e os coeficientes que a acompanham."
+      },
+      {
         "title": "Escolha o método",
         "content": "Para séries de potências, determine primeiro o raio de convergência; os extremos do intervalo exigem testes separados."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Aplique razão ou raiz ao coeficiente que multiplica a potência de $x$."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4554,8 +5194,16 @@
     "explanation": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem. As derivadas de $e^x$ em zero valem $1$. A fórmula $f(0)+f'(0)x+f''(0)x^2/2!$ dá $1+x+x^2/2$. Confira o termo constante avaliando a aproximação no centro; ele deve coincidir com o valor da função nesse ponto.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Registre o centro da aproximação e as ordens que serão necessárias antes de calcular derivadas."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva os primeiros termos da série ao redor do centro indicado antes de substituir valores."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4610,8 +5258,16 @@
     "explanation": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem. As derivadas de ordem zero a três em zero são $0,1,0,-1$. Dividindo pelos fatoriais, resulta $x-x^3/3!=x-x^3/6$. Confira o termo constante avaliando a aproximação no centro; ele deve coincidir com o valor da função nesse ponto.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Registre o centro da aproximação e as ordens que serão necessárias antes de calcular derivadas."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva os primeiros termos da série ao redor do centro indicado antes de substituir valores."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4666,8 +5322,16 @@
     "explanation": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem. No centro, $f(1)=0$, $f'(1)=1$ e $f''(1)=-1$. Use potências de $x-1$: o polinômio é $(x-1)-(x-1)^2/2$. Confira o termo constante avaliando a aproximação no centro; ele deve coincidir com o valor da função nesse ponto.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Registre o centro da aproximação e as ordens que serão necessárias antes de calcular derivadas."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva os primeiros termos da série ao redor do centro indicado antes de substituir valores."
       },
       {
         "title": "Desenvolva a estratégia",
@@ -4722,8 +5386,16 @@
     "explanation": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem. A série é $1-x^2/2!+x^4/4!-\\cdots$. Para $x=0{,}2$, os módulos decrescem para zero. O resto após o termo quadrático tem módulo no máximo $(1/5)^4/24=1/15000$. Confira o termo constante avaliando a aproximação no centro; ele deve coincidir com o valor da função nesse ponto.",
     "solutionSteps": [
       {
+        "title": "Prepare a leitura",
+        "content": "Registre o centro da aproximação e as ordens que serão necessárias antes de calcular derivadas."
+      },
+      {
         "title": "Escolha o método",
         "content": "Use a série conhecida ou calcule derivadas no centro, mantendo a potência e o fatorial correspondentes a cada ordem."
+      },
+      {
+        "title": "Planeje o cálculo",
+        "content": "Escreva os primeiros termos da série ao redor do centro indicado antes de substituir valores."
       },
       {
         "title": "Desenvolva a estratégia",

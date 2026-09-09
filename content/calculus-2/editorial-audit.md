@@ -4,5 +4,5 @@ Esta auditoria verifica o mínimo obrigatório para o lote: enunciado e alternat
 
 - Questões auditadas: **84**
 - Dicas progressivas: **168**
-- Passos de resolução: **336**
+- Passos de resolução: **504**
 - Estado editorial: **rascunho; revisão independente pendente**

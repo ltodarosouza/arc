@@ -93,8 +93,8 @@ for (const [issue, count] of [
     assert.equal(new Set(item.options).size, 4);
     assert(item.hints.length >= 2, `${issue}/${index} requires two hints`);
     assert(
-      item.solutionSteps.length >= 3,
-      `${issue}/${index} requires three steps`,
+      item.solutionSteps.length >= 5,
+      `${issue}/${index} requires five steps`,
     );
     assert(
       item.explanation.length >= 180,
@@ -164,5 +164,5 @@ qualityReport.push(
 );
 output('content/calculus-2/editorial-audit.md', qualityReport.join('\n'));
 console.log(
-  '84 original drafts; 336 alternatives; 168 hints; all mathematical markup renders in KaTeX.',
+  `${all.length} original drafts; ${all.length * 4} alternatives; ${all.length * 2} hints; ${all.reduce((total, item) => total + item.solutionSteps.length, 0)} solution steps; all mathematical markup renders in KaTeX.`,
 );

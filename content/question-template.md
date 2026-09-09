@@ -65,13 +65,17 @@ resolution.
 Write a self-contained explanation that teaches the method, not only the
 answer. State why the chosen method applies, show the transformation or
 calculation, and include a final check or interpretation. A resolution must
-have at least three meaningful steps (four for hard questions); headings should
-describe the student's goal in that step.
+have at least five meaningful steps, independent of difficulty; headings should
+describe the student's goal in that step. Use a progression such as preparing
+the data, choosing a method, developing it, carrying out the calculation, and
+checking or interpreting the result. Do not split one algebraic line into
+artificial micro-steps merely to reach the minimum.
 
-1. Recognize the method and justify it.
-2. Carry out the first transformation.
-3. Complete the calculation and connect it to the correct alternative.
-4. Check the result, domain, sign, units, or limiting case when applicable.
+1. Prepare the data, notation, domain, or structure that will be used.
+2. Recognize the method and justify why it applies.
+3. Carry out the first transformation.
+4. Complete the calculation and connect it to the correct alternative.
+5. Check the result, domain, sign, units, or limiting case when applicable.
 
 ## Author checklist
 
