@@ -1257,7 +1257,176 @@ const batch07 = [
   ...linePlaneAngles,
 ];
 
+const quadricExplanation =
+  'Quádricas são superfícies descritas por equações de segundo grau em três variáveis. A forma algébrica revela a geometria: três quadrados somados descrevem uma esfera ou elipsoide, enquanto uma variável ausente indica que a curva do plano se prolonga naquela direção.';
+const sphereClassification = parameters.map((n) =>
+  item({
+    topic: 'classificacao-de-quadricas',
+    difficulty: 'easy',
+    statement:
+      'A equação ' +
+      math('(x-' + n + ')^2+(y+1)^2+(z-2)^2=' + (n + 3) ** 2) +
+      ' descreve qual superfície?',
+    options: [
+      'Uma esfera.',
+      'Um plano.',
+      'Um paraboloide elíptico.',
+      'Um cilindro circular.',
+    ],
+    correct: 0,
+    hints: [
+      'Compare a equação com a distância ao quadrado de um ponto fixo.',
+      'Os três termos quadráticos têm o mesmo sinal e sua soma é uma constante positiva.',
+    ],
+    finalAnswer: 'Uma esfera.',
+    explanation: quadricExplanation,
+    steps: [
+      ['Reconheça o padrão', 'Há três quadrados de diferenças de coordenadas.'],
+      ['Compare com a forma padrão', math('(x-a)^2+(y-b)^2+(z-c)^2=r^2.')],
+      ['Conclua', 'Essa é exatamente a equação de uma esfera.'],
+    ],
+  }),
+);
+const sphereCenters = parameters.map((n) =>
+  item({
+    topic: 'classificacao-de-quadricas',
+    difficulty: 'medium',
+    statement:
+      'Determine o centro da esfera ' +
+      math('(x-' + n + ')^2+(y+1)^2+(z-2)^2=9') +
+      '.',
+    options: [
+      math(vector([n, -1, 2])),
+      math(vector([-n, 1, -2])),
+      math(vector([n, 1, 2])),
+      math(vector([n, -1, -2])),
+    ],
+    correct: 0,
+    hints: [
+      'Na forma x menos a, a coordenada central é a.',
+      'Escreva y mais 1 como y menos menos 1.',
+    ],
+    finalAnswer: math('C=' + vector([n, -1, 2])) + '.',
+    explanation: quadricExplanation,
+    steps: [
+      ['Compare o termo x', math('x-' + n + ' indica a=' + n + '.')],
+      ['Observe os sinais', math('y+1=y-(-1) e z-2=z-2.')],
+      ['Monte o centro', math('C=' + vector([n, -1, 2]) + '.')],
+    ],
+  }),
+);
+const ellipsoidClassification = parameters.map((n) =>
+  item({
+    topic: 'classificacao-de-quadricas',
+    difficulty: 'medium',
+    statement:
+      'Classifique a superfície ' +
+      math(
+        'x^2/' +
+          (n + 1) ** 2 +
+          '+y^2/' +
+          (n + 2) ** 2 +
+          '+z^2/' +
+          (n + 3) ** 2 +
+          '=1',
+      ) +
+      '.',
+    options: [
+      'Um elipsoide.',
+      'Um cone duplo.',
+      'Um hiperboloide de uma folha.',
+      'Um cilindro elíptico.',
+    ],
+    correct: 0,
+    hints: [
+      'As três variáveis aparecem ao quadrado com sinal positivo.',
+      'Não há variável ausente e o lado direito é 1.',
+    ],
+    finalAnswer: 'Um elipsoide.',
+    explanation: quadricExplanation,
+    steps: [
+      ['Observe os sinais', 'Os três termos quadráticos são positivos.'],
+      [
+        'Observe as variáveis',
+        'x, y e z aparecem; portanto, a superfície não se prolonga como um cilindro.',
+      ],
+      [
+        'Classifique',
+        'A soma de três quadrados normalizados igual a 1 define um elipsoide.',
+      ],
+    ],
+  }),
+);
+const cylinderAxes = parameters.map((n) =>
+  item({
+    topic: 'classificacao-de-quadricas',
+    difficulty: 'easy',
+    statement:
+      'Qual é o eixo do cilindro dado por ' +
+      math('x^2+y^2=' + (n + 2) ** 2) +
+      '?',
+    options: ['O eixo z.', 'O eixo x.', 'O eixo y.', 'A reta x igual a y.'],
+    correct: 0,
+    hints: [
+      'Identifique qual coordenada não aparece na equação.',
+      'A curva x ao quadrado mais y ao quadrado constante é um círculo em cada altura z.',
+    ],
+    finalAnswer: 'O eixo z.',
+    explanation: quadricExplanation,
+    steps: [
+      ['Localize a variável ausente', 'A coordenada z não ocorre na equação.'],
+      [
+        'Interprete uma seção',
+        'Para cada valor de z, x e y formam o mesmo círculo.',
+      ],
+      ['Conclua', 'Os círculos se empilham paralelamente ao eixo z.'],
+    ],
+  }),
+);
+const paraboloidClassification = parameters.map((n) =>
+  item({
+    topic: 'classificacao-de-quadricas',
+    difficulty: 'hard',
+    statement:
+      'Classifique a superfície ' +
+      math('z=x^2/' + (n + 1) + '+y^2/' + (n + 2)) +
+      '.',
+    options: [
+      'Um paraboloide elíptico aberto para cima.',
+      'Um hiperboloide de duas folhas.',
+      'Um plano inclinado.',
+      'Uma esfera.',
+    ],
+    correct: 0,
+    hints: [
+      'A variável z aparece de primeiro grau isolada.',
+      'Os termos x ao quadrado e y ao quadrado são não negativos.',
+    ],
+    finalAnswer: 'Um paraboloide elíptico aberto para cima.',
+    explanation: quadricExplanation,
+    steps: [
+      [
+        'Examine os quadrados',
+        'As parcelas que dependem de x e y nunca são negativas.',
+      ],
+      ['Encontre o vértice', math('x=0 e y=0 fornecem z=0.')],
+      [
+        'Conclua',
+        'As seções horizontais crescem como elipses; a superfície abre no sentido positivo de z.',
+      ],
+    ],
+  }),
+);
+const batch08 = [
+  ...sphereClassification,
+  ...sphereCenters,
+  ...ellipsoidClassification,
+  ...cylinderAxes,
+  ...paraboloidClassification,
+];
+
 export function createVectorBatch(number) {
+  if (number === '08') return batch08;
   if (number === '07') return batch07;
   if (number === '06') return batch06;
   if (number === '05') return batch05;
