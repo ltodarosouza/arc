@@ -103,6 +103,7 @@ const texCommands = [
   'circ',
   'big',
   'Rightarrow',
+  'prime',
 ];
 const normalizeMath = (text) =>
   text.replace(/\$([^$]+)\$/g, (_, source) => {
@@ -113,7 +114,7 @@ const normalizeMath = (text) =>
     for (const command of texCommands) {
       math = math.replace(
         new RegExp(`(?<![A-Za-z\\\\])${command}(?![A-Za-z])`, 'g'),
-        `\\\\${command}`,
+        `\\${command}`,
       );
     }
     return `$${math}$`;

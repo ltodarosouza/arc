@@ -20,7 +20,7 @@ do $$
 declare amount integer;
 begin
   select count(*) into amount from public.questions where source_id between
-    '10000000-0000-4000-8000-000000000062' and '10000000-0000-4000-8000-000000000068')
+    '10000000-0000-4000-8000-000000000062' and '10000000-0000-4000-8000-000000000068'
   ;
   if amount<>84 then raise exception 'Reviewed public content is not visible to anonymous visitors: got %', amount; end if;
 end $$;
