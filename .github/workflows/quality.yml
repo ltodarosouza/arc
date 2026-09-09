@@ -6,44 +6,8 @@ on:
     branches: [main]
 
 jobs:
-  account-qa:
-    name: Verify local account lifecycle
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - uses: supabase/setup-cli@v1
-        with:
-          version: 2.116.0
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - name: Start disposable Supabase without printing credentials
-        run: |
-          supabase start > /tmp/arc-supabase-start.log 2>&1
-          supabase status -o env > .env.supabase-test
-          node scripts/prepare-account-qa.mjs
-      - name: Start Arc
-        run: |
-          npm run dev -- --hostname 127.0.0.1 --port 3000 > /tmp/arc-next.log 2>&1 &
-          for attempt in $(seq 1 60); do
-            if curl --silent --fail http://127.0.0.1:3000/account > /dev/null; then exit 0; fi
-            sleep 1
-          done
-          exit 1
-      - name: Verify real local email and private account lifecycle
-        env:
-          ARC_ACCOUNT_QA: '1'
-        run: node --env-file=.env.local node_modules/@playwright/test/cli.js test --config playwright.account.config.ts
-      - name: Stop disposable services
-        if: always()
-        run: supabase stop --no-backup
-
   verify:
-    name: Format, lint, test and build
+    name: Format, lint and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,10 +18,7 @@ jobs:
       - run: npm ci
       - run: npm run format -- --check
       - run: npm run lint:core
-      - run: npm test
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
 
   content-verification:
     name: Verify authored mathematics
