@@ -12,6 +12,7 @@ export function normalizeMath(markdown) {
       .replaceAll('\n', '\\n')
       .replaceAll('\r', '\\r')
       .replaceAll('mathbb Rsetminus', '\\mathbb R\\setminus')
+      .replaceAll('\\mathbb R', '\\mathbb{R}')
       .replace(/([a-zA-Z0-9])circ(?=\s)/g, '$1\\circ')
       .replace(/toinfty/g, 'to\\infty')
       .replace(/xln(?=\d|\s|[)}])/g, 'x\\ln')
@@ -50,9 +51,8 @@ export function q(id, difficulty, focus, statement, answer, distractors, princip
   const orderedOptions = options.map((_, index) => options[(index - rotation + 4) % 4]);
   const correct = orderedOptions.indexOf(normalizedAnswer);
   const elimination = normalizedDistractors
-    .map((distractor, index) => {
-      const reasons = [normalizedAction, normalizedPrinciple, normalizedCheck];
-      return `A opção “${distractor}” é descartada porque ${reasons[index].charAt(0).toLowerCase()}${reasons[index].slice(1)}`;
+    .map((distractor) => {
+      return `A alternativa ${distractor} não corresponde à conclusão obtida ao aplicar o critério: ${normalizedPrinciple}`;
     })
     .join(' ');
 

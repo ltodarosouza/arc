@@ -23,6 +23,8 @@ for (const question of bank) {
     throw new Error(`Distrator genérico: ${question.id}`);
   if (/demais opções representam erros|O problema pede:|A ideia decisiva/i.test(text))
     throw new Error(`Solução-modelo genérica: ${question.id}`);
+  if (/A opção .+ é descartada porque/i.test(text))
+    throw new Error(`Eliminação de distrator incoerente: ${question.id}`);
   if (/Resolva \$\d+\^x\s*=/i.test(question.statement))
     throw new Error(`Treino algébrico isolado: ${question.id}`);
   if (question.id.startsWith('c1-r04-') && question.options.filter((_, index) => index !== question.correct).some((option) => /A própria função|^\$x\$$|^\$0\$$/.test(option)))
