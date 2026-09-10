@@ -80,8 +80,7 @@ export default function Home() {
       <section className="arc-page">
         <HeroSurface>
           <div className="relative z-10">
-            <p className="arc-hero-kicker">Seu espaço de prática</p>
-            <h1 aria-label="O que vamos praticar?" className="arc-title mt-4">
+            <h1 aria-label="O que vamos praticar?" className="arc-title">
               <span aria-hidden="true">
                 {[...'O que vamos praticar?'].map((letter, index) => (
                   <span
@@ -94,10 +93,10 @@ export default function Home() {
                 ))}
               </span>
             </h1>
-            <p className="arc-hero-copy mt-5 text-[15px] leading-6 sm:text-base">
-              Uma questão de cada vez, com clareza para construir o seu ritmo.
-            </p>
-            <Link className="arc-action group mt-7" href={resumeHref}>
+            <Link
+              className="arc-action arc-continue group mt-7"
+              href={resumeHref}
+            >
               {resumeSubject
                 ? `Continuar em ${resumeSubject.name}`
                 : selectedSubjects.length
@@ -107,42 +106,19 @@ export default function Home() {
             </Link>
           </div>
         </HeroSurface>
-        <div className="arc-home-overview arc-section">
-          <div className="arc-metrics-rail">
-            <div>
-              <p className="arc-metric text-[var(--foreground)]">
-                <AnimatedNumber
-                  value={learnerLoading ? 0 : progress.completed}
-                />
-              </p>
-              <p className="arc-caption">Questões feitas</p>
-            </div>
-            <div>
-              <p className="arc-metric text-[var(--arc-success-text)]">
-                <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
-              </p>
-              <p className="arc-caption">Acertos</p>
-            </div>
-            <Link
-              href="/progress"
-              className="arc-link inline-flex min-h-11 items-center gap-2 text-sm"
-            >
-              Ver progresso <ArrowRight className="size-4" />
-            </Link>
+        <div className="arc-simple-metrics arc-section">
+          <div>
+            <p className="arc-metric text-[var(--foreground)]">
+              <AnimatedNumber value={learnerLoading ? 0 : progress.completed} />
+            </p>
+            <p className="arc-caption">Questões feitas</p>
           </div>
-          <ArcCard className="arc-next-step">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/60">
-              Próximo passo
+          <div>
+            <p className="arc-metric text-[var(--arc-success-text)]">
+              <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
             </p>
-            <p className="mt-3 max-w-[15rem] font-[var(--font-arc-display)] text-2xl leading-tight tracking-[-0.04em]">
-              {resumeSubject
-                ? `Retome ${resumeSubject.name}.`
-                : 'Escolha uma frente para começar.'}
-            </p>
-            <Link className="arc-action mt-5" href={resumeHref}>
-              Continuar <ArrowRight className="size-4" />
-            </Link>
-          </ArcCard>
+            <p className="arc-caption">Acertos</p>
+          </div>
         </div>
         <div className="arc-home-subjects arc-section">
           <div className="flex items-end justify-between gap-4">

@@ -250,11 +250,6 @@ export default function QuestionsPage() {
       });
     }
   };
-  const startRandomQuestion = () => {
-    const question = questions[Math.floor(Math.random() * questions.length)];
-    if (!question) return;
-    startPractice(question.id);
-  };
   const startPractice = (questionId: string) => {
     const returnPath = `${window.location.pathname}${window.location.search}`;
     const sessionId = createPracticeSession({
@@ -325,7 +320,7 @@ export default function QuestionsPage() {
           <ChevronRight className="size-4" />
           <span>{subject.name}</span>
         </div>
-        <div className="arc-page-intro mt-5">
+        <div className="mt-5 max-w-2xl">
           <div>
             <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
               {subject.name}
@@ -334,17 +329,6 @@ export default function QuestionsPage() {
             <p className="mt-3 text-[15px] text-[var(--arc-text-muted)]">
               {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
             </p>
-          </div>
-          <div className="arc-page-intro-action">
-            <p className="arc-caption">Sem escolher por onde começar?</p>
-            <button
-              className="arc-action mt-3"
-              disabled={!questions.length}
-              onClick={startRandomQuestion}
-              type="button"
-            >
-              Praticar uma questão <ArrowRight className="size-4" />
-            </button>
           </div>
         </div>
         <ArcCard className="arc-panel mt-8 p-4 sm:p-5">
@@ -573,8 +557,17 @@ export default function QuestionsPage() {
               return (
                 <Reveal delay={(index % 5) * 45} key={question.id}>
                   <div>
-                    <ArcCard className="arc-question-card p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
+                    <ArcCard className="arc-question-card relative p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6">
+                      <Link
+                        aria-label={`Abrir questão ${questionIndex + 1}`}
+                        className="absolute inset-0 z-0 rounded-[var(--arc-radius-card)]"
+                        href={`/practice?subject=${subject.slug}&question=${question.id}`}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          startPractice(question.id);
+                        }}
+                      />
+                      <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
                         <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
                           <span>
                             Questão {String(questionIndex + 1).padStart(2, '0')}
@@ -591,10 +584,10 @@ export default function QuestionsPage() {
                           <AttemptStatusBadge status={displayStatus} />
                         )}
                       </div>
-                      <div className="mt-4 max-w-3xl text-base font-medium leading-8">
+                      <div className="relative z-10 mt-4 max-w-3xl text-base font-medium leading-8">
                         <MathContent value={question.statement.value} />
                       </div>
-                      <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+                      <div className="relative z-10 mt-5 flex flex-wrap items-center justify-between gap-4">
                         <div className="flex flex-wrap gap-2">
                           {topicNames.map((name) => (
                             <span

@@ -304,6 +304,65 @@ body {
 .arc-hero .arc-action:hover {
   background: #dce9ff;
 }
+.arc-hero {
+  min-height: 0;
+  display: block;
+  overflow: visible;
+  padding: clamp(1rem, 3vw, 2rem) 0;
+  color: var(--foreground);
+  background: transparent;
+  box-shadow: none;
+}
+.arc-hero::before,
+.arc-hero::after {
+  display: none;
+}
+.arc-hero .arc-title {
+  max-width: 14ch;
+  font-size: clamp(2.7rem, 6vw, 4.8rem);
+}
+.arc-hero .arc-action {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+.arc-hero .arc-action:hover {
+  background: color-mix(in srgb, var(--primary) 86%, var(--arc-accent-strong));
+}
+.arc-continue {
+  position: relative;
+  overflow: hidden;
+}
+.arc-continue::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 -45%;
+  width: 28%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.34),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: translate 480ms var(--arc-ease);
+}
+.arc-continue:hover::after {
+  translate: 560% 0;
+}
+.arc-simple-metrics {
+  display: flex;
+  gap: clamp(2.5rem, 8vw, 5.5rem);
+  align-items: center;
+  padding: 0.25rem 0;
+}
+.arc-simple-metrics > div {
+  min-width: 7rem;
+}
+.arc-review-strip {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
 .arc-metrics-rail {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -510,6 +569,12 @@ body {
 }
 .arc-option--incorrect {
   border-color: var(--arc-error-border);
+  background: var(--arc-error-bg);
+}
+.arc-option--correct:hover {
+  background: var(--arc-success-bg);
+}
+.arc-option--incorrect:hover {
   background: var(--arc-error-bg);
 }
 .arc-solution {

@@ -84,9 +84,6 @@ export default function ExplorePage() {
       <section className="arc-page">
         <div className="animate-enter max-w-2xl">
           <div>
-            <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
-              Seu catálogo
-            </p>
             <h1 className="arc-title">Questões</h1>
             <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
               Escolha uma disciplina para começar.

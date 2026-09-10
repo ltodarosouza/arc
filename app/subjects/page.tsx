@@ -6,7 +6,6 @@ export default function SubjectsPage() {
     <AppShell active="subjects">
       <section className="arc-page arc-page--reading">
         <div className="animate-enter max-w-xl">
-          <p className="arc-caption">Sua biblioteca particular</p>
           <h1 className="arc-title">Minhas disciplinas</h1>
           <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
             Escolha o que aparece no Início e em Questões.

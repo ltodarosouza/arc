@@ -177,9 +177,6 @@ export default function ProgressPage() {
     <AppShell active="progress">
       <section className="arc-page arc-page--reading">
         <div className="animate-enter">
-          <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
-            Seu ritmo, visível
-          </p>
           <h1 className="arc-title">Seu progresso</h1>
           <p className="mt-3 max-w-lg text-[15px] leading-6 text-[var(--arc-text-muted)]">
             Cada questão conta uma vez. Ao refazer, o resultado mais recente
@@ -209,7 +206,7 @@ export default function ProgressPage() {
           />
         ) : (
           <>
-            <dl className="arc-metrics-rail arc-section grid-cols-2 sm:grid-cols-5">
+            <dl className="arc-section grid grid-cols-2 gap-x-6 gap-y-7 border-y border-[var(--border)] py-6 sm:grid-cols-5">
               {[
                 {
                   label: 'Questões feitas',
@@ -260,25 +257,29 @@ export default function ProgressPage() {
               ))}
             </dl>
             {subjectsWithErrors.length > 0 && (
-              <details className="arc-disclosure mt-3 text-sm">
-                <summary className="arc-link inline-flex min-h-11 items-center gap-2">
-                  Revisar erros{' '}
-                  <ChevronDown className="disclosure-icon size-4" />
-                </summary>
+              <section className="arc-review-strip mt-5">
+                <div>
+                  <p className="font-medium">Erros para revisar</p>
+                  <p className="arc-caption mt-1">
+                    Retome os pontos que ainda pedem atenção.
+                  </p>
+                </div>
                 <ReviewSubjectLinks
                   subjects={subjectsWithErrors}
                   status="incorrect"
                 />
-              </details>
+              </section>
             )}
             {redoCount > 0 && (
-              <details className="arc-disclosure mt-3 text-sm">
-                <summary className="arc-link inline-flex min-h-11 items-center gap-2">
-                  Abrir revisão{' '}
-                  <ChevronDown className="disclosure-icon size-4" />
-                </summary>
+              <section className="arc-review-strip mt-3">
+                <div>
+                  <p className="font-medium">Questões marcadas para refazer</p>
+                  <p className="arc-caption mt-1">
+                    Sua seleção pessoal para praticar mais uma vez.
+                  </p>
+                </div>
                 <ReviewSubjectLinks subjects={subjectsToRedo} status="redo" />
-              </details>
+              </section>
             )}
             {summary.answered > 0 && <ProgressChart attempts={attempts} />}
             {!summary.answered && (
@@ -419,11 +420,11 @@ function ReviewSubjectLinks({
   status: 'incorrect' | 'redo';
 }) {
   return (
-    <div className="disclosure-content flex flex-wrap gap-3 py-2">
+    <div className="flex flex-wrap gap-2 pt-4">
       {subjects.map((subject) => (
         <Link
           key={subject.id}
-          className="arc-link inline-flex min-h-11 items-center rounded-lg border border-[var(--border)] px-3"
+          className="arc-link inline-flex min-h-11 items-center rounded-full border border-[var(--border)] bg-[var(--arc-surface)] px-4 hover:bg-[var(--arc-accent)]"
           href={`/questions?subject=${subject.slug}&status=${status}`}
         >
           {subject.name} <ArrowRight className="ml-2 size-4" />
