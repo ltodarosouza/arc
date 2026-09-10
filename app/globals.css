@@ -295,7 +295,7 @@ body {
   translate: 560% 0;
 }
 .arc-hero-headline {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-arc-display), Georgia, serif;
   font-size: clamp(2.25rem, 6vw, 5rem);
   line-height: 0.98;
   letter-spacing: -0.055em;
@@ -306,7 +306,7 @@ body {
   display: block;
 }
 .arc-stat-figure {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-arc-display), Georgia, serif;
   font-variant-numeric: tabular-nums;
   font-size: clamp(2.25rem, 5vw, 3.75rem);
   line-height: 0.95;
