@@ -31,7 +31,13 @@ export default function Home() {
     saveSelectedSubjectIds,
     isLoading: learnerLoading,
   } = useLearnerState();
-  const { dailyGoal, setDailyGoal } = useDailyGoal();
+  const {
+    dailyGoal,
+    setDailyGoal,
+    isLoading: dailyGoalLoading,
+  } = useDailyGoal();
+  const heroReady =
+    !isLoading && !learnerLoading && !dailyGoalLoading && Boolean(learnerState);
 
   useEffect(() => {
     if (!catalogue) return;
@@ -155,49 +161,67 @@ export default function Home() {
   return (
     <AppShell active="home">
       <section className="arc-page">
-        <div className="animate-enter">
-          <p className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-strong uppercase">
-            {weekday}
-          </p>
-          <h1 className="arc-hero-headline mt-3">
-            <span className="animate-rise">{heroCopy.line1}</span>
-            <span
-              className="animate-rise"
-              style={{
-                animationDelay: '90ms',
-                fontStyle: heroCopy.italic ? 'italic' : 'normal',
-              }}
-            >
-              {heroCopy.line2}
-            </span>
-          </h1>
-          <div
-            className="animate-rise mt-8 flex flex-wrap items-center gap-3"
-            style={{ animationDelay: '180ms' }}
-          >
-            <Link
-              className="arc-action arc-continue group relative"
-              href={resumeHref}
-            >
-              {hasStarted ? 'Continuar de onde parei' : 'Começar a praticar'}
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
-            <DailyGoalDialog dailyGoal={dailyGoal} onChange={setDailyGoal} />
-          </div>
-          {hasStarted && resumeSubject ? (
-            <p
-              className="animate-rise mt-6 max-w-md text-sm leading-6 text-muted-foreground"
-              style={{ animationDelay: '230ms' }}
-            >
-              Última parada:{' '}
-              <span className="font-medium text-foreground">
-                {resumeSubject.name}
-              </span>
-              . Você acertou {recentCorrect} das últimas {recentAttempts.length}{' '}
-              questões.
+        {heroReady ? (
+          <div className="animate-enter">
+            <p className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-strong uppercase">
+              {weekday}
             </p>
-          ) : null}
-        </div>
+            <h1 className="arc-hero-headline mt-3">
+              <span className="animate-rise">{heroCopy.line1}</span>
+              <span
+                className="animate-rise"
+                style={{
+                  animationDelay: '90ms',
+                  fontStyle: heroCopy.italic ? 'italic' : 'normal',
+                }}
+              >
+                {heroCopy.line2}
+              </span>
+            </h1>
+            <div
+              className="animate-rise mt-8 flex flex-wrap items-center gap-3"
+              style={{ animationDelay: '180ms' }}
+            >
+              <Link
+                className="arc-action arc-continue group relative"
+                href={resumeHref}
+              >
+                {hasStarted ? 'Continuar de onde parei' : 'Começar a praticar'}
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </Link>
+              <DailyGoalDialog dailyGoal={dailyGoal} onChange={setDailyGoal} />
+            </div>
+            {hasStarted && resumeSubject ? (
+              <p
+                className="animate-rise mt-6 max-w-md text-sm leading-6 text-muted-foreground"
+                style={{ animationDelay: '230ms' }}
+              >
+                Última parada:{' '}
+                <span className="font-medium text-foreground">
+                  {resumeSubject.name}
+                </span>
+                . Você acertou {recentCorrect} das últimas{' '}
+                {recentAttempts.length} questões.
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <div
+            aria-busy="true"
+            aria-label="Carregando"
+            className="animate-pulse"
+          >
+            <div className="h-3 w-24 rounded-full bg-surface-subtle" />
+            <div className="mt-4 grid gap-3">
+              <div className="h-[clamp(2.25rem,6vw,4.75rem)] w-[70%] rounded-xl bg-surface-subtle" />
+              <div className="h-[clamp(2.25rem,6vw,4.75rem)] w-[88%] rounded-xl bg-surface-subtle" />
+            </div>
+            <div className="mt-8 flex gap-3">
+              <div className="h-11 w-56 rounded-full bg-surface-subtle" />
+              <div className="h-11 w-44 rounded-full bg-surface-subtle" />
+            </div>
+          </div>
+        )}
 
         <Section
           action={
