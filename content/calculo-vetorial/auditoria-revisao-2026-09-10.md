@@ -60,9 +60,23 @@ também dão, em alguns casos, a conta completa; por exemplo, norma, produto
 escalar e versor. Portanto, elas são específicas ao conteúdo, mas nem sempre
 preservam a progressão sem revelar demais.
 
-Conclusão: a estrutura e os vínculos estão validados, mas uma revisão editorial
-integral das 136 questões restantes ainda exigirá reescrever individualmente
-dicas, explicações e passos — não apenas trocar seus títulos.
+Essa passagem diagnosticou a necessidade de revisão individual, executada nas
+migrations complementares descritas a seguir.
+
+## Conclusão da revisão
+
+As migrations `20260910163000` a `20260910168000` fazem a passagem individual
+dos sete blocos preservados. Questões antigas de aplicação direta foram
+reclassificadas como fáceis ou médias; nenhuma delas permanece artificialmente
+como difícil. A migration final acrescenta 15 itens difíceis autorais, com
+parâmetros, combinação de conceitos, interpretação espacial, cinco passos e
+verificação própria. O banco final contém 151 questões publicadas: 136
+preservadas e 15 novas difíceis.
+
+O PDF *Geometria Analítica*, de Alfredo Steinbruch e Paulo Winterle, foi usado
+somente para mapear a progressão entre vetores, produtos, retas, planos,
+métricas e quádricas. Nenhum enunciado, sequência numérica ou solução do livro
+foi copiado ou parafraseado.
 
 ## Validação
 

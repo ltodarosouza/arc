@@ -8,6 +8,8 @@ const files = readdirSync(migrationDir)
   .sort();
 const correction = readFileSync(resolve(migrationDir, '20260910160000_review_vector_calculus_bank.sql'), 'utf8');
 const deletion = readFileSync(resolve(migrationDir, '20260910161000_delete_duplicate_vector_calculus_questions.sql'), 'utf8');
+const finalMigration = readFileSync(resolve(migrationDir, '20260910168000_finish_vector_calculus_review.sql'), 'utf8');
+const hardQuestions = JSON.parse(finalMigration.split('$json$')[1].replaceAll('\\', '\\\\'));
 const source = files.map((name) => readFileSync(resolve(migrationDir, name), 'utf8')).join('\n');
 const fail = (message) => { throw new Error(message); };
 const questionStarts = [...source.matchAll(/insert into public\.questions[^;]+?values \('([^']+)'/g)];
@@ -52,10 +54,20 @@ for (const phrase of ['Identifique a grandeza', 'Aplique a definição', 'Obtenh
   if (!correction.includes(`step.title in`) || !correction.includes(`'${phrase}'`)) fail(`Cabeçalho-modelo não tratado: ${phrase}`);
 if (!deletion.includes('delete from public.question_attempts') || !deletion.includes('delete from public.questions'))
   fail('A exclusão de duplicatas e de tentativas dependentes está ausente.');
+if (hardQuestions.length !== 15) fail('Esperadas 15 novas questões difíceis.');
+for (const question of hardQuestions) {
+  if (question.o.length !== 4 || new Set(question.o).size !== 4) fail(`Alternativas inválidas na difícil ${question.n}.`);
+  if (question.h.length !== 3 || question.p.length !== 5) fail(`Orientação incompleta na difícil ${question.n}.`);
+  if (!Number.isInteger(question.c) || question.c < 0 || question.c > 3) fail(`Chave inválida na difícil ${question.n}.`);
+  const text = [question.s, ...question.o, ...question.h, ...question.p].join(' ');
+  if ((text.match(/\$/g)?.length ?? 0) % 2 || /\$\$/.test(text)) fail(`LaTeX inválido na difícil ${question.n}.`);
+}
 console.log(JSON.stringify({
   sourceQuestions: ids.length,
   deletedDuplicates: new Set(archived).size,
   publishedAfterDeletion: ids.length - new Set(archived).size,
+  newHardQuestions: hardQuestions.length,
+  finalPublishedQuestions: ids.length - new Set(archived).size + hardQuestions.length,
   optionsPerQuestion: 4,
   hintsPerQuestion: 3,
   status: 'static preflight passed',
