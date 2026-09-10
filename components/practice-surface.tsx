@@ -408,6 +408,17 @@ export function PracticeSurface() {
     );
 
   const resolved = outcome !== null;
+  const isGraded = question.kind === 'multiple_choice';
+  const feedbackMessage =
+    outcome === 'correct'
+      ? isGraded
+        ? 'Parabéns! Você acertou.'
+        : 'Você marcou que acertou.'
+      : outcome === 'incorrect'
+        ? isGraded
+          ? 'Não foi dessa vez. Confira o gabarito abaixo.'
+          : 'Você marcou que precisa revisar esta questão.'
+        : 'Gabarito revelado.';
   const visibleHints = question.hints.slice(0, visibleHintCount);
   const hasMoreHints = visibleHintCount < question.hints.length;
   return (
@@ -449,106 +460,107 @@ export function PracticeSurface() {
           <MathContent value={question.statement.value} />
         </div>
         {question.kind === 'multiple_choice' ? (
-        <div className="mt-8 max-w-3xl">
-          <p className="mb-3 text-xs text-muted-foreground">
-            Use o círculo ao lado para eliminar uma alternativa.
-          </p>
-          <div className="grid gap-2">
-            {question.options.map((option) => {
-              const chosen = selectedOptionId === option.id;
-              const correct = solution?.correctOptionId === option.id;
-              const eliminated = eliminatedOptionIds.has(option.id);
-              const resultStyle =
-                resolved && solution
-                  ? correct
-                    ? 'arc-option--correct'
+          <div className="mt-8 max-w-3xl">
+            <p className="mb-3 text-xs text-muted-foreground">
+              Use o círculo ao lado para eliminar uma alternativa.
+            </p>
+            <div className="grid gap-2">
+              {question.options.map((option) => {
+                const chosen = selectedOptionId === option.id;
+                const correct = solution?.correctOptionId === option.id;
+                const eliminated = eliminatedOptionIds.has(option.id);
+                const resultStyle =
+                  resolved && solution
+                    ? correct
+                      ? 'arc-option--correct'
+                      : chosen
+                        ? 'arc-option--incorrect'
+                        : ''
                     : chosen
-                      ? 'arc-option--incorrect'
-                      : ''
-                  : chosen
-                    ? 'border-primary bg-accent'
-                    : eliminated
-                      ? 'arc-option--eliminated border-dashed border-border'
-                      : 'border-border';
-              const selectOption = () => {
-                setSelectedOptionId(option.id);
-                setEliminatedOptionIds((current) => {
-                  const next = new Set(current);
-                  next.delete(option.id);
-                  return next;
-                });
-              };
-              const toggleEliminated = () => {
-                setEliminatedOptionIds((current) => {
-                  const next = new Set(current);
-                  if (next.has(option.id)) next.delete(option.id);
-                  else next.add(option.id);
-                  return next;
-                });
-                if (selectedOptionId === option.id) setSelectedOptionId(null);
-              };
-              return (
-                <div
-                  className={`arc-option flex items-center gap-2 rounded-xl border p-1.5 ${resultStyle}`}
-                  key={option.id}
-                >
-                  <button
-                    aria-pressed={chosen}
-                    disabled={resolved}
-                    onClick={selectOption}
-                    className="flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-lg px-2.5 py-2 text-left text-base"
+                      ? 'border-primary bg-accent'
+                      : eliminated
+                        ? 'arc-option--eliminated border-dashed border-border'
+                        : 'border-border';
+                const selectOption = () => {
+                  setSelectedOptionId(option.id);
+                  setEliminatedOptionIds((current) => {
+                    const next = new Set(current);
+                    next.delete(option.id);
+                    return next;
+                  });
+                };
+                const toggleEliminated = () => {
+                  setEliminatedOptionIds((current) => {
+                    const next = new Set(current);
+                    if (next.has(option.id)) next.delete(option.id);
+                    else next.add(option.id);
+                    return next;
+                  });
+                  if (selectedOptionId === option.id) setSelectedOptionId(null);
+                };
+                return (
+                  <div
+                    className={`arc-option flex items-center gap-2 rounded-xl border p-1.5 ${resultStyle}`}
+                    key={option.id}
                   >
-                    <span
-                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-accent-strong text-primary-foreground' : 'bg-surface-subtle text-muted-foreground'}`}
+                    <button
+                      aria-pressed={chosen}
+                      disabled={resolved}
+                      onClick={selectOption}
+                      className="flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-lg px-2.5 py-2 text-left text-base"
                     >
-                      {option.label}
-                    </span>
-                    <span className="arc-option-copy min-w-0 flex-1">
-                      <MathContent value={option.content.value} />
-                    </span>
-                    {eliminated && (
-                      <span className="rounded-full bg-surface-subtle px-2 py-1 text-[11px] font-medium text-muted-foreground">
-                        Descartada
+                      <span
+                        className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-accent-strong text-primary-foreground' : 'bg-surface-subtle text-muted-foreground'}`}
+                      >
+                        {option.label}
                       </span>
-                    )}
-                    {resolved && correct && (
-                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-success text-white">
-                        <Check aria-hidden="true" className="size-4" />
-                        <span className="sr-only">Alternativa correta</span>
+                      <span className="arc-option-copy min-w-0 flex-1">
+                        <MathContent value={option.content.value} />
                       </span>
-                    )}
-                    {resolved && chosen && !correct && (
-                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-error text-white">
-                        <X aria-hidden="true" className="size-4" />
-                        <span className="sr-only">Alternativa incorreta</span>
-                      </span>
-                    )}
-                  </button>
-                  <button
-                    aria-label={`${eliminated ? 'Restaurar' : 'Eliminar'} alternativa ${option.label}`}
-                    aria-pressed={eliminated}
-                    disabled={resolved}
-                    onClick={toggleEliminated}
-                    className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-surface-subtle text-foreground' : 'text-muted-foreground hover:bg-surface-subtle hover:text-foreground'}`}
-                  >
-                    {eliminated ? (
-                      <RotateCcw className="size-4" />
-                    ) : (
-                      <CircleMinus className="size-4" />
-                    )}
-                  </button>
-                </div>
-              );
-            })}
+                      {eliminated && (
+                        <span className="rounded-full bg-surface-subtle px-2 py-1 text-[11px] font-medium text-muted-foreground">
+                          Descartada
+                        </span>
+                      )}
+                      {resolved && solution && correct && (
+                        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-success text-white">
+                          <Check aria-hidden="true" className="size-4" />
+                          <span className="sr-only">Alternativa correta</span>
+                        </span>
+                      )}
+                      {resolved && solution && chosen && !correct && (
+                        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-error text-white">
+                          <X aria-hidden="true" className="size-4" />
+                          <span className="sr-only">Alternativa incorreta</span>
+                        </span>
+                      )}
+                    </button>
+                    <button
+                      aria-label={`${eliminated ? 'Restaurar' : 'Eliminar'} alternativa ${option.label}`}
+                      aria-pressed={eliminated}
+                      disabled={resolved}
+                      onClick={toggleEliminated}
+                      className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-surface-subtle text-foreground' : 'text-muted-foreground hover:bg-surface-subtle hover:text-foreground'}`}
+                    >
+                      {eliminated ? (
+                        <RotateCcw className="size-4" />
+                      ) : (
+                        <CircleMinus className="size-4" />
+                      )}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
         ) : (
           <section className="mt-8 max-w-3xl" aria-label="Rascunho da resposta">
             <label className="text-sm font-medium" htmlFor="scratchpad">
               Desenvolva sua resposta
             </label>
             <p className="mt-1 text-sm text-muted-foreground">
-              Use este espaço para organizar os cálculos. Ele fica apenas nesta tela e não é enviado para correção.
+              Use este espaço para organizar os cálculos. Ele fica apenas nesta
+              tela e não é enviado para correção.
             </p>
             <textarea
               className="mt-3 min-h-44 w-full rounded-2xl border border-border bg-surface p-4 text-[15px] leading-7 outline-none transition-colors focus:border-ring"
@@ -585,13 +597,7 @@ export function PracticeSurface() {
             <div
               className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${outcome === 'correct' ? 'bg-success-bg text-success' : 'bg-error-bg text-error'}`}
             >
-              <p className="font-medium">
-                {outcome === 'correct'
-                  ? 'Você marcou que acertou.'
-                  : outcome === 'incorrect'
-                    ? 'Você marcou que precisa revisar esta questão.'
-                    : 'Gabarito revelado.'}
-              </p>
+              <p className="font-medium">{feedbackMessage}</p>
             </div>
             {solution && (
               <section
@@ -609,7 +615,8 @@ export function PracticeSurface() {
                 <div className="arc-solution mt-5 rounded-2xl border p-5 sm:p-6">
                   <p className="text-xs font-medium uppercase tracking-[0.12em] text-success">
                     Resposta correta
-                    {question.kind === 'multiple_choice' && solution.correctOptionId
+                    {question.kind === 'multiple_choice' &&
+                    solution.correctOptionId
                       ? ` · Alternativa ${question.options.find((option) => option.id === solution.correctOptionId)?.label ?? ''}`
                       : ''}
                   </p>
@@ -652,10 +659,7 @@ export function PracticeSurface() {
               </section>
             )}
             {isLoadingSolution && !solution && (
-              <p
-                className="mt-6 text-sm text-muted-foreground"
-                role="status"
-              >
+              <p className="mt-6 text-sm text-muted-foreground" role="status">
                 Carregando gabarito comentado…
               </p>
             )}
@@ -682,9 +686,7 @@ export function PracticeSurface() {
           </div>
         )}
         {submissionError && (
-          <p className="mt-4 text-sm text-error">
-            {submissionError}
-          </p>
+          <p className="mt-4 text-sm text-error">{submissionError}</p>
         )}
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
           {hasMoreHints && !resolved ? (
