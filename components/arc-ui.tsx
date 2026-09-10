@@ -19,8 +19,7 @@ export function ArcButton({
         'min-h-11 rounded-control px-5 text-sm font-medium shadow-none transition-[background-color,transform] duration-200 active:translate-y-px',
         tone === 'primary' &&
           'bg-primary text-primary-foreground hover:brightness-110',
-        tone === 'accent' &&
-          'bg-accent text-foreground hover:brightness-95',
+        tone === 'accent' && 'bg-accent text-foreground hover:brightness-95',
         tone === 'quiet' &&
           'bg-transparent text-muted-foreground hover:bg-surface-subtle hover:text-foreground',
         className,
@@ -32,14 +31,20 @@ export function ArcButton({
 export function ArcCard({
   className,
   children,
+  interactive = false,
 }: {
   className?: string;
   children?: ReactNode;
+  /** Opt into the shared hover language: a small lift, a raised shadow and an
+   * accent border. Use on cards that are a single click target. */
+  interactive?: boolean;
 }) {
   return (
     <section
       className={cn(
         'rounded-card border border-border bg-surface shadow-card transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out',
+        interactive &&
+          'hover:-translate-y-0.5 hover:border-accent-strong/60 hover:shadow-raised motion-reduce:hover:translate-y-0',
         className,
       )}
     >

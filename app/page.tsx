@@ -163,7 +163,10 @@ export default function Home() {
                 const remaining = subjectQuestionIds.length - completed;
                 return (
                   <Reveal key={subject.id} delay={index * 70} variant="card">
-                    <ArcCard className="arc-subject-card group relative h-full p-6 hover:-translate-y-1 hover:border-accent-strong">
+                    <ArcCard
+                      interactive
+                      className="arc-subject-card group relative h-full p-6"
+                    >
                       <Link
                         aria-label={`Abrir ${subject.name}`}
                         className="absolute inset-0 rounded-card"

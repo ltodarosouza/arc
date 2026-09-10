@@ -51,6 +51,7 @@
   --radius-control: var(--arc-radius-control);
 
   --shadow-card: var(--arc-shadow-card);
+  --shadow-raised: var(--arc-shadow-raised);
   --shadow-float: var(--arc-shadow-float);
   --shadow-nav: 0 12px 40px rgba(38, 57, 80, 0.12);
 
@@ -78,6 +79,8 @@
   --arc-radius-control: 999px;
   --arc-shadow-card:
     0 1px 1px rgba(24, 50, 80, 0.025), 0 12px 30px rgba(24, 50, 80, 0.045);
+  --arc-shadow-raised:
+    0 2px 4px rgba(24, 50, 80, 0.04), 0 18px 40px rgba(24, 50, 80, 0.1);
   --arc-shadow-float: 0 24px 60px rgba(24, 50, 80, 0.14);
   --arc-control: #fffdf9;
   --arc-control-hover: #f6f8fd;
@@ -119,6 +122,8 @@
   --arc-glow: #4d78ca;
   --arc-shadow-card:
     0 1px 1px rgba(0, 0, 0, 0.2), 0 16px 38px rgba(0, 0, 0, 0.22);
+  --arc-shadow-raised:
+    0 2px 6px rgba(0, 0, 0, 0.28), 0 22px 48px rgba(0, 0, 0, 0.34);
   --arc-shadow-float: 0 28px 70px rgba(0, 0, 0, 0.42);
   color-scheme: dark;
 }
@@ -197,6 +202,7 @@ body {
       var(--primary) 84%,
       var(--arc-accent-strong)
     );
+    transform: translateY(-1px);
   }
   .arc-action:active {
     transform: translateY(1px) scale(0.985);
@@ -347,9 +353,14 @@ body {
   overflow: hidden;
   border-left: 3px solid
     color-mix(in srgb, var(--arc-accent-strong) 58%, transparent);
+  transition:
+    transform 200ms var(--arc-ease),
+    box-shadow 200ms var(--arc-ease),
+    border-color 200ms var(--arc-ease);
 }
 .arc-question-card:hover {
-  box-shadow: var(--arc-shadow-card);
+  transform: translateY(-2px);
+  box-shadow: var(--arc-shadow-raised);
 }
 .arc-profile-hero {
   display: flex;
