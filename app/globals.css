@@ -681,10 +681,29 @@ a {
     transform: translateX(0);
   }
 }
+.arc-progress-chart-card {
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.375rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--arc-radius-card);
+  background: linear-gradient(
+    180deg,
+    var(--arc-surface),
+    color-mix(in srgb, var(--arc-surface) 55%, var(--background))
+  );
+  box-shadow: var(--arc-shadow-raised);
+}
 .arc-progress-chart-line {
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
   transition: stroke-dashoffset 1.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arc-progress-chart-area {
+  opacity: 0;
+  transition: opacity 700ms ease-out 0.9s;
+}
+.arc-progress-chart[data-drawn='true'] .arc-progress-chart-area {
+  opacity: 1;
 }
 .arc-progress-chart-dot {
   cursor: pointer;
