@@ -151,15 +151,19 @@ export default function Home() {
   const remainingForGoal = dailyGoal ? Math.max(0, dailyGoal - doneToday) : 0;
   const metGoalToday = Boolean(dailyGoal) && doneToday >= (dailyGoal ?? 0);
 
-  const heroLines: HeadlinePart[][] = metGoalToday
-    ? [['Meta batida'], ['por hoje. Bom trabalho.']]
-    : dailyGoal
-      ? [
-          ['Faltam ', { accent: String(remainingForGoal) }, ' questões'],
-          ['para bater sua meta diária.'],
-        ]
-      : [['Sua próxima questão'], ['te espera.']];
-  const heroItalicLines = !dailyGoal ? [1] : [];
+  const heroLines = useMemo<HeadlinePart[][]>(
+    () =>
+      metGoalToday
+        ? [['Meta batida'], ['por hoje. Bom trabalho.']]
+        : dailyGoal
+          ? [
+              ['Faltam ', { accent: String(remainingForGoal) }, ' questões'],
+              ['para bater sua meta diária.'],
+            ]
+          : [['Sua próxima questão'], ['te espera.']],
+    [metGoalToday, dailyGoal, remainingForGoal],
+  );
+  const heroItalicLines = useMemo(() => (dailyGoal ? [] : [1]), [dailyGoal]);
   const heroChangeKey = metGoalToday
     ? 'met'
     : dailyGoal

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -30,7 +30,7 @@ function renderLine(
           className={cn('arc-hl-word', accent && 'text-accent-strong')}
           key={`${partIndex}-${tokenIndex}`}
         >
-          {[...token].map((char, charIndex) => {
+          {Array.from(token).map((char, charIndex) => {
             const delay = staggered
               ? Math.min(start.i, maxStaggeredLetters) * letterStep
               : 0;
@@ -100,28 +100,27 @@ export function AnimatedHeadline({
   italicLines?: number[];
   className?: string;
 }) {
-  const firstMount = useRef(true);
-  const [current, setCurrent] = useState({
-    lines,
-    italicLines,
-    key: changeKey,
-  });
-  const [previous, setPrevious] = useState<{
-    lines: Lines;
-    italicLines: number[];
-    key: string;
-  } | null>(null);
+  type Snapshot = { lines: Lines; italicLines: number[]; key: string };
+  const [view, setView] = useState<{ cur: Snapshot; prev: Snapshot | null }>(
+    () => ({ cur: { lines, italicLines, key: changeKey }, prev: null }),
+  );
+  const [everChanged, setEverChanged] = useState(false);
 
   useEffect(() => {
-    if (changeKey === current.key) return;
-    setPrevious(current);
-    setCurrent({ lines, italicLines, key: changeKey });
-    firstMount.current = false;
-    const timer = window.setTimeout(() => setPrevious(null), crossfadeMs);
+    if (view.cur.key === changeKey) return;
+    setEverChanged(true);
+    setView((shown) => ({
+      cur: { lines, italicLines, key: changeKey },
+      prev: shown.cur,
+    }));
+    const timer = window.setTimeout(
+      () => setView((shown) => ({ cur: shown.cur, prev: null })),
+      crossfadeMs,
+    );
     return () => window.clearTimeout(timer);
-    // Only react to an identity change of the copy, tracked by changeKey.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [changeKey]);
+  }, [changeKey, lines, italicLines, view.cur]);
+
+  const { cur: current, prev: previous } = view;
 
   return (
     <h1 className={cn('arc-hero-headline arc-headline-stack', className)}>
@@ -138,7 +137,7 @@ export function AnimatedHeadline({
         italicLines={current.italicLines}
         key={current.key}
         lines={current.lines}
-        staggered={firstMount.current}
+        staggered={!everChanged}
       />
     </h1>
   );
