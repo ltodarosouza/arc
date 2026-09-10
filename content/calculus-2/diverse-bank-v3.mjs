@@ -409,3 +409,18 @@ export function createDiverseCalculusTwoBatch(number) {
 export function getDiverseCalculusTwoBank() {
   return bank;
 }
+
+// A seleção de publicação é intencionalmente menor que o rascunho histórico.
+// Ela preserva cobertura dos 16 tópicos e deixa espaço para revisar cada bloco
+// de 25 itens antes da próxima publicação.
+export function createReviewedCalculusTwoBatch(number) {
+  const batch = Number(number);
+  if (!Number.isInteger(batch) || batch < 1 || batch > 5)
+    throw new Error(`Lote revisado Cálculo II desconhecido: ${number}.`);
+  const reviewed = bank.filter((_, index) => index % 2 === 0);
+  return reviewed.slice((batch - 1) * 25, batch * 25);
+}
+
+export function getReviewedCalculusTwoBank() {
+  return bank.filter((_, index) => index % 2 === 0);
+}

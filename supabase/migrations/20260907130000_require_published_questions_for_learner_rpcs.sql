@@ -81,7 +81,7 @@ as $$
   )
   from questions question_row
   join question_solutions solution on solution.question_id = question_row.id
-  join question_answer_keys answer_key on answer_key.question_id = question_row.id
+  left join question_answer_keys answer_key on answer_key.question_id = question_row.id
   where question_row.id = p_question_id
     and question_row.publication_status = 'published'
     and auth.uid() is not null

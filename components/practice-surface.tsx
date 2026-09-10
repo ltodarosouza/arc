@@ -32,7 +32,10 @@ type Solution = {
     sortOrder: number;
   }[];
 };
-type RpcAttempt = { attempt_id: string; outcome: 'correct' | 'incorrect' };
+type RpcAttempt = {
+  attempt_id: string;
+  outcome: 'correct' | 'incorrect' | 'revealed';
+};
 
 function requestedPracticeContext(search: URLSearchParams) {
   return {
@@ -66,12 +69,15 @@ export function PracticeSurface() {
   const [eliminatedOptionIds, setEliminatedOptionIds] = useState<Set<string>>(
     new Set(),
   );
-  const [outcome, setOutcome] = useState<'correct' | 'incorrect' | null>(null);
+  const [outcome, setOutcome] = useState<
+    'correct' | 'incorrect' | 'revealed' | null
+  >(null);
   const [solution, setSolution] = useState<Solution | null>(null);
   const [solutionError, setSolutionError] = useState<string | null>(null);
   const [isLoadingSolution, setIsLoadingSolution] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [visibleHintCount, setVisibleHintCount] = useState(0);
+  const [scratchpad, setScratchpad] = useState('');
   const submissionInFlight = useRef(false);
   const solutionInFlight = useRef(false);
 
@@ -162,6 +168,7 @@ export function PracticeSurface() {
     setSolutionError(null);
     setSubmissionError(null);
     setVisibleHintCount(0);
+    setScratchpad('');
     submissionInFlight.current = false;
     solutionInFlight.current = false;
   }, [question?.id]);
@@ -262,6 +269,70 @@ export function PracticeSurface() {
     }
   };
 
+  const revealAnswer = async (
+    selfAssessment: 'correct' | 'incorrect' | 'not_assessed',
+  ) => {
+    if (!question || outcome || submissionInFlight.current) return;
+    submissionInFlight.current = true;
+    setSubmissionError(null);
+    try {
+      if (isSupabaseConfigured()) {
+        const { data, error: revealError } = await getSupabaseClient().rpc(
+          'record_reveal_answer_attempt',
+          { p_question_id: question.id, p_self_assessment: selfAssessment },
+        );
+        if (revealError) throw revealError;
+        const attempt = (data as RpcAttempt[] | null)?.[0];
+        if (!attempt) throw new Error('A resposta não foi registrada.');
+        setOutcome(attempt.outcome);
+        await loadSolution();
+      } else {
+        const fixture = seedQuestions.find((item) => item.id === question.id);
+        if (!fixture || fixture.kind !== 'reveal_answer')
+          throw new Error('Questão indisponível.');
+        const localOutcome =
+          selfAssessment === 'correct'
+            ? 'correct'
+            : selfAssessment === 'incorrect'
+              ? 'incorrect'
+              : 'revealed';
+        createLocalLearnerRepository().recordAttempt({
+          id: crypto.randomUUID(),
+          questionId: question.id,
+          answer: { kind: 'revealed_answer', selfAssessment },
+          outcome: localOutcome,
+          gradingMethod:
+            selfAssessment === 'not_assessed' ? 'unscored' : 'self_assessed',
+          createdAt: new Date().toISOString(),
+        });
+        createLocalLearnerRepository().setRedo(
+          question.id,
+          localOutcome === 'incorrect',
+        );
+        setOutcome(localOutcome);
+        setSolution({
+          finalAnswer: fixture.solution.finalAnswer.value,
+          correctOptionId: '',
+          explanation: fixture.solution.explanation?.value ?? null,
+          steps: fixture.solution.steps.map((step) => ({
+            id: step.id,
+            title: step.title ?? null,
+            content: step.content.value,
+            sortOrder: step.sortOrder,
+          })),
+        });
+      }
+    } catch (revealError) {
+      setSubmissionError(
+        revealError instanceof Error
+          ? revealError.message
+          : 'Não foi possível revelar o gabarito.',
+      );
+    } finally {
+      submissionInFlight.current = false;
+    }
+  };
+
   useEffect(() => {
     if (!question || outcome) return;
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -275,6 +346,7 @@ export function PracticeSurface() {
         hasInteractiveKeyboardFocus(event.target)
       )
         return;
+      if (question.kind !== 'multiple_choice') return;
       const optionIndex = Number.parseInt(event.key, 10) - 1;
       if (optionIndex >= 0 && optionIndex < question.options.length) {
         event.preventDefault();
@@ -359,7 +431,13 @@ export function PracticeSurface() {
           )}
         </div>
         {resolved ? (
-          <AttemptStatusBadge status={outcome} />
+          outcome === 'revealed' ? (
+            <span className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1 text-xs font-medium text-[var(--arc-text-muted)]">
+              Gabarito visto
+            </span>
+          ) : (
+            <AttemptStatusBadge status={outcome} />
+          )
         ) : (
           <span className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1 text-xs font-medium text-[#52616c]">
             Questão {String(questionIndex + 1).padStart(2, '0')}
@@ -370,6 +448,7 @@ export function PracticeSurface() {
         <div className="arc-statement max-w-3xl rounded-[1.5rem] border-l-4 border-[var(--arc-accent-strong)] bg-[color-mix(in_srgb,var(--arc-accent)_32%,transparent)] px-5 py-6 sm:px-7">
           <MathContent value={question.statement.value} />
         </div>
+        {question.kind === 'multiple_choice' ? (
         <div className="mt-8 max-w-3xl">
           <p className="mb-3 text-xs text-[var(--arc-text-muted)]">
             Use o círculo ao lado para eliminar uma alternativa.
@@ -463,6 +542,23 @@ export function PracticeSurface() {
             })}
           </div>
         </div>
+        ) : (
+          <section className="mt-8 max-w-3xl" aria-label="Rascunho da resposta">
+            <label className="text-sm font-medium" htmlFor="scratchpad">
+              Desenvolva sua resposta
+            </label>
+            <p className="mt-1 text-sm text-[var(--arc-text-muted)]">
+              Use este espaço para organizar os cálculos. Ele fica apenas nesta tela e não é enviado para correção.
+            </p>
+            <textarea
+              className="mt-3 min-h-44 w-full rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)] p-4 text-[15px] leading-7 outline-none transition-colors focus:border-[var(--ring)]"
+              id="scratchpad"
+              onChange={(event) => setScratchpad(event.target.value)}
+              placeholder="Escreva sua estratégia e seus cálculos aqui…"
+              value={scratchpad}
+            />
+          </section>
+        )}
         {visibleHints.length > 0 && (
           <section
             aria-label="Dicas"
@@ -490,7 +586,11 @@ export function PracticeSurface() {
               className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${outcome === 'correct' ? 'bg-[var(--arc-success-bg)] text-[var(--arc-success-text)]' : 'bg-[var(--arc-error-bg)] text-[var(--arc-error-text)]'}`}
             >
               <p className="font-medium">
-                {outcome === 'correct' ? 'Você acertou.' : 'Você errou.'}
+                {outcome === 'correct'
+                  ? 'Você marcou que acertou.'
+                  : outcome === 'incorrect'
+                    ? 'Você marcou que precisa revisar esta questão.'
+                    : 'Gabarito revelado.'}
               </p>
             </div>
             {solution && (
@@ -509,7 +609,7 @@ export function PracticeSurface() {
                 <div className="arc-solution mt-5 rounded-2xl border p-5 sm:p-6">
                   <p className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--arc-success-text)]">
                     Resposta correta
-                    {solution.correctOptionId
+                    {question.kind === 'multiple_choice' && solution.correctOptionId
                       ? ` · Alternativa ${question.options.find((option) => option.id === solution.correctOptionId)?.label ?? ''}`
                       : ''}
                   </p>
@@ -630,13 +730,34 @@ export function PracticeSurface() {
                 <MoveRight className="size-4" />
               </button>
             )}
-            {!resolved && (
+            {!resolved && question.kind === 'multiple_choice' && (
               <ArcButton
                 disabled={!selectedOptionId}
                 onClick={() => void submitAnswer()}
               >
                 <Check className="size-4" /> Responder
               </ArcButton>
+            )}
+            {!resolved && question.kind === 'reveal_answer' && (
+              <div className="flex flex-wrap items-center gap-2">
+                <ArcButton onClick={() => void revealAnswer('not_assessed')}>
+                  Ver gabarito
+                </ArcButton>
+                <button
+                  className="arc-action"
+                  onClick={() => void revealAnswer('correct')}
+                  type="button"
+                >
+                  Acertei
+                </button>
+                <button
+                  className="arc-action"
+                  onClick={() => void revealAnswer('incorrect')}
+                  type="button"
+                >
+                  Preciso revisar
+                </button>
+              </div>
             )}
           </div>
         </div>

@@ -1,6 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { ArrowRight, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -557,11 +564,28 @@ export default function QuestionsPage() {
                 .filter(Boolean);
               return (
                 <Reveal delay={(index % 5) * 45} key={question.id}>
-                  <div>
-                    <ArcCard className="arc-question-card relative p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6">
+                  <div
+                    className="rounded-[var(--arc-radius-card)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                    onClick={(event: MouseEvent<HTMLDivElement>) => {
+                      if ((event.target as HTMLElement).closest('button, a')) return;
+                      startPractice(question.id);
+                    }}
+                    onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
+                      if (event.target !== event.currentTarget) return;
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        startPractice(question.id);
+                      }
+                    }}
+                    role="link"
+                    tabIndex={0}
+                  >
+                    <ArcCard
+                      className="arc-question-card relative cursor-pointer p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6"
+                    >
                       <Link
                         aria-label={`Abrir questão ${questionIndex + 1}`}
-                        className="absolute inset-0 z-0 rounded-[var(--arc-radius-card)]"
+                        className="sr-only"
                         href={`/practice?subject=${subject.slug}&question=${question.id}`}
                         onClick={(event) => {
                           event.preventDefault();
