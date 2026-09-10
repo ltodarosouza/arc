@@ -1,5 +1,5 @@
 // Lote 01 autoral: funções, domínio, composição e transformações.
-import { q } from '../computer-architecture/replacement/batch-01.mjs';
+import { q } from './question.mjs';
 const make=(n,d,f,s,a,x,p)=>q(`c1-r01-${n}`,d,f,s,a,x,p,'Escreva a condição e opere somente depois de fixar domínio e representação.','Substitua a resposta na condição original para validá-la.');
 export default [
 make('001','easy','domínio','Qual é o domínio de $f(x)=\sqrt{x-3}$?','$[3,\infty)$',['$(-\infty,3]$','$\mathbb R$','$(3,\infty)$'],'Radicando de raiz real deve ser não negativo.'),
@@ -7,7 +7,7 @@ make('002','medium','domínio','Qual é o domínio de $g(x)=1/(x^2-9)$?','$\math
 make('003','hard','domínio','Qual condição define o domínio de $h(x)=\ln(5-2x)$?','$x<5/2$',['$x\le5/2$','$x>5/2$','$x\ne5/2$'],'Argumento de logaritmo precisa ser positivo.'),
 make('004','easy','avaliação','Se $f(x)=2x^2-3$, qual é $f(-2)$?','$5$',['$-11$','$11$','$1$'],'Substituição preserva parênteses no argumento negativo.'),
 make('005','medium','função por partes','Para $f(x)=x+1$ se $x<0$ e $x^2$ se $x\ge0$, qual é $f(-3)$?','$-2$',['$9$','$-9$','$3$'],'Escolha primeiro o ramo cuja condição contém o argumento.'),
-make('006','hard','função por partes','Para a função do item anterior, qual é $f(0)$?','$0$',['$1$','Indefinida','$-1$'],'O ponto de fronteira pertence ao ramo com $x\ge0$.'),
+make('006','hard','função por partes','Para $f(x)=x+1$ se $x<0$ e $x^2$ se $x\ge0$, qual é $f(0)$?','$0$',['$1$','Indefinida','$-1$'],'O ponto de fronteira pertence ao ramo com $x\ge0$.'),
 make('007','easy','composição','Se $f(x)=x+2$ e $g(x)=3x$, qual é $(f\circ g)(1)$?','$5$',['$9$','$3$','$6$'],'Composição aplica primeiro a função interna.'),
 make('008','medium','composição','Com as mesmas funções, qual expressão é $(g\circ f)(x)$?','$3x+6$',['$3x+2$','$x+6$','$3x$'],'Substitua $f(x)$ como argumento de $g$.'),
 make('009','hard','composição','Se $f(x)=\sqrt{x}$ e $g(x)=x-4$, qual domínio de $(f\circ g)(x)$?','$[4,\infty)$',['$[0,\infty)$','$(-\infty,4]$','$\mathbb R$'],'A saída de $g$ deve pertencer ao domínio de $f$.'),

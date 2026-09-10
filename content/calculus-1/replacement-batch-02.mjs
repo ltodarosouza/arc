@@ -1,8 +1,8 @@
-import { q } from '../computer-architecture/replacement/batch-01.mjs';
+import { q } from './question.mjs';
 const m=(n,d,s,a,x,p)=>q(`c1-r02-${n}`,d,'exponenciais, logaritmos e inversas',s,a,x,p,'Traduza a situação para a propriedade de exponenciais ou logaritmos apropriada.','Confira a resposta repondo-a na expressão ou no modelo.');
 export default [
 m('001','easy','Qual é $\log_{10}(1000)$?','$3$',['$2$','$10$','$1000$'],'Logaritmo pede o expoente da base.'),
-m('002','medium','Resolva $2^x=16$.','$x=4$',['$x=8$','$x=2$','$x=16$'],'Escreva 16 como potência de 2.'),
+m('002','medium','Uma cultura de bactérias dobra a cada hora e começa com $500$ células. Quantas células haverá após $4$ horas?','$8000$',['$2000$','$4000$','$16000$'],'Há quatro períodos de duplicação, então o fator é $2^4$.'),
 m('003','hard','Resolva $3^{2x-1}=27$.','$x=2$',['$x=1$','$x=3$','$x=4$'],'Iguale expoentes após escrever 27 como $3^3$.'),
 m('004','easy','Qual é o domínio de $\ln x$?','$x>0$',['$x\ge0$','$x\ne0$','$\mathbb R$'],'Logaritmo real exige argumento positivo.'),
 m('005','medium','Simplifique $\ln(e^5)$.','$5$',['$e^5$','$1/5$','$0$'],'Logaritmo natural e exponencial são inversas.'),
