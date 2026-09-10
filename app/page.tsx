@@ -1,15 +1,23 @@
 'use client';
 
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
+import {
+  AnimatedHeadline,
+  type HeadlinePart,
+} from '@/components/animated-headline';
 import { DailyGoalDialog } from '@/components/daily-goal-dialog';
 import { Section } from '@/components/section';
 import { ArcCard } from '@/components/arc-ui';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { AnimatedNumber } from '@/components/animated-number';
-import { Reveal } from '@/components/reveal';
 import { FeedbackState } from '@/components/feedback-state';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
 import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
@@ -18,6 +26,22 @@ import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
 
 const maxVisibleDots = 60;
+
+type DotBucket = 'correct' | 'wrong' | 'redo' | 'empty';
+
+const dotBucketClass: Record<DotBucket, string> = {
+  correct: 'bg-dot-correct',
+  wrong: 'bg-dot-wrong',
+  redo: 'bg-dot-redo',
+  empty: 'bg-dot-empty',
+};
+
+const bucketLabel: Record<DotBucket, string> = {
+  correct: 'Acertou',
+  wrong: 'Errou',
+  redo: 'Para refazer',
+  empty: 'A fazer',
+};
 
 function capitalize(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -31,7 +55,13 @@ export default function Home() {
     saveSelectedSubjectIds,
     isLoading: learnerLoading,
   } = useLearnerState();
-  const { dailyGoal, setDailyGoal } = useDailyGoal();
+  const {
+    dailyGoal,
+    setDailyGoal,
+    isLoading: dailyGoalLoading,
+  } = useDailyGoal();
+  const heroReady =
+    !isLoading && !learnerLoading && !dailyGoalLoading && Boolean(learnerState);
 
   useEffect(() => {
     if (!catalogue) return;
@@ -120,84 +150,96 @@ export default function Home() {
   const remainingForGoal = dailyGoal ? Math.max(0, dailyGoal - doneToday) : 0;
   const metGoalToday = Boolean(dailyGoal) && doneToday >= (dailyGoal ?? 0);
 
-  const heroCopy: { line1: ReactNode; line2: string; italic: boolean } =
-    dailyGoal
-      ? metGoalToday
-        ? {
-            line1: 'Meta batida',
-            line2: 'por hoje. Bom trabalho.',
-            italic: false,
-          }
-        : {
-            line1: (
-              <>
-                Faltam{' '}
-                <span className="text-accent-strong">{remainingForGoal}</span>{' '}
-                questões
-              </>
-            ),
-            line2: 'para bater sua meta diária.',
-            italic: false,
-          }
-      : { line1: 'Sua próxima questão', line2: 'te espera.', italic: true };
+  const heroLines = useMemo<HeadlinePart[][]>(
+    () =>
+      metGoalToday
+        ? [['Meta batida'], ['por hoje. Bom trabalho.']]
+        : dailyGoal
+          ? [
+              ['Faltam ', { accent: String(remainingForGoal) }, ' questões'],
+              ['para bater sua meta diária.'],
+            ]
+          : [['Sua próxima questão'], ['te espera.']],
+    [metGoalToday, dailyGoal, remainingForGoal],
+  );
+  const heroItalicLines = useMemo(() => (dailyGoal ? [] : [1]), [dailyGoal]);
+  const heroChangeKey = metGoalToday
+    ? 'met'
+    : dailyGoal
+      ? `goal:${remainingForGoal}`
+      : 'nogoal';
   const weekday = capitalize(
     new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(new Date()),
   );
 
-  const dotClassFor = (questionId: string) => {
-    if (redoQuestionIds.has(questionId)) return 'bg-redo';
+  const bucketFor = (questionId: string): DotBucket => {
+    if (redoQuestionIds.has(questionId)) return 'redo';
     const outcome = outcomeByQuestionId.get(questionId);
-    if (outcome === 'correct') return 'bg-success';
-    if (outcome === 'incorrect' || outcome === 'revealed') return 'bg-error';
-    return 'bg-surface-subtle';
+    if (outcome === 'correct') return 'correct';
+    if (outcome === 'incorrect' || outcome === 'revealed') return 'wrong';
+    return 'empty';
   };
+  const dotClassFor = (questionId: string) =>
+    dotBucketClass[bucketFor(questionId)];
 
   return (
     <AppShell active="home">
       <section className="arc-page">
-        <div className="animate-enter">
-          <p className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-strong uppercase">
-            {weekday}
-          </p>
-          <h1 className="arc-hero-headline mt-3">
-            <span className="animate-rise">{heroCopy.line1}</span>
-            <span
-              className="animate-rise"
-              style={{
-                animationDelay: '90ms',
-                fontStyle: heroCopy.italic ? 'italic' : 'normal',
-              }}
-            >
-              {heroCopy.line2}
-            </span>
-          </h1>
-          <div
-            className="animate-rise mt-8 flex flex-wrap items-center gap-3"
-            style={{ animationDelay: '180ms' }}
-          >
-            <Link
-              className="arc-action arc-continue group relative"
-              href={resumeHref}
-            >
-              {hasStarted ? 'Continuar de onde parei' : 'Começar a praticar'}
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
-            <DailyGoalDialog dailyGoal={dailyGoal} onChange={setDailyGoal} />
-          </div>
-          {hasStarted && resumeSubject ? (
-            <p
-              className="animate-rise mt-6 max-w-md text-sm leading-6 text-muted-foreground"
-              style={{ animationDelay: '230ms' }}
-            >
-              Última parada:{' '}
-              <span className="font-medium text-foreground">
-                {resumeSubject.name}
-              </span>
-              . Você acertou {recentCorrect} das últimas {recentAttempts.length}{' '}
-              questões.
+        {heroReady ? (
+          <div className="animate-enter">
+            <p className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-strong uppercase">
+              {weekday}
             </p>
-          ) : null}
-        </div>
+            <AnimatedHeadline
+              changeKey={heroChangeKey}
+              className="mt-3"
+              italicLines={heroItalicLines}
+              lines={heroLines}
+            />
+            <div
+              className="animate-rise mt-8 flex flex-wrap items-center gap-3"
+              style={{ animationDelay: '180ms' }}
+            >
+              <Link
+                className="arc-action arc-continue group relative"
+                href={resumeHref}
+              >
+                {hasStarted ? 'Continuar de onde parei' : 'Começar a praticar'}
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </Link>
+              <DailyGoalDialog dailyGoal={dailyGoal} onChange={setDailyGoal} />
+            </div>
+            {hasStarted && resumeSubject ? (
+              <p
+                className="animate-rise mt-6 max-w-md text-sm leading-6 text-muted-foreground"
+                style={{ animationDelay: '230ms' }}
+              >
+                Última parada:{' '}
+                <span className="font-medium text-foreground">
+                  {resumeSubject.name}
+                </span>
+                . Você acertou {recentCorrect} das últimas{' '}
+                {recentAttempts.length} questões.
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <div
+            aria-busy="true"
+            aria-label="Carregando"
+            className="animate-pulse"
+          >
+            <div className="h-3 w-24 rounded-full bg-surface-subtle" />
+            <div className="mt-4 grid gap-3">
+              <div className="h-[clamp(2.25rem,6vw,4.75rem)] w-[70%] rounded-xl bg-surface-subtle" />
+              <div className="h-[clamp(2.25rem,6vw,4.75rem)] w-[88%] rounded-xl bg-surface-subtle" />
+            </div>
+            <div className="mt-8 flex gap-3">
+              <div className="h-11 w-56 rounded-full bg-surface-subtle" />
+              <div className="h-11 w-44 rounded-full bg-surface-subtle" />
+            </div>
+          </div>
+        )}
 
         <Section
           action={
@@ -245,77 +287,150 @@ export default function Home() {
                   catalogue?.questions.filter(
                     (question) => question.subjectId === subject.id,
                   ) ?? [];
-                const completed = subjectQuestions.filter((question) =>
-                  outcomeByQuestionId.has(question.id),
+                const buckets = subjectQuestions.map((question) =>
+                  bucketFor(question.id),
+                );
+                const countBucket = (bucket: DotBucket) =>
+                  buckets.filter((value) => value === bucket).length;
+                const redoCount = countBucket('redo');
+                // The headline accuracy reads pure outcomes (a redo flag never
+                // hides a wrong answer); the dots still colour redo separately.
+                const answeredOutcomes = subjectQuestions
+                  .map((question) => outcomeByQuestionId.get(question.id))
+                  .filter((outcome): outcome is NonNullable<typeof outcome> =>
+                    Boolean(outcome),
+                  );
+                const answered = answeredOutcomes.length;
+                const correctCount = answeredOutcomes.filter(
+                  (outcome) => outcome === 'correct',
                 ).length;
-                const correctCount = subjectQuestions.filter(
-                  (question) =>
-                    outcomeByQuestionId.get(question.id) === 'correct',
-                ).length;
-                const remaining = subjectQuestions.length - completed;
-                const accuracyLabel = completed
-                  ? `${Math.round((correctCount / completed) * 100)}%`
+                const wrongCount = answered - correctCount;
+                const emptyCount = subjectQuestions.length - answered;
+                const accuracyLabel = answered
+                  ? `${Math.round((correctCount / answered) * 100)}%`
                   : '—';
                 const visibleDots = subjectQuestions.slice(0, maxVisibleDots);
                 const hiddenDotCount =
                   subjectQuestions.length - visibleDots.length;
                 return (
-                  <Reveal delay={index * 55} key={subject.id}>
-                    <div className="arc-subject-row group">
-                      <Link
-                        aria-label={`Abrir ${subject.name}`}
-                        className="absolute inset-0"
-                        href={`/explore/${subject.slug}`}
-                      />
-                      <div className="relative min-w-0">
-                        <h3 className="truncate font-display text-[1.65rem] leading-[1.08] font-medium tracking-[-0.04em] sm:text-[2.15rem]">
-                          {subject.name}
-                        </h3>
-                        <p className="mt-1.5 truncate text-sm text-muted-foreground">
-                          {subject.description}
-                        </p>
-                      </div>
-                      <div className="relative hidden sm:block">
-                        {subjectQuestions.length ? (
-                          <>
-                            <div className="flex max-w-[220px] flex-wrap gap-1">
-                              {visibleDots.map((question) => (
-                                <span
-                                  className={`size-[9px] rounded-[2.5px] ${dotClassFor(question.id)}`}
-                                  key={question.id}
-                                />
-                              ))}
-                              {hiddenDotCount > 0 ? (
-                                <span className="text-[10px] font-medium text-muted-foreground">
-                                  +{hiddenDotCount}
-                                </span>
-                              ) : null}
-                            </div>
-                            <p className="mt-2 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
-                              {subjectQuestions.length} questões
-                            </p>
-                          </>
-                        ) : (
-                          <p className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
-                            Em preparação
-                          </p>
-                        )}
-                      </div>
-                      <div className="relative text-right">
-                        <p className="arc-metric leading-none text-foreground">
-                          {accuracyLabel}
-                        </p>
-                        <p className="mt-1.5 text-xs text-muted-foreground">
-                          {subjectQuestions.length
-                            ? `${remaining} restantes de ${subjectQuestions.length}`
-                            : 'Catálogo em preparação'}
-                        </p>
-                      </div>
-                      <span className="relative grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
-                        <ChevronRight className="size-5" />
-                      </span>
+                  <div
+                    className="arc-subject-row group animate-rise"
+                    key={subject.id}
+                    style={{ animationDelay: `${index * 55}ms` }}
+                  >
+                    <Link
+                      aria-label={`Abrir ${subject.name}`}
+                      className="absolute inset-0 z-0"
+                      href={`/explore/${subject.slug}`}
+                    />
+                    <div className="arc-subject-row__name pointer-events-none relative z-10 min-w-0">
+                      <h3 className="truncate font-display text-[1.65rem] leading-[1.08] font-medium tracking-[-0.04em] sm:text-[2.15rem]">
+                        {subject.name}
+                      </h3>
+                      <p className="mt-1.5 truncate text-sm text-muted-foreground">
+                        {subject.description}
+                      </p>
                     </div>
-                  </Reveal>
+                    <div className="arc-subject-row__dots relative z-10 hidden sm:block">
+                      {subjectQuestions.length ? (
+                        <>
+                          <Popover>
+                            <PopoverTrigger
+                              aria-label={`Inspecionar questões de ${subject.name}`}
+                              className="block rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              type="button"
+                            >
+                              <span className="flex max-w-[220px] flex-wrap gap-1">
+                                {visibleDots.map((question, dotIndex) => (
+                                  <span
+                                    className={`arc-dot ${dotClassFor(question.id)}`}
+                                    key={question.id}
+                                    title={`Questão ${dotIndex + 1} · ${bucketLabel[buckets[dotIndex]]}`}
+                                  />
+                                ))}
+                              </span>
+                            </PopoverTrigger>
+                            <PopoverContent align="start" className="w-64">
+                              <p className="text-sm font-medium">
+                                {subject.name}
+                              </p>
+                              <ul className="grid gap-1.5 text-xs">
+                                {(
+                                  [
+                                    ['correct', 'Acertou', correctCount],
+                                    ['wrong', 'Errou', wrongCount],
+                                    ['redo', 'Para refazer', redoCount],
+                                    ['empty', 'A fazer', emptyCount],
+                                  ] as const
+                                ).map(([bucket, label, value]) => (
+                                  <li
+                                    className="flex items-center gap-2"
+                                    key={bucket}
+                                  >
+                                    <span
+                                      className={`arc-dot ${dotBucketClass[bucket]}`}
+                                    />
+                                    <span className="flex-1 text-muted-foreground">
+                                      {label}
+                                    </span>
+                                    <span className="tabular-nums font-medium">
+                                      {value}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-border pt-2 text-xs">
+                                <Link
+                                  className="text-accent-strong hover:underline"
+                                  href={`/questions?subject=${subject.slug}&status=incorrect`}
+                                >
+                                  Ver erradas
+                                </Link>
+                                <Link
+                                  className="text-accent-strong hover:underline"
+                                  href={`/questions?subject=${subject.slug}&status=not_attempted`}
+                                >
+                                  Ver a fazer
+                                </Link>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                          <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                            {hiddenDotCount > 0
+                              ? `+${hiddenDotCount} questões`
+                              : `${subjectQuestions.length} questões`}
+                            <Link
+                              aria-label={`Ver questões de ${subject.name}`}
+                              className="inline-flex text-muted-foreground transition-colors hover:text-accent-strong"
+                              href={`/questions?subject=${subject.slug}`}
+                            >
+                              <ArrowRight className="size-3" />
+                            </Link>
+                          </p>
+                        </>
+                      ) : (
+                        <p className="pointer-events-none font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                          Em preparação
+                        </p>
+                      )}
+                    </div>
+                    <div className="arc-subject-row__stat pointer-events-none relative z-10 text-right">
+                      <p className="arc-metric leading-none text-foreground">
+                        {accuracyLabel}
+                      </p>
+                      <p className="arc-caption mt-1">
+                        {answered ? 'de acerto' : 'sem tentativas'}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {subjectQuestions.length
+                          ? `${answered} de ${subjectQuestions.length} feitas`
+                          : 'Catálogo em preparação'}
+                      </p>
+                    </div>
+                    <span className="arc-subject-row__arrow pointer-events-none relative z-10 grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
+                      <ChevronRight className="size-5" />
+                    </span>
+                  </div>
                 );
               })}
             </div>
