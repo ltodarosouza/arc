@@ -394,6 +394,12 @@ body {
 .arc-question-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--arc-shadow-raised);
+  border-color: color-mix(in srgb, var(--arc-accent-strong) 60%, var(--border));
+}
+@media (prefers-reduced-motion: reduce) {
+  .arc-question-card:hover {
+    transform: none;
+  }
 }
 .arc-profile-hero {
   display: flex;
