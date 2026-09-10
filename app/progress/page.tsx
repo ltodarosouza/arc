@@ -279,31 +279,6 @@ export default function ProgressPage() {
                 </div>
               ))}
             </dl>
-            {subjectsWithErrors.length > 0 && (
-              <section className="arc-review-strip mt-5">
-                <div>
-                  <p className="font-medium">Erros para revisar</p>
-                  <p className="arc-caption mt-1">
-                    Retome os pontos que ainda pedem atenção.
-                  </p>
-                </div>
-                <ReviewSubjectLinks
-                  subjects={subjectsWithErrors}
-                  status="incorrect"
-                />
-              </section>
-            )}
-            {redoCount > 0 && (
-              <section className="arc-review-strip mt-3">
-                <div>
-                  <p className="font-medium">Questões marcadas para refazer</p>
-                  <p className="arc-caption mt-1">
-                    Sua seleção pessoal para praticar mais uma vez.
-                  </p>
-                </div>
-                <ReviewSubjectLinks subjects={subjectsToRedo} status="redo" />
-              </section>
-            )}
             {summary.answered > 0 && <ProgressChart attempts={attempts} />}
             {!summary.answered && (
               <ArcCard className="mt-6 p-6">
@@ -346,6 +321,41 @@ export default function ProgressPage() {
                     color="var(--arc-dot-empty)"
                     label="não feitas"
                   />
+                </div>
+              </section>
+            )}
+            {(subjectsWithErrors.length > 0 || redoCount > 0) && (
+              <section className="arc-section">
+                <div className="arc-attention-card">
+                  <p className="font-medium tracking-[-0.02em]">
+                    Precisa de atenção
+                  </p>
+                  <p className="arc-caption mt-1.5">
+                    Erros para revisar e questões que você mesmo marcou para
+                    refazer, num só lugar.
+                  </p>
+                  {subjectsWithErrors.length > 0 && (
+                    <div className="mt-4">
+                      <p className="font-mono text-[10px] tracking-[0.12em] text-error uppercase">
+                        Erros · {summary.incorrect}
+                      </p>
+                      <ReviewSubjectLinks
+                        subjects={subjectsWithErrors}
+                        status="incorrect"
+                      />
+                    </div>
+                  )}
+                  {redoCount > 0 && (
+                    <div className="mt-4 border-t border-border pt-4">
+                      <p className="font-mono text-[10px] tracking-[0.12em] text-redo uppercase">
+                        Para refazer · {redoCount}
+                      </p>
+                      <ReviewSubjectLinks
+                        subjects={subjectsToRedo}
+                        status="redo"
+                      />
+                    </div>
+                  )}
                 </div>
               </section>
             )}
