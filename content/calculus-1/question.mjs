@@ -1,6 +1,6 @@
 // Shared authoring helper for the reviewed Cálculo I multiple-choice batches.
 // It deliberately keeps every pedagogical sentence tied to the item data.
-const latexCommands = /(?<![\\a-zA-Z])(lim|to|sqrt|frac|infty|mathbb|setminus|ne|le|ge|sin|cos|tan|ln|pi|pm|prime|primeprime|begin|end|cases)(?![a-zA-Z])/g;
+const latexCommands = /(?<![\\a-zA-Z])(lim|to|sqrt|frac|infty|mathbb|setminus|ne|le|ge|sin|cos|tan|ln|pi|pm|circ|prime|primeprime|begin|end|cases)(?![a-zA-Z])/g;
 
 export function normalizeMath(markdown) {
   return markdown.replace(/\$([^$]*)\$/g, (_, math) => {
@@ -19,14 +19,25 @@ export function normalizeMath(markdown) {
   });
 }
 
+function normalizeStatement(markdown) {
+  const repairedDerivative = markdown.replace(
+    /^Calcule d\/dx,\((.+)\)\.$/,
+    'Calcule $\\frac{d}{dx}($1)$.',
+  );
+  return normalizeMath(repairedDerivative);
+}
+
 export function q(id, difficulty, focus, statement, answer, distractors, principle, action, check) {
-  const normalizedStatement = normalizeMath(statement);
+  const normalizedStatement = normalizeStatement(statement);
   const normalizedAnswer = normalizeMath(answer);
   const normalizedDistractors = distractors.map(normalizeMath).map((distractor, index) =>
     distractor === normalizedAnswer
       ? `O resultado obtido ao aplicar incorretamente a regra ${index + 1}.`
       : distractor,
   );
+  const normalizedPrinciple = normalizeMath(principle);
+  const normalizedAction = normalizeMath(action);
+  const normalizedCheck = normalizeMath(check);
   const rotation = Number(id.slice(-3)) % 4;
   const options = [normalizedAnswer, ...normalizedDistractors];
   const orderedOptions = options.map((_, index) => options[(index - rotation + 4) % 4]);
@@ -42,17 +53,17 @@ export function q(id, difficulty, focus, statement, answer, distractors, princip
     options: orderedOptions,
     correct,
     hints: [
-      `A ideia decisiva é ${focus}: ${principle}`,
-      action,
-      check,
+      `A ideia decisiva é ${focus}: ${normalizedPrinciple}`,
+      normalizedAction,
+      normalizedCheck,
     ],
-    explanation: `${principle} ${action} ${check}`,
+    explanation: `${normalizedPrinciple} ${normalizedAction} ${normalizedCheck}`,
     solution: [
       ['Identifique os dados', `O problema pede: ${normalizedStatement}`],
-      ['Escolha a propriedade', principle],
-      ['Execute a etapa decisiva', action],
+      ['Escolha a propriedade', normalizedPrinciple],
+      ['Execute a etapa decisiva', normalizedAction],
       ['Confronte as alternativas', `O resultado compatível é ${normalizedAnswer}; as demais opções representam erros de sinal, domínio, método ou interpretação deste enunciado.`],
-      ['Verifique o resultado', check],
+      ['Verifique o resultado', normalizedCheck],
     ],
   };
 }
