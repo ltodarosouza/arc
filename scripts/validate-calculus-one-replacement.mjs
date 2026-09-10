@@ -25,6 +25,8 @@ for (const question of bank) {
     throw new Error(`Solução-modelo genérica: ${question.id}`);
   if (/Resolva \$\d+\^x\s*=/i.test(question.statement))
     throw new Error(`Treino algébrico isolado: ${question.id}`);
+  if (question.id.startsWith('c1-r04-') && question.options.filter((_, index) => index !== question.correct).some((option) => /A própria função|^\$x\$$|^\$0\$$/.test(option)))
+    throw new Error(`Distrator de derivada genérico: ${question.id}`);
   if ((text.match(/\$/g) ?? []).length % 2)
     throw new Error(`Delimitadores LaTeX inválidos: ${question.id}`);
   if (/(?<!\\)\bcirc\b|toinfty|d\/dx,|mathbb Rsetminus|\$x(?:le|ge|ne)/.test(text))
