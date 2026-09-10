@@ -27,7 +27,7 @@ for (const question of bank) {
     throw new Error(`Treino algébrico isolado: ${question.id}`);
   if ((text.match(/\$/g) ?? []).length % 2)
     throw new Error(`Delimitadores LaTeX inválidos: ${question.id}`);
-  if (/\bcirc\b|toinfty|d\/dx,|mathbb Rsetminus|\$x(?:le|ge|ne)/.test(text))
+  if (/(?<!\\)\bcirc\b|toinfty|d\/dx,|mathbb Rsetminus|\$x(?:le|ge|ne)/.test(text))
     throw new Error(`Notação matemática não normalizada: ${question.id}`);
   if (/[\f\t\r\n]/.test(text.replace(/\s/g, ' ')))
     throw new Error(`Escape LaTeX corrompido: ${question.id}`);
