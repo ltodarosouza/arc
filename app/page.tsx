@@ -348,11 +348,6 @@ export default function Home() {
                                     title={`Questão ${dotIndex + 1} · ${bucketLabel[buckets[dotIndex]]}`}
                                   />
                                 ))}
-                                {hiddenDotCount > 0 ? (
-                                  <span className="text-[10px] font-medium text-muted-foreground">
-                                    +{hiddenDotCount}
-                                  </span>
-                                ) : null}
                               </span>
                             </PopoverTrigger>
                             <PopoverContent align="start" className="w-64">
@@ -401,7 +396,9 @@ export default function Home() {
                             </PopoverContent>
                           </Popover>
                           <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
-                            {subjectQuestions.length} questões
+                            {hiddenDotCount > 0
+                              ? `+${hiddenDotCount} questões`
+                              : `${subjectQuestions.length} questões`}
                             <Link
                               aria-label={`Ver questões de ${subject.name}`}
                               className="inline-flex text-muted-foreground transition-colors hover:text-accent-strong"
