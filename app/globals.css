@@ -89,6 +89,7 @@
   --arc-glow: #a8c5ff;
   --arc-space-section: clamp(2rem, 5vw, 3.5rem);
   --arc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
 }
 .dark {
   --background: #0e1727;
