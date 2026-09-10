@@ -292,14 +292,22 @@ export default function Home() {
                 );
                 const countBucket = (bucket: DotBucket) =>
                   buckets.filter((value) => value === bucket).length;
-                const correctCount = countBucket('correct');
-                const wrongCount = countBucket('wrong');
                 const redoCount = countBucket('redo');
-                const emptyCount = countBucket('empty');
-                const evaluated = correctCount + wrongCount;
-                const answered = subjectQuestions.length - emptyCount;
-                const accuracyLabel = evaluated
-                  ? `${Math.round((correctCount / evaluated) * 100)}%`
+                // The headline accuracy reads pure outcomes (a redo flag never
+                // hides a wrong answer); the dots still colour redo separately.
+                const answeredOutcomes = subjectQuestions
+                  .map((question) => outcomeByQuestionId.get(question.id))
+                  .filter((outcome): outcome is NonNullable<typeof outcome> =>
+                    Boolean(outcome),
+                  );
+                const answered = answeredOutcomes.length;
+                const correctCount = answeredOutcomes.filter(
+                  (outcome) => outcome === 'correct',
+                ).length;
+                const wrongCount = answered - correctCount;
+                const emptyCount = subjectQuestions.length - answered;
+                const accuracyLabel = answered
+                  ? `${Math.round((correctCount / answered) * 100)}%`
                   : '—';
                 const visibleDots = subjectQuestions.slice(0, maxVisibleDots);
                 const hiddenDotCount =
@@ -404,7 +412,7 @@ export default function Home() {
                         {accuracyLabel}
                       </p>
                       <p className="arc-caption mt-1">
-                        {evaluated ? 'de acerto' : 'sem tentativas'}
+                        {answered ? 'de acerto' : 'sem tentativas'}
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">
                         {subjectQuestions.length
