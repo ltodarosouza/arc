@@ -1,6 +1,6 @@
 // Shared authoring helper for the reviewed Cálculo I multiple-choice batches.
 // It deliberately keeps every pedagogical sentence tied to the item data.
-const latexCommands = /(?<![\\a-zA-Z])(lim|to|sqrt|frac|infty|mathbb|setminus|ne|le|ge|sin|cos|tan|ln|pi|pm|circ|prime|primeprime|begin|end|cases)(?![a-zA-Z])/g;
+const latexCommands = /(?<![\\a-zA-Z])(lim|to|sqrt|frac|infty|mathbb|setminus|ne|le|ge|sin|cos|tan|sec|log|ln|pi|pm|circ|prime|primeprime|begin|end|cases)(?![a-zA-Z])/g;
 
 export function normalizeMath(markdown) {
   return markdown.replace(/\$([^$]*)\$/g, (_, math) => {
@@ -12,6 +12,8 @@ export function normalizeMath(markdown) {
       .replaceAll('\n', '\\n')
       .replaceAll('\r', '\\r')
       .replaceAll('mathbb Rsetminus', '\\mathbb R\\setminus')
+      .replace(/([a-zA-Z0-9])circ(?=\s)/g, '$1\\circ')
+      .replace(/toinfty/g, 'to\\infty')
       .replace(/([a-zA-Z])le(?=[^a-zA-Z]|$)/g, '$1\\le')
       .replace(/([a-zA-Z])ge(?=[^a-zA-Z]|$)/g, '$1\\ge')
       .replace(/([a-zA-Z])ne(?=[^a-zA-Z]|$)/g, '$1\\ne');
