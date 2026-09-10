@@ -8,13 +8,12 @@ import { FeedbackState } from '@/components/feedback-state';
 
 import { AppShell } from '@/components/app-shell';
 import { PageHeader } from '@/components/page-header';
-import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
+import { ArcCard } from '@/components/arc-ui';
 import { AnimatedNumber } from '@/components/animated-number';
 import type { CatalogueSummary } from '@/lib/data/catalogue-repository';
 import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import {
-  getAttemptNumber,
   getLatestAttemptsByQuestion,
   summarizeProgress,
 } from '@/lib/domain/progress';
@@ -41,15 +40,6 @@ type SubjectPerformance = {
   total: number;
   topics: TopicPerformance[];
 };
-
-function formatAttemptDate(value: string) {
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
-}
 
 function getPrimaryTopic(
   question: CatalogueSummary['questions'][number],
@@ -159,17 +149,6 @@ export default function ProgressPage() {
   const accuracy = summary.answered
     ? percentage(summary.correct, summary.answered)
     : null;
-  const recentAttempts = useMemo(
-    () =>
-      [...attempts]
-        .sort(
-          (first, second) =>
-            new Date(second.createdAt).getTime() -
-            new Date(first.createdAt).getTime(),
-        )
-        .slice(0, 5),
-    [attempts],
-  );
   const performance = useMemo(
     () =>
       buildPerformance(
@@ -359,21 +338,6 @@ export default function ProgressPage() {
                 </div>
               </section>
             )}
-            {recentAttempts.length > 0 && (
-              <section className="arc-section">
-                <h2 className="arc-section-title">Tentativas recentes</h2>
-                <div className="mt-4 divide-y divide-border">
-                  {recentAttempts.map((attempt) => (
-                    <AttemptRow
-                      attempt={attempt}
-                      attempts={attempts}
-                      catalogue={catalogue}
-                      key={attempt.id}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
           </>
         )}
       </section>
@@ -467,52 +431,3 @@ function ReviewSubjectLinks({
   );
 }
 
-function AttemptRow({
-  attempt,
-  attempts,
-  catalogue,
-}: {
-  attempt: QuestionAttempt;
-  attempts: QuestionAttempt[];
-  catalogue: CatalogueSummary | null;
-}) {
-  const question = catalogue?.questions.find(
-    (item) => item.id === attempt.questionId,
-  );
-  const subject = catalogue?.subjects.find(
-    (item) => item.id === question?.subjectId,
-  );
-  const topic =
-    question && catalogue ? getPrimaryTopic(question, catalogue) : undefined;
-  const status =
-    attempt.outcome === 'correct'
-      ? 'correct'
-      : attempt.outcome === 'incorrect'
-        ? 'incorrect'
-        : 'redo';
-
-  return (
-    <Link
-      className="group block rounded-card focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ring"
-      href={
-        question && subject
-          ? `/practice?subject=${subject.slug}&question=${question.id}`
-          : '/progress'
-      }
-    >
-      <div className="flex items-center justify-between gap-4 rounded-lg px-2 py-4 transition-colors group-hover:bg-surface">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">
-            {subject?.name ?? 'Disciplina'}
-            {topic ? ` · ${topic.name}` : ''}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Tentativa {getAttemptNumber(attempt, attempts)} ·{' '}
-            {formatAttemptDate(attempt.createdAt)}
-          </p>
-        </div>
-        <AttemptStatusBadge status={status} />
-      </div>
-    </Link>
-  );
-}
