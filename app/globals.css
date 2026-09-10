@@ -294,6 +294,47 @@ body {
 .arc-continue:hover::after {
   translate: 560% 0;
 }
+.arc-continue-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2rem);
+  border-radius: var(--arc-radius-card);
+  color: #f8fbff;
+  background:
+    radial-gradient(
+      18rem circle at 12% -30%,
+      rgba(168, 197, 255, 0.28),
+      transparent 60%
+    ),
+    linear-gradient(140deg, #294f85 0%, #142b4a 100%);
+  box-shadow: var(--arc-shadow-float);
+}
+.arc-continue-card::after {
+  content: '→';
+  position: absolute;
+  z-index: -1;
+  right: 1.5rem;
+  bottom: -1.6rem;
+  font-family: var(--font-arc-display), serif;
+  font-size: 8rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+.arc-continue-card .arc-action {
+  background: #f8fbff;
+  color: #14243b;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+.arc-continue-card .arc-action:hover {
+  background: #dce9ff;
+}
 .arc-simple-metrics {
   display: flex;
   flex-wrap: nowrap;
@@ -313,11 +354,6 @@ body {
   white-space: nowrap;
   font-size: clamp(1.65rem, 5.1vw, 3.45rem);
   letter-spacing: -0.065em;
-}
-.arc-home-title .arc-action {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 .arc-review-strip {
   padding: 1.25rem 0;
@@ -344,9 +380,6 @@ body {
 }
 .arc-subject-card:hover::after {
   transform: translate(-1rem, -1rem) scale(1.15);
-}
-.arc-home-subjects {
-  min-width: 0;
 }
 .arc-question-card {
   position: relative;
