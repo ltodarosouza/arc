@@ -1,22 +1,27 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
-import { AnimatedTitle } from '@/components/animated-title';
+import { DailyGoalDialog } from '@/components/daily-goal-dialog';
 import { Section } from '@/components/section';
 import { ArcCard } from '@/components/arc-ui';
-import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import { AnimatedNumber } from '@/components/animated-number';
 import { Reveal } from '@/components/reveal';
 import { FeedbackState } from '@/components/feedback-state';
-import { HeroSurface } from '@/components/hero-surface';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
 import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
+import { useDailyGoal } from '@/lib/data/use-daily-goal';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
+
+const maxVisibleDots = 60;
+
+function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
 
 export default function Home() {
   const [selectedSubjectIds, setSelectedSubjectIds] = useState<string[]>([]);
@@ -26,6 +31,7 @@ export default function Home() {
     saveSelectedSubjectIds,
     isLoading: learnerLoading,
   } = useLearnerState();
+  const { dailyGoal, setDailyGoal } = useDailyGoal();
 
   useEffect(() => {
     if (!catalogue) return;
@@ -51,6 +57,10 @@ export default function Home() {
       ].map((attempt) => [attempt.questionId, attempt.outcome]),
     );
   }, [learnerState]);
+  const redoQuestionIds = useMemo(
+    () => new Set(learnerState?.redoQuestionIds ?? []),
+    [learnerState],
+  );
   const progress = useMemo(
     () => ({
       completed: outcomeByQuestionId.size,
@@ -60,91 +70,136 @@ export default function Home() {
     }),
     [outcomeByQuestionId],
   );
+  const accuracyPct = progress.completed
+    ? Math.round((progress.correct / progress.completed) * 100)
+    : 0;
+  const recentAttempts = useMemo(
+    () =>
+      [...(learnerState?.attempts ?? [])]
+        .sort(
+          (first, second) =>
+            new Date(second.createdAt).getTime() -
+            new Date(first.createdAt).getTime(),
+        )
+        .slice(0, 6),
+    [learnerState],
+  );
+  const recentCorrect = recentAttempts.filter(
+    (attempt) => attempt.outcome === 'correct',
+  ).length;
   const resumeSubject = useMemo(() => {
-    const latestAttempt = [...(learnerState?.attempts ?? [])].sort(
-      (first, second) =>
-        new Date(second.createdAt).getTime() -
-        new Date(first.createdAt).getTime(),
-    )[0];
+    const latestAttempt = recentAttempts[0];
     const question = catalogue?.questions.find(
       (item) => item.id === latestAttempt?.questionId,
     );
     return catalogue?.subjects.find((item) => item.id === question?.subjectId);
-  }, [catalogue, learnerState]);
+  }, [catalogue, recentAttempts]);
   const resumeHref = resumeSubject
     ? `/questions?subject=${resumeSubject.slug}&status=not_attempted`
     : selectedSubjects.length
       ? '/explore'
       : '/subjects';
 
+  const hasStarted = progress.completed > 0;
+  const todayKey = new Date().toLocaleDateString('en-CA', {
+    timeZone: 'America/Fortaleza',
+  });
+  const doneToday = useMemo(() => {
+    const ids = new Set(
+      (learnerState?.attempts ?? [])
+        .filter(
+          (attempt) =>
+            new Date(attempt.createdAt).toLocaleDateString('en-CA', {
+              timeZone: 'America/Fortaleza',
+            }) === todayKey,
+        )
+        .map((attempt) => attempt.questionId),
+    );
+    return ids.size;
+  }, [learnerState, todayKey]);
+  const remainingForGoal = dailyGoal ? Math.max(0, dailyGoal - doneToday) : 0;
+  const metGoalToday = Boolean(dailyGoal) && doneToday >= (dailyGoal ?? 0);
+
+  const heroCopy: { line1: ReactNode; line2: string; italic: boolean } =
+    dailyGoal
+      ? metGoalToday
+        ? {
+            line1: 'Meta batida',
+            line2: 'por hoje. Bom trabalho.',
+            italic: false,
+          }
+        : {
+            line1: (
+              <>
+                Faltam{' '}
+                <span className="text-accent-strong">{remainingForGoal}</span>{' '}
+                questões
+              </>
+            ),
+            line2: 'para bater sua meta diária.',
+            italic: false,
+          }
+      : { line1: 'Sua próxima questão', line2: 'te espera.', italic: true };
+  const weekday = capitalize(
+    new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(new Date()),
+  );
+
+  const dotClassFor = (questionId: string) => {
+    if (redoQuestionIds.has(questionId)) return 'bg-redo';
+    const outcome = outcomeByQuestionId.get(questionId);
+    if (outcome === 'correct') return 'bg-success';
+    if (outcome === 'incorrect' || outcome === 'revealed') return 'bg-error';
+    return 'bg-surface-subtle';
+  };
+
   return (
     <AppShell active="home">
       <section className="arc-page">
-        <HeroSurface>
-          <div className="relative z-10">
-            <AnimatedTitle>O que vamos praticar?</AnimatedTitle>
-            <p className="mt-3 max-w-md text-sm text-muted-foreground">
-              Escolha uma disciplina e resolva questões no seu ritmo.
-            </p>
-          </div>
-        </HeroSurface>
-        <div className="arc-continue-card animate-enter mt-8">
-          <div className="relative min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
-              {resumeSubject
-                ? 'Retomar'
-                : selectedSubjects.length
-                  ? 'Tudo pronto'
-                  : 'Primeiro passo'}
-            </p>
-            <p className="mt-1 truncate text-lg font-semibold tracking-[-0.02em]">
-              {resumeSubject
-                ? resumeSubject.name
-                : selectedSubjects.length
-                  ? 'Suas questões estão prontas'
-                  : 'Escolha suas disciplinas'}
-            </p>
-            <p className="mt-1 text-sm text-white/70">
-              {resumeSubject
-                ? 'Continue de onde você parou.'
-                : selectedSubjects.length
-                  ? 'Abra o banco e comece a praticar.'
-                  : 'Monte seu mapa de estudo para começar.'}
-            </p>
-          </div>
-          <Link
-            className="arc-action arc-continue group relative shrink-0"
-            href={resumeHref}
+        <div className="animate-enter">
+          <p className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-strong uppercase">
+            {weekday}
+          </p>
+          <h1 className="arc-hero-headline mt-3">
+            <span className="animate-rise">{heroCopy.line1}</span>
+            <span
+              className="animate-rise"
+              style={{
+                animationDelay: '90ms',
+                fontStyle: heroCopy.italic ? 'italic' : 'normal',
+              }}
+            >
+              {heroCopy.line2}
+            </span>
+          </h1>
+          <div
+            className="animate-rise mt-8 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: '180ms' }}
           >
-            {resumeSubject
-              ? 'Continuar'
-              : selectedSubjects.length
-                ? 'Ir para questões'
-                : 'Escolher disciplinas'}
-            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </Link>
-        </div>
-        <Section eyebrow="Resumo">
-          <div className="arc-simple-metrics">
-            <div>
-              <p className="arc-metric text-foreground">
-                <AnimatedNumber
-                  value={learnerLoading ? 0 : progress.completed}
-                />
-              </p>
-              <p className="arc-caption">Questões feitas</p>
-            </div>
-            <div>
-              <p className="arc-metric text-success">
-                <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
-              </p>
-              <p className="arc-caption">Acertos</p>
-            </div>
+            <Link
+              className="arc-action arc-continue group relative"
+              href={resumeHref}
+            >
+              {hasStarted ? 'Continuar de onde parei' : 'Começar a praticar'}
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Link>
+            <DailyGoalDialog dailyGoal={dailyGoal} onChange={setDailyGoal} />
           </div>
-        </Section>
+          {hasStarted && resumeSubject ? (
+            <p
+              className="animate-rise mt-6 max-w-md text-sm leading-6 text-muted-foreground"
+              style={{ animationDelay: '230ms' }}
+            >
+              Última parada:{' '}
+              <span className="font-medium text-foreground">
+                {resumeSubject.name}
+              </span>
+              . Você acertou {recentCorrect} das últimas {recentAttempts.length}{' '}
+              questões.
+            </p>
+          ) : null}
+        </div>
+
         <Section
-          eyebrow="Seu mapa de estudo"
-          title="Minhas disciplinas"
           action={
             <Link
               className="text-sm font-medium text-accent-strong hover:underline"
@@ -153,25 +208,24 @@ export default function Home() {
               Gerenciar
             </Link>
           }
+          eyebrow="Seu mapa de estudo"
+          title="Minhas disciplinas"
         >
           {isLoading || learnerLoading ? (
             <div
-              aria-label="Carregando disciplinas"
               aria-busy="true"
-              className="grid gap-4 sm:grid-cols-2"
+              aria-label="Carregando disciplinas"
+              className="border-t border-border"
             >
               {[0, 1].map((id) => (
-                <ArcCard
-                  key={id}
-                  className="h-48 animate-pulse bg-surface-subtle"
-                />
+                <div className="animate-pulse py-7" key={id}>
+                  <div className="h-8 w-1/3 rounded-full bg-surface-subtle" />
+                  <div className="mt-3 h-4 w-2/3 rounded-full bg-surface-subtle" />
+                </div>
               ))}
             </div>
           ) : error ? (
             <FeedbackState
-              title="As disciplinas não carregaram"
-              description="Tente novamente para abrir seu catálogo."
-              tone="error"
               action={
                 <button
                   className="arc-link"
@@ -180,59 +234,87 @@ export default function Home() {
                   Tentar novamente
                 </button>
               }
+              description="Tente novamente para abrir seu catálogo."
+              title="As disciplinas não carregaram"
+              tone="error"
             />
           ) : selectedSubjects.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div>
               {selectedSubjects.map((subject, index) => {
-                const subjectQuestionIds =
-                  catalogue?.questions
-                    .filter((question) => question.subjectId === subject.id)
-                    .map((question) => question.id) ?? [];
-                const completed = subjectQuestionIds.filter((id) =>
-                  outcomeByQuestionId.has(id),
+                const subjectQuestions =
+                  catalogue?.questions.filter(
+                    (question) => question.subjectId === subject.id,
+                  ) ?? [];
+                const completed = subjectQuestions.filter((question) =>
+                  outcomeByQuestionId.has(question.id),
                 ).length;
-                const remaining = subjectQuestionIds.length - completed;
+                const correctCount = subjectQuestions.filter(
+                  (question) =>
+                    outcomeByQuestionId.get(question.id) === 'correct',
+                ).length;
+                const remaining = subjectQuestions.length - completed;
+                const accuracyLabel = completed
+                  ? `${Math.round((correctCount / completed) * 100)}%`
+                  : '—';
+                const visibleDots = subjectQuestions.slice(0, maxVisibleDots);
+                const hiddenDotCount =
+                  subjectQuestions.length - visibleDots.length;
                 return (
-                  <Reveal key={subject.id} delay={index * 70} variant="card">
-                    <ArcCard
-                      interactive
-                      className="arc-subject-card group relative h-full p-6"
-                    >
+                  <Reveal delay={index * 55} key={subject.id}>
+                    <div className="arc-subject-row group">
                       <Link
                         aria-label={`Abrir ${subject.name}`}
-                        className="absolute inset-0 rounded-card"
+                        className="absolute inset-0"
                         href={`/explore/${subject.slug}`}
                       />
-                      <span className="grid size-9 place-items-center rounded-xl bg-accent text-accent-strong">
-                        <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
+                      <div className="relative min-w-0">
+                        <h3 className="truncate font-display text-[1.65rem] leading-[1.08] font-medium tracking-[-0.04em] sm:text-[2.15rem]">
+                          {subject.name}
+                        </h3>
+                        <p className="mt-1.5 truncate text-sm text-muted-foreground">
+                          {subject.description}
+                        </p>
+                      </div>
+                      <div className="relative hidden sm:block">
+                        {subjectQuestions.length ? (
+                          <>
+                            <div className="flex max-w-[220px] flex-wrap gap-1">
+                              {visibleDots.map((question) => (
+                                <span
+                                  className={`size-[9px] rounded-[2.5px] ${dotClassFor(question.id)}`}
+                                  key={question.id}
+                                />
+                              ))}
+                              {hiddenDotCount > 0 ? (
+                                <span className="text-[10px] font-medium text-muted-foreground">
+                                  +{hiddenDotCount}
+                                </span>
+                              ) : null}
+                            </div>
+                            <p className="mt-2 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                              {subjectQuestions.length} questões
+                            </p>
+                          </>
+                        ) : (
+                          <p className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                            Em preparação
+                          </p>
+                        )}
+                      </div>
+                      <div className="relative text-right">
+                        <p className="arc-metric leading-none text-foreground">
+                          {accuracyLabel}
+                        </p>
+                        <p className="mt-1.5 text-xs text-muted-foreground">
+                          {subjectQuestions.length
+                            ? `${remaining} restantes de ${subjectQuestions.length}`
+                            : 'Catálogo em preparação'}
+                        </p>
+                      </div>
+                      <span className="relative grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
+                        <ChevronRight className="size-5" />
                       </span>
-                      <h3 className="mt-5 text-lg font-semibold tracking-[-0.02em]">
-                        {subject.name}
-                      </h3>
-                      <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                        {subject.description}
-                      </p>
-                      <AnimatedProgressBar
-                        className="mt-5 h-1"
-                        label={`${completed} de ${subjectQuestionIds.length} questões concluídas em ${subject.name}`}
-                        value={
-                          subjectQuestionIds.length
-                            ? (completed / subjectQuestionIds.length) * 100
-                            : 0
-                        }
-                      />
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        {subjectQuestionIds.length
-                          ? remaining
-                            ? `${remaining} ${remaining === 1 ? 'questão para fazer' : 'questões para fazer'}`
-                            : 'Todas as questões concluídas'
-                          : 'Catálogo em preparação'}
-                      </p>
-                      <p className="mt-5 text-sm font-medium text-accent-strong">
-                        Abrir disciplina{' '}
-                        <ChevronRight className="inline size-4" />
-                      </p>
-                    </ArcCard>
+                    </div>
                   </Reveal>
                 );
               })}
@@ -250,6 +332,40 @@ export default function Home() {
               </Link>
             </ArcCard>
           )}
+        </Section>
+
+        <Section className="border-t border-border pt-8">
+          <div className="flex flex-wrap items-end gap-x-12 gap-y-6">
+            <div>
+              <p className="arc-stat-figure text-foreground">
+                <AnimatedNumber
+                  value={learnerLoading ? 0 : progress.completed}
+                />
+              </p>
+              <p className="arc-caption mt-2.5">questões feitas</p>
+            </div>
+            <div>
+              <p className="arc-stat-figure text-success">
+                <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
+              </p>
+              <p className="arc-caption mt-2.5">acertos</p>
+            </div>
+            <div>
+              <p className="arc-stat-figure text-accent-strong">
+                <AnimatedNumber
+                  suffix="%"
+                  value={learnerLoading ? 0 : accuracyPct}
+                />
+              </p>
+              <p className="arc-caption mt-2.5">aproveitamento</p>
+            </div>
+            <Link
+              className="ml-auto text-sm font-medium text-accent-strong hover:underline"
+              href="/progress"
+            >
+              Ver progresso completo →
+            </Link>
+          </div>
         </Section>
       </section>
     </AppShell>
