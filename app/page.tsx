@@ -323,7 +323,7 @@ export default function Home() {
                       className="absolute inset-0 z-0"
                       href={`/explore/${subject.slug}`}
                     />
-                    <div className="pointer-events-none relative z-10 min-w-0">
+                    <div className="arc-subject-row__name pointer-events-none relative z-10 min-w-0">
                       <h3 className="truncate font-display text-[1.65rem] leading-[1.08] font-medium tracking-[-0.04em] sm:text-[2.15rem]">
                         {subject.name}
                       </h3>
@@ -331,7 +331,7 @@ export default function Home() {
                         {subject.description}
                       </p>
                     </div>
-                    <div className="relative z-10 hidden sm:block">
+                    <div className="arc-subject-row__dots relative z-10 hidden sm:block">
                       {subjectQuestions.length ? (
                         <>
                           <Popover>
@@ -417,7 +417,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <div className="pointer-events-none relative z-10 text-right">
+                    <div className="arc-subject-row__stat pointer-events-none relative z-10 text-right">
                       <p className="arc-metric leading-none text-foreground">
                         {accuracyLabel}
                       </p>
@@ -430,7 +430,7 @@ export default function Home() {
                           : 'Catálogo em preparação'}
                       </p>
                     </div>
-                    <span className="pointer-events-none relative z-10 grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
+                    <span className="arc-subject-row__arrow pointer-events-none relative z-10 grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
                       <ChevronRight className="size-5" />
                     </span>
                   </div>
