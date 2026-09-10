@@ -14,6 +14,7 @@ export function normalizeMath(markdown) {
       .replaceAll('mathbb Rsetminus', '\\mathbb R\\setminus')
       .replace(/([a-zA-Z0-9])circ(?=\s)/g, '$1\\circ')
       .replace(/toinfty/g, 'to\\infty')
+      .replace(/xln(?=\d|\s|[)}])/g, 'x\\ln')
       .replace(/([a-zA-Z])le(?=[^a-zA-Z]|$)/g, '$1\\le')
       .replace(/([a-zA-Z])ge(?=[^a-zA-Z]|$)/g, '$1\\ge')
       .replace(/([a-zA-Z])ne(?=[^a-zA-Z]|$)/g, '$1\\ne');
