@@ -296,7 +296,7 @@ export default function ProgressPage() {
                     : 'Escolha uma disciplina e resolva a primeira questão.'}
                 </p>
                 <Link
-                  className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                  className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                   href="/explore"
                 >
                   Ir para questões <ArrowRight className="size-4" />
@@ -312,7 +312,7 @@ export default function ProgressPage() {
                       <ArcCard className="p-5 sm:p-6">
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
                           <Link
-                            className="font-medium tracking-[-0.025em] transition-colors hover:text-[#46657a]"
+                            className="font-medium tracking-[-0.025em] transition-colors hover:text-accent-strong"
                             href={`/questions?subject=${subject.slug}`}
                           >
                             {subject.name}
@@ -363,7 +363,7 @@ export default function ProgressPage() {
                               >
                                 <div>
                                   <Link
-                                    className="text-sm font-medium transition-colors hover:text-[#46657a]"
+                                    className="text-sm font-medium transition-colors hover:text-accent-strong"
                                     href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                                   >
                                     {topic.name}
@@ -376,7 +376,7 @@ export default function ProgressPage() {
                                   </p>
                                 </div>
                                 <Link
-                                  className="shrink-0 text-sm font-medium text-[#46657a] hover:underline"
+                                  className="shrink-0 text-sm font-medium text-accent-strong hover:underline"
                                   href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
                                 >
                                   Praticar

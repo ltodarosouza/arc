@@ -115,7 +115,7 @@ export default function ExplorePage() {
           <FeedbackState
             action={
               <button
-                className="text-sm font-medium text-[#46657a] hover:underline"
+                className="text-sm font-medium text-accent-strong hover:underline"
                 onClick={() => window.location.reload()}
               >
                 Tentar novamente
@@ -199,7 +199,7 @@ export default function ExplorePage() {
           <FeedbackState
             action={
               <Link
-                className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas <ChevronRight className="size-4" />

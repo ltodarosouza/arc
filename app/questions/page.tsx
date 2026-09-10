@@ -276,7 +276,7 @@ export default function QuestionsPage() {
           <FeedbackState
             action={
               <button
-                className="text-sm font-medium text-[#46657a] hover:underline"
+                className="text-sm font-medium text-accent-strong hover:underline"
                 onClick={() => window.location.reload()}
               >
                 Tentar novamente
@@ -296,7 +296,7 @@ export default function QuestionsPage() {
           <FeedbackState
             action={
               <button
-                className="text-sm font-medium text-[#46657a] hover:underline"
+                className="text-sm font-medium text-accent-strong hover:underline"
                 onClick={() => void refreshLearnerState()}
               >
                 Tentar novamente
@@ -656,7 +656,7 @@ export default function QuestionsPage() {
           <FeedbackState
             action={
               <button
-                className="text-sm font-medium text-[#46657a] hover:underline"
+                className="text-sm font-medium text-accent-strong hover:underline"
                 onClick={clearAllFilters}
               >
                 Limpar filtros

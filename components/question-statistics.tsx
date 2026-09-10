@@ -24,7 +24,7 @@ export function QuestionStatistics({ question }: { question: Question }) {
 
   return (
     <details className="mt-5 max-w-2xl rounded-2xl border border-border bg-surface px-4 py-3.5">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-[#46657a]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-accent-strong">
         <span className="inline-flex items-center gap-2">
           <BarChart3 className="size-4" /> Estatísticas da questão
         </span>
@@ -67,8 +67,8 @@ export function QuestionStatistics({ question }: { question: Question }) {
                 <AnimatedProgressBar
                   indicatorClassName={
                     option.id === question.correctOptionId
-                      ? 'bg-[#729b84]'
-                      : 'bg-[#aab4b9]'
+                      ? 'bg-success'
+                      : 'bg-accent-strong/30'
                   }
                   label={`${rate}% escolheram a alternativa ${option.label}`}
                   value={rate}

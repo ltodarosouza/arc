@@ -439,7 +439,7 @@ export function PracticeSurface() {
             <AttemptStatusBadge status={outcome} />
           )
         ) : (
-          <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-[#52616c]">
+          <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
             Questão {String(questionIndex + 1).padStart(2, '0')}
           </span>
         )}
@@ -571,7 +571,7 @@ export function PracticeSurface() {
             <ol className="mt-2 grid gap-2">
               {visibleHints.map((hint, index) => (
                 <li key={hint.id}>
-                  <span className="mr-2 font-medium text-[#668172]">
+                  <span className="mr-2 font-medium text-accent-strong">
                     {index + 1}.
                   </span>
                   <MathContent value={hint.content.value} />
@@ -634,7 +634,7 @@ export function PracticeSurface() {
                         className="flex gap-4 border-b border-border py-5 text-[15px] leading-7 last:border-0"
                         key={step.id}
                       >
-                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-medium text-[#405b6d]">
+                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-medium text-accent-strong">
                           {index + 1}
                         </span>
                         <div>
@@ -716,7 +716,7 @@ export function PracticeSurface() {
             </a>
             {nextQuestion && (
               <button
-                className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                 onClick={() =>
                   goToQuestion(
                     nextQuestion.id,

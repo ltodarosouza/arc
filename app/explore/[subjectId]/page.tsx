@@ -34,7 +34,7 @@ export default function SubjectPage() {
     <AppShell active="explore">
       <section className="arc-page arc-page--reading">
         <Link
-          className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
           href="/explore"
         >
           <ArrowLeft className="size-4" /> Minhas disciplinas
@@ -99,7 +99,7 @@ export default function SubjectPage() {
                       {unit.count} {unit.count === 1 ? 'questão' : 'questões'}
                     </span>
                   </span>
-                  <ChevronRight className="size-5 text-[#46657a] transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight className="size-5 text-accent-strong transition-transform group-hover:translate-x-0.5" />
                 </Link>
               ))}
             </div>
