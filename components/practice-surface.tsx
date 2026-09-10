@@ -511,13 +511,13 @@ export function PracticeSurface() {
                         Descartada
                       </span>
                     )}
-                    {resolved && correct && (
+                    {resolved && solution && correct && (
                       <span className="grid size-7 shrink-0 place-items-center rounded-full bg-success text-white">
                         <Check aria-hidden="true" className="size-4" />
                         <span className="sr-only">Alternativa correta</span>
                       </span>
                     )}
-                    {resolved && chosen && !correct && (
+                    {resolved && solution && chosen && !correct && (
                       <span className="grid size-7 shrink-0 place-items-center rounded-full bg-error text-white">
                         <X aria-hidden="true" className="size-4" />
                         <span className="sr-only">Alternativa incorreta</span>
