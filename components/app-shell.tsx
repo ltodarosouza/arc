@@ -1,5 +1,4 @@
 'use client';
-// oiii
 
 import type { ReactNode } from 'react';
 import { Compass, House, Layers3, TrendingUp } from 'lucide-react';
