@@ -149,11 +149,12 @@ export default function Home() {
   );
 
   const dotClassFor = (questionId: string) => {
-    if (redoQuestionIds.has(questionId)) return 'bg-redo';
+    if (redoQuestionIds.has(questionId)) return 'bg-dot-redo';
     const outcome = outcomeByQuestionId.get(questionId);
-    if (outcome === 'correct') return 'bg-success';
-    if (outcome === 'incorrect' || outcome === 'revealed') return 'bg-error';
-    return 'bg-surface-subtle';
+    if (outcome === 'correct') return 'bg-dot-correct';
+    if (outcome === 'incorrect' || outcome === 'revealed')
+      return 'bg-dot-wrong';
+    return 'bg-dot-empty';
   };
 
   return (
@@ -297,7 +298,7 @@ export default function Home() {
                             <div className="flex max-w-[220px] flex-wrap gap-1">
                               {visibleDots.map((question) => (
                                 <span
-                                  className={`size-[9px] rounded-[2.5px] ${dotClassFor(question.id)}`}
+                                  className={`arc-dot ${dotClassFor(question.id)}`}
                                   key={question.id}
                                 />
                               ))}

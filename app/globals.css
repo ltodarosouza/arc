@@ -43,6 +43,10 @@
   --color-redo-bg: var(--arc-redo-bg);
   --color-hint: var(--arc-hint-text);
   --color-hint-bg: var(--arc-hint-bg);
+  --color-dot-correct: var(--arc-dot-correct);
+  --color-dot-wrong: var(--arc-dot-wrong);
+  --color-dot-redo: var(--arc-dot-redo);
+  --color-dot-empty: var(--arc-dot-empty);
 
   --font-display: var(--font-arc-display);
 
@@ -92,6 +96,10 @@
   --arc-glow: #a8c5ff;
   --arc-space-section: clamp(2rem, 5vw, 3.5rem);
   --arc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --arc-dot-correct: #3f9d6b;
+  --arc-dot-wrong: #d05d68;
+  --arc-dot-redo: #d59733;
+  --arc-dot-empty: #dad6cc;
   color-scheme: light;
 }
 .dark {
@@ -125,6 +133,10 @@
   --arc-shadow-raised:
     0 2px 6px rgba(0, 0, 0, 0.28), 0 22px 48px rgba(0, 0, 0, 0.34);
   --arc-shadow-float: 0 28px 70px rgba(0, 0, 0, 0.42);
+  --arc-dot-correct: #57c08c;
+  --arc-dot-wrong: #e0929b;
+  --arc-dot-redo: #e6b45f;
+  --arc-dot-empty: #2c3b54;
   color-scheme: dark;
 }
 * {
@@ -359,6 +371,12 @@ body {
   line-height: 0.95;
   letter-spacing: -0.05em;
   font-weight: 500;
+}
+.arc-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2.5px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 9%, transparent);
 }
 .arc-subject-row {
   position: relative;
