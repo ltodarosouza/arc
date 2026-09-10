@@ -1,10 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
+import {
+  AnimatedHeadline,
+  type HeadlinePart,
+} from '@/components/animated-headline';
 import { DailyGoalDialog } from '@/components/daily-goal-dialog';
 import { Section } from '@/components/section';
 import { ArcCard } from '@/components/arc-ui';
@@ -126,26 +130,20 @@ export default function Home() {
   const remainingForGoal = dailyGoal ? Math.max(0, dailyGoal - doneToday) : 0;
   const metGoalToday = Boolean(dailyGoal) && doneToday >= (dailyGoal ?? 0);
 
-  const heroCopy: { line1: ReactNode; line2: string; italic: boolean } =
-    dailyGoal
-      ? metGoalToday
-        ? {
-            line1: 'Meta batida',
-            line2: 'por hoje. Bom trabalho.',
-            italic: false,
-          }
-        : {
-            line1: (
-              <>
-                Faltam{' '}
-                <span className="text-accent-strong">{remainingForGoal}</span>{' '}
-                questões
-              </>
-            ),
-            line2: 'para bater sua meta diária.',
-            italic: false,
-          }
-      : { line1: 'Sua próxima questão', line2: 'te espera.', italic: true };
+  const heroLines: HeadlinePart[][] = metGoalToday
+    ? [['Meta batida'], ['por hoje. Bom trabalho.']]
+    : dailyGoal
+      ? [
+          ['Faltam ', { accent: String(remainingForGoal) }, ' questões'],
+          ['para bater sua meta diária.'],
+        ]
+      : [['Sua próxima questão'], ['te espera.']];
+  const heroItalicLines = !dailyGoal ? [1] : [];
+  const heroChangeKey = metGoalToday
+    ? 'met'
+    : dailyGoal
+      ? `goal:${remainingForGoal}`
+      : 'nogoal';
   const weekday = capitalize(
     new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(new Date()),
   );
@@ -166,18 +164,12 @@ export default function Home() {
             <p className="font-mono text-[11px] font-semibold tracking-[0.16em] text-accent-strong uppercase">
               {weekday}
             </p>
-            <h1 className="arc-hero-headline mt-3">
-              <span className="animate-rise">{heroCopy.line1}</span>
-              <span
-                className="animate-rise"
-                style={{
-                  animationDelay: '90ms',
-                  fontStyle: heroCopy.italic ? 'italic' : 'normal',
-                }}
-              >
-                {heroCopy.line2}
-              </span>
-            </h1>
+            <AnimatedHeadline
+              changeKey={heroChangeKey}
+              className="mt-3"
+              italicLines={heroItalicLines}
+              lines={heroLines}
+            />
             <div
               className="animate-rise mt-8 flex flex-wrap items-center gap-3"
               style={{ animationDelay: '180ms' }}

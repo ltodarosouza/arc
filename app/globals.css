@@ -305,6 +305,53 @@ body {
 .arc-hero-headline > span {
   display: block;
 }
+.arc-headline-stack {
+  position: relative;
+  display: block;
+}
+.arc-headline-layer {
+  display: block;
+}
+.arc-headline-layer > span {
+  display: block;
+}
+.arc-headline-layer.is-out {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: arc-headline-out 300ms var(--arc-ease) forwards;
+}
+.arc-hl-word {
+  display: inline-block;
+}
+.arc-hl-letter {
+  display: inline-block;
+  animation: arc-hl-letter-in 520ms var(--arc-ease) both;
+}
+@keyframes arc-hl-letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.32em);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+@keyframes arc-headline-out {
+  from {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.12em);
+    filter: blur(5px);
+  }
+}
 .arc-stat-figure {
   font-family: var(--font-arc-display), Georgia, serif;
   font-variant-numeric: tabular-nums;
