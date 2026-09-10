@@ -5,6 +5,7 @@ import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
 import { ArcCard } from '@/components/arc-ui';
 import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import { AnimatedNumber } from '@/components/animated-number';
@@ -80,19 +81,7 @@ export default function Home() {
       <section className="arc-page">
         <HeroSurface>
           <div className="relative z-10">
-            <h1 aria-label="O que vamos praticar?" className="arc-title">
-              <span aria-hidden="true">
-                {[...'O que vamos praticar?'].map((letter, index) => (
-                  <span
-                    className="arc-title-letter"
-                    key={`${letter}-${index}`}
-                    style={{ animationDelay: `${120 + index * 28}ms` }}
-                  >
-                    {letter === ' ' ? '\u00a0' : letter}
-                  </span>
-                ))}
-              </span>
-            </h1>
+            <AnimatedTitle>O que vamos praticar?</AnimatedTitle>
             <Link
               className="arc-action arc-continue group mt-7"
               href={resumeHref}
