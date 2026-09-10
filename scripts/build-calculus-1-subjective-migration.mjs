@@ -2,7 +2,8 @@ import { writeFile } from 'node:fs/promises';
 import { auditSubjectiveCalculusOneBank, subjectiveCalculusOneBank } from '../content/calculus-1/subjective-bank.mjs';
 
 const quote = (value) => `'${value.replaceAll("'", "''")}'`;
-const uuid = (kind, index, order = 0) => `${kind}0000000-0000-4000-8000-${String(index * 100 + order).padStart(12, '0')}`;
+const uuid = (kind, index, order = 0) =>
+  `${String(kind).padStart(8, '0')}-0000-4000-8000-${String(index * 100 + order).padStart(12, '0')}`;
 const sourceId = '10000000-0000-4000-8000-000000001300';
 const subjectId = '20000000-0000-4000-8000-000000000004';
 let sql = `-- Banco autoral de Cálculo I: 125 questões discursivas independentes.\nbegin;\n`;
