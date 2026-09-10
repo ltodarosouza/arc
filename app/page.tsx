@@ -12,6 +12,11 @@ import {
 import { DailyGoalDialog } from '@/components/daily-goal-dialog';
 import { Section } from '@/components/section';
 import { ArcCard } from '@/components/arc-ui';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { AnimatedNumber } from '@/components/animated-number';
 import { Reveal } from '@/components/reveal';
 import { FeedbackState } from '@/components/feedback-state';
@@ -22,6 +27,22 @@ import { useLearnerState } from '@/lib/data/use-learner-state';
 import { getLatestAttemptsByQuestion } from '@/lib/domain/progress';
 
 const maxVisibleDots = 60;
+
+type DotBucket = 'correct' | 'wrong' | 'redo' | 'empty';
+
+const dotBucketClass: Record<DotBucket, string> = {
+  correct: 'bg-dot-correct',
+  wrong: 'bg-dot-wrong',
+  redo: 'bg-dot-redo',
+  empty: 'bg-dot-empty',
+};
+
+const bucketLabel: Record<DotBucket, string> = {
+  correct: 'Acertou',
+  wrong: 'Errou',
+  redo: 'Para refazer',
+  empty: 'A fazer',
+};
 
 function capitalize(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -148,14 +169,15 @@ export default function Home() {
     new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(new Date()),
   );
 
-  const dotClassFor = (questionId: string) => {
-    if (redoQuestionIds.has(questionId)) return 'bg-dot-redo';
+  const bucketFor = (questionId: string): DotBucket => {
+    if (redoQuestionIds.has(questionId)) return 'redo';
     const outcome = outcomeByQuestionId.get(questionId);
-    if (outcome === 'correct') return 'bg-dot-correct';
-    if (outcome === 'incorrect' || outcome === 'revealed')
-      return 'bg-dot-wrong';
-    return 'bg-dot-empty';
+    if (outcome === 'correct') return 'correct';
+    if (outcome === 'incorrect' || outcome === 'revealed') return 'wrong';
+    return 'empty';
   };
+  const dotClassFor = (questionId: string) =>
+    dotBucketClass[bucketFor(questionId)];
 
   return (
     <AppShell active="home">
@@ -262,16 +284,19 @@ export default function Home() {
                   catalogue?.questions.filter(
                     (question) => question.subjectId === subject.id,
                   ) ?? [];
-                const completed = subjectQuestions.filter((question) =>
-                  outcomeByQuestionId.has(question.id),
-                ).length;
-                const correctCount = subjectQuestions.filter(
-                  (question) =>
-                    outcomeByQuestionId.get(question.id) === 'correct',
-                ).length;
-                const remaining = subjectQuestions.length - completed;
-                const accuracyLabel = completed
-                  ? `${Math.round((correctCount / completed) * 100)}%`
+                const buckets = subjectQuestions.map((question) =>
+                  bucketFor(question.id),
+                );
+                const countBucket = (bucket: DotBucket) =>
+                  buckets.filter((value) => value === bucket).length;
+                const correctCount = countBucket('correct');
+                const wrongCount = countBucket('wrong');
+                const redoCount = countBucket('redo');
+                const emptyCount = countBucket('empty');
+                const evaluated = correctCount + wrongCount;
+                const answered = subjectQuestions.length - emptyCount;
+                const accuracyLabel = evaluated
+                  ? `${Math.round((correctCount / evaluated) * 100)}%`
                   : '—';
                 const visibleDots = subjectQuestions.slice(0, maxVisibleDots);
                 const hiddenDotCount =
@@ -281,10 +306,10 @@ export default function Home() {
                     <div className="arc-subject-row group">
                       <Link
                         aria-label={`Abrir ${subject.name}`}
-                        className="absolute inset-0"
+                        className="absolute inset-0 z-0"
                         href={`/explore/${subject.slug}`}
                       />
-                      <div className="relative min-w-0">
+                      <div className="pointer-events-none relative z-10 min-w-0">
                         <h3 className="truncate font-display text-[1.65rem] leading-[1.08] font-medium tracking-[-0.04em] sm:text-[2.15rem]">
                           {subject.name}
                         </h3>
@@ -292,43 +317,96 @@ export default function Home() {
                           {subject.description}
                         </p>
                       </div>
-                      <div className="relative hidden sm:block">
+                      <div className="relative z-10 hidden sm:block">
                         {subjectQuestions.length ? (
-                          <>
-                            <div className="flex max-w-[220px] flex-wrap gap-1">
-                              {visibleDots.map((question) => (
-                                <span
-                                  className={`arc-dot ${dotClassFor(question.id)}`}
-                                  key={question.id}
-                                />
-                              ))}
-                              {hiddenDotCount > 0 ? (
-                                <span className="text-[10px] font-medium text-muted-foreground">
-                                  +{hiddenDotCount}
-                                </span>
-                              ) : null}
-                            </div>
-                            <p className="mt-2 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
-                              {subjectQuestions.length} questões
-                            </p>
-                          </>
+                          <Popover>
+                            <PopoverTrigger
+                              className="block rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              type="button"
+                            >
+                              <span className="flex max-w-[220px] flex-wrap gap-1">
+                                {visibleDots.map((question, dotIndex) => (
+                                  <span
+                                    className={`arc-dot ${dotClassFor(question.id)}`}
+                                    key={question.id}
+                                    title={`Questão ${dotIndex + 1} · ${bucketLabel[buckets[dotIndex]]}`}
+                                  />
+                                ))}
+                                {hiddenDotCount > 0 ? (
+                                  <span className="text-[10px] font-medium text-muted-foreground">
+                                    +{hiddenDotCount}
+                                  </span>
+                                ) : null}
+                              </span>
+                              <span className="mt-2 block font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                                {subjectQuestions.length} questões · inspecionar
+                              </span>
+                            </PopoverTrigger>
+                            <PopoverContent align="start" className="w-64">
+                              <p className="text-sm font-medium">
+                                {subject.name}
+                              </p>
+                              <ul className="grid gap-1.5 text-xs">
+                                {(
+                                  [
+                                    ['correct', 'Acertou', correctCount],
+                                    ['wrong', 'Errou', wrongCount],
+                                    ['redo', 'Para refazer', redoCount],
+                                    ['empty', 'A fazer', emptyCount],
+                                  ] as const
+                                ).map(([bucket, label, value]) => (
+                                  <li
+                                    className="flex items-center gap-2"
+                                    key={bucket}
+                                  >
+                                    <span
+                                      className={`arc-dot ${dotBucketClass[bucket]}`}
+                                    />
+                                    <span className="flex-1 text-muted-foreground">
+                                      {label}
+                                    </span>
+                                    <span className="tabular-nums font-medium">
+                                      {value}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-border pt-2 text-xs">
+                                <Link
+                                  className="text-accent-strong hover:underline"
+                                  href={`/questions?subject=${subject.slug}&status=incorrect`}
+                                >
+                                  Ver erradas
+                                </Link>
+                                <Link
+                                  className="text-accent-strong hover:underline"
+                                  href={`/questions?subject=${subject.slug}&status=not_attempted`}
+                                >
+                                  Ver a fazer
+                                </Link>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
                         ) : (
-                          <p className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                          <p className="pointer-events-none font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
                             Em preparação
                           </p>
                         )}
                       </div>
-                      <div className="relative text-right">
+                      <div className="pointer-events-none relative z-10 text-right">
                         <p className="arc-metric leading-none text-foreground">
                           {accuracyLabel}
                         </p>
-                        <p className="mt-1.5 text-xs text-muted-foreground">
+                        <p className="arc-caption mt-1">
+                          {evaluated ? 'de acerto' : 'sem tentativas'}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">
                           {subjectQuestions.length
-                            ? `${remaining} restantes de ${subjectQuestions.length}`
+                            ? `${answered} de ${subjectQuestions.length} feitas`
                             : 'Catálogo em preparação'}
                         </p>
                       </div>
-                      <span className="relative grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
+                      <span className="pointer-events-none relative z-10 grid size-10 place-items-center rounded-full text-accent-strong transition-[background-color,transform] duration-300 group-hover:translate-x-1 group-hover:bg-accent">
                         <ChevronRight className="size-5" />
                       </span>
                     </div>
