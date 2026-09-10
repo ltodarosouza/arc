@@ -46,6 +46,12 @@ export function q(id, difficulty, focus, statement, answer, distractors, princip
   const options = [normalizedAnswer, ...normalizedDistractors];
   const orderedOptions = options.map((_, index) => options[(index - rotation + 4) % 4]);
   const correct = orderedOptions.indexOf(normalizedAnswer);
+  const elimination = normalizedDistractors
+    .map((distractor, index) => {
+      const reasons = [normalizedAction, normalizedPrinciple, normalizedCheck];
+      return `A opção “${distractor}” é descartada porque ${reasons[index].charAt(0).toLowerCase()}${reasons[index].slice(1)}`;
+    })
+    .join(' ');
 
   return {
     id,
@@ -57,17 +63,17 @@ export function q(id, difficulty, focus, statement, answer, distractors, princip
     options: orderedOptions,
     correct,
     hints: [
-      `A ideia decisiva é ${focus}: ${normalizedPrinciple}`,
+      `Nesta questão de ${focus}, use a propriedade: ${normalizedPrinciple}`,
       normalizedAction,
       normalizedCheck,
     ],
     explanation: `${normalizedPrinciple} ${normalizedAction} ${normalizedCheck}`,
     solution: [
-      ['Identifique os dados', `O problema pede: ${normalizedStatement}`],
-      ['Escolha a propriedade', normalizedPrinciple],
-      ['Execute a etapa decisiva', normalizedAction],
-      ['Confronte as alternativas', `O resultado compatível é ${normalizedAnswer}; as demais opções representam erros de sinal, domínio, método ou interpretação deste enunciado.`],
-      ['Verifique o resultado', normalizedCheck],
+      ['Leia a condição', `Os dados fornecidos são: ${normalizedStatement}`],
+      ['Justifique o método', normalizedPrinciple],
+      ['Faça o cálculo', normalizedAction],
+      ['Elimine cada distrator', `${elimination} Portanto, a única opção compatível é “${normalizedAnswer}”.`],
+      ['Cheque a conclusão', normalizedCheck],
     ],
   };
 }

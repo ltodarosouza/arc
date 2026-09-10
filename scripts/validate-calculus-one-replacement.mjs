@@ -21,6 +21,8 @@ for (const question of bank) {
     throw new Error(`Dependência indevida: ${question.id}`);
   if (/alternativa oposta|condição irrelevante/i.test(text))
     throw new Error(`Distrator genérico: ${question.id}`);
+  if (/demais opções representam erros|O problema pede:|A ideia decisiva/i.test(text))
+    throw new Error(`Solução-modelo genérica: ${question.id}`);
   if (/Resolva \$\d+\^x\s*=/i.test(question.statement))
     throw new Error(`Treino algébrico isolado: ${question.id}`);
   if ((text.match(/\$/g) ?? []).length % 2)
