@@ -10,6 +10,7 @@ import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import { AnimatedNumber } from '@/components/animated-number';
 import { Reveal } from '@/components/reveal';
 import { FeedbackState } from '@/components/feedback-state';
+import { HeroSurface } from '@/components/hero-surface';
 import { normalizeSelectedSubjectIds } from '@/lib/data/catalogue-repository';
 import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
@@ -77,15 +78,10 @@ export default function Home() {
   return (
     <AppShell active="home">
       <section className="arc-page">
-        <div className="animate-enter max-w-2xl">
-          <div>
-            <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
-              Início
-            </p>
-            <h1
-              aria-label="O que vamos praticar?"
-              className="arc-title mt-2 max-w-xl"
-            >
+        <HeroSurface>
+          <div className="relative z-10">
+            <p className="arc-hero-kicker">Seu espaço de prática</p>
+            <h1 aria-label="O que vamos praticar?" className="arc-title mt-4">
               <span aria-hidden="true">
                 {[...'O que vamos praticar?'].map((letter, index) => (
                   <span
@@ -98,7 +94,10 @@ export default function Home() {
                 ))}
               </span>
             </h1>
-            <Link className="arc-action group mt-5" href={resumeHref}>
+            <p className="arc-hero-copy mt-5 text-[15px] leading-6 sm:text-base">
+              Uma questão de cada vez, com clareza para construir o seu ritmo.
+            </p>
+            <Link className="arc-action group mt-7" href={resumeHref}>
               {resumeSubject
                 ? `Continuar em ${resumeSubject.name}`
                 : selectedSubjects.length
@@ -107,17 +106,17 @@ export default function Home() {
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
           </div>
-        </div>
+        </HeroSurface>
         {progress.completed > 0 && !learnerLoading && (
-          <div className="arc-section flex max-w-xl flex-wrap items-center gap-x-10 gap-y-5 border-y border-[var(--border)] py-5">
+          <div className="arc-metrics-rail arc-section max-w-3xl">
             <div>
-              <p className="text-2xl font-semibold tabular-nums">
+              <p className="arc-metric text-[var(--foreground)]">
                 <AnimatedNumber value={progress.completed} />
               </p>
               <p className="arc-caption">Questões feitas</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold tabular-nums">
+              <p className="arc-metric text-[var(--arc-success-text)]">
                 <AnimatedNumber value={progress.correct} />
               </p>
               <p className="arc-caption">Acertos</p>
@@ -131,8 +130,11 @@ export default function Home() {
           </div>
         )}
         <div className="arc-section">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="arc-section-title">Minhas disciplinas</h2>
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="arc-caption">Seu mapa de estudo</p>
+              <h2 className="arc-section-title mt-1">Minhas disciplinas</h2>
+            </div>
             <Link
               className="text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
               href="/subjects"
@@ -181,7 +183,7 @@ export default function Home() {
                 const remaining = subjectQuestionIds.length - completed;
                 return (
                   <Reveal key={subject.id} delay={index * 70} variant="card">
-                    <ArcCard className="group relative h-full p-6 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)]">
+                    <ArcCard className="arc-subject-card group relative h-full p-6 hover:-translate-y-1 hover:border-[var(--arc-accent-strong)]">
                       <Link
                         aria-label={`Abrir ${subject.name}`}
                         className="absolute inset-0 rounded-[var(--arc-radius-card)]"

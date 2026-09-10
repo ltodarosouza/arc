@@ -1,11 +1,17 @@
 import type { Metadata } from 'next';
-import { DM_Sans, Geist_Mono } from 'next/font/google';
+import { DM_Sans, Fraunces, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import 'katex/dist/katex.min.css';
 import { AuthProvider } from '@/components/auth-provider';
 
 const sans = DM_Sans({
   variable: '--font-arc-sans',
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+const display = Fraunces({
+  variable: '--font-arc-display',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -44,7 +50,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${sans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${sans.variable} ${display.variable} ${geistMono.variable} antialiased`}
+      >
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

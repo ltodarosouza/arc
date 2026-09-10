@@ -76,13 +76,12 @@ export function AppShell({
             className="flex min-h-11 items-center gap-2.5 font-semibold tracking-[-0.045em]"
             href="/"
           >
-            <span
-              aria-hidden="true"
-              className="grid size-8 place-items-center rounded-[11px] bg-[var(--primary)] text-sm font-semibold text-[var(--primary-foreground)]"
-            >
+            <span aria-hidden="true" className="arc-word-mark">
               a
             </span>
-            <span className="text-[18px]">arc</span>
+            <span className="font-[var(--font-arc-display)] text-[21px] tracking-[-0.07em]">
+              arc
+            </span>
           </Link>
           <nav
             aria-label="Navegação principal"

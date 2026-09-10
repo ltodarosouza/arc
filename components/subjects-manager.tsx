@@ -39,12 +39,18 @@ export function SubjectsManager() {
     void saveSelectedSubjectIds(nextSubjectIds);
   };
   return (
-    <ArcCard className="mt-8 p-4 sm:p-6">
-      <p className="arc-caption">
-        {isInitialLoading
-          ? 'Carregando sua seleção'
-          : `${selectedSubjectIds.length} selecionada${selectedSubjectIds.length === 1 ? '' : 's'}`}
-      </p>
+    <ArcCard className="arc-selection-card mt-8 p-0">
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-5">
+        <div>
+          <p className="arc-caption">Personalize seu percurso</p>
+          <h2 className="arc-section-title mt-1">Escolha suas frentes</h2>
+        </div>
+        <p className="arc-caption">
+          {isInitialLoading
+            ? 'Carregando sua seleção'
+            : `${selectedSubjectIds.length} selecionada${selectedSubjectIds.length === 1 ? '' : 's'}`}
+        </p>
+      </div>
       {isInitialLoading && (
         <div aria-busy="true" className="mt-5 grid gap-2">
           {[0, 1, 2].map((item) => (
@@ -83,11 +89,12 @@ export function SubjectsManager() {
               <Reveal delay={index * 45} key={subject.id} variant="slide">
                 <button
                   aria-pressed={isSelected}
-                  className={`flex min-h-20 items-center gap-4 rounded-lg border p-4 text-left transition-colors ${isSelected ? 'border-[#a8bcbd] bg-[var(--arc-accent)]/40' : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--arc-surface-subtle)]/50'}`}
+                  className={`arc-selection-item flex min-h-24 w-full items-center gap-4 border p-5 text-left ${isSelected ? 'border-[var(--arc-accent-strong)] bg-[var(--arc-accent)]/55' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[var(--arc-accent-strong)] hover:bg-[var(--arc-surface-subtle)]/55'}`}
                   onClick={() => toggleSubject(subject.id)}
+                  type="button"
                 >
                   <span
-                    className={`grid size-5 shrink-0 place-items-center rounded border ${isSelected ? 'border-[var(--primary)] bg-[var(--primary)] text-white' : 'border-black/[0.2] bg-[var(--arc-surface)] text-transparent'}`}
+                    className={`grid size-6 shrink-0 place-items-center rounded-full border ${isSelected ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)] bg-[var(--arc-surface)] text-transparent'}`}
                   >
                     <Check className="size-3.5" />
                   </span>

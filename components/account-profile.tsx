@@ -81,10 +81,24 @@ export function AccountProfile() {
   return (
     <AppShell active="account">
       <section className="arc-page max-w-3xl">
-        <h1 className="arc-title">Perfil</h1>
-        <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
-          Gerencie seus dados e a segurança da conta.
-        </p>
+        <div className="arc-profile-hero animate-enter">
+          <span className="arc-profile-avatar" aria-hidden="true">
+            {(auth.profileName ?? auth.session.user.email ?? 'a')
+              .charAt(0)
+              .toUpperCase()}
+          </span>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
+              Espaço pessoal
+            </p>
+            <h1 className="mt-1 font-[var(--font-arc-display)] text-3xl tracking-[-0.05em] sm:text-4xl">
+              {auth.profileName ?? 'Seu perfil'}
+            </h1>
+            <p className="mt-1 text-sm text-white/70">
+              Dados, segurança e acesso em um só lugar.
+            </p>
+          </div>
+        </div>
         {auth.session.user.is_anonymous && (
           <ArcCard className="mt-6 p-5">
             <h2 className="font-medium">Você está como visitante</h2>
@@ -100,7 +114,7 @@ export function AccountProfile() {
             </Link>
           </ArcCard>
         )}
-        <ArcCard className="mt-6 p-5 sm:p-6">
+        <ArcCard className="arc-panel mt-6 p-5 sm:p-6">
           <h2 className="arc-section-title">Identidade</h2>
           {auth.session.user.email && (
             <p className="mt-2 break-all text-sm text-[var(--arc-text-muted)]">

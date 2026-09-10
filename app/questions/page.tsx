@@ -327,7 +327,7 @@ export default function QuestionsPage() {
         </div>
         <div className="mt-5 max-w-2xl">
           <div>
-            <p className="text-sm font-medium text-[var(--arc-accent-strong)]">
+            <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
               {subject.name}
             </p>
             <h1 className="arc-title mt-2">Questões</h1>
@@ -570,7 +570,7 @@ export default function QuestionsPage() {
               return (
                 <Reveal delay={(index % 5) * 45} key={question.id}>
                   <div>
-                    <ArcCard className="p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6">
+                    <ArcCard className="arc-question-card p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6">
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
                           <span>

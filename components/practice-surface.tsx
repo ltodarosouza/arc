@@ -10,6 +10,7 @@ import {
   Compass,
   MoveRight,
   RotateCcw,
+  X,
 } from 'lucide-react';
 
 import { AttemptStatusBadge, ArcButton, ArcCard } from '@/components/arc-ui';
@@ -366,7 +367,7 @@ export function PracticeSurface() {
         )}
       </div>
       <div className="p-5 sm:p-10">
-        <div className="arc-statement max-w-3xl">
+        <div className="arc-statement max-w-3xl rounded-[1.5rem] border-l-4 border-[var(--arc-accent-strong)] bg-[color-mix(in_srgb,var(--arc-accent)_32%,transparent)] px-5 py-6 sm:px-7">
           <MathContent value={question.statement.value} />
         </div>
         <div className="mt-8 max-w-3xl">
@@ -429,6 +430,18 @@ export function PracticeSurface() {
                     {eliminated && (
                       <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2 py-1 text-[11px] font-medium text-[var(--arc-text-muted)]">
                         Descartada
+                      </span>
+                    )}
+                    {resolved && correct && (
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[var(--arc-success-text)] text-white">
+                        <Check aria-hidden="true" className="size-4" />
+                        <span className="sr-only">Alternativa correta</span>
+                      </span>
+                    )}
+                    {resolved && chosen && !correct && (
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[var(--arc-error-text)] text-white">
+                        <X aria-hidden="true" className="size-4" />
+                        <span className="sr-only">Alternativa incorreta</span>
                       </span>
                     )}
                   </button>

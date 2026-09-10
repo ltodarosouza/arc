@@ -18,11 +18,11 @@ export function ArcButton({
       className={cn(
         'min-h-11 rounded-[var(--arc-radius-control)] px-5 text-sm font-medium shadow-none transition-[background-color,transform] duration-200 active:translate-y-px',
         tone === 'primary' &&
-          'bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[#354d68]',
+          'bg-[var(--primary)] text-[var(--primary-foreground)] hover:brightness-110',
         tone === 'accent' &&
-          'bg-[var(--arc-accent)] text-[#263950] hover:bg-[#c8d8d6]',
+          'bg-[var(--arc-accent)] text-[var(--foreground)] hover:brightness-95',
         tone === 'quiet' &&
-          'bg-transparent text-[var(--arc-text-muted)] hover:bg-black/[0.04] hover:text-[var(--foreground)]',
+          'bg-transparent text-[var(--arc-text-muted)] hover:bg-[var(--arc-surface-subtle)] hover:text-[var(--foreground)]',
         className,
       )}
     />
@@ -39,7 +39,7 @@ export function ArcCard({
   return (
     <section
       className={cn(
-        'rounded-[var(--arc-radius-card)] border border-[var(--border)] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-out',
+        'rounded-[var(--arc-radius-card)] border border-[var(--border)] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)] transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out',
         className,
       )}
     >
