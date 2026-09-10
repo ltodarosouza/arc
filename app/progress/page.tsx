@@ -8,6 +8,7 @@ import { FeedbackState } from '@/components/feedback-state';
 import { Reveal } from '@/components/reveal';
 
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import { AnimatedNumber } from '@/components/animated-number';
@@ -177,7 +178,7 @@ export default function ProgressPage() {
     <AppShell active="progress">
       <section className="arc-page arc-page--reading">
         <div className="animate-enter">
-          <h1 className="arc-title">Seu progresso</h1>
+          <AnimatedTitle>Seu progresso</AnimatedTitle>
           <p className="mt-3 max-w-lg text-[15px] leading-6 text-[var(--arc-text-muted)]">
             Cada questão conta uma vez. Ao refazer, o resultado mais recente
             substitui o anterior.

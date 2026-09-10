@@ -1,4 +1,5 @@
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
 import { SubjectsManager } from '@/components/subjects-manager';
 
 export default function SubjectsPage() {
@@ -6,7 +7,7 @@ export default function SubjectsPage() {
     <AppShell active="subjects">
       <section className="arc-page arc-page--reading">
         <div className="animate-enter max-w-xl">
-          <h1 className="arc-title">Minhas disciplinas</h1>
+          <AnimatedTitle>Minhas disciplinas</AnimatedTitle>
           <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
             Escolha o que aparece no Início e em Questões.
           </p>

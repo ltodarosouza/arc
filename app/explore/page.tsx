@@ -5,6 +5,7 @@ import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
 import { ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { Reveal } from '@/components/reveal';
@@ -84,7 +85,7 @@ export default function ExplorePage() {
       <section className="arc-page">
         <div className="animate-enter max-w-2xl">
           <div>
-            <h1 className="arc-title">Questões</h1>
+            <AnimatedTitle>Questões</AnimatedTitle>
             <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
               Escolha uma disciplina para começar.
             </p>

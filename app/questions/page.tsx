@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { MathContent } from '@/components/math-content';
@@ -325,7 +326,7 @@ export default function QuestionsPage() {
             <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
               {subject.name}
             </p>
-            <h1 className="arc-title mt-2">Questões</h1>
+            <AnimatedTitle className="mt-2">Questões</AnimatedTitle>
             <p className="mt-3 text-[15px] text-[var(--arc-text-muted)]">
               {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
             </p>

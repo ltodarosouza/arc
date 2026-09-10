@@ -6,6 +6,7 @@ import { PasswordUpdate } from '@/components/password-update';
 import { AccountDeletion } from '@/components/account-deletion';
 import { useAuth } from '@/components/auth-provider';
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
 import { ArcButton, ArcCard } from '@/components/arc-ui';
 import { AuthScreen } from '@/components/auth-screen';
 import { Input } from '@/components/ui/input';
@@ -91,9 +92,9 @@ export function AccountProfile() {
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
               Espaço pessoal
             </p>
-            <h1 className="mt-1 font-[var(--font-arc-display)] text-3xl tracking-[-0.05em] sm:text-4xl">
+            <AnimatedTitle className="mt-1 text-3xl text-white sm:text-4xl">
               {auth.profileName ?? 'Seu perfil'}
-            </h1>
+            </AnimatedTitle>
             <p className="mt-1 text-sm text-white/70">
               Dados, segurança e acesso em um só lugar.
             </p>
