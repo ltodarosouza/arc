@@ -1,22 +1,19 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { ProgressChart } from '@/components/progress-chart';
 import { FeedbackState } from '@/components/feedback-state';
-import { Reveal } from '@/components/reveal';
 
 import { AppShell } from '@/components/app-shell';
 import { PageHeader } from '@/components/page-header';
-import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
-import { AnimatedProgressBar } from '@/components/animated-progress-bar';
+import { ArcCard } from '@/components/arc-ui';
 import { AnimatedNumber } from '@/components/animated-number';
 import type { CatalogueSummary } from '@/lib/data/catalogue-repository';
 import { useCatalogueSummary } from '@/lib/data/use-catalogue-summary';
 import { useLearnerState } from '@/lib/data/use-learner-state';
 import {
-  getAttemptNumber,
   getLatestAttemptsByQuestion,
   summarizeProgress,
 } from '@/lib/domain/progress';
@@ -39,17 +36,10 @@ type SubjectPerformance = {
   name: string;
   attempted: number;
   correct: number;
+  redo: number;
+  total: number;
   topics: TopicPerformance[];
 };
-
-function formatAttemptDate(value: string) {
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
-}
 
 function getPrimaryTopic(
   question: CatalogueSummary['questions'][number],
@@ -69,6 +59,7 @@ function getPrimaryTopic(
 function buildPerformance(
   attempts: QuestionAttempt[],
   catalogue: CatalogueSummary | null,
+  redoQuestionIds: string[],
 ): SubjectPerformance[] {
   if (!catalogue) return [];
   const subjects = new Map<string, SubjectPerformance>();
@@ -79,6 +70,20 @@ function buildPerformance(
   const subjectsById = new Map(
     catalogue.subjects.map((subject) => [subject.id, subject]),
   );
+  const redoSet = new Set(redoQuestionIds);
+  const poolBySubject = new Map<string, number>();
+  const redoBySubject = new Map<string, number>();
+  for (const question of catalogue.questions) {
+    poolBySubject.set(
+      question.subjectId,
+      (poolBySubject.get(question.subjectId) ?? 0) + 1,
+    );
+    if (redoSet.has(question.id))
+      redoBySubject.set(
+        question.subjectId,
+        (redoBySubject.get(question.subjectId) ?? 0) + 1,
+      );
+  }
 
   for (const attempt of getLatestAttemptsByQuestion(attempts).values()) {
     const question = questionsById.get(attempt.questionId);
@@ -91,6 +96,8 @@ function buildPerformance(
       name: subject.name,
       attempted: 0,
       correct: 0,
+      redo: redoBySubject.get(subject.id) ?? 0,
+      total: poolBySubject.get(subject.id) ?? 0,
       topics: [],
     };
     subjectItem.attempted += 1;
@@ -142,20 +149,14 @@ export default function ProgressPage() {
   const accuracy = summary.answered
     ? percentage(summary.correct, summary.answered)
     : null;
-  const recentAttempts = useMemo(
-    () =>
-      [...attempts]
-        .sort(
-          (first, second) =>
-            new Date(second.createdAt).getTime() -
-            new Date(first.createdAt).getTime(),
-        )
-        .slice(0, 5),
-    [attempts],
-  );
   const performance = useMemo(
-    () => buildPerformance(attempts, catalogue),
-    [attempts, catalogue],
+    () =>
+      buildPerformance(
+        attempts,
+        catalogue,
+        learnerState?.redoQuestionIds ?? [],
+      ),
+    [attempts, catalogue, learnerState?.redoQuestionIds],
   );
   const subjectsWithErrors = useMemo(
     () => performance.filter((subject) => subject.correct < subject.attempted),
@@ -176,9 +177,10 @@ export default function ProgressPage() {
 
   return (
     <AppShell active="progress">
-      <section className="arc-page arc-page--reading">
+      <section className="arc-page">
         <PageHeader
-          title="Seu progresso"
+          eyebrow="Seu histórico"
+          title="Seu desempenho"
           description="Cada questão conta uma vez. Ao refazer, o resultado mais recente substitui o anterior."
         />
         {isLoading || catalogueLoading ? (
@@ -238,47 +240,24 @@ export default function ProgressPage() {
                   tone: 'text-redo',
                 },
               ].map((metric, index) => (
-                <Reveal delay={index * 85} key={metric.label} variant="card">
-                  <div>
-                    <dt className="text-sm text-muted-foreground">
-                      {metric.label}
-                    </dt>
-                    <dd className={`arc-metric mt-2 ${metric.tone}`}>
-                      <AnimatedNumber
-                        suffix={metric.suffix}
-                        value={metric.value}
-                      />
-                    </dd>
-                    <dd className="arc-caption mt-2">{metric.detail}</dd>
-                  </div>
-                </Reveal>
+                <div
+                  className="animate-rise"
+                  key={metric.label}
+                  style={{ animationDelay: `${index * 60}ms` }}
+                >
+                  <dt className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+                    {metric.label}
+                  </dt>
+                  <dd className={`arc-stat-figure mt-2.5 ${metric.tone}`}>
+                    <AnimatedNumber
+                      suffix={metric.suffix}
+                      value={metric.value}
+                    />
+                  </dd>
+                  <dd className="arc-caption mt-2">{metric.detail}</dd>
+                </div>
               ))}
             </dl>
-            {subjectsWithErrors.length > 0 && (
-              <section className="arc-review-strip mt-5">
-                <div>
-                  <p className="font-medium">Erros para revisar</p>
-                  <p className="arc-caption mt-1">
-                    Retome os pontos que ainda pedem atenção.
-                  </p>
-                </div>
-                <ReviewSubjectLinks
-                  subjects={subjectsWithErrors}
-                  status="incorrect"
-                />
-              </section>
-            )}
-            {redoCount > 0 && (
-              <section className="arc-review-strip mt-3">
-                <div>
-                  <p className="font-medium">Questões marcadas para refazer</p>
-                  <p className="arc-caption mt-1">
-                    Sua seleção pessoal para praticar mais uma vez.
-                  </p>
-                </div>
-                <ReviewSubjectLinks subjects={subjectsToRedo} status="redo" />
-              </section>
-            )}
             {summary.answered > 0 && <ProgressChart attempts={attempts} />}
             {!summary.answered && (
               <ArcCard className="mt-6 p-6">
@@ -302,104 +281,60 @@ export default function ProgressPage() {
             )}
             {performance.length > 0 && (
               <section className="arc-section">
-                <h2 className="arc-section-title">Por disciplina</h2>
-                <div className="mt-4 grid gap-3">
-                  {performance.map((subject, index) => (
-                    <Reveal delay={index * 55} key={subject.id} variant="card">
-                      <ArcCard className="p-5 sm:p-6">
-                        <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <Link
-                            className="font-medium tracking-[-0.025em] transition-colors hover:text-accent-strong"
-                            href={`/questions?subject=${subject.slug}`}
-                          >
-                            {subject.name}
-                          </Link>
-                          <p className="text-sm text-muted-foreground">
-                            {subject.attempted >= minimumReliableSampleSize
-                              ? `${percentage(subject.correct, subject.attempted)}% de acerto`
-                              : `${subject.attempted} respondida${subject.attempted === 1 ? '' : 's'}`}
-                          </p>
-                        </div>
-                        <AnimatedProgressBar
-                          className="mt-4"
-                          label={`${percentage(subject.correct, subject.attempted)}% de acerto em ${subject.name}`}
-                          value={percentage(subject.correct, subject.attempted)}
-                        />
-                        <p className="arc-caption mt-2">
-                          {subject.correct}{' '}
-                          {subject.correct === 1 ? 'acerto' : 'acertos'} em{' '}
-                          {subject.attempted}{' '}
-                          {subject.attempted === 1 ? 'questão' : 'questões'}
-                        </p>
-                        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-                          {subject.attempted > subject.correct && (
-                            <Link
-                              className="arc-link inline-flex min-h-11 items-center"
-                              href={`/questions?subject=${subject.slug}&status=incorrect`}
-                            >
-                              Revisar erros
-                            </Link>
-                          )}
-                          <Link
-                            className="arc-link inline-flex min-h-11 items-center"
-                            href={`/questions?subject=${subject.slug}&status=redo`}
-                          >
-                            Para refazer
-                          </Link>
-                        </div>
-                        <details className="arc-disclosure mt-2 border-t border-border">
-                          <summary className="flex min-h-12 items-center justify-between gap-2 text-sm font-medium">
-                            Desempenho por assunto{' '}
-                            <ChevronDown className="disclosure-icon size-4" />
-                          </summary>
-                          <div className="disclosure-content divide-y divide-border">
-                            {subject.topics.map((topic) => (
-                              <div
-                                className="flex items-center justify-between gap-4 py-3"
-                                key={topic.id}
-                              >
-                                <div>
-                                  <Link
-                                    className="text-sm font-medium transition-colors hover:text-accent-strong"
-                                    href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
-                                  >
-                                    {topic.name}
-                                  </Link>
-                                  <p className="mt-1 text-xs text-muted-foreground">
-                                    {topic.attempted >=
-                                    minimumReliableSampleSize
-                                      ? `${percentage(topic.correct, topic.attempted)}% de acerto em ${topic.attempted} questões`
-                                      : `${topic.attempted} resposta${topic.attempted === 1 ? '' : 's'} · percentual após 3 questões`}
-                                  </p>
-                                </div>
-                                <Link
-                                  className="shrink-0 text-sm font-medium text-accent-strong hover:underline"
-                                  href={`/questions?subject=${topic.subjectSlug}&topic=${topic.slug}`}
-                                >
-                                  Praticar
-                                </Link>
-                              </div>
-                            ))}
-                          </div>
-                        </details>
-                      </ArcCard>
-                    </Reveal>
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <h2 className="arc-section-title">Por disciplina</h2>
+                  <span className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                    acerto · feitas · restantes
+                  </span>
+                </div>
+                <div className="arc-perf-table mt-3">
+                  {performance.map((subject) => (
+                    <SubjectPerfRow key={subject.id} subject={subject} />
                   ))}
+                </div>
+                <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+                  <LegendSwatch color="var(--arc-success-text)" label="acertos" />
+                  <LegendSwatch color="var(--arc-error-text)" label="erros" />
+                  <LegendSwatch color="var(--arc-redo-text)" label="refazer" />
+                  <LegendSwatch
+                    color="var(--arc-dot-empty)"
+                    label="não feitas"
+                  />
                 </div>
               </section>
             )}
-            {recentAttempts.length > 0 && (
+            {(subjectsWithErrors.length > 0 || redoCount > 0) && (
               <section className="arc-section">
-                <h2 className="arc-section-title">Tentativas recentes</h2>
-                <div className="mt-4 divide-y divide-border">
-                  {recentAttempts.map((attempt) => (
-                    <AttemptRow
-                      attempt={attempt}
-                      attempts={attempts}
-                      catalogue={catalogue}
-                      key={attempt.id}
-                    />
-                  ))}
+                <div className="arc-attention-card">
+                  <p className="font-medium tracking-[-0.02em]">
+                    Precisa de atenção
+                  </p>
+                  <p className="arc-caption mt-1.5">
+                    Erros para revisar e questões que você mesmo marcou para
+                    refazer, num só lugar.
+                  </p>
+                  {subjectsWithErrors.length > 0 && (
+                    <div className="mt-4">
+                      <p className="font-mono text-[10px] tracking-[0.12em] text-error uppercase">
+                        Erros · {summary.incorrect}
+                      </p>
+                      <ReviewSubjectLinks
+                        subjects={subjectsWithErrors}
+                        status="incorrect"
+                      />
+                    </div>
+                  )}
+                  {redoCount > 0 && (
+                    <div className="mt-4 border-t border-border pt-4">
+                      <p className="font-mono text-[10px] tracking-[0.12em] text-redo uppercase">
+                        Para refazer · {redoCount}
+                      </p>
+                      <ReviewSubjectLinks
+                        subjects={subjectsToRedo}
+                        status="redo"
+                      />
+                    </div>
+                  )}
                 </div>
               </section>
             )}
@@ -407,6 +342,70 @@ export default function ProgressPage() {
         )}
       </section>
     </AppShell>
+  );
+}
+
+function LegendSwatch({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        className="size-2.5 rounded-[3px]"
+        style={{ background: color }}
+      />
+      {label}
+    </span>
+  );
+}
+
+function SubjectPerfRow({ subject }: { subject: SubjectPerformance }) {
+  const reliable = subject.attempted >= minimumReliableSampleSize;
+  const pct = subject.attempted
+    ? percentage(subject.correct, subject.attempted)
+    : 0;
+  const wrong = Math.max(0, subject.attempted - subject.correct);
+  const denom = subject.total || subject.attempted || 1;
+  const remaining = Math.max(
+    0,
+    denom - subject.correct - wrong - subject.redo,
+  );
+  const left = Math.max(0, subject.total - subject.attempted);
+  const rateTone = !reliable
+    ? 'text-muted-foreground'
+    : pct >= 70
+      ? 'text-success'
+      : pct < 45
+        ? 'text-error'
+        : 'text-foreground';
+  return (
+    <Link className="arc-perf-row" href={`/questions?subject=${subject.slug}`}>
+      <span className="min-w-0">
+        <span className="block truncate font-medium tracking-[-0.02em]">
+          {subject.name}
+        </span>
+        <span className="arc-caption mt-0.5 block">
+          {subject.attempted} de {subject.total} do banco
+        </span>
+      </span>
+      <span
+        className="arc-perf-row__bar"
+        title={`${pct}% de acerto em ${subject.name}`}
+      >
+        <span style={{ flexGrow: subject.correct, background: 'var(--arc-success-text)' }} />
+        <span style={{ flexGrow: wrong, background: 'var(--arc-error-text)' }} />
+        <span style={{ flexGrow: subject.redo, background: 'var(--arc-redo-text)' }} />
+        <span style={{ flexGrow: remaining }} />
+      </span>
+      <span className="arc-perf-row__stats">
+        <span className={`font-semibold tabular-nums ${rateTone}`}>
+          {reliable ? `${pct}%` : '—'}
+        </span>
+        <span className="tabular-nums text-muted-foreground">
+          {subject.attempted}
+        </span>
+        <span className="tabular-nums text-muted-foreground">{left}</span>
+      </span>
+      <ChevronRight className="arc-perf-row__chevron size-4 text-accent-strong" />
+    </Link>
   );
 }
 
@@ -432,52 +431,3 @@ function ReviewSubjectLinks({
   );
 }
 
-function AttemptRow({
-  attempt,
-  attempts,
-  catalogue,
-}: {
-  attempt: QuestionAttempt;
-  attempts: QuestionAttempt[];
-  catalogue: CatalogueSummary | null;
-}) {
-  const question = catalogue?.questions.find(
-    (item) => item.id === attempt.questionId,
-  );
-  const subject = catalogue?.subjects.find(
-    (item) => item.id === question?.subjectId,
-  );
-  const topic =
-    question && catalogue ? getPrimaryTopic(question, catalogue) : undefined;
-  const status =
-    attempt.outcome === 'correct'
-      ? 'correct'
-      : attempt.outcome === 'incorrect'
-        ? 'incorrect'
-        : 'redo';
-
-  return (
-    <Link
-      className="group block rounded-card focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ring"
-      href={
-        question && subject
-          ? `/practice?subject=${subject.slug}&question=${question.id}`
-          : '/progress'
-      }
-    >
-      <div className="flex items-center justify-between gap-4 rounded-lg px-2 py-4 transition-colors group-hover:bg-surface">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-medium">
-            {subject?.name ?? 'Disciplina'}
-            {topic ? ` · ${topic.name}` : ''}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Tentativa {getAttemptNumber(attempt, attempts)} ·{' '}
-            {formatAttemptDate(attempt.createdAt)}
-          </p>
-        </div>
-        <AttemptStatusBadge status={status} />
-      </div>
-    </Link>
-  );
-}
