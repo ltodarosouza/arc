@@ -7,6 +7,7 @@ const files = readdirSync(migrationDir)
   .filter((name) => /^20260909221[1-8]00_seed_authorial_vector_calculus_batch_\d+\.sql$/.test(name))
   .sort();
 const correction = readFileSync(resolve(migrationDir, '20260910160000_review_vector_calculus_bank.sql'), 'utf8');
+const deletion = readFileSync(resolve(migrationDir, '20260910161000_delete_duplicate_vector_calculus_questions.sql'), 'utf8');
 const source = files.map((name) => readFileSync(resolve(migrationDir, name), 'utf8')).join('\n');
 const fail = (message) => { throw new Error(message); };
 const questionStarts = [...source.matchAll(/insert into public\.questions[^;]+?values \('([^']+)'/g)];
@@ -49,11 +50,12 @@ if (!correction.includes("'ucdot', '\\\\cdot'") || !correction.includes("'^circ'
   fail('A normalização de LaTeX inválido está ausente.');
 for (const phrase of ['Identifique a grandeza', 'Aplique a definição', 'Obtenha o resultado'])
   if (!correction.includes(`step.title in`) || !correction.includes(`'${phrase}'`)) fail(`Cabeçalho-modelo não tratado: ${phrase}`);
-if (!correction.includes("set publication_status = 'archived'")) fail('A remoção não destrutiva de duplicatas está ausente.');
+if (!deletion.includes('delete from public.question_attempts') || !deletion.includes('delete from public.questions'))
+  fail('A exclusão de duplicatas e de tentativas dependentes está ausente.');
 console.log(JSON.stringify({
   sourceQuestions: ids.length,
-  archivedDuplicates: new Set(archived).size,
-  publishedAfterCorrection: ids.length - new Set(archived).size,
+  deletedDuplicates: new Set(archived).size,
+  publishedAfterDeletion: ids.length - new Set(archived).size,
   optionsPerQuestion: 4,
   hintsPerQuestion: 3,
   status: 'static preflight passed',

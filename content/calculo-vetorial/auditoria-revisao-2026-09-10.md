@@ -8,10 +8,12 @@ registrada nas fontes, Steinbruch e Winterle, permanece somente como mapa de
 competências e progressão; esta revisão não importou, copiou ou parafraseou
 exercícios externos e não criou questões novas.
 
-A migration `20260910160000_review_vector_calculus_bank.sql` arquiva, sem
-apagar, 24 itens com comando central redundante: quatro duplicatas conceituais
-e o bloco de 20 quádricas que repetia o bloco anterior. Restam 136 questões
-publicadas, com os mesmos IDs das questões preservadas.
+As migrations `20260910160000_review_vector_calculus_bank.sql` e
+`20260910161000_delete_duplicate_vector_calculus_questions.sql` removem 24
+itens com comando central redundante: quatro duplicatas conceituais e o bloco
+de 20 quádricas que repetia o bloco anterior. A segunda migration também apaga
+tentativas desses IDs, pois a chave estrangeira impede excluir uma questão que
+tenha tentativas. Restam 136 questões publicadas.
 
 ## Matriz de cobertura publicada
 
@@ -32,7 +34,7 @@ Não foram adicionados conteúdos sem tags existentes.
 
 ## Correções aplicadas
 
-- Arquivamento não destrutivo de duplicatas e variações por troca de números.
+- Exclusão dos 24 IDs duplicados e de suas tentativas dependentes.
 - Recalibração de itens com dificuldade inflada para `easy` ou `medium` quando
   o procedimento é direto ou tem poucos passos.
 - Correção das tags de produto escalar/projeção que estavam em norma e
@@ -41,6 +43,26 @@ Não foram adicionados conteúdos sem tags existentes.
 - Troca de títulos de solução-modelo por títulos ligados à competência de cada
   questão; o desenvolvimento e a verificação específicos já existentes são
   preservados.
+
+## Passagem editorial de dicas e resoluções
+
+O banco **ainda não atende integralmente** ao critério de exclusividade
+pedagógica. A leitura dos lotes encontrou 102 títulos-modelo nos dados de
+origem (`Identifique a grandeza`, `Aplique a definição`, `Obtenha o resultado`
+e `Confira`). A migration de revisão os substitui por títulos associados à tag,
+mas vários ainda se repetem entre questões do mesmo tópico.
+
+Não foram encontradas as frases-modelo proibidas `Aplique o método`,
+`Substitua os valores` ou `Etapa n da resolução`. Ainda assim, a maioria dos
+itens dos lotes 02–08 segue o mesmo molde de quatro passos e a explicação
+frequentemente recompõe as três dicas. As terceiras dicas de questões diretas
+também dão, em alguns casos, a conta completa; por exemplo, norma, produto
+escalar e versor. Portanto, elas são específicas ao conteúdo, mas nem sempre
+preservam a progressão sem revelar demais.
+
+Conclusão: a estrutura e os vínculos estão validados, mas uma revisão editorial
+integral das 136 questões restantes ainda exigirá reescrever individualmente
+dicas, explicações e passos — não apenas trocar seus títulos.
 
 ## Validação
 
