@@ -351,6 +351,61 @@ body {
   box-shadow: none;
   background: color-mix(in srgb, var(--arc-accent) 52%, var(--arc-surface));
 }
+.arc-home-overview {
+  display: grid;
+  gap: 1rem;
+}
+.arc-next-step {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+  color: #f8fbff;
+  background: linear-gradient(145deg, #294f85, #183250);
+  border: 0;
+}
+.arc-next-step::after {
+  content: '→';
+  position: absolute;
+  right: 1.25rem;
+  bottom: -0.55rem;
+  font-family: var(--font-arc-display), serif;
+  font-size: 7rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.08);
+}
+.arc-next-step .arc-action {
+  position: relative;
+  background: #f8fbff;
+  color: #183250;
+}
+.arc-home-subjects {
+  min-width: 0;
+}
+.arc-page-intro {
+  display: grid;
+  gap: 1.25rem;
+  align-items: end;
+}
+.arc-page-intro-action {
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--arc-accent) 65%, var(--arc-surface));
+}
+.arc-page-intro-action .arc-action {
+  width: 100%;
+}
+@media (min-width: 900px) {
+  .arc-home-overview {
+    grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 0.85fr);
+    align-items: stretch;
+  }
+  .arc-home-subjects {
+    grid-column: 1 / -1;
+  }
+  .arc-page-intro {
+    grid-template-columns: minmax(0, 1fr) 18rem;
+  }
+}
 .arc-question-card {
   position: relative;
   overflow: hidden;

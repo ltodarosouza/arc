@@ -325,7 +325,7 @@ export default function QuestionsPage() {
           <ChevronRight className="size-4" />
           <span>{subject.name}</span>
         </div>
-        <div className="mt-5 max-w-2xl">
+        <div className="arc-page-intro mt-5">
           <div>
             <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
               {subject.name}
@@ -335,14 +335,17 @@ export default function QuestionsPage() {
               {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
             </p>
           </div>
-          <button
-            className="arc-action mt-5"
-            disabled={!questions.length}
-            onClick={startRandomQuestion}
-            type="button"
-          >
-            Praticar uma questão <ArrowRight className="size-4" />
-          </button>
+          <div className="arc-page-intro-action">
+            <p className="arc-caption">Sem escolher por onde começar?</p>
+            <button
+              className="arc-action mt-3"
+              disabled={!questions.length}
+              onClick={startRandomQuestion}
+              type="button"
+            >
+              Praticar uma questão <ArrowRight className="size-4" />
+            </button>
+          </div>
         </div>
         <ArcCard className="arc-panel mt-8 p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">

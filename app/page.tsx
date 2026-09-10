@@ -107,17 +107,19 @@ export default function Home() {
             </Link>
           </div>
         </HeroSurface>
-        {progress.completed > 0 && !learnerLoading && (
-          <div className="arc-metrics-rail arc-section max-w-3xl">
+        <div className="arc-home-overview arc-section">
+          <div className="arc-metrics-rail">
             <div>
               <p className="arc-metric text-[var(--foreground)]">
-                <AnimatedNumber value={progress.completed} />
+                <AnimatedNumber
+                  value={learnerLoading ? 0 : progress.completed}
+                />
               </p>
               <p className="arc-caption">Questões feitas</p>
             </div>
             <div>
               <p className="arc-metric text-[var(--arc-success-text)]">
-                <AnimatedNumber value={progress.correct} />
+                <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
               </p>
               <p className="arc-caption">Acertos</p>
             </div>
@@ -128,8 +130,21 @@ export default function Home() {
               Ver progresso <ArrowRight className="size-4" />
             </Link>
           </div>
-        )}
-        <div className="arc-section">
+          <ArcCard className="arc-next-step">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/60">
+              Próximo passo
+            </p>
+            <p className="mt-3 max-w-[15rem] font-[var(--font-arc-display)] text-2xl leading-tight tracking-[-0.04em]">
+              {resumeSubject
+                ? `Retome ${resumeSubject.name}.`
+                : 'Escolha uma frente para começar.'}
+            </p>
+            <Link className="arc-action mt-5" href={resumeHref}>
+              Continuar <ArrowRight className="size-4" />
+            </Link>
+          </ArcCard>
+        </div>
+        <div className="arc-home-subjects arc-section">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="arc-caption">Seu mapa de estudo</p>
