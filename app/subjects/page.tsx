@@ -8,7 +8,7 @@ export default function SubjectsPage() {
       <section className="arc-page arc-page--reading">
         <div className="animate-enter max-w-xl">
           <AnimatedTitle>Minhas disciplinas</AnimatedTitle>
-          <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+          <p className="mt-3 text-sm text-muted-foreground">
             Escolha o que aparece no Início e em Questões.
           </p>
         </div>

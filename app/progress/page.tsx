@@ -179,13 +179,13 @@ export default function ProgressPage() {
       <section className="arc-page arc-page--reading">
         <div className="animate-enter">
           <AnimatedTitle>Seu progresso</AnimatedTitle>
-          <p className="mt-3 max-w-lg text-[15px] leading-6 text-[var(--arc-text-muted)]">
+          <p className="mt-3 max-w-lg text-[15px] leading-6 text-muted-foreground">
             Cada questão conta uma vez. Ao refazer, o resultado mais recente
             substitui o anterior.
           </p>
         </div>
         {isLoading || catalogueLoading ? (
-          <ArcCard className="mt-10 p-6 text-sm text-[var(--arc-text-muted)]">
+          <ArcCard className="mt-10 p-6 text-sm text-muted-foreground">
             Carregando seu progresso…
           </ArcCard>
         ) : error || catalogueError ? (
@@ -207,43 +207,43 @@ export default function ProgressPage() {
           />
         ) : (
           <>
-            <dl className="arc-section grid grid-cols-2 gap-x-6 gap-y-7 border-y border-[var(--border)] py-6 sm:grid-cols-5">
+            <dl className="arc-section grid grid-cols-2 gap-x-6 gap-y-7 border-y border-border py-6 sm:grid-cols-5">
               {[
                 {
                   label: 'Questões feitas',
                   value: summary.answered,
                   detail: 'Total respondido',
-                  tone: 'text-[var(--foreground)]',
+                  tone: 'text-foreground',
                 },
                 {
                   label: 'Aproveitamento',
                   value: accuracy ?? 0,
                   suffix: '%',
                   detail: 'Resultado mais recente',
-                  tone: 'text-[var(--arc-accent-strong)]',
+                  tone: 'text-accent-strong',
                 },
                 {
                   label: 'Acertos',
                   value: summary.correct,
                   detail: 'Respostas corretas',
-                  tone: 'text-[var(--arc-success-text)]',
+                  tone: 'text-success',
                 },
                 {
                   label: 'Erros',
                   value: summary.incorrect,
                   detail: 'Para revisar',
-                  tone: 'text-[var(--arc-error-text)]',
+                  tone: 'text-error',
                 },
                 {
                   label: 'Para refazer',
                   value: redoCount,
                   detail: 'Marcadas por você',
-                  tone: 'text-[var(--arc-redo-text)]',
+                  tone: 'text-redo',
                 },
               ].map((metric, index) => (
                 <Reveal delay={index * 85} key={metric.label} variant="card">
                   <div>
-                    <dt className="text-sm text-[var(--arc-text-muted)]">
+                    <dt className="text-sm text-muted-foreground">
                       {metric.label}
                     </dt>
                     <dd className={`arc-metric mt-2 ${metric.tone}`}>
@@ -290,7 +290,7 @@ export default function ProgressPage() {
                     ? `${summary.answered} ${summary.answered === 1 ? 'questão respondida.' : 'questões respondidas.'}`
                     : 'Nenhuma questão respondida ainda.'}
                 </p>
-                <p className="mt-2 text-sm leading-6 text-[var(--arc-text-muted)]">
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {summary.answered
                     ? 'Continue praticando para atualizar seus resultados.'
                     : 'Escolha uma disciplina e resolva a primeira questão.'}
@@ -317,7 +317,7 @@ export default function ProgressPage() {
                           >
                             {subject.name}
                           </Link>
-                          <p className="text-sm text-[var(--arc-text-muted)]">
+                          <p className="text-sm text-muted-foreground">
                             {subject.attempted >= minimumReliableSampleSize
                               ? `${percentage(subject.correct, subject.attempted)}% de acerto`
                               : `${subject.attempted} respondida${subject.attempted === 1 ? '' : 's'}`}
@@ -350,12 +350,12 @@ export default function ProgressPage() {
                             Para refazer
                           </Link>
                         </div>
-                        <details className="arc-disclosure mt-2 border-t border-[var(--border)]">
+                        <details className="arc-disclosure mt-2 border-t border-border">
                           <summary className="flex min-h-12 items-center justify-between gap-2 text-sm font-medium">
                             Desempenho por assunto{' '}
                             <ChevronDown className="disclosure-icon size-4" />
                           </summary>
-                          <div className="disclosure-content divide-y divide-[var(--border)]">
+                          <div className="disclosure-content divide-y divide-border">
                             {subject.topics.map((topic) => (
                               <div
                                 className="flex items-center justify-between gap-4 py-3"
@@ -368,7 +368,7 @@ export default function ProgressPage() {
                                   >
                                     {topic.name}
                                   </Link>
-                                  <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
+                                  <p className="mt-1 text-xs text-muted-foreground">
                                     {topic.attempted >=
                                     minimumReliableSampleSize
                                       ? `${percentage(topic.correct, topic.attempted)}% de acerto em ${topic.attempted} questões`
@@ -394,7 +394,7 @@ export default function ProgressPage() {
             {recentAttempts.length > 0 && (
               <section className="arc-section">
                 <h2 className="arc-section-title">Tentativas recentes</h2>
-                <div className="mt-4 divide-y divide-[var(--border)]">
+                <div className="mt-4 divide-y divide-border">
                   {recentAttempts.map((attempt) => (
                     <AttemptRow
                       attempt={attempt}
@@ -425,7 +425,7 @@ function ReviewSubjectLinks({
       {subjects.map((subject) => (
         <Link
           key={subject.id}
-          className="arc-link inline-flex min-h-11 items-center rounded-full border border-[var(--border)] bg-[var(--arc-surface)] px-4 hover:bg-[var(--arc-accent)]"
+          className="arc-link inline-flex min-h-11 items-center rounded-full border border-border bg-surface px-4 hover:bg-accent"
           href={`/questions?subject=${subject.slug}&status=${status}`}
         >
           {subject.name} <ArrowRight className="ml-2 size-4" />
@@ -461,20 +461,20 @@ function AttemptRow({
 
   return (
     <Link
-      className="group block rounded-[var(--arc-radius-card)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--ring)]"
+      className="group block rounded-card focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ring"
       href={
         question && subject
           ? `/practice?subject=${subject.slug}&question=${question.id}`
           : '/progress'
       }
     >
-      <div className="flex items-center justify-between gap-4 rounded-lg px-2 py-4 transition-colors group-hover:bg-[var(--arc-surface)]">
+      <div className="flex items-center justify-between gap-4 rounded-lg px-2 py-4 transition-colors group-hover:bg-surface">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">
             {subject?.name ?? 'Disciplina'}
             {topic ? ` · ${topic.name}` : ''}
           </p>
-          <p className="mt-1 text-xs text-[var(--arc-text-muted)]">
+          <p className="mt-1 text-xs text-muted-foreground">
             Tentativa {getAttemptNumber(attempt, attempts)} ·{' '}
             {formatAttemptDate(attempt.createdAt)}
           </p>

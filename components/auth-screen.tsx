@@ -82,7 +82,7 @@ export function AuthScreen() {
     }
   }
   return (
-    <main className="min-h-screen bg-[var(--background)] px-5 py-10">
+    <main className="min-h-screen bg-background px-5 py-10">
       <section className="mx-auto max-w-md">
         <Link href="/" className="text-xl font-semibold">
           arc
@@ -91,7 +91,7 @@ export function AuthScreen() {
           <h1 className="arc-title !text-3xl">
             {signup ? 'Crie sua conta' : 'Entre na sua conta'}
           </h1>
-          <p className="mt-3 text-[var(--arc-text-muted)]">
+          <p className="mt-3 text-muted-foreground">
             Salve suas disciplinas, tentativas e revisões.
           </p>
           {session?.user.is_anonymous && (
@@ -123,7 +123,7 @@ export function AuthScreen() {
               disabled={busy}
             />
             {signup && (
-              <p className="text-sm text-[var(--arc-text-muted)]">
+              <p className="text-sm text-muted-foreground">
                 Use pelo menos 8 caracteres.
               </p>
             )}
@@ -135,12 +135,12 @@ export function AuthScreen() {
               </p>
             )}
             {error && (
-              <p role="alert" className="text-[var(--arc-error-text)]">
+              <p role="alert" className="text-error">
                 {error}
               </p>
             )}
             {message && (
-              <output className="text-[var(--arc-success-text)]">
+              <output className="text-success">
                 {message}
               </output>
             )}

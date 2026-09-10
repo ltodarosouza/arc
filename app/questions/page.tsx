@@ -36,11 +36,11 @@ import {
 import type { AttemptOutcome, Difficulty } from '@/lib/domain/questions';
 
 const selectTriggerClass =
-  'arc-filter-control min-h-11 w-full rounded-xl border-[var(--border)] px-3 text-sm font-medium shadow-none transition-colors duration-200 hover:border-[var(--arc-accent-strong)] focus:border-[var(--ring)]';
+  'arc-filter-control min-h-11 w-full rounded-xl border-border px-3 text-sm font-medium shadow-none transition-colors duration-200 hover:border-accent-strong focus:border-ring';
 const selectContentClass =
-  'rounded-2xl border-[var(--border)] bg-[var(--arc-surface)] p-1.5 shadow-[var(--arc-shadow-float)]';
+  'rounded-2xl border-border bg-surface p-1.5 shadow-float';
 const selectItemClass =
-  'min-h-10 rounded-xl px-3 py-2 text-sm text-[var(--foreground)] data-highlighted:bg-[var(--arc-accent)] data-highlighted:text-[var(--foreground)]';
+  'min-h-10 rounded-xl px-3 py-2 text-sm text-foreground data-highlighted:bg-accent data-highlighted:text-foreground';
 const questionsPerPage = 16;
 
 export default function QuestionsPage() {
@@ -321,8 +321,8 @@ export default function QuestionsPage() {
   return (
     <AppShell active="explore">
       <section className="arc-page">
-        <div className="flex items-center gap-2 text-sm text-[var(--arc-text-muted)]">
-          <Link className="hover:text-[var(--foreground)]" href="/explore">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Link className="hover:text-foreground" href="/explore">
             Questões
           </Link>
           <ChevronRight className="size-4" />
@@ -330,11 +330,11 @@ export default function QuestionsPage() {
         </div>
         <div className="mt-5 max-w-2xl">
           <div>
-            <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-[var(--arc-accent-strong)]">
+            <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-accent-strong">
               {subject.name}
             </p>
             <AnimatedTitle className="mt-2">Questões</AnimatedTitle>
-            <p className="mt-3 text-[15px] text-[var(--arc-text-muted)]">
+            <p className="mt-3 text-[15px] text-muted-foreground">
               {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
             </p>
           </div>
@@ -342,14 +342,14 @@ export default function QuestionsPage() {
         <ArcCard className="arc-panel mt-8 p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="size-4 text-[var(--arc-accent-strong)]" />
+              <SlidersHorizontal className="size-4 text-accent-strong" />
               <p className="text-sm font-medium">Filtrar questões</p>
             </div>
             {(activeFilters.length > 0 ||
               selectedDifficulties.length > 0 ||
               selectedStatus !== 'all') && (
               <button
-                className="text-xs font-medium text-[var(--arc-accent-strong)] hover:underline"
+                className="text-xs font-medium text-accent-strong hover:underline"
                 onClick={clearAllFilters}
                 type="button"
               >
@@ -357,8 +357,8 @@ export default function QuestionsPage() {
               </button>
             )}
           </div>
-          <div className="mt-4 grid gap-3 border-t border-[var(--border)] pt-4 sm:grid-cols-2">
-            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+          <div className="mt-4 grid gap-3 border-t border-border pt-4 sm:grid-cols-2">
+            <div className="grid gap-1.5 text-xs font-medium text-muted-foreground">
               Assunto
               <Select
                 onValueChange={(value) => selectUnit(value ?? '')}
@@ -388,7 +388,7 @@ export default function QuestionsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid gap-1.5 text-xs font-medium text-[var(--arc-text-muted)]">
+            <div className="grid gap-1.5 text-xs font-medium text-muted-foreground">
               Subassunto
               <Select
                 disabled={!topics.length}
@@ -421,7 +421,7 @@ export default function QuestionsPage() {
               </Select>
             </div>
             <fieldset>
-              <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
+              <legend className="text-xs font-medium text-muted-foreground">
                 Dificuldade
               </legend>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -436,7 +436,7 @@ export default function QuestionsPage() {
                   return (
                     <button
                       aria-pressed={selected}
-                      className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[var(--foreground)]'}`}
+                      className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-primary text-primary-foreground' : 'bg-surface text-muted-foreground hover:bg-accent hover:text-foreground'}`}
                       key={difficulty.id}
                       onClick={() => toggleDifficulty(difficulty.id)}
                       type="button"
@@ -448,7 +448,7 @@ export default function QuestionsPage() {
               </div>
             </fieldset>
             <fieldset>
-              <legend className="text-xs font-medium text-[var(--arc-text-muted)]">
+              <legend className="text-xs font-medium text-muted-foreground">
                 Status
               </legend>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -466,7 +466,7 @@ export default function QuestionsPage() {
                   return (
                     <button
                       aria-pressed={selected}
-                      className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface)] text-[var(--arc-text-muted)] hover:bg-[var(--arc-accent)] hover:text-[var(--foreground)]'}`}
+                      className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${selected ? 'bg-primary text-primary-foreground' : 'bg-surface text-muted-foreground hover:bg-accent hover:text-foreground'}`}
                       key={status.id}
                       onClick={() => setSelectedStatus(status.id)}
                       type="button"
@@ -482,12 +482,12 @@ export default function QuestionsPage() {
             selectedDifficulties.length > 0 ||
             selectedStatus !== 'all') && (
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-[var(--arc-text-muted)]">
+              <span className="text-xs text-muted-foreground">
                 Aplicados:
               </span>
               {activeFilters.map((filter) => (
                 <button
-                  className="inline-flex items-center gap-1 rounded-full bg-[var(--arc-accent)] px-2.5 py-1 text-xs font-medium text-[var(--foreground)]"
+                  className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-foreground"
                   key={filter.id}
                   onClick={() => {
                     if (filter.kind !== 'subtopic') clearFilter(filter.kind);
@@ -499,7 +499,7 @@ export default function QuestionsPage() {
               ))}
               {selectedDifficulties.map((difficulty) => (
                 <button
-                  className="inline-flex items-center gap-1 rounded-full bg-[var(--arc-accent)] px-2.5 py-1 text-xs font-medium text-[var(--foreground)]"
+                  className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-foreground"
                   key={difficulty}
                   onClick={() => toggleDifficulty(difficulty)}
                 >
@@ -513,7 +513,7 @@ export default function QuestionsPage() {
               ))}
               {selectedStatus !== 'all' && (
                 <button
-                  className="inline-flex items-center gap-1 rounded-full bg-[var(--arc-accent)] px-2.5 py-1 text-xs font-medium text-[var(--foreground)]"
+                  className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-foreground"
                   onClick={() => setSelectedStatus('all')}
                 >
                   {
@@ -537,7 +537,7 @@ export default function QuestionsPage() {
           {questions.length} questões encontradas.
         </p>
         {redoFeedback && (
-          <p role="alert" className="mt-4 text-sm text-[var(--arc-error-text)]">
+          <p role="alert" className="mt-4 text-sm text-error">
             {redoFeedback}
           </p>
         )}
@@ -565,7 +565,7 @@ export default function QuestionsPage() {
               return (
                 <Reveal delay={(index % 5) * 45} key={question.id}>
                   <div
-                    className="rounded-[var(--arc-radius-card)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                    className="rounded-card focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     onClick={(event: MouseEvent<HTMLDivElement>) => {
                       if ((event.target as HTMLElement).closest('button, a')) return;
                       startPractice(question.id);
@@ -581,7 +581,7 @@ export default function QuestionsPage() {
                     tabIndex={0}
                   >
                     <ArcCard
-                      className="arc-question-card relative cursor-pointer p-5 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)] sm:p-6"
+                      className="arc-question-card relative cursor-pointer p-5 hover:-translate-y-0.5 hover:border-accent-strong sm:p-6"
                     >
                       <Link
                         aria-label={`Abrir questão ${questionIndex + 1}`}
@@ -593,11 +593,11 @@ export default function QuestionsPage() {
                         }}
                       />
                       <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
-                        <div className="flex items-center gap-2 text-xs font-medium text-[var(--arc-text-muted)]">
+                        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                           <span>
                             Questão {String(questionIndex + 1).padStart(2, '0')}
                           </span>
-                          <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 capitalize">
+                          <span className="rounded-full bg-surface-subtle px-2.5 py-1 capitalize">
                             {question.difficulty === 'easy'
                               ? 'Fácil'
                               : question.difficulty === 'medium'
@@ -616,7 +616,7 @@ export default function QuestionsPage() {
                         <div className="flex flex-wrap gap-2">
                           {topicNames.map((name) => (
                             <span
-                              className="rounded-full bg-[var(--arc-surface-subtle)] px-2.5 py-1 text-xs text-[var(--arc-text-muted)]"
+                              className="rounded-full bg-surface-subtle px-2.5 py-1 text-xs text-muted-foreground"
                               key={name}
                             >
                               {name}
@@ -626,7 +626,7 @@ export default function QuestionsPage() {
                         <div className="flex items-center gap-4">
                           <button
                             aria-pressed={markedForRedo}
-                            className="text-sm text-[var(--arc-text-muted)] hover:text-[var(--foreground)]"
+                            className="text-sm text-muted-foreground hover:text-foreground"
                             disabled={isSavingRedo}
                             onClick={() => void toggleRedo(question.id)}
                           >
@@ -637,7 +637,7 @@ export default function QuestionsPage() {
                                 : 'Marcar para refazer'}
                           </button>
                           <button
-                            className="inline-flex items-center gap-1 text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
+                            className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                             onClick={() => startPractice(question.id)}
                             type="button"
                           >
@@ -680,7 +680,7 @@ export default function QuestionsPage() {
             >
               Anterior
             </button>
-            <p className="text-sm text-[var(--arc-text-muted)]">
+            <p className="text-sm text-muted-foreground">
               Página {currentPage} de {totalPages}
             </p>
             <button
@@ -707,10 +707,10 @@ function QuestionListSkeleton() {
     >
       {[0, 1, 2].map((item) => (
         <ArcCard className="animate-pulse p-5 sm:p-6" key={item}>
-          <div className="h-4 w-24 rounded-full bg-[var(--arc-surface-subtle)]" />
-          <div className="mt-6 h-6 max-w-xl rounded-full bg-[var(--arc-surface-subtle)]" />
-          <div className="mt-3 h-6 w-3/5 rounded-full bg-[var(--arc-surface-subtle)]" />
-          <div className="mt-7 h-8 w-28 rounded-full bg-[var(--arc-surface-subtle)]" />
+          <div className="h-4 w-24 rounded-full bg-surface-subtle" />
+          <div className="mt-6 h-6 max-w-xl rounded-full bg-surface-subtle" />
+          <div className="mt-3 h-6 w-3/5 rounded-full bg-surface-subtle" />
+          <div className="mt-7 h-8 w-28 rounded-full bg-surface-subtle" />
         </ArcCard>
       ))}
     </div>

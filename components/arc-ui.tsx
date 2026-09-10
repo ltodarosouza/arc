@@ -16,13 +16,13 @@ export function ArcButton({
     <Button
       {...props}
       className={cn(
-        'min-h-11 rounded-[var(--arc-radius-control)] px-5 text-sm font-medium shadow-none transition-[background-color,transform] duration-200 active:translate-y-px',
+        'min-h-11 rounded-control px-5 text-sm font-medium shadow-none transition-[background-color,transform] duration-200 active:translate-y-px',
         tone === 'primary' &&
-          'bg-[var(--primary)] text-[var(--primary-foreground)] hover:brightness-110',
+          'bg-primary text-primary-foreground hover:brightness-110',
         tone === 'accent' &&
-          'bg-[var(--arc-accent)] text-[var(--foreground)] hover:brightness-95',
+          'bg-accent text-foreground hover:brightness-95',
         tone === 'quiet' &&
-          'bg-transparent text-[var(--arc-text-muted)] hover:bg-[var(--arc-surface-subtle)] hover:text-[var(--foreground)]',
+          'bg-transparent text-muted-foreground hover:bg-surface-subtle hover:text-foreground',
         className,
       )}
     />
@@ -39,7 +39,7 @@ export function ArcCard({
   return (
     <section
       className={cn(
-        'rounded-[var(--arc-radius-card)] border border-[var(--border)] bg-[var(--arc-surface)] shadow-[var(--arc-shadow-card)] transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out',
+        'rounded-card border border-border bg-surface shadow-card transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out',
         className,
       )}
     >
@@ -55,9 +55,9 @@ export function AttemptStatusBadge({ status }: { status: AttemptStatus }) {
     status
   ];
   const colors = {
-    correct: 'bg-[var(--arc-success-bg)] text-[var(--arc-success-text)]',
-    incorrect: 'bg-[var(--arc-error-bg)] text-[var(--arc-error-text)]',
-    redo: 'bg-[var(--arc-redo-bg)] text-[var(--arc-redo-text)]',
+    correct: 'bg-success-bg text-success',
+    incorrect: 'bg-error-bg text-error',
+    redo: 'bg-redo-bg text-redo',
   }[status];
 
   return (

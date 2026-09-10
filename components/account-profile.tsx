@@ -118,7 +118,7 @@ export function AccountProfile() {
         <ArcCard className="arc-panel mt-6 p-5 sm:p-6">
           <h2 className="arc-section-title">Identidade</h2>
           {auth.session.user.email && (
-            <p className="mt-2 break-all text-sm text-[var(--arc-text-muted)]">
+            <p className="mt-2 break-all text-sm text-muted-foreground">
               E-mail da conta: {auth.session.user.email}
             </p>
           )}
@@ -155,7 +155,7 @@ export function AccountProfile() {
               />
               <p
                 id="name-help"
-                className="text-sm text-[var(--arc-text-muted)]"
+                className="text-sm text-muted-foreground"
               >
                 Até 60 caracteres. Esse nome é privado e não precisa ser único.
               </p>
@@ -169,9 +169,9 @@ export function AccountProfile() {
             </form>
           )}
         </ArcCard>
-        <section className="arc-section border-t border-[var(--border)] pt-6">
+        <section className="arc-section border-t border-border pt-6">
           <h2 className="arc-section-title">Sessão</h2>
-          <p className="mt-2 text-[var(--arc-text-muted)]">
+          <p className="mt-2 text-muted-foreground">
             Sair encerra o acesso neste navegador e preserva seus dados na
             conta.
           </p>
@@ -186,12 +186,12 @@ export function AccountProfile() {
         </section>
         {!auth.session.user.is_anonymous && (
           <>
-            <section className="arc-section border-t border-[var(--border)] pt-6">
+            <section className="arc-section border-t border-border pt-6">
               <h2 className="arc-section-title">Segurança</h2>
               <PasswordUpdate />
             </section>
-            <section className="arc-section border-t border-[var(--border)] pt-6">
-              <h2 className="arc-section-title text-[var(--arc-error-text)]">
+            <section className="arc-section border-t border-border pt-6">
+              <h2 className="arc-section-title text-error">
                 Zona de perigo
               </h2>
               <p className="mt-2">
@@ -203,12 +203,12 @@ export function AccountProfile() {
           </>
         )}
         {feedback && (
-          <output className="mt-4 text-[var(--arc-success-text)]">
+          <output className="mt-4 text-success">
             {feedback}
           </output>
         )}
         {error && (
-          <p className="mt-4 text-[var(--arc-error-text)]" role="alert">
+          <p className="mt-4 text-error" role="alert">
             {error}
           </p>
         )}

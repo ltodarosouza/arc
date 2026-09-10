@@ -41,7 +41,7 @@ export default function SubjectPage() {
         </Link>
         <h1 className="arc-title mt-5">{subject?.name ?? 'Disciplina'}</h1>
         {subject && (
-          <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+          <p className="mt-3 text-sm text-muted-foreground">
             {subject.description}
           </p>
         )}
@@ -54,7 +54,7 @@ export default function SubjectPage() {
           </Link>
         )}
         {isLoading ? (
-          <ArcCard className="mt-8 h-56 animate-pulse bg-[var(--arc-surface-subtle)]">
+          <ArcCard className="mt-8 h-56 animate-pulse bg-surface-subtle">
             <span className="sr-only">Carregando assuntos</span>
           </ArcCard>
         ) : error ? (
@@ -82,20 +82,20 @@ export default function SubjectPage() {
           <section className="arc-section">
             <h2 className="arc-section-title">
               Áreas de estudo{' '}
-              <span className="ml-2 text-sm font-normal text-[var(--arc-text-muted)]">
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
                 {units.length}
               </span>
             </h2>
-            <div className="mt-4 divide-y divide-[var(--border)]">
+            <div className="mt-4 divide-y divide-border">
               {units.map((unit) => (
                 <Link
-                  className="group flex items-center justify-between gap-4 rounded-lg px-3 py-5 transition-colors hover:bg-[var(--arc-surface)]"
+                  className="group flex items-center justify-between gap-4 rounded-lg px-3 py-5 transition-colors hover:bg-surface"
                   href={`/questions?subject=${subject?.slug ?? subjectId}&unit=${unit.slug}`}
                   key={unit.id}
                 >
                   <span className="font-medium">
                     {unit.name}{' '}
-                    <span className="mt-1 block text-sm font-normal text-[var(--arc-text-muted)]">
+                    <span className="mt-1 block text-sm font-normal text-muted-foreground">
                       {unit.count} {unit.count === 1 ? 'questão' : 'questões'}
                     </span>
                   </span>

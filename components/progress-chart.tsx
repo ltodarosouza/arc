@@ -51,7 +51,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
   const activeDay = days.find((day) => day.date === activeDate) ?? null;
   return (
     <section
-      className="arc-section border-y border-[var(--border)] py-6"
+      className="arc-section border-y border-border py-6"
       aria-labelledby="evolution-title"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -155,7 +155,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
       </svg>
       <p
         aria-live="polite"
-        className="mt-2 min-h-6 text-sm text-[var(--arc-text-muted)]"
+        className="mt-2 min-h-6 text-sm text-muted-foreground"
       >
         {activeDay
           ? `${dateLabel(activeDay.date)} · ${activeDay.correct} ${activeDay.correct === 1 ? 'acerto' : 'acertos'} em ${activeDay.answered} ${activeDay.answered === 1 ? 'questão' : 'questões'} · ${activeDay.accuracy}% de aproveitamento`
@@ -171,7 +171,7 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
         <summary className="arc-link inline-flex min-h-11 items-center">
           Ver registros do gráfico
         </summary>
-        <ul className="disclosure-content divide-y divide-[var(--border)]">
+        <ul className="disclosure-content divide-y divide-border">
           {days.map((day) => (
             <li
               key={day.date}

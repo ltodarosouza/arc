@@ -50,14 +50,14 @@ export function AnimatedProgressBar({
       aria-valuemin={0}
       aria-valuenow={clampedValue}
       className={cn(
-        'h-1.5 overflow-hidden rounded-full bg-[var(--arc-surface-subtle)]',
+        'h-1.5 overflow-hidden rounded-full bg-surface-subtle',
         className,
       )}
       role="progressbar"
     >
       <span
         className={cn(
-          'arc-progress-fill block h-full rounded-full bg-[var(--arc-accent-strong)]',
+          'arc-progress-fill block h-full rounded-full bg-accent-strong',
           indicatorClassName,
         )}
         style={{ width: `${isFilled ? clampedValue : 0}%` }}

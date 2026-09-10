@@ -23,30 +23,30 @@ export function QuestionStatistics({ question }: { question: Question }) {
   const incorrectRate = 100 - correctRate;
 
   return (
-    <details className="mt-5 max-w-2xl rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)] px-4 py-3.5">
+    <details className="mt-5 max-w-2xl rounded-2xl border border-border bg-surface px-4 py-3.5">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-[#46657a]">
         <span className="inline-flex items-center gap-2">
           <BarChart3 className="size-4" /> Estatísticas da questão
         </span>
-        <span className="text-xs font-normal text-[var(--arc-text-muted)]">
+        <span className="text-xs font-normal text-muted-foreground">
           Dados de demonstração
         </span>
       </summary>
-      <div className="mt-5 border-t border-[var(--border)] pt-4">
+      <div className="mt-5 border-t border-border pt-4">
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
           <span>
-            <strong className="font-medium text-[var(--foreground)]">
+            <strong className="font-medium text-foreground">
               {correctRate}%
             </strong>{' '}
             acertaram
           </span>
           <span>
-            <strong className="font-medium text-[var(--foreground)]">
+            <strong className="font-medium text-foreground">
               {incorrectRate}%
             </strong>{' '}
             erraram
           </span>
-          <span className="text-[var(--arc-text-muted)]">
+          <span className="text-muted-foreground">
             {aggregate.totalAttempts} respostas
           </span>
         </div>
@@ -61,7 +61,7 @@ export function QuestionStatistics({ question }: { question: Question }) {
                 className="grid grid-cols-[1.5rem_1fr_auto] items-center gap-2.5 text-xs"
                 key={option.id}
               >
-                <span className="font-medium text-[var(--arc-text-muted)]">
+                <span className="font-medium text-muted-foreground">
                   {option.label}
                 </span>
                 <AnimatedProgressBar
@@ -73,7 +73,7 @@ export function QuestionStatistics({ question }: { question: Question }) {
                   label={`${rate}% escolheram a alternativa ${option.label}`}
                   value={rate}
                 />
-                <span className="tabular-nums text-[var(--arc-text-muted)]">
+                <span className="tabular-nums text-muted-foreground">
                   {rate}%
                 </span>
               </div>

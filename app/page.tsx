@@ -97,13 +97,13 @@ export default function Home() {
         </HeroSurface>
         <div className="arc-simple-metrics arc-section">
           <div>
-            <p className="arc-metric text-[var(--foreground)]">
+            <p className="arc-metric text-foreground">
               <AnimatedNumber value={learnerLoading ? 0 : progress.completed} />
             </p>
             <p className="arc-caption">Questões feitas</p>
           </div>
           <div>
-            <p className="arc-metric text-[var(--arc-success-text)]">
+            <p className="arc-metric text-success">
               <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
             </p>
             <p className="arc-caption">Acertos</p>
@@ -116,7 +116,7 @@ export default function Home() {
               <h2 className="arc-section-title mt-1">Minhas disciplinas</h2>
             </div>
             <Link
-              className="text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
+              className="text-sm font-medium text-accent-strong hover:underline"
               href="/subjects"
             >
               Gerenciar
@@ -131,7 +131,7 @@ export default function Home() {
               {[0, 1].map((id) => (
                 <ArcCard
                   key={id}
-                  className="h-48 animate-pulse bg-[var(--arc-surface-subtle)]"
+                  className="h-48 animate-pulse bg-surface-subtle"
                 />
               ))}
             </div>
@@ -163,19 +163,19 @@ export default function Home() {
                 const remaining = subjectQuestionIds.length - completed;
                 return (
                   <Reveal key={subject.id} delay={index * 70} variant="card">
-                    <ArcCard className="arc-subject-card group relative h-full p-6 hover:-translate-y-1 hover:border-[var(--arc-accent-strong)]">
+                    <ArcCard className="arc-subject-card group relative h-full p-6 hover:-translate-y-1 hover:border-accent-strong">
                       <Link
                         aria-label={`Abrir ${subject.name}`}
-                        className="absolute inset-0 rounded-[var(--arc-radius-card)]"
+                        className="absolute inset-0 rounded-card"
                         href={`/explore/${subject.slug}`}
                       />
-                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[var(--arc-accent-strong)]">
+                      <span className="grid size-9 place-items-center rounded-xl bg-accent text-accent-strong">
                         <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
                       </span>
                       <h3 className="mt-5 text-lg font-semibold tracking-[-0.02em]">
                         {subject.name}
                       </h3>
-                      <p className="mt-1 text-sm leading-5 text-[var(--arc-text-muted)]">
+                      <p className="mt-1 text-sm leading-5 text-muted-foreground">
                         {subject.description}
                       </p>
                       <AnimatedProgressBar
@@ -187,14 +187,14 @@ export default function Home() {
                             : 0
                         }
                       />
-                      <p className="mt-2 text-xs text-[var(--arc-text-muted)]">
+                      <p className="mt-2 text-xs text-muted-foreground">
                         {subjectQuestionIds.length
                           ? remaining
                             ? `${remaining} ${remaining === 1 ? 'questão para fazer' : 'questões para fazer'}`
                             : 'Todas as questões concluídas'
                           : 'Catálogo em preparação'}
                       </p>
-                      <p className="mt-5 text-sm font-medium text-[var(--arc-accent-strong)]">
+                      <p className="mt-5 text-sm font-medium text-accent-strong">
                         Abrir disciplina{' '}
                         <ChevronRight className="inline size-4" />
                       </p>
@@ -205,11 +205,11 @@ export default function Home() {
             </div>
           ) : (
             <ArcCard className="mt-5 p-5">
-              <p className="text-sm text-[var(--arc-text-muted)]">
+              <p className="text-sm text-muted-foreground">
                 Nenhuma disciplina selecionada.
               </p>
               <Link
-                className="mt-3 inline-flex text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
+                className="mt-3 inline-flex text-sm font-medium text-accent-strong hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas

@@ -46,7 +46,7 @@ export function AppShell({
     return (
       <main
         aria-busy="true"
-        className="min-h-screen bg-[var(--background)] px-5 py-12"
+        className="min-h-screen bg-background px-5 py-12"
       >
         <div className="mx-auto max-w-md">
           <p role="status" className="arc-caption">
@@ -54,7 +54,7 @@ export function AppShell({
           </p>
           <div
             aria-hidden="true"
-            className="mt-6 h-48 animate-pulse rounded-[var(--arc-radius-card)] bg-[var(--arc-surface-subtle)]"
+            className="mt-6 h-48 animate-pulse rounded-card bg-surface-subtle"
           />
         </div>
       </main>
@@ -62,9 +62,9 @@ export function AppShell({
   if (!session && isSupabaseConfigured()) return <AuthScreen />;
 
   return (
-    <main className="arc-app min-h-screen bg-[var(--background)] pb-[calc(8rem+env(safe-area-inset-bottom))] text-[var(--foreground)] md:pb-12">
+    <main className="arc-app min-h-screen bg-background pb-[calc(8rem+env(safe-area-inset-bottom))] text-foreground md:pb-12">
       <a
-        className="sr-only fixed left-4 top-4 z-50 rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] focus:not-sr-only"
+        className="sr-only fixed left-4 top-4 z-50 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only"
         href="#main-content"
       >
         Pular para o conteúdo
@@ -78,18 +78,18 @@ export function AppShell({
             <span aria-hidden="true" className="arc-word-mark">
               a
             </span>
-            <span className="font-[var(--font-arc-display)] text-[21px] tracking-[-0.07em]">
+            <span className="font-display text-[21px] tracking-[-0.07em]">
               arc
             </span>
           </Link>
           <nav
             aria-label="Navegação principal"
-            className="hidden items-center gap-1 text-sm text-[var(--arc-text-muted)] md:flex"
+            className="hidden items-center gap-1 text-sm text-muted-foreground md:flex"
           >
             {destinations.map((destination) => (
               <Link
                 aria-current={active === destination.id ? 'page' : undefined}
-                className={`flex min-h-11 items-center rounded-lg px-4 py-2 transition-colors duration-200 ${active === destination.id ? 'bg-[var(--arc-accent)] font-medium text-[var(--primary)]' : 'hover:bg-[var(--arc-surface-subtle)] hover:text-[var(--foreground)]'}`}
+                className={`flex min-h-11 items-center rounded-lg px-4 py-2 transition-colors duration-200 ${active === destination.id ? 'bg-accent font-medium text-primary' : 'hover:bg-surface-subtle hover:text-foreground'}`}
                 href={destination.href}
                 key={destination.id}
               >
@@ -103,13 +103,13 @@ export function AppShell({
               aria-label="Abrir perfil"
               aria-current={active === 'account' ? 'page' : undefined}
               href="/account"
-              className="flex min-h-11 items-center gap-2 rounded-full px-3 transition-colors hover:bg-[var(--arc-accent)]"
+              className="flex min-h-11 items-center gap-2 rounded-full px-3 transition-colors hover:bg-accent"
             >
               <span className="hidden max-w-36 truncate text-sm sm:block">
                 {profileLabel}
               </span>
               <span
-                className="grid size-9 place-items-center rounded-full bg-[var(--arc-accent)] text-[var(--foreground)]"
+                className="grid size-9 place-items-center rounded-full bg-accent text-foreground"
                 aria-hidden="true"
               >
                 {profileLabel.charAt(0).toUpperCase()}
@@ -123,7 +123,7 @@ export function AppShell({
       </div>
       <nav
         aria-label="Navegação móvel"
-        className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-10 flex min-h-[72px] items-center justify-around rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)]/90 p-1.5 shadow-[0_12px_40px_rgba(38,57,80,0.12)] backdrop-blur md:hidden"
+        className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-10 flex min-h-[72px] items-center justify-around rounded-2xl border border-border bg-surface/90 p-1.5 shadow-[0_12px_40px_rgba(38,57,80,0.12)] backdrop-blur md:hidden"
       >
         {destinations.map((destination) => {
           const Icon = destination.icon;
@@ -131,7 +131,7 @@ export function AppShell({
           return (
             <Link
               aria-current={isActive ? 'page' : undefined}
-              className={`flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-medium transition-colors duration-200 ${isActive ? 'bg-[var(--arc-accent)] text-[var(--foreground)]' : 'text-[var(--arc-text-muted)]'}`}
+              className={`flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-medium transition-colors duration-200 ${isActive ? 'bg-accent text-foreground' : 'text-muted-foreground'}`}
               href={destination.href}
               key={destination.id}
             >

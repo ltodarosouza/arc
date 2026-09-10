@@ -24,7 +24,37 @@
   --color-secondary: var(--arc-surface-subtle);
   --color-secondary-foreground: var(--foreground);
   --color-destructive: var(--arc-error-text);
+
+  /* Named surfaces and semantic colours, reachable as bg-/text-/border- utilities */
+  --color-surface: var(--arc-surface);
+  --color-surface-subtle: var(--arc-surface-subtle);
+  --color-control: var(--arc-control);
+  --color-control-hover: var(--arc-control-hover);
+  --color-accent-strong: var(--arc-accent-strong);
+  --color-navy: var(--arc-navy);
+  --color-glow: var(--arc-glow);
+  --color-success: var(--arc-success-text);
+  --color-success-bg: var(--arc-success-bg);
+  --color-success-border: var(--arc-success-border);
+  --color-error: var(--arc-error-text);
+  --color-error-bg: var(--arc-error-bg);
+  --color-error-border: var(--arc-error-border);
+  --color-redo: var(--arc-redo-text);
+  --color-redo-bg: var(--arc-redo-bg);
+  --color-hint: var(--arc-hint-text);
+  --color-hint-bg: var(--arc-hint-bg);
+
+  --font-display: var(--font-arc-display);
+
   --radius: 0.8rem;
+  --radius-card: var(--arc-radius-card);
+  --radius-control: var(--arc-radius-control);
+
+  --shadow-card: var(--arc-shadow-card);
+  --shadow-float: var(--arc-shadow-float);
+  --shadow-nav: 0 12px 40px rgba(38, 57, 80, 0.12);
+
+  --ease-arc: var(--arc-ease);
 }
 :root {
   --background: #f7f5f1;
