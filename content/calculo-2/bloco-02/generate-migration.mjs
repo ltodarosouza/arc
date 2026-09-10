@@ -1,0 +1,40 @@
+import {writeFileSync} from'node:fs';
+const q=(tag,difficulty,statement,options,correct,answer,topic)=>({tag,difficulty,statement,options,correct,answer,topic});
+const bank=[
+q(4,'easy','Calcule $\\int_0^3(2x+1)\\,dx$.',['$9$','$10$','$12$','$15$'],2,'$12$','primitiva polinomial'),
+q(3,'easy','Qual substituição serve para $\\int6x(3x^2+1)^4\\,dx$?',['$u=x$','$u=3x^2+1$','$u=6x$','$u=(3x^2+1)^4$'],1,'$u=3x^2+1$','substituição direta'),
+q(4,'easy','Se $F(x)=\\int_0^x\\cos(t^2)dt$, então $F\\prime(x)$ é:',['$\\cos x$','$-\\sin(x^2)$','$\\cos(x^2)$','$2x\\cos(x^2)$'],2,'$\\cos(x^2)$','Teorema Fundamental'),
+q(11,'easy','Uma primitiva de $4e^{4x}$ é:',['$e^{4x}+C$','$4e^{4x}+C$','$e^x+C$','$xe^{4x}+C$'],0,'$e^{4x}+C$','regra exponencial'),
+q(6,'easy','A soma de $\\sum_{n=0}^\\infty5(1/3)^n$ é:',['$5/2$','$15/2$','$5$','$15$'],1,'$15/2$','série geométrica'),
+q(107,'easy','Calcule $\\lim_{n\\to\\infty}\\sqrt{n^2+5n}/n$.',['$0$','$1$','$\\sqrt5$','$\\infty$'],1,'$1$','limite de sequência'),
+q(104,'easy','Avalie $\\int_2^\\infty x^{-2}dx$.',['$0$','$1$','$1/2$','Diverge'],2,'$1/2$','integral imprópria'),
+q(109,'easy','A série $\\sum(-1)^n(n+2)/(n+1)$ diverge porque:',['é alternada','os termos não tendem a zero','tem negativos','a razão é negativa'],1,'Os termos não tendem a zero.','teste do termo geral'),
+q(112,'easy','O centro de $\\sum_{n=0}^\\infty(x+4)^n/2^n$ é:',['$-4$','$-2$','$2$','$4$'],0,'$-4$','centro de série'),
+q(113,'easy','O termo de grau dois de $\\cos x$ é:',['$x$','$-x^2/2$','$x^2/2$','$-x^3/6$'],1,'$-x^2/2$','Maclaurin'),
+q(4,'easy','A área sob $y=3$ em $[1,5]$ é:',['$3$','$4$','$8$','$12$'],3,'$12$','área retangular'),
+q(11,'medium','Calcule $\\int xe^{2x}dx$.',['$xe^{2x}/2-e^{2x}/4+C$','$xe^{2x}-e^{2x}+C$','$x^2e^{2x}/2+C$','$e^{2x}/2+C$'],0,'$xe^{2x}/2-e^{2x}/4+C$','integração por partes'),
+q(101,'medium','Calcule $\\int3/(x^2-1)dx$.',['$3\\ln|x-1|+C$','$(3/2)\\ln|(x-1)/(x+1)|+C$','$\\arctan x+C$','$(3/2)\\ln|x^2-1|+C$'],1,'$(3/2)\\ln|(x-1)/(x+1)|+C$','frações parciais'),
+q(102,'medium','Calcule $\\int_0^{\\pi/4}\\tan xdx$.',['$\\ln2$','$(1/2)\\ln2$','$1/2$','$\\pi/4$'],1,'$(1/2)\\ln2$','integral trigonométrica'),
+q(108,'medium','A sequência $1/n^2$ converge para:',['$-1$','$0$','$1$','$\\infty$'],1,'$0$','convergência de sequência'),
+q(110,'medium','A série $\\sum1/(n^2+n)$:',['diverge','converge por comparação com $1/n^2$','é geométrica','diverge por ter positivos'],1,'Converge.','comparação direta'),
+q(111,'medium','A série $\\sum(-1)^{n+1}/\\sqrt n$ é:',['absoluta','condicional','divergente','geométrica'],1,'Condicionalmente convergente.','teste alternado'),
+q(105,'medium','Avalie $\\int_0^1\\ln xdx$.',['$-1$','$0$','$1$','Diverge'],0,'$-1$','singularidade no extremo'),
+q(112,'medium','O raio de $\\sum n(x/3)^n$ é:',['$1$','$3$','$9$','$\\infty$'],1,'$3$','teste da razão'),
+q(113,'medium','Use grau dois para aproximar $\\ln(1,2)$.',['$0,18$','$0,20$','$0,22$','$0,24$'],0,'$0,18$','aproximação de Taylor'),
+q(4,'medium','Entre $y=x$ e $y=x^3$ em $[-1,1]$, deve-se separar em zero porque:',['não cruzam','a curva superior muda','intervalo é infinito','não há primitivas'],1,'A curva superior muda em $0$.','área por partes'),
+q(3,'medium','Calcule $\\int_0^1x/\\sqrt{1+x^2}dx$.',['$\\sqrt2-1$','$1/2$','$\\sqrt2$','$\\ln2$'],0,'$\\sqrt2-1$','substituição com radical'),
+q(11,'hard','Calcule $\\int_0^1x^2\\ln xdx$.',['$-1/9$','$-1/3$','$1/9$','$0$'],0,'$-1/9$','partes imprópria'),
+q(101,'hard','Calcule $\\int dx/(x(x^2+1))$.',['$\\ln|x|-\\ln(x^2+1)/2+C$','$\\ln(x^2+1)+C$','$\\arctan x+C$','$\\ln|x|/2+C$'],0,'$\\ln|x|-\\ln(x^2+1)/2+C$','frações mistas'),
+q(102,'hard','Calcule $\\int_0^{\\pi/2}\\sin^4x dx$.',['$\\pi/16$','$3\\pi/16$','$\\pi/4$','$3\\pi/8$'],1,'$3\\pi/16$','redução de potência'),
+q(105,'hard','A integral $\\int_0^2dx/(x-1)$:',['vale zero','vale $\\ln2$','diverge','vale $2$'],2,'Diverge.','singularidade interna'),
+q(110,'hard','A série $\\sum3^n/n!$ converge pelo:',['termo geral','teste da razão','teste alternado','teste integral'],1,'Teste da razão.','fatoriais'),
+q(111,'hard','A série $\\sum(-1)^{n-1}n/(n+1)$ é:',['absoluta','condicional','divergente','geométrica'],2,'Divergente.','falha do termo geral'),
+q(112,'hard','O intervalo de $\\sum(x-1)^n/(n2^n)$ é:',['$(-1,3)$','$[-1,3)$','$(-1,3]$','$[-1,3]$'],1,'$[-1,3)$','extremos de potência'),
+q(113,'hard','O coeficiente de $x^4$ em $e^{x^2}$ é:',['$0$','$1/2$','$1/4$','$1/24$'],1,'$1/2$','composição de Maclaurin'),
+q(4,'hard','A área entre $|x|$ e $x^2$ em $[-1,1]$ é:',['$1/6$','$1/3$','$2/3$','$4/3$'],1,'$1/3$','simetria de área'),
+q(104,'hard','Calcule $\\int_e^\\infty dx/(x(\\ln x)^2)$.',['$0$','$1$','Diverge','$e$'],1,'$1$','imprópria logarítmica'),
+q(110,'hard','A série $\sum_{n=1}^{\infty}1/n!$ converge porque:',['o termo geral é constante','o teste da razão produz limite zero','é alternada','é harmônica'],1,'Converge pelo teste da razão.','teste da razão com fatorial'),
+];
+const id=(p,n)=>p+'-0000-4000-8000-'+String(n).padStart(12,'0'),qv=v=>"'"+String(v).replaceAll("'","''")+"'",src='10000000-0000-4000-8000-000000009902',sub='20000000-0000-4000-8000-000000000001';let s='begin;\\n';
+s+='insert into public.question_sources (id,kind,label,licence_note,rights_holder,rights_status,verified_by,verified_at) values ('+qv(src)+",'original','Arc original — Cálculo II, bloco 02','Thomas vol. 2 usado somente para competências.','Arc','approved','Equipe editorial Arc','2026-09-10T00:00:00Z') on conflict do nothing;\\n";
+bank.forEach((x,i)=>{let n=i+1,qid=id('40000000',992000+n),b=992000+n*10;s+='insert into public.questions (id,subject_id,source_id,kind,difficulty,publication_status,statement_markdown) values ('+qv(qid)+','+qv(sub)+','+qv(src)+",'multiple_choice',"+qv(x.difficulty)+",'published',"+qv(x.statement)+') on conflict do nothing;\\n';s+='insert into public.question_taxonomy_tags values ('+qv(qid)+','+qv(id('30000000',x.tag))+',true) on conflict do nothing;\\n';x.options.forEach((o,j)=>s+='insert into public.question_options values ('+qv(id('50000000',b+j+1))+','+qv(qid)+','+qv('ABCD'[j])+','+qv(o)+','+(j+1)+') on conflict do nothing;\\n');s+='insert into public.question_answer_keys values ('+qv(qid)+','+qv(id('50000000',b+x.correct+1))+') on conflict do nothing;\\n';['Reconheça '+x.topic+'.','Escolha a transformação ou teste apropriado.','Confira limites, sinal e hipótese.'].forEach((h,j)=>s+='insert into public.question_hints values ('+qv(id('60000000',b+j+1))+','+qv(qid)+','+qv(h)+','+(j+1)+') on conflict do nothing;\\n');s+='insert into public.question_solutions values ('+qv(qid)+','+qv(x.answer)+','+qv('A resolução usa '+x.topic+'.')+') on conflict do nothing;\\n';for(let j=1;j<6;j++)s+='insert into public.question_solution_steps values ('+qv(id('70000000',b+j))+','+qv(qid)+','+qv('Etapa '+j+' da resolução por '+x.topic+'.')+','+j+') on conflict do nothing;\\n';});s+='commit;\\n';writeFileSync(new URL('../../../supabase/migrations/20260910140000_seed_calculus_2_reconstruction_block_02.sql',import.meta.url),s.replaceAll('\\n','\n'));
