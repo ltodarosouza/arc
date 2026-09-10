@@ -20,7 +20,11 @@ export function normalizeMath(markdown) {
 }
 
 function normalizeStatement(markdown) {
-  const repairedDerivative = markdown.replace(
+  const derivativeAtPoint = markdown.replace(
+    /^Calcule d\/dx,\((.+)\)\$ em \$x=(.+)\$\.$/,
+    'Calcule $\\frac{d}{dx}($1)$ em $x=$2$.',
+  );
+  const repairedDerivative = derivativeAtPoint.replace(
     /^Calcule d\/dx,\((.+)\)\.$/,
     'Calcule $\\frac{d}{dx}($1)$.',
   );
