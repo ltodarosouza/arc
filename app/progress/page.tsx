@@ -176,9 +176,10 @@ export default function ProgressPage() {
 
   return (
     <AppShell active="progress">
-      <section className="arc-page arc-page--reading">
+      <section className="arc-page">
         <PageHeader
-          title="Seu progresso"
+          eyebrow="Seu histórico"
+          title="Seu desempenho"
           description="Cada questão conta uma vez. Ao refazer, o resultado mais recente substitui o anterior."
         />
         {isLoading || catalogueLoading ? (
