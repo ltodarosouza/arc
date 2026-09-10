@@ -5,7 +5,7 @@ import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
-import { AnimatedTitle } from '@/components/animated-title';
+import { PageHeader } from '@/components/page-header';
 import { ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { Reveal } from '@/components/reveal';
@@ -83,20 +83,18 @@ export default function ExplorePage() {
   return (
     <AppShell active="explore">
       <section className="arc-page">
-        <div className="animate-enter max-w-2xl">
-          <div>
-            <AnimatedTitle>Questões</AnimatedTitle>
-            <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
-              Escolha uma disciplina para começar.
-            </p>
-          </div>
-          <Link
-            className="arc-link mt-4 inline-flex min-h-11 items-center gap-2 text-sm"
-            href="/subjects"
-          >
-            <SlidersHorizontal className="size-4" /> Gerenciar disciplinas
-          </Link>
-        </div>
+        <PageHeader
+          title="Questões"
+          description="Escolha uma disciplina para começar."
+          action={
+            <Link
+              className="arc-link inline-flex min-h-11 items-center gap-2 text-sm"
+              href="/subjects"
+            >
+              <SlidersHorizontal className="size-4" /> Gerenciar disciplinas
+            </Link>
+          }
+        />
         {isInitialLoading ? (
           <div
             aria-busy="true"
@@ -105,9 +103,9 @@ export default function ExplorePage() {
           >
             {[0, 1].map((item) => (
               <ArcCard className="animate-pulse p-6" key={item}>
-                <div className="h-5 w-36 rounded-full bg-[var(--arc-surface-subtle)]" />
-                <div className="mt-6 h-4 w-full rounded-full bg-[var(--arc-surface-subtle)]" />
-                <div className="mt-3 h-4 w-3/4 rounded-full bg-[var(--arc-surface-subtle)]" />
+                <div className="h-5 w-36 rounded-full bg-surface-subtle" />
+                <div className="mt-6 h-4 w-full rounded-full bg-surface-subtle" />
+                <div className="mt-3 h-4 w-3/4 rounded-full bg-surface-subtle" />
               </ArcCard>
             ))}
           </div>
@@ -115,7 +113,7 @@ export default function ExplorePage() {
           <FeedbackState
             action={
               <button
-                className="text-sm font-medium text-[#46657a] hover:underline"
+                className="text-sm font-medium text-accent-strong hover:underline"
                 onClick={() => window.location.reload()}
               >
                 Tentar novamente
@@ -132,8 +130,8 @@ export default function ExplorePage() {
               ({ subject, questions, units, attemptedCount }, index) => (
                 <Reveal delay={index * 65} key={subject.id} variant="card">
                   <ArcCard className="arc-subject-card overflow-hidden">
-                    <div className="flex items-center gap-3 border-b border-[var(--border)] px-5 py-5 sm:px-6">
-                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[var(--arc-accent-strong)]">
+                    <div className="flex items-center gap-3 border-b border-border px-5 py-5 sm:px-6">
+                      <span className="grid size-9 place-items-center rounded-xl bg-accent text-accent-strong">
                         <BookOpen className="size-4" />
                       </span>
                       <div className="min-w-0 flex-1">
@@ -145,7 +143,7 @@ export default function ExplorePage() {
                             {subject.name}
                           </Link>
                         </h2>
-                        <p className="mt-0.5 text-xs text-[var(--arc-text-muted)]">
+                        <p className="mt-0.5 text-xs text-muted-foreground">
                           {questions.length}{' '}
                           {questions.length === 1 ? 'questão' : 'questões'} ·{' '}
                           {attemptedCount} feita
@@ -153,7 +151,7 @@ export default function ExplorePage() {
                         </p>
                       </div>
                       <Link
-                        className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
+                        className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                         href={`/questions?subject=${subject.slug}`}
                       >
                         Ver todas <ChevronRight className="size-4" />
@@ -165,7 +163,7 @@ export default function ExplorePage() {
                         <div className="mt-3 flex flex-wrap gap-2">
                           {units.slice(0, 3).map((unit) => (
                             <Link
-                              className="inline-flex min-h-11 items-center rounded-full border border-[var(--border)] px-3 py-2 text-sm text-[var(--arc-text-muted)] transition-colors hover:bg-[var(--arc-accent)] hover:text-[var(--foreground)]"
+                              className="inline-flex min-h-11 items-center rounded-full border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                               href={`/questions?subject=${subject.slug}&unit=${unit.slug}`}
                               key={unit.id}
                             >
@@ -185,7 +183,7 @@ export default function ExplorePage() {
                           )}
                         </div>
                       ) : (
-                        <p className="mt-3 text-sm text-[var(--arc-text-muted)]">
+                        <p className="mt-3 text-sm text-muted-foreground">
                           Áreas em preparação.
                         </p>
                       )}
@@ -199,7 +197,7 @@ export default function ExplorePage() {
           <FeedbackState
             action={
               <Link
-                className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas <ChevronRight className="size-4" />

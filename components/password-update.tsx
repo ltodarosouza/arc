@@ -100,16 +100,16 @@ export function PasswordUpdate({
         minLength={8}
         disabled={busy}
       />
-      <p className="text-sm text-[var(--arc-text-muted)]">
+      <p className="text-sm text-muted-foreground">
         Use pelo menos 8 caracteres.
       </p>
       {error && (
-        <p role="alert" className="text-[var(--arc-error-text)]">
+        <p role="alert" className="text-error">
           {error}
         </p>
       )}
       {feedback && (
-        <output className="text-[var(--arc-success-text)]">
+        <output className="text-success">
           {feedback}{' '}
           <Link href="/account" className="underline">
             Voltar ao perfil

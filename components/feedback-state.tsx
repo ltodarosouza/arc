@@ -42,7 +42,7 @@ export function FeedbackState({
     <section
       aria-live={tone === 'loading' ? 'polite' : undefined}
       className={cn(
-        'flex min-h-56 flex-col items-start justify-center rounded-[24px] border border-black/[0.07] bg-white px-6 py-8 sm:px-8',
+        'flex min-h-56 flex-col items-start justify-center rounded-card border border-border bg-surface px-6 py-8 shadow-card sm:px-8',
         className,
       )}
     >
@@ -50,8 +50,8 @@ export function FeedbackState({
         className={cn(
           'grid size-10 place-items-center rounded-2xl',
           tone === 'error'
-            ? 'bg-[#f9eeee] text-[#9a5757]'
-            : 'bg-[#eff4f0] text-[#466254]',
+            ? 'bg-error-bg text-error'
+            : 'bg-accent text-accent-strong',
         )}
       >
         <Icon
@@ -59,7 +59,7 @@ export function FeedbackState({
         />
       </span>
       <h2 className="mt-5 text-lg font-medium tracking-[-0.035em]">{title}</h2>
-      <p className="mt-2 max-w-sm text-sm leading-6 text-zinc-500">
+      <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
         {description}
       </p>
       {action ? <div className="mt-6">{action}</div> : null}
@@ -73,7 +73,6 @@ export function ProgressEmptyState({ action }: { action: ReactNode }) {
       title="Seu progresso começa na primeira questão"
       description="Resolva uma questão para acompanhar seus acertos, erros e os assuntos que vale revisar."
       action={action}
-      className="bg-[#fcfcfb]"
     />
   );
 }

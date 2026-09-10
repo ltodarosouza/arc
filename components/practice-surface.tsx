@@ -365,12 +365,12 @@ export function PracticeSurface() {
   if (isLoading)
     return (
       <ArcCard className="mt-8 animate-pulse p-8">
-        <div className="h-5 w-32 rounded-full bg-[var(--arc-surface-subtle)]" />
+        <div className="h-5 w-32 rounded-full bg-surface-subtle" />
       </ArcCard>
     );
   if (error)
     return (
-      <ArcCard className="mt-8 p-8 text-sm text-[var(--arc-error-text)]">
+      <ArcCard className="mt-8 p-8 text-sm text-error">
         Não foi possível carregar esta questão.
       </ArcCard>
     );
@@ -382,7 +382,7 @@ export function PracticeSurface() {
             ? 'Este link de prática não é válido.'
             : 'Esta questão não está disponível.'}
         </h2>
-        <p className="mt-2 max-w-lg text-sm leading-6 text-[var(--arc-text-muted)]">
+        <p className="mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
           {hasIncompatibleSubject || hasInvalidSubject
             ? 'A disciplina indicada não corresponde à questão solicitada.'
             : 'Ela pode ter sido removida ou ainda não estar publicada.'}
@@ -402,7 +402,7 @@ export function PracticeSurface() {
     );
   if (!question)
     return (
-      <ArcCard className="mt-8 p-8 text-sm text-[var(--arc-text-muted)]">
+      <ArcCard className="mt-8 p-8 text-sm text-muted-foreground">
         Nenhuma questão publicada foi encontrada.
       </ArcCard>
     );
@@ -419,8 +419,8 @@ export function PracticeSurface() {
             : 'Resposta incorreta. Gabarito comentado disponível.'
           : ''}
       </div>
-      <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4 sm:px-8">
-        <div className="flex min-w-0 items-center gap-2 text-xs text-[var(--arc-text-muted)]">
+      <div className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-8">
+        <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
           <Compass className="size-3.5 shrink-0" />
           <span className="truncate">{subject?.name}</span>
           {topic && (
@@ -432,25 +432,25 @@ export function PracticeSurface() {
         </div>
         {resolved ? (
           outcome === 'revealed' ? (
-            <span className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1 text-xs font-medium text-[var(--arc-text-muted)]">
+            <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
               Gabarito visto
             </span>
           ) : (
             <AttemptStatusBadge status={outcome} />
           )
         ) : (
-          <span className="rounded-full bg-[var(--arc-surface-subtle)] px-3 py-1 text-xs font-medium text-[#52616c]">
+          <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
             Questão {String(questionIndex + 1).padStart(2, '0')}
           </span>
         )}
       </div>
       <div className="p-5 sm:p-10">
-        <div className="arc-statement max-w-3xl rounded-[1.5rem] border-l-4 border-[var(--arc-accent-strong)] bg-[color-mix(in_srgb,var(--arc-accent)_32%,transparent)] px-5 py-6 sm:px-7">
+        <div className="arc-statement max-w-3xl rounded-[1.5rem] border-l-4 border-accent-strong bg-[color-mix(in_srgb,var(--arc-accent)_32%,transparent)] px-5 py-6 sm:px-7">
           <MathContent value={question.statement.value} />
         </div>
         {question.kind === 'multiple_choice' ? (
         <div className="mt-8 max-w-3xl">
-          <p className="mb-3 text-xs text-[var(--arc-text-muted)]">
+          <p className="mb-3 text-xs text-muted-foreground">
             Use o círculo ao lado para eliminar uma alternativa.
           </p>
           <div className="grid gap-2">
@@ -466,10 +466,10 @@ export function PracticeSurface() {
                       ? 'arc-option--incorrect'
                       : ''
                   : chosen
-                    ? 'border-[var(--primary)] bg-[var(--arc-accent)]'
+                    ? 'border-primary bg-accent'
                     : eliminated
-                      ? 'arc-option--eliminated border-dashed border-[var(--border)]'
-                      : 'border-[var(--border)]';
+                      ? 'arc-option--eliminated border-dashed border-border'
+                      : 'border-border';
               const selectOption = () => {
                 setSelectedOptionId(option.id);
                 setEliminatedOptionIds((current) => {
@@ -499,7 +499,7 @@ export function PracticeSurface() {
                     className="flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-lg px-2.5 py-2 text-left text-base"
                   >
                     <span
-                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}
+                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-accent-strong text-primary-foreground' : 'bg-surface-subtle text-muted-foreground'}`}
                     >
                       {option.label}
                     </span>
@@ -507,18 +507,18 @@ export function PracticeSurface() {
                       <MathContent value={option.content.value} />
                     </span>
                     {eliminated && (
-                      <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2 py-1 text-[11px] font-medium text-[var(--arc-text-muted)]">
+                      <span className="rounded-full bg-surface-subtle px-2 py-1 text-[11px] font-medium text-muted-foreground">
                         Descartada
                       </span>
                     )}
                     {resolved && correct && (
-                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[var(--arc-success-text)] text-white">
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-success text-white">
                         <Check aria-hidden="true" className="size-4" />
                         <span className="sr-only">Alternativa correta</span>
                       </span>
                     )}
                     {resolved && chosen && !correct && (
-                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[var(--arc-error-text)] text-white">
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-error text-white">
                         <X aria-hidden="true" className="size-4" />
                         <span className="sr-only">Alternativa incorreta</span>
                       </span>
@@ -529,7 +529,7 @@ export function PracticeSurface() {
                     aria-pressed={eliminated}
                     disabled={resolved}
                     onClick={toggleEliminated}
-                    className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-[var(--arc-surface-subtle)] text-[var(--foreground)]' : 'text-[var(--arc-text-muted)] hover:bg-[var(--arc-surface-subtle)] hover:text-[var(--foreground)]'}`}
+                    className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-surface-subtle text-foreground' : 'text-muted-foreground hover:bg-surface-subtle hover:text-foreground'}`}
                   >
                     {eliminated ? (
                       <RotateCcw className="size-4" />
@@ -547,11 +547,11 @@ export function PracticeSurface() {
             <label className="text-sm font-medium" htmlFor="scratchpad">
               Desenvolva sua resposta
             </label>
-            <p className="mt-1 text-sm text-[var(--arc-text-muted)]">
+            <p className="mt-1 text-sm text-muted-foreground">
               Use este espaço para organizar os cálculos. Ele fica apenas nesta tela e não é enviado para correção.
             </p>
             <textarea
-              className="mt-3 min-h-44 w-full rounded-2xl border border-[var(--border)] bg-[var(--arc-surface)] p-4 text-[15px] leading-7 outline-none transition-colors focus:border-[var(--ring)]"
+              className="mt-3 min-h-44 w-full rounded-2xl border border-border bg-surface p-4 text-[15px] leading-7 outline-none transition-colors focus:border-ring"
               id="scratchpad"
               onChange={(event) => setScratchpad(event.target.value)}
               placeholder="Escreva sua estratégia e seus cálculos aqui…"
@@ -563,7 +563,7 @@ export function PracticeSurface() {
           <section
             aria-label="Dicas"
             id="question-hints"
-            className="mt-6 max-w-2xl rounded-2xl border border-[var(--arc-success-border)] bg-[var(--arc-hint-bg)] p-4 text-sm leading-6 text-[var(--arc-hint-text)]"
+            className="mt-6 max-w-2xl rounded-2xl border border-success-border bg-hint-bg p-4 text-sm leading-6 text-hint"
           >
             <p className="font-medium">
               Dica{visibleHints.length > 1 ? 's' : ''}
@@ -571,7 +571,7 @@ export function PracticeSurface() {
             <ol className="mt-2 grid gap-2">
               {visibleHints.map((hint, index) => (
                 <li key={hint.id}>
-                  <span className="mr-2 font-medium text-[#668172]">
+                  <span className="mr-2 font-medium text-accent-strong">
                     {index + 1}.
                   </span>
                   <MathContent value={hint.content.value} />
@@ -583,7 +583,7 @@ export function PracticeSurface() {
         {resolved && (
           <>
             <div
-              className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${outcome === 'correct' ? 'bg-[var(--arc-success-bg)] text-[var(--arc-success-text)]' : 'bg-[var(--arc-error-bg)] text-[var(--arc-error-text)]'}`}
+              className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${outcome === 'correct' ? 'bg-success-bg text-success' : 'bg-error-bg text-error'}`}
             >
               <p className="font-medium">
                 {outcome === 'correct'
@@ -596,33 +596,33 @@ export function PracticeSurface() {
             {solution && (
               <section
                 aria-label="Gabarito comentado"
-                className="mt-8 max-w-3xl border-t border-[var(--border)] pt-8"
+                className="mt-8 max-w-3xl border-t border-border pt-8"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <h2 className="text-lg font-medium tracking-[-0.03em]">
                     Gabarito comentado
                   </h2>
-                  <span className="text-xs font-medium text-[var(--arc-text-muted)]">
+                  <span className="text-xs font-medium text-muted-foreground">
                     Confira o raciocínio
                   </span>
                 </div>
                 <div className="arc-solution mt-5 rounded-2xl border p-5 sm:p-6">
-                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--arc-success-text)]">
+                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-success">
                     Resposta correta
                     {question.kind === 'multiple_choice' && solution.correctOptionId
                       ? ` · Alternativa ${question.options.find((option) => option.id === solution.correctOptionId)?.label ?? ''}`
                       : ''}
                   </p>
-                  <div className="mt-2 text-lg font-medium leading-7 text-[var(--foreground)]">
+                  <div className="mt-2 text-lg font-medium leading-7 text-foreground">
                     <MathContent value={solution.finalAnswer} />
                   </div>
                 </div>
                 {solution.explanation && (
                   <div className="mt-7">
-                    <h3 className="text-sm font-medium text-[var(--foreground)]">
+                    <h3 className="text-sm font-medium text-foreground">
                       Como resolver
                     </h3>
-                    <div className="mt-2 text-[15px] leading-7 text-[var(--arc-text-muted)]">
+                    <div className="mt-2 text-[15px] leading-7 text-muted-foreground">
                       <MathContent value={solution.explanation} />
                     </div>
                   </div>
@@ -631,14 +631,14 @@ export function PracticeSurface() {
                   <ol className="mt-5 grid gap-3">
                     {solution.steps.map((step, index) => (
                       <li
-                        className="flex gap-4 border-b border-[var(--border)] py-5 text-[15px] leading-7 last:border-0"
+                        className="flex gap-4 border-b border-border py-5 text-[15px] leading-7 last:border-0"
                         key={step.id}
                       >
-                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[var(--arc-accent)] text-xs font-medium text-[#405b6d]">
+                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-medium text-accent-strong">
                           {index + 1}
                         </span>
                         <div>
-                          <p className="font-medium text-[var(--foreground)]">
+                          <p className="font-medium text-foreground">
                             <MathContent
                               value={step.title ?? `Passo ${index + 1}`}
                             />
@@ -653,7 +653,7 @@ export function PracticeSurface() {
             )}
             {isLoadingSolution && !solution && (
               <p
-                className="mt-6 text-sm text-[var(--arc-text-muted)]"
+                className="mt-6 text-sm text-muted-foreground"
                 role="status"
               >
                 Carregando gabarito comentado…
@@ -662,7 +662,7 @@ export function PracticeSurface() {
             {solutionError && !solution && (
               <section
                 aria-live="polite"
-                className="mt-6 max-w-2xl rounded-2xl border border-[var(--arc-error-border)] bg-[var(--arc-error-bg)] p-4 text-sm leading-6 text-[var(--arc-error-text)]"
+                className="mt-6 max-w-2xl rounded-2xl border border-error-border bg-error-bg p-4 text-sm leading-6 text-error"
               >
                 <p>{solutionError}</p>
                 <button
@@ -677,21 +677,21 @@ export function PracticeSurface() {
           </>
         )}
         {resolved && !nextQuestion && (
-          <div className="arc-solution mt-8 rounded-2xl border px-5 py-4 text-sm text-[var(--arc-success-text)]">
+          <div className="arc-solution mt-8 rounded-2xl border px-5 py-4 text-sm text-success">
             Você chegou ao fim das questões disponíveis desta disciplina.
           </div>
         )}
         {submissionError && (
-          <p className="mt-4 text-sm text-[var(--arc-error-text)]">
+          <p className="mt-4 text-sm text-error">
             {submissionError}
           </p>
         )}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--border)] pt-6">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
           {hasMoreHints && !resolved ? (
             <button
               aria-expanded={visibleHintCount > 0}
               aria-controls="question-hints"
-              className="inline-flex items-center gap-2 text-sm text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               onClick={() =>
                 setVisibleHintCount((count) =>
                   Math.min(count + 1, question.hints.length),
@@ -706,7 +706,7 @@ export function PracticeSurface() {
           )}
           <div className="flex w-full flex-wrap items-center justify-end gap-x-5 gap-y-4 sm:w-auto">
             <a
-              className="text-sm font-medium text-[var(--arc-text-muted)] transition-colors hover:text-[var(--foreground)]"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               href={
                 practiceSession?.returnPath ??
                 `/questions?subject=${subject?.slug ?? question.subjectId}`
@@ -716,7 +716,7 @@ export function PracticeSurface() {
             </a>
             {nextQuestion && (
               <button
-                className="inline-flex items-center gap-1 text-sm font-medium text-[#46657a] hover:underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
                 onClick={() =>
                   goToQuestion(
                     nextQuestion.id,

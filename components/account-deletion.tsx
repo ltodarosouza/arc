@@ -80,7 +80,7 @@ export function AccountDeletion() {
         render={
           <ArcButton
             tone="quiet"
-            className="mt-4 text-[var(--arc-error-text)]"
+            className="mt-4 text-error"
           />
         }
       >
@@ -117,7 +117,7 @@ export function AccountDeletion() {
             disabled={busy}
           />
           {error && (
-            <p role="alert" className="text-[var(--arc-error-text)]">
+            <p role="alert" className="text-error">
               {error}
             </p>
           )}

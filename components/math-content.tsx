@@ -19,7 +19,7 @@ function renderMath(expression: string, displayMode: boolean) {
 function QuestionDiagram({ name }: { name: string }) {
   const common = {
     className:
-      'my-4 block max-w-full rounded-xl border border-[var(--border)] bg-[var(--arc-surface-subtle)] p-3 text-[var(--arc-text)]',
+      'my-4 block max-w-full rounded-xl border border-border bg-surface-subtle p-3 text-foreground',
     viewBox: '0 0 360 104',
   };
   if (name === 'flip-flop-d')

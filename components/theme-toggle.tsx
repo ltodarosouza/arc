@@ -43,7 +43,7 @@ export function ThemeToggle() {
     <button
       aria-label={isDark ? 'Ativar modo claro' : 'Ativar modo escuro'}
       aria-pressed={isDark}
-      className="grid size-11 place-items-center rounded-full text-[var(--arc-text-muted)] transition-[background-color,color,transform] duration-200 hover:bg-[var(--arc-accent)] hover:text-[var(--foreground)] active:scale-95"
+      className="grid size-11 place-items-center rounded-full text-muted-foreground transition-[background-color,color,transform] duration-200 hover:bg-accent hover:text-foreground active:scale-95"
       onClick={toggleTheme}
       type="button"
     >

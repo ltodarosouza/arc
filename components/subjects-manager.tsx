@@ -40,7 +40,7 @@ export function SubjectsManager() {
   };
   return (
     <ArcCard className="arc-selection-card mt-8 p-0">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-5">
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-5">
         <div>
           <p className="arc-caption">Personalize seu percurso</p>
           <h2 className="arc-section-title mt-1">Escolha suas frentes</h2>
@@ -56,19 +56,19 @@ export function SubjectsManager() {
           {[0, 1, 2].map((item) => (
             <div
               aria-hidden="true"
-              className="h-20 animate-pulse rounded-lg bg-[var(--arc-surface-subtle)]"
+              className="h-20 animate-pulse rounded-lg bg-surface-subtle"
               key={item}
             />
           ))}
         </div>
       )}
       {error && (
-        <p className="mt-5 text-sm text-[var(--arc-error-text)]">
+        <p className="mt-5 text-sm text-error">
           Não foi possível carregar as disciplinas publicadas.
         </p>
       )}
       {learnerError && (
-        <div className="mt-5 text-sm text-[var(--arc-error-text)]" role="alert">
+        <div className="mt-5 text-sm text-error" role="alert">
           <p>{learnerError.message}</p>
           <button
             className="mt-2 underline underline-offset-4"
@@ -89,12 +89,12 @@ export function SubjectsManager() {
               <Reveal delay={index * 45} key={subject.id} variant="slide">
                 <button
                   aria-pressed={isSelected}
-                  className={`arc-selection-item flex min-h-24 w-full items-center gap-4 border p-5 text-left ${isSelected ? 'border-[var(--arc-accent-strong)] bg-[var(--arc-accent)]/55' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[var(--arc-accent-strong)] hover:bg-[var(--arc-surface-subtle)]/55'}`}
+                  className={`arc-selection-item flex min-h-24 w-full items-center gap-4 border p-5 text-left ${isSelected ? 'border-accent-strong bg-accent/55' : 'border-border bg-surface hover:border-accent-strong hover:bg-surface-subtle/55'}`}
                   onClick={() => toggleSubject(subject.id)}
                   type="button"
                 >
                   <span
-                    className={`grid size-6 shrink-0 place-items-center rounded-full border ${isSelected ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]' : 'border-[var(--border)] bg-[var(--arc-surface)] text-transparent'}`}
+                    className={`grid size-6 shrink-0 place-items-center rounded-full border ${isSelected ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-surface text-transparent'}`}
                   >
                     <Check className="size-3.5" />
                   </span>
@@ -102,7 +102,7 @@ export function SubjectsManager() {
                     <span className="block text-sm font-medium">
                       {subject.name}
                     </span>
-                    <span className="mt-0.5 block text-sm text-[var(--arc-text-muted)]">
+                    <span className="mt-0.5 block text-sm text-muted-foreground">
                       {subject.description}
                     </span>
                   </span>

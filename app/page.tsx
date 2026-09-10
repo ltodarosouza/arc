@@ -5,6 +5,8 @@ import { ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
+import { AnimatedTitle } from '@/components/animated-title';
+import { Section } from '@/components/section';
 import { ArcCard } from '@/components/arc-ui';
 import { AnimatedProgressBar } from '@/components/animated-progress-bar';
 import { AnimatedNumber } from '@/components/animated-number';
@@ -80,75 +82,93 @@ export default function Home() {
       <section className="arc-page">
         <HeroSurface>
           <div className="relative z-10">
-            <h1 aria-label="O que vamos praticar?" className="arc-title">
-              <span aria-hidden="true">
-                {[...'O que vamos praticar?'].map((letter, index) => (
-                  <span
-                    className="arc-title-letter"
-                    key={`${letter}-${index}`}
-                    style={{ animationDelay: `${120 + index * 28}ms` }}
-                  >
-                    {letter === ' ' ? '\u00a0' : letter}
-                  </span>
-                ))}
-              </span>
-            </h1>
-            <Link
-              className="arc-action arc-continue group mt-7"
-              href={resumeHref}
-            >
-              {resumeSubject
-                ? `Continuar em ${resumeSubject.name}`
-                : selectedSubjects.length
-                  ? 'Ir para questões'
-                  : 'Escolher disciplinas'}{' '}
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
+            <AnimatedTitle>O que vamos praticar?</AnimatedTitle>
+            <p className="mt-3 max-w-md text-sm text-muted-foreground">
+              Escolha uma disciplina e resolva questões no seu ritmo.
+            </p>
           </div>
         </HeroSurface>
-        <div className="arc-simple-metrics arc-section">
-          <div>
-            <p className="arc-metric text-[var(--foreground)]">
-              <AnimatedNumber value={learnerLoading ? 0 : progress.completed} />
+        <div className="arc-continue-card animate-enter mt-8">
+          <div className="relative min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
+              {resumeSubject
+                ? 'Retomar'
+                : selectedSubjects.length
+                  ? 'Tudo pronto'
+                  : 'Primeiro passo'}
             </p>
-            <p className="arc-caption">Questões feitas</p>
-          </div>
-          <div>
-            <p className="arc-metric text-[var(--arc-success-text)]">
-              <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
+            <p className="mt-1 truncate text-lg font-semibold tracking-[-0.02em]">
+              {resumeSubject
+                ? resumeSubject.name
+                : selectedSubjects.length
+                  ? 'Suas questões estão prontas'
+                  : 'Escolha suas disciplinas'}
             </p>
-            <p className="arc-caption">Acertos</p>
+            <p className="mt-1 text-sm text-white/70">
+              {resumeSubject
+                ? 'Continue de onde você parou.'
+                : selectedSubjects.length
+                  ? 'Abra o banco e comece a praticar.'
+                  : 'Monte seu mapa de estudo para começar.'}
+            </p>
           </div>
+          <Link
+            className="arc-action arc-continue group relative shrink-0"
+            href={resumeHref}
+          >
+            {resumeSubject
+              ? 'Continuar'
+              : selectedSubjects.length
+                ? 'Ir para questões'
+                : 'Escolher disciplinas'}
+            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </Link>
         </div>
-        <div className="arc-home-subjects arc-section">
-          <div className="flex items-end justify-between gap-4">
+        <Section eyebrow="Resumo">
+          <div className="arc-simple-metrics">
             <div>
-              <p className="arc-caption">Seu mapa de estudo</p>
-              <h2 className="arc-section-title mt-1">Minhas disciplinas</h2>
+              <p className="arc-metric text-foreground">
+                <AnimatedNumber
+                  value={learnerLoading ? 0 : progress.completed}
+                />
+              </p>
+              <p className="arc-caption">Questões feitas</p>
             </div>
+            <div>
+              <p className="arc-metric text-success">
+                <AnimatedNumber value={learnerLoading ? 0 : progress.correct} />
+              </p>
+              <p className="arc-caption">Acertos</p>
+            </div>
+          </div>
+        </Section>
+        <Section
+          eyebrow="Seu mapa de estudo"
+          title="Minhas disciplinas"
+          action={
             <Link
-              className="text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
+              className="text-sm font-medium text-accent-strong hover:underline"
               href="/subjects"
             >
               Gerenciar
             </Link>
-          </div>
+          }
+        >
           {isLoading || learnerLoading ? (
             <div
               aria-label="Carregando disciplinas"
               aria-busy="true"
-              className="mt-5 grid gap-4 sm:grid-cols-2"
+              className="grid gap-4 sm:grid-cols-2"
             >
               {[0, 1].map((id) => (
                 <ArcCard
                   key={id}
-                  className="h-48 animate-pulse bg-[var(--arc-surface-subtle)]"
+                  className="h-48 animate-pulse bg-surface-subtle"
                 />
               ))}
             </div>
           ) : error ? (
             <FeedbackState
-              className="mt-5"
               title="As disciplinas não carregaram"
               description="Tente novamente para abrir seu catálogo."
               tone="error"
@@ -162,7 +182,7 @@ export default function Home() {
               }
             />
           ) : selectedSubjects.length ? (
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {selectedSubjects.map((subject, index) => {
                 const subjectQuestionIds =
                   catalogue?.questions
@@ -174,19 +194,22 @@ export default function Home() {
                 const remaining = subjectQuestionIds.length - completed;
                 return (
                   <Reveal key={subject.id} delay={index * 70} variant="card">
-                    <ArcCard className="arc-subject-card group relative h-full p-6 hover:-translate-y-1 hover:border-[var(--arc-accent-strong)]">
+                    <ArcCard
+                      interactive
+                      className="arc-subject-card group relative h-full p-6"
+                    >
                       <Link
                         aria-label={`Abrir ${subject.name}`}
-                        className="absolute inset-0 rounded-[var(--arc-radius-card)]"
+                        className="absolute inset-0 rounded-card"
                         href={`/explore/${subject.slug}`}
                       />
-                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[var(--arc-accent-strong)]">
+                      <span className="grid size-9 place-items-center rounded-xl bg-accent text-accent-strong">
                         <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
                       </span>
                       <h3 className="mt-5 text-lg font-semibold tracking-[-0.02em]">
                         {subject.name}
                       </h3>
-                      <p className="mt-1 text-sm leading-5 text-[var(--arc-text-muted)]">
+                      <p className="mt-1 text-sm leading-5 text-muted-foreground">
                         {subject.description}
                       </p>
                       <AnimatedProgressBar
@@ -198,14 +221,14 @@ export default function Home() {
                             : 0
                         }
                       />
-                      <p className="mt-2 text-xs text-[var(--arc-text-muted)]">
+                      <p className="mt-2 text-xs text-muted-foreground">
                         {subjectQuestionIds.length
                           ? remaining
                             ? `${remaining} ${remaining === 1 ? 'questão para fazer' : 'questões para fazer'}`
                             : 'Todas as questões concluídas'
                           : 'Catálogo em preparação'}
                       </p>
-                      <p className="mt-5 text-sm font-medium text-[var(--arc-accent-strong)]">
+                      <p className="mt-5 text-sm font-medium text-accent-strong">
                         Abrir disciplina{' '}
                         <ChevronRight className="inline size-4" />
                       </p>
@@ -215,19 +238,19 @@ export default function Home() {
               })}
             </div>
           ) : (
-            <ArcCard className="mt-5 p-5">
-              <p className="text-sm text-[var(--arc-text-muted)]">
+            <ArcCard className="p-5">
+              <p className="text-sm text-muted-foreground">
                 Nenhuma disciplina selecionada.
               </p>
               <Link
-                className="mt-3 inline-flex text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
+                className="mt-3 inline-flex text-sm font-medium text-accent-strong hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas
               </Link>
             </ArcCard>
           )}
-        </div>
+        </Section>
       </section>
     </AppShell>
   );
