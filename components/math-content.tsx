@@ -147,6 +147,37 @@ function QuestionDiagram({ name }: { name: string }) {
       </text>
     </svg>
   );
+  if (name.startsWith('curve-')) {
+    const curve = Number(name.slice(-2));
+    const paths = [
+      'M25 76 C58 76 64 25 105 25 S150 88 192 66 S245 18 335 34',
+      'M25 28 C64 28 67 78 110 78 S155 23 198 42 S245 87 335 70',
+      'M25 70 C66 72 69 48 109 49 S151 74 192 73 S250 25 335 25',
+      'M25 32 C62 80 94 81 125 48 S173 19 205 48 S269 81 335 30',
+    ];
+    return (
+      <svg aria-label={`Gráfico esquemático ${curve}`} role="img" {...common}>
+        <path
+          d="M24 88H342M46 96V12"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d={paths[(curve - 1) % paths.length]}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+        />
+        <text fontSize="13" x="338" y="84">
+          x
+        </text>
+        <text fontSize="13" x="50" y="18">
+          y
+        </text>
+      </svg>
+    );
+  }
 }
 
 /** Safely renders the inline `$...$` and block `$$...$$` syntax used by Arc content. */
