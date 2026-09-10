@@ -333,74 +333,84 @@ export default function Home() {
                     </div>
                     <div className="relative z-10 hidden sm:block">
                       {subjectQuestions.length ? (
-                        <Popover>
-                          <PopoverTrigger
-                            className="block rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            type="button"
-                          >
-                            <span className="flex max-w-[220px] flex-wrap gap-1">
-                              {visibleDots.map((question, dotIndex) => (
-                                <span
-                                  className={`arc-dot ${dotClassFor(question.id)}`}
-                                  key={question.id}
-                                  title={`Questão ${dotIndex + 1} · ${bucketLabel[buckets[dotIndex]]}`}
-                                />
-                              ))}
-                              {hiddenDotCount > 0 ? (
-                                <span className="text-[10px] font-medium text-muted-foreground">
-                                  +{hiddenDotCount}
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="mt-2 block font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
-                              {subjectQuestions.length} questões · inspecionar
-                            </span>
-                          </PopoverTrigger>
-                          <PopoverContent align="start" className="w-64">
-                            <p className="text-sm font-medium">
-                              {subject.name}
-                            </p>
-                            <ul className="grid gap-1.5 text-xs">
-                              {(
-                                [
-                                  ['correct', 'Acertou', correctCount],
-                                  ['wrong', 'Errou', wrongCount],
-                                  ['redo', 'Para refazer', redoCount],
-                                  ['empty', 'A fazer', emptyCount],
-                                ] as const
-                              ).map(([bucket, label, value]) => (
-                                <li
-                                  className="flex items-center gap-2"
-                                  key={bucket}
-                                >
+                        <>
+                          <Popover>
+                            <PopoverTrigger
+                              aria-label={`Inspecionar questões de ${subject.name}`}
+                              className="block rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              type="button"
+                            >
+                              <span className="flex max-w-[220px] flex-wrap gap-1">
+                                {visibleDots.map((question, dotIndex) => (
                                   <span
-                                    className={`arc-dot ${dotBucketClass[bucket]}`}
+                                    className={`arc-dot ${dotClassFor(question.id)}`}
+                                    key={question.id}
+                                    title={`Questão ${dotIndex + 1} · ${bucketLabel[buckets[dotIndex]]}`}
                                   />
-                                  <span className="flex-1 text-muted-foreground">
-                                    {label}
+                                ))}
+                                {hiddenDotCount > 0 ? (
+                                  <span className="text-[10px] font-medium text-muted-foreground">
+                                    +{hiddenDotCount}
                                   </span>
-                                  <span className="tabular-nums font-medium">
-                                    {value}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                            <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-border pt-2 text-xs">
-                              <Link
-                                className="text-accent-strong hover:underline"
-                                href={`/questions?subject=${subject.slug}&status=incorrect`}
-                              >
-                                Ver erradas
-                              </Link>
-                              <Link
-                                className="text-accent-strong hover:underline"
-                                href={`/questions?subject=${subject.slug}&status=not_attempted`}
-                              >
-                                Ver a fazer
-                              </Link>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
+                                ) : null}
+                              </span>
+                            </PopoverTrigger>
+                            <PopoverContent align="start" className="w-64">
+                              <p className="text-sm font-medium">
+                                {subject.name}
+                              </p>
+                              <ul className="grid gap-1.5 text-xs">
+                                {(
+                                  [
+                                    ['correct', 'Acertou', correctCount],
+                                    ['wrong', 'Errou', wrongCount],
+                                    ['redo', 'Para refazer', redoCount],
+                                    ['empty', 'A fazer', emptyCount],
+                                  ] as const
+                                ).map(([bucket, label, value]) => (
+                                  <li
+                                    className="flex items-center gap-2"
+                                    key={bucket}
+                                  >
+                                    <span
+                                      className={`arc-dot ${dotBucketClass[bucket]}`}
+                                    />
+                                    <span className="flex-1 text-muted-foreground">
+                                      {label}
+                                    </span>
+                                    <span className="tabular-nums font-medium">
+                                      {value}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-border pt-2 text-xs">
+                                <Link
+                                  className="text-accent-strong hover:underline"
+                                  href={`/questions?subject=${subject.slug}&status=incorrect`}
+                                >
+                                  Ver erradas
+                                </Link>
+                                <Link
+                                  className="text-accent-strong hover:underline"
+                                  href={`/questions?subject=${subject.slug}&status=not_attempted`}
+                                >
+                                  Ver a fazer
+                                </Link>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                          <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+                            {subjectQuestions.length} questões
+                            <Link
+                              aria-label={`Ver questões de ${subject.name}`}
+                              className="inline-flex text-muted-foreground transition-colors hover:text-accent-strong"
+                              href={`/questions?subject=${subject.slug}`}
+                            >
+                              <ArrowRight className="size-3" />
+                            </Link>
+                          </p>
+                        </>
                       ) : (
                         <p className="pointer-events-none font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
                           Em preparação
