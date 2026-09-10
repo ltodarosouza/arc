@@ -134,7 +134,7 @@ export default function Home() {
           <div className="flex items-center justify-between gap-4">
             <h2 className="arc-section-title">Minhas disciplinas</h2>
             <Link
-              className="text-sm font-medium text-[#46657a] hover:underline"
+              className="text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
               href="/subjects"
             >
               Gerenciar
@@ -181,13 +181,13 @@ export default function Home() {
                 const remaining = subjectQuestionIds.length - completed;
                 return (
                   <Reveal key={subject.id} delay={index * 70} variant="card">
-                    <ArcCard className="group relative h-full p-6 hover:-translate-y-0.5 hover:border-[#a8bcbd]">
+                    <ArcCard className="group relative h-full p-6 hover:-translate-y-0.5 hover:border-[var(--arc-accent-strong)]">
                       <Link
                         aria-label={`Abrir ${subject.name}`}
                         className="absolute inset-0 rounded-[var(--arc-radius-card)]"
                         href={`/explore/${subject.slug}`}
                       />
-                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[#46657a]">
+                      <span className="grid size-9 place-items-center rounded-xl bg-[var(--arc-accent)] text-[var(--arc-accent-strong)]">
                         <BookOpen className="size-4 transition-transform duration-300 group-hover:scale-105" />
                       </span>
                       <h3 className="mt-5 text-lg font-semibold tracking-[-0.02em]">
@@ -212,7 +212,7 @@ export default function Home() {
                             : 'Todas as questões concluídas'
                           : 'Catálogo em preparação'}
                       </p>
-                      <p className="mt-5 text-sm font-medium text-[#46657a]">
+                      <p className="mt-5 text-sm font-medium text-[var(--arc-accent-strong)]">
                         Abrir disciplina{' '}
                         <ChevronRight className="inline size-4" />
                       </p>
@@ -227,7 +227,7 @@ export default function Home() {
                 Nenhuma disciplina selecionada.
               </p>
               <Link
-                className="mt-3 inline-flex text-sm font-medium text-[#46657a] hover:underline"
+                className="mt-3 inline-flex text-sm font-medium text-[var(--arc-accent-strong)] hover:underline"
                 href="/subjects"
               >
                 Escolher disciplinas

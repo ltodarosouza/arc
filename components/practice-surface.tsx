@@ -379,13 +379,17 @@ export function PracticeSurface() {
               const correct = solution?.correctOptionId === option.id;
               const eliminated = eliminatedOptionIds.has(option.id);
               const resultStyle =
-                resolved &&
-                solution &&
-                (chosen || correct
+                resolved && solution
                   ? correct
-                    ? 'border-[#8fb59f] bg-[#eef6f0]'
-                    : 'border-[#dfaaaa] bg-[#faeeee]'
-                  : 'border-[var(--border)] bg-[var(--arc-surface)]');
+                    ? 'arc-option--correct'
+                    : chosen
+                      ? 'arc-option--incorrect'
+                      : ''
+                  : chosen
+                    ? 'border-[var(--primary)] bg-[var(--arc-accent)]'
+                    : eliminated
+                      ? 'arc-option--eliminated border-dashed border-[var(--border)]'
+                      : 'border-[var(--border)]';
               const selectOption = () => {
                 setSelectedOptionId(option.id);
                 setEliminatedOptionIds((current) => {
@@ -405,25 +409,25 @@ export function PracticeSurface() {
               };
               return (
                 <div
-                  className={`flex items-center gap-2 rounded-lg border p-1.5 transition-colors duration-200 ${resultStyle ?? (chosen ? 'border-[var(--primary)] bg-[var(--arc-accent)]/45' : eliminated ? 'border-dashed border-[#d8d4cc] bg-[#f1efea]' : 'border-[var(--border)] bg-[var(--arc-surface)] hover:border-[#8aa7a1] hover:bg-[#fdfcf9]')}`}
+                  className={`arc-option flex items-center gap-2 rounded-xl border p-1.5 ${resultStyle}`}
                   key={option.id}
                 >
                   <button
                     aria-pressed={chosen}
                     disabled={resolved}
                     onClick={selectOption}
-                    className={`flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-md px-2.5 py-2 text-left text-base transition-colors ${eliminated ? 'text-[#68716e]' : ''}`}
+                    className="flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-lg px-2.5 py-2 text-left text-base"
                   >
                     <span
-                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-white' : eliminated ? 'bg-[#dfdcd5] text-[#7b817e]' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}
+                      className={`grid size-6 shrink-0 place-items-center rounded-full text-xs ${chosen ? 'bg-[var(--arc-accent-strong)] text-[var(--primary-foreground)]' : 'bg-[var(--arc-surface-subtle)] text-[var(--arc-text-muted)]'}`}
                     >
                       {option.label}
                     </span>
-                    <span className="min-w-0 flex-1">
+                    <span className="arc-option-copy min-w-0 flex-1">
                       <MathContent value={option.content.value} />
                     </span>
                     {eliminated && (
-                      <span className="rounded-full bg-[#dfdcd5] px-2 py-1 text-[11px] font-medium text-[#6f7773]">
+                      <span className="rounded-full bg-[var(--arc-surface-subtle)] px-2 py-1 text-[11px] font-medium text-[var(--arc-text-muted)]">
                         Descartada
                       </span>
                     )}
@@ -433,7 +437,7 @@ export function PracticeSurface() {
                     aria-pressed={eliminated}
                     disabled={resolved}
                     onClick={toggleEliminated}
-                    className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-[#dfdcd5] text-[#5e6863] hover:bg-[#d4d0c8]' : 'text-[#78828a] hover:bg-[var(--arc-surface-subtle)] hover:text-[#485963]'}`}
+                    className={`grid size-11 shrink-0 place-items-center rounded-lg transition-colors ${eliminated ? 'bg-[var(--arc-surface-subtle)] text-[var(--foreground)]' : 'text-[var(--arc-text-muted)] hover:bg-[var(--arc-surface-subtle)] hover:text-[var(--foreground)]'}`}
                   >
                     {eliminated ? (
                       <RotateCcw className="size-4" />
@@ -450,7 +454,7 @@ export function PracticeSurface() {
           <section
             aria-label="Dicas"
             id="question-hints"
-            className="mt-6 max-w-2xl rounded-2xl border border-[#d5e1dc] bg-[#f3f7f4] p-4 text-sm leading-6 text-[#456252]"
+            className="mt-6 max-w-2xl rounded-2xl border border-[var(--arc-success-border)] bg-[var(--arc-hint-bg)] p-4 text-sm leading-6 text-[var(--arc-hint-text)]"
           >
             <p className="font-medium">
               Dica{visibleHints.length > 1 ? 's' : ''}
@@ -489,8 +493,8 @@ export function PracticeSurface() {
                     Confira o raciocínio
                   </span>
                 </div>
-                <div className="mt-5 rounded-2xl border border-[#d9e2df] bg-[#f1f6f4] p-5 sm:p-6">
-                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#557064]">
+                <div className="arc-solution mt-5 rounded-2xl border p-5 sm:p-6">
+                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--arc-success-text)]">
                     Resposta correta
                     {solution.correctOptionId
                       ? ` · Alternativa ${question.options.find((option) => option.id === solution.correctOptionId)?.label ?? ''}`
@@ -560,7 +564,7 @@ export function PracticeSurface() {
           </>
         )}
         {resolved && !nextQuestion && (
-          <div className="mt-8 rounded-2xl border border-[#d9e2df] bg-[#f1f6f4] px-5 py-4 text-sm text-[#48665b]">
+          <div className="arc-solution mt-8 rounded-2xl border px-5 py-4 text-sm text-[var(--arc-success-text)]">
             Você chegou ao fim das questões disponíveis desta disciplina.
           </div>
         )}

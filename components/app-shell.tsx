@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 import { useAuth } from '@/components/auth-provider';
 import { AuthScreen } from '@/components/auth-screen';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
 type Destination = 'home' | 'explore' | 'progress' | 'subjects' | 'account';
@@ -62,7 +63,7 @@ export function AppShell({
   if (!session && isSupabaseConfigured()) return <AuthScreen />;
 
   return (
-    <main className="min-h-screen bg-[var(--background)] pb-[calc(8rem+env(safe-area-inset-bottom))] text-[var(--foreground)] md:pb-12">
+    <main className="arc-app min-h-screen bg-[var(--background)] pb-[calc(8rem+env(safe-area-inset-bottom))] text-[var(--foreground)] md:pb-12">
       <a
         className="sr-only fixed left-4 top-4 z-50 rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] focus:not-sr-only"
         href="#main-content"
@@ -90,7 +91,7 @@ export function AppShell({
             {destinations.map((destination) => (
               <Link
                 aria-current={active === destination.id ? 'page' : undefined}
-                className={`flex min-h-11 items-center rounded-lg px-4 py-2 transition-colors duration-200 ${active === destination.id ? 'bg-[var(--arc-accent)] font-medium text-[var(--primary)]' : 'hover:bg-black/[0.035] hover:text-[var(--foreground)]'}`}
+                className={`flex min-h-11 items-center rounded-lg px-4 py-2 transition-colors duration-200 ${active === destination.id ? 'bg-[var(--arc-accent)] font-medium text-[var(--primary)]' : 'hover:bg-[var(--arc-surface-subtle)] hover:text-[var(--foreground)]'}`}
                 href={destination.href}
                 key={destination.id}
               >
@@ -98,18 +99,19 @@ export function AppShell({
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
             <Link
               aria-label="Abrir perfil"
               aria-current={active === 'account' ? 'page' : undefined}
               href="/account"
-              className="flex min-h-11 items-center gap-2 rounded-full px-3 hover:bg-[var(--arc-accent)]"
+              className="flex min-h-11 items-center gap-2 rounded-full px-3 transition-colors hover:bg-[var(--arc-accent)]"
             >
               <span className="hidden max-w-36 truncate text-sm sm:block">
                 {profileLabel}
               </span>
               <span
-                className="grid size-9 place-items-center rounded-full bg-[var(--arc-accent)]"
+                className="grid size-9 place-items-center rounded-full bg-[var(--arc-accent)] text-[var(--foreground)]"
                 aria-hidden="true"
               >
                 {profileLabel.charAt(0).toUpperCase()}
@@ -118,7 +120,7 @@ export function AppShell({
           </div>
         </div>
       </header>
-      <div id="main-content" tabIndex={-1}>
+      <div className="arc-route" id="main-content" tabIndex={-1}>
         {children}
       </div>
       <nav
@@ -131,7 +133,7 @@ export function AppShell({
           return (
             <Link
               aria-current={isActive ? 'page' : undefined}
-              className={`flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-medium transition-colors duration-200 ${isActive ? 'bg-[var(--arc-accent)] text-[#263950]' : 'text-[var(--arc-text-muted)]'}`}
+              className={`flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-medium transition-colors duration-200 ${isActive ? 'bg-[var(--arc-accent)] text-[var(--foreground)]' : 'text-[var(--arc-text-muted)]'}`}
               href={destination.href}
               key={destination.id}
             >

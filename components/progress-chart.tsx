@@ -115,7 +115,14 @@ export function ProgressChart({ attempts }: { attempts: QuestionAttempt[] }) {
             strokeWidth="2"
             tabIndex={0}
             onBlur={() => setActiveDate(null)}
+            onClick={() => setActiveDate(day.date)}
             onFocus={() => setActiveDate(day.date)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                setActiveDate(day.date);
+              }
+            }}
             onMouseEnter={() => setActiveDate(day.date)}
             onMouseLeave={() => setActiveDate(null)}
           >

@@ -46,9 +46,44 @@
   --arc-redo-text: #8a6728;
   --arc-radius-card: 1rem;
   --arc-radius-control: 0.625rem;
-  --arc-shadow-card: 0 2px 6px rgba(38, 57, 80, 0.015);
+  --arc-shadow-card: 0 2px 8px rgba(38, 57, 80, 0.035);
+  --arc-shadow-float: 0 18px 42px rgba(38, 57, 80, 0.1);
+  --arc-control: #fdfcf9;
+  --arc-control-hover: #f6f7f4;
+  --arc-success-border: #9ac7a9;
+  --arc-error-border: #e3aaaa;
+  --arc-hint-bg: #f3f7f4;
+  --arc-hint-text: #456252;
   --arc-space-section: clamp(2rem, 5vw, 3.5rem);
   --arc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark {
+  --background: #10171f;
+  --foreground: #edf2f3;
+  --primary: #dce8e8;
+  --primary-foreground: #152333;
+  --border: rgba(206, 222, 225, 0.14);
+  --ring: #9fc1c7;
+  --arc-surface: #17212b;
+  --arc-surface-subtle: #202d38;
+  --arc-text-muted: #a9b7c0;
+  --arc-accent: #263d45;
+  --arc-accent-strong: #a7ced0;
+  --arc-success-bg: #18382b;
+  --arc-success-text: #aee4bf;
+  --arc-success-border: #43845a;
+  --arc-error-bg: #41272b;
+  --arc-error-text: #ffb8b6;
+  --arc-error-border: #92565a;
+  --arc-redo-bg: #413722;
+  --arc-redo-text: #f5d592;
+  --arc-control: #1b2732;
+  --arc-control-hover: #22323f;
+  --arc-hint-bg: #20372f;
+  --arc-hint-text: #bae0c7;
+  --arc-shadow-card: 0 3px 12px rgba(0, 0, 0, 0.2);
+  --arc-shadow-float: 0 18px 42px rgba(0, 0, 0, 0.32);
+  color-scheme: dark;
 }
 * {
   @apply border-border outline-ring/50;
@@ -63,11 +98,11 @@ body {
   color: var(--foreground);
   font-family: var(--font-arc-sans), Arial, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 @layer components {
   .arc-page {
-    width: 100%;
-    max-width: 62rem;
+    width: min(100%, 70rem);
     margin-inline: auto;
     padding: clamp(2.25rem, 4vw, 3.25rem) 1.25rem 2.75rem;
   }
@@ -118,7 +153,11 @@ body {
       transform 180ms;
   }
   .arc-action:hover {
-    background: #354d68;
+    background: color-mix(
+      in srgb,
+      var(--primary) 84%,
+      var(--arc-accent-strong)
+    );
   }
   .arc-action:active {
     transform: translateY(1px);
@@ -131,12 +170,12 @@ body {
     position: sticky;
     top: 0;
     z-index: 30;
-    background: rgba(244, 241, 235, 0.94);
+    background: color-mix(in srgb, var(--background) 94%, transparent);
     border-bottom: 1px solid var(--border);
   }
   @supports (backdrop-filter: blur(12px)) {
     .arc-sticky-header {
-      background: rgba(244, 241, 235, 0.82);
+      background: color-mix(in srgb, var(--background) 82%, transparent);
       backdrop-filter: blur(16px);
     }
   }
@@ -176,6 +215,59 @@ body {
     }
   }
 }
+.arc-app {
+  background-image:
+    radial-gradient(
+      circle at 82% -10%,
+      color-mix(in srgb, var(--arc-accent) 65%, transparent),
+      transparent 31rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--background) 95%, var(--arc-accent)) 0,
+      var(--background) 20rem
+    );
+}
+.arc-route {
+  animation: route-enter 360ms var(--arc-ease) both;
+}
+.arc-panel {
+  box-shadow: var(--arc-shadow-float);
+}
+.arc-filter-control {
+  background: var(--arc-control);
+  color: var(--foreground);
+}
+.arc-option {
+  background: var(--arc-control);
+  transition:
+    border-color 180ms var(--arc-ease),
+    background-color 180ms var(--arc-ease),
+    opacity 180ms var(--arc-ease),
+    transform 180ms var(--arc-ease);
+}
+.arc-option:hover {
+  background: var(--arc-control-hover);
+}
+.arc-option--eliminated {
+  opacity: 0.54;
+}
+.arc-option--eliminated .arc-option-copy {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.arc-option--correct {
+  border-color: var(--arc-success-border);
+  background: var(--arc-success-bg);
+}
+.arc-option--incorrect {
+  border-color: var(--arc-error-border);
+  background: var(--arc-error-bg);
+}
+.arc-solution {
+  background: color-mix(in srgb, var(--arc-success-bg) 70%, var(--arc-surface));
+  border-color: var(--arc-success-border);
+}
 .math-content .katex {
   font-size: 1em;
   white-space: nowrap;
@@ -201,6 +293,16 @@ a {
     transform: translateY(0);
   }
 }
+@keyframes route-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 @keyframes rise {
   from {
     opacity: 0;
@@ -216,7 +318,7 @@ a {
 }
 .arc-title-letter {
   display: inline-block;
-  animation: title-letter-arrive 560ms var(--arc-ease) both;
+  animation: title-letter-arrive 680ms var(--arc-ease) both;
 }
 @keyframes title-letter-arrive {
   from {
