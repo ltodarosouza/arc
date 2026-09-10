@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { AppShell } from '@/components/app-shell';
-import { AnimatedTitle } from '@/components/animated-title';
+import { PageHeader } from '@/components/page-header';
 import { AttemptStatusBadge, ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { MathContent } from '@/components/math-content';
@@ -328,17 +328,12 @@ export default function QuestionsPage() {
           <ChevronRight className="size-4" />
           <span>{subject.name}</span>
         </div>
-        <div className="mt-5 max-w-2xl">
-          <div>
-            <p className="arc-caption font-semibold uppercase tracking-[0.12em] text-accent-strong">
-              {subject.name}
-            </p>
-            <AnimatedTitle className="mt-2">Questões</AnimatedTitle>
-            <p className="mt-3 text-[15px] text-muted-foreground">
-              {questions.length} encontrada{questions.length === 1 ? '' : 's'}.
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          className="mt-5"
+          eyebrow={subject.name}
+          title="Questões"
+          description={`${questions.length} encontrada${questions.length === 1 ? '' : 's'}.`}
+        />
         <ArcCard className="arc-panel mt-8 p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -482,9 +477,7 @@ export default function QuestionsPage() {
             selectedDifficulties.length > 0 ||
             selectedStatus !== 'all') && (
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-muted-foreground">
-                Aplicados:
-              </span>
+              <span className="text-xs text-muted-foreground">Aplicados:</span>
               {activeFilters.map((filter) => (
                 <button
                   className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-foreground"
@@ -567,7 +560,8 @@ export default function QuestionsPage() {
                   <div
                     className="rounded-card focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     onClick={(event: MouseEvent<HTMLDivElement>) => {
-                      if ((event.target as HTMLElement).closest('button, a')) return;
+                      if ((event.target as HTMLElement).closest('button, a'))
+                        return;
                       startPractice(question.id);
                     }}
                     onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
@@ -580,9 +574,7 @@ export default function QuestionsPage() {
                     role="link"
                     tabIndex={0}
                   >
-                    <ArcCard
-                      className="arc-question-card relative cursor-pointer p-5 hover:-translate-y-0.5 hover:border-accent-strong sm:p-6"
-                    >
+                    <ArcCard className="arc-question-card relative cursor-pointer p-5 hover:-translate-y-0.5 hover:border-accent-strong sm:p-6">
                       <Link
                         aria-label={`Abrir questão ${questionIndex + 1}`}
                         className="sr-only"

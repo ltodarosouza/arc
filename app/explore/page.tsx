@@ -5,7 +5,7 @@ import { BookOpen, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppShell } from '@/components/app-shell';
-import { AnimatedTitle } from '@/components/animated-title';
+import { PageHeader } from '@/components/page-header';
 import { ArcCard } from '@/components/arc-ui';
 import { FeedbackState } from '@/components/feedback-state';
 import { Reveal } from '@/components/reveal';
@@ -83,20 +83,18 @@ export default function ExplorePage() {
   return (
     <AppShell active="explore">
       <section className="arc-page">
-        <div className="animate-enter max-w-2xl">
-          <div>
-            <AnimatedTitle>Questões</AnimatedTitle>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Escolha uma disciplina para começar.
-            </p>
-          </div>
-          <Link
-            className="arc-link mt-4 inline-flex min-h-11 items-center gap-2 text-sm"
-            href="/subjects"
-          >
-            <SlidersHorizontal className="size-4" /> Gerenciar disciplinas
-          </Link>
-        </div>
+        <PageHeader
+          title="Questões"
+          description="Escolha uma disciplina para começar."
+          action={
+            <Link
+              className="arc-link inline-flex min-h-11 items-center gap-2 text-sm"
+              href="/subjects"
+            >
+              <SlidersHorizontal className="size-4" /> Gerenciar disciplinas
+            </Link>
+          }
+        />
         {isInitialLoading ? (
           <div
             aria-busy="true"
