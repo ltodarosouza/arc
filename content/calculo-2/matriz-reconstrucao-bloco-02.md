@@ -6,9 +6,9 @@ referência apenas para competências, progressão e diversidade.
 | Faixa | Cobertura planejada |
 | --- | --- |
 | Fácil (11) | integral definida, substituição direta, TFC, exponenciais, geométricas, limites, impróprias, termo geral, potência, Maclaurin e área |
-| Média (11) | partes, frações parciais, trigonométricas, monotonicidade, comparação, alternadas, descontinuidade, intervalo de potência, Taylor e áreas |
-| Difícil (11) | partes impróprias, frações mistas, redução trigonométrica, singularidade interna, integral-log, razão, extremos, Maclaurin composto e áreas simétricas |
+| Média (12) | partes, frações parciais mistas, trigonométricas, monotonicidade, comparação, alternadas, descontinuidade, intervalo de potência, Taylor e áreas |
+| Difícil (10) | parâmetro em integral imprópria, substituição trigonométrica com divisão, singularidade parametrizada, razão com potência variável, alternância assimétrica, extremos, produto de séries e área com parâmetro |
 
-Cada item terá quatro alternativas, três dicas progressivas e resolução
-verificada; a dificuldade será definida pelo método e pelas decisões exigidas,
+Cada item tem quatro alternativas, três dicas progressivas e resolução
+verificada; a dificuldade é definida pelo método e pelas decisões exigidas,
 nunca pelo tamanho da conta.

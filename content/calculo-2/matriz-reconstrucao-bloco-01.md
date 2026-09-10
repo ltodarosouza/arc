@@ -26,16 +26,19 @@ Referência de competências: Thomas, *Cálculo*, vol. 2, 11ª edição. Uso: so
 | 20 | Taylor com identidade | Média | Calcular | Coeficiente / fator do ângulo duplo |
 | 21 | Área entre curvas | Média | Modelar | Superior menos inferior / limites de interseção |
 | 22 | Substituição | Média | Selecionar | Escolha de variável / usar radical como variável cedo demais |
-| 23 | Partes com logaritmo | Difícil | Calcular | Combinar técnicas / sinal do termo restante |
-| 24 | Frações parciais mistas | Difícil | Calcular | Fator linear e quadrático / omitir numerador linear |
-| 25 | Potências trigonométricas | Difícil | Calcular | Estratégia paridade / sinal em substituição |
-| 26 | Descontinuidade interna | Difícil | Classificar | Dois limites laterais / confundir valor principal |
+| 23 | Partes com logaritmo | Média | Calcular | Combinar técnicas / sinal do termo restante |
+| 24 | Frações parciais mistas | Média | Calcular | Fator linear e quadrático / omitir numerador linear |
+| 25 | Potências trigonométricas | Média | Calcular | Estratégia de paridade / sinal em substituição |
+| 26 | Descontinuidade interna | Média | Classificar | Dois limites laterais / confundir valor principal |
 | 27 | Série logarítmica | Difícil | Justificar | Teste da integral / limiar $p=1$ |
 | 28 | Teste da razão | Difícil | Calcular | Limite com fatorial / simplificação inadequada |
-| 29 | Alternada não absoluta | Difícil | Justificar | Monotonicidade eventual / comparação dos módulos |
-| 30 | Extremos de potência | Difícil | Analisar casos | Falha do termo geral nos dois extremos |
-| 31 | Maclaurin por integração | Difícil | Derivar | Série derivada e constante inicial |
-| 32 | Área com troca de posição | Difícil | Modelar | Separar intervalos / cancelamento indevido |
+| 29 | Alternada não absoluta | Média | Justificar | Monotonicidade eventual / comparação dos módulos |
+| 30 | Extremos de potência | Média | Analisar casos | Verificar convergência absoluta nos dois extremos |
+| 31 | Maclaurin por composição | Média | Derivar | Paridade dos expoentes / confundir índice e grau |
+| 32 | Área com troca de posição | Média | Modelar | Separar intervalos / cancelamento indevido |
 | 33 | Imprópria por partes | Difícil | Calcular | Limite e termo de fronteira |
 
-Distribuição: 11 fáceis, 11 médias e 11 difíceis. Cada item terá quatro alternativas, três dicas progressivas, resultado conferido e passos específicos.
+Distribuição revisada: 11 fáceis, 19 médias e 3 difíceis. A revisão rebaixou
+itens de procedimento direto; apenas problemas que combinam escolhas, limites
+ou análise de extremos permanecem como difíceis. Cada item tem quatro
+alternativas, três dicas progressivas, resultado conferido e passos específicos.
