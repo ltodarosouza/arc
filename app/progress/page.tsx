@@ -239,20 +239,22 @@ export default function ProgressPage() {
                   tone: 'text-redo',
                 },
               ].map((metric, index) => (
-                <Reveal delay={index * 85} key={metric.label} variant="card">
-                  <div>
-                    <dt className="text-sm text-muted-foreground">
-                      {metric.label}
-                    </dt>
-                    <dd className={`arc-metric mt-2 ${metric.tone}`}>
-                      <AnimatedNumber
-                        suffix={metric.suffix}
-                        value={metric.value}
-                      />
-                    </dd>
-                    <dd className="arc-caption mt-2">{metric.detail}</dd>
-                  </div>
-                </Reveal>
+                <div
+                  className="animate-rise"
+                  key={metric.label}
+                  style={{ animationDelay: `${index * 60}ms` }}
+                >
+                  <dt className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+                    {metric.label}
+                  </dt>
+                  <dd className={`arc-stat-figure mt-2.5 ${metric.tone}`}>
+                    <AnimatedNumber
+                      suffix={metric.suffix}
+                      value={metric.value}
+                    />
+                  </dd>
+                  <dd className="arc-caption mt-2">{metric.detail}</dd>
+                </div>
               ))}
             </dl>
             {subjectsWithErrors.length > 0 && (
