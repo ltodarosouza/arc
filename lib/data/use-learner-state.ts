@@ -14,6 +14,32 @@ import {
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
 const learnerStateCache = new Map<string, LearnerState>();
+const learnerStateListeners = new Map<
+  string,
+  Set<(state: LearnerState) => void>
+>();
+
+function publishLearnerState(cacheKey: string, state: LearnerState) {
+  learnerStateCache.set(cacheKey, state);
+  learnerStateListeners.get(cacheKey)?.forEach((listener) => listener(state));
+}
+
+function subscribeToLearnerState(
+  cacheKey: string,
+  listener: (state: LearnerState) => void,
+) {
+  const listeners = learnerStateListeners.get(cacheKey) ?? new Set();
+  listeners.add(listener);
+  learnerStateListeners.set(cacheKey, listeners);
+
+  const cachedState = learnerStateCache.get(cacheKey);
+  if (cachedState) listener(cachedState);
+
+  return () => {
+    listeners.delete(listener);
+    if (!listeners.size) learnerStateListeners.delete(cacheKey);
+  };
+}
 
 export function useLearnerState() {
   const { session, ready } = useAuth();
@@ -48,8 +74,7 @@ export function useLearnerState() {
         ? await loadSupabaseLearnerState()
         : createLocalLearnerRepository().getState();
       if (request !== generation.current) return;
-      if (cacheKey) learnerStateCache.set(cacheKey, state);
-      setSnapshot({ owner, state });
+      if (cacheKey) publishLearnerState(cacheKey, state);
       setError(null);
     } catch {
       if (request !== generation.current) return;
@@ -61,6 +86,13 @@ export function useLearnerState() {
       if (request === generation.current) setIsLoading(false);
     }
   }, [cacheKey, owner, ready, remote]);
+  useEffect(() => {
+    if (!cacheKey) return;
+    return subscribeToLearnerState(cacheKey, (state) => {
+      setSnapshot({ owner, state });
+      setIsLoading(false);
+    });
+  }, [cacheKey, owner]);
   useEffect(() => {
     const generationRef = generation;
     let cancelled = false;
@@ -85,17 +117,8 @@ export function useLearnerState() {
       // Update the UI and cache before the request completes. The writes below
       // are serialized because each request replaces the complete selection.
       // Without the queue, a slower earlier request can undo a faster click.
-      setSnapshot((current) => ({
-        owner,
-        state: {
-          ...(current?.owner === owner
-            ? current.state
-            : createEmptyLearnerState()),
-          selectedSubjectIds,
-        },
-      }));
       if (cacheKey) {
-        learnerStateCache.set(cacheKey, {
+        publishLearnerState(cacheKey, {
           ...(learnerStateCache.get(cacheKey) ?? createEmptyLearnerState()),
           selectedSubjectIds,
         });
@@ -141,25 +164,10 @@ export function useLearnerState() {
           await setSupabaseRedo(questionId, enabled);
         } else createLocalLearnerRepository().setRedo(questionId, enabled);
         if (request !== generation.current) return false;
-        setSnapshot((current) => {
-          const state =
-            current?.owner === owner
-              ? current.state
-              : createEmptyLearnerState();
-          return {
-            owner,
-            state: {
-              ...state,
-              redoQuestionIds: enabled
-                ? [...new Set([...state.redoQuestionIds, questionId])]
-                : state.redoQuestionIds.filter((id) => id !== questionId),
-            },
-          };
-        });
         if (cacheKey) {
           const state =
             learnerStateCache.get(cacheKey) ?? createEmptyLearnerState();
-          learnerStateCache.set(cacheKey, {
+          publishLearnerState(cacheKey, {
             ...state,
             redoQuestionIds: enabled
               ? [...new Set([...state.redoQuestionIds, questionId])]
