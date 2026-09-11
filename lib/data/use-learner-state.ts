@@ -15,6 +15,15 @@ import { isSupabaseConfigured } from '@/lib/supabase/client';
 
 const learnerStateCache = new Map<string, LearnerState>();
 
+// Saves are optimistic (cache + snapshot update before the request settles),
+// but `refresh()` fires on every mount of every `useLearnerState()` instance —
+// e.g. navigating from Disciplinas to Início mounts a brand-new instance whose
+// remote fetch can land before a still-in-flight save does, overwriting the
+// optimistic update with stale data. Keying pending writes by cacheKey (not a
+// per-instance ref) lets any instance's `refresh()` wait for a write started
+// by a different instance before reading the server.
+const pendingWriteByKey = new Map<string, Promise<unknown>>();
+
 export function useLearnerState() {
   const { session, ready } = useAuth();
   const owner = session?.user.id ?? null;
@@ -32,7 +41,6 @@ export function useLearnerState() {
   );
   const [error, setError] = useState<Error | null>(null);
   const generation = useRef(0);
-  const selectedSubjectsWrite = useRef(Promise.resolve());
   const selectedSubjectsVersion = useRef(0);
   const refresh = useCallback(async () => {
     const request = ++generation.current;
@@ -44,6 +52,11 @@ export function useLearnerState() {
     }
     if (!learnerStateCache.has(cacheKey ?? '')) setIsLoading(true);
     try {
+      // Let any write already in flight for this key (started by this
+      // instance or another one) land first, so the fetch below can't read a
+      // pre-write server value and clobber the optimistic update with it.
+      await pendingWriteByKey.get(cacheKey ?? '');
+      if (request !== generation.current) return;
       const state = remote
         ? await loadSupabaseLearnerState()
         : createLocalLearnerRepository().getState();
@@ -101,7 +114,9 @@ export function useLearnerState() {
         });
       }
 
-      const write = selectedSubjectsWrite.current.then(async () => {
+      const key = cacheKey ?? '';
+      const previousWrite = pendingWriteByKey.get(key) ?? Promise.resolve();
+      const write = previousWrite.then(async () => {
         try {
           if (remote) {
             if (!owner) throw new Error('Entre para salvar.');
@@ -115,7 +130,7 @@ export function useLearnerState() {
           return false;
         }
       });
-      selectedSubjectsWrite.current = write.then(() => undefined);
+      pendingWriteByKey.set(key, write);
       const saved = await write;
 
       // A failed older write must not overwrite feedback for a newer choice.
@@ -135,11 +150,25 @@ export function useLearnerState() {
   const setRedo = useCallback(
     async (questionId: string, enabled: boolean) => {
       const request = generation.current;
+      const key = cacheKey ?? '';
+      const previousWrite = pendingWriteByKey.get(key) ?? Promise.resolve();
+      // Settles instead of rejecting: a rejected entry would make an unrelated
+      // refresh()'s `await pendingWriteByKey.get(key)` throw too.
+      const write = previousWrite.then(async () => {
+        try {
+          if (remote) {
+            if (!owner) throw new Error('Entre para salvar.');
+            await setSupabaseRedo(questionId, enabled);
+          } else createLocalLearnerRepository().setRedo(questionId, enabled);
+          return true;
+        } catch {
+          return false;
+        }
+      });
+      pendingWriteByKey.set(key, write);
       try {
-        if (remote) {
-          if (!owner) throw new Error('Entre para salvar.');
-          await setSupabaseRedo(questionId, enabled);
-        } else createLocalLearnerRepository().setRedo(questionId, enabled);
+        const saved = await write;
+        if (!saved) throw new Error('Entre para salvar.');
         if (request !== generation.current) return false;
         setSnapshot((current) => {
           const state =
