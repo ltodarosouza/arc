@@ -9,7 +9,6 @@ const topics = {
   'regra-de-lhopital': '031',
   'calculo-de-limites': '018',
   'limites-no-infinito-e-assintotas': '020',
-  'teorema-fundamental-do-calculo': '037',
 };
 const subjectId = '20000000-0000-4000-8000-000000000004';
 const sourceId = '10000000-0000-4000-8000-000000001503';
@@ -80,7 +79,30 @@ for (const [index, question] of advancedDerivativesLimitsBatch.entries()) {
   );
 }
 
-lines.push('commit;', '');
+lines.push(
+  '-- Arquiva duplicatas literais normalizadas sem apagar tentativas. Os itens',
+  '-- deste lote têm prioridade; entre os demais, preserva-se o mais recente.',
+  `with ranked_published as (
+  select id, created_at,
+    row_number() over (
+      partition by regexp_replace(lower(trim(statement_markdown)), '\\s+', ' ', 'g')
+      order by
+        case when id between ${sql(uuid('00000043', 15300))} and ${sql(uuid('00000043', 15319))} then 0 else 1 end,
+        created_at desc,
+        id desc
+    ) as duplicate_rank
+  from public.questions
+  where subject_id=${sql(subjectId)}
+    and publication_status='published'
+)
+update public.questions as question
+set publication_status='archived'
+from ranked_published as ranked
+where question.id=ranked.id
+  and ranked.duplicate_rank>1;`,
+  'commit;',
+  '',
+);
 writeFileSync(output, lines.join('\n'));
 console.log({
   output,

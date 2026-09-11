@@ -11,6 +11,9 @@
   coeficiente angular de dois pontos e substituição imediata em limites.
 - Preservação de histórico: os 63 itens passam para `archived`; tentativas e
   registros de revisão não são apagados.
+- Deduplicação: após inserir o lote, a migration normaliza espaços e caixa dos
+  enunciados publicados de Cálculo I e arquiva repetições literais. Questões do
+  lote avançado têm prioridade; nenhuma tentativa é apagada.
 - Migration: `20260910170000_reorganize_calculus_1_advanced_derivatives_limits.sql`.
 
 ## Referência e proveniência
@@ -73,8 +76,8 @@
 ## Contagens e verificações editoriais
 
 - Por assunto: 10 questões de derivadas e 10 questões de limites.
-- Por subassunto: 4 de regra da cadeia, 4 de derivação
-  implícita/logarítmica, 1 de produto e quociente, 1 do Teorema Fundamental,
+- Por subassunto: 5 de regra da cadeia — incluindo uma aplicação conjunta do
+  Teorema Fundamental —, 4 de derivação implícita/logarítmica, 1 de produto e quociente,
   7 de L’Hôpital, 2 de limites no infinito e 1 de cálculo de limites.
 - Por dificuldade: 20 difíceis; o lote complementa, sem reclassificar
   artificialmente, as questões fáceis e médias que permanecem úteis.

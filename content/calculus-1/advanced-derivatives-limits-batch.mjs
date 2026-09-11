@@ -243,7 +243,7 @@ export const advancedDerivativesLimitsBatch = [
   }),
   Q({
     id: 'c1-adl-09',
-    topic: 'teorema-fundamental-do-calculo',
+    topic: 'regra-da-cadeia',
     statement: 'Se $F(x)=\\left[\\int_0^{x^2}e^{-t^2}\\,dt\\right]^3$, determine $F^{\\prime}(x)$.',
     answer: '$F^{\\prime}(x)=6x e^{-x^4}\\left[\\int_0^{x^2}e^{-t^2}\\,dt\\right]^2$',
     distractors: [
@@ -343,7 +343,7 @@ export const advancedDerivativesLimitsBatch = [
   }),
   Q({
     id: 'c1-adl-13',
-    topic: 'calculo-de-limites',
+    topic: 'regra-de-lhopital',
     statement: 'Use L’Hôpital, verificando a indeterminação em cada etapa, para calcular $\\lim_{x\\to0}\\dfrac{e^{x^2}-\\cos x}{x^2}$.',
     answer: '$\\dfrac32$',
     distractors: ['$\\dfrac12$', '$1$', '$3$'],
@@ -504,7 +504,7 @@ export const advancedDerivativesLimitsBatch = [
   }),
   Q({
     id: 'c1-adl-20',
-    topic: 'regra-de-lhopital',
+    topic: 'calculo-de-limites',
     statement: 'Determine $\\lim_{x\\to0}\\dfrac{\\sqrt{1+\\sin x}-\\sqrt{1-\\sin x}-x}{x^3}$.',
     answer: '$-\\dfrac1{24}$',
     distractors: ['$\\dfrac1{24}$', '$-\\dfrac16$', '$0$'],
