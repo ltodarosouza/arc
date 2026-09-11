@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
+  ArrowLeft,
+  ArrowRight,
   Check,
   ChevronRight,
   CircleHelp,
@@ -176,6 +178,14 @@ export function PracticeSurface() {
   const goToQuestion = (nextQuestionId: string, subjectSlug: string) => {
     window.location.assign(
       `/practice?subject=${subjectSlug}&question=${nextQuestionId}${requestedContext.session ? `&session=${requestedContext.session}` : ''}`,
+    );
+  };
+  const goToNextQuestion = () => {
+    if (!nextQuestion) return;
+    goToQuestion(
+      nextQuestion.id,
+      catalogue?.subjects.find((item) => item.id === nextQuestion.subjectId)
+        ?.slug ?? nextQuestion.subjectId,
     );
   };
 
@@ -408,17 +418,9 @@ export function PracticeSurface() {
     );
 
   const resolved = outcome !== null;
-  const isGraded = question.kind === 'multiple_choice';
-  const feedbackMessage =
-    outcome === 'correct'
-      ? isGraded
-        ? 'Parabéns! Você acertou.'
-        : 'Você marcou que acertou.'
-      : outcome === 'incorrect'
-        ? isGraded
-          ? 'Não foi dessa vez. Confira o gabarito abaixo.'
-          : 'Você marcou que precisa revisar esta questão.'
-        : 'Gabarito revelado.';
+  const returnHref =
+    practiceSession?.returnPath ??
+    `/questions?subject=${subject?.slug ?? question.subjectId}`;
   const visibleHints = question.hints.slice(0, visibleHintCount);
   const hasMoreHints = visibleHintCount < question.hints.length;
   return (
@@ -430,30 +432,51 @@ export function PracticeSurface() {
             : 'Resposta incorreta. Gabarito comentado disponível.'
           : ''}
       </div>
-      <div className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-8">
-        <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-          <Compass className="size-3.5 shrink-0" />
-          <span className="truncate">{subject?.name}</span>
-          {topic && (
-            <>
-              <ChevronRight className="size-3 shrink-0" />
-              <span className="truncate">{topic.name}</span>
-            </>
+      <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4 sm:px-8">
+        <div className="flex min-w-0 items-center gap-2">
+          <a
+            aria-label="Voltar para questões"
+            className="grid size-9 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-surface-subtle hover:text-foreground"
+            href={returnHref}
+          >
+            <ArrowLeft className="size-4" />
+          </a>
+          <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+            <Compass className="size-3.5 shrink-0" />
+            <span className="truncate">{subject?.name}</span>
+            {topic && (
+              <>
+                <ChevronRight className="size-3 shrink-0" />
+                <span className="truncate">{topic.name}</span>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {resolved ? (
+            outcome === 'revealed' ? (
+              <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
+                Gabarito visto
+              </span>
+            ) : (
+              <AttemptStatusBadge status={outcome} />
+            )
+          ) : (
+            <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
+              Questão {String(questionIndex + 1).padStart(2, '0')}
+            </span>
+          )}
+          {nextQuestion && (
+            <button
+              aria-label={resolved ? 'Próxima questão' : 'Pular questão'}
+              className="grid size-9 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-surface-subtle hover:text-foreground"
+              onClick={goToNextQuestion}
+              type="button"
+            >
+              <ArrowRight className="size-4" />
+            </button>
           )}
         </div>
-        {resolved ? (
-          outcome === 'revealed' ? (
-            <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
-              Gabarito visto
-            </span>
-          ) : (
-            <AttemptStatusBadge status={outcome} />
-          )
-        ) : (
-          <span className="rounded-full bg-surface-subtle px-3 py-1 text-xs font-medium text-muted-foreground">
-            Questão {String(questionIndex + 1).padStart(2, '0')}
-          </span>
-        )}
       </div>
       <div className="p-5 sm:p-10">
         <div className="arc-statement max-w-3xl rounded-[1.5rem] border-l-4 border-accent-strong bg-[color-mix(in_srgb,var(--arc-accent)_32%,transparent)] px-5 py-6 sm:px-7">
@@ -594,11 +617,6 @@ export function PracticeSurface() {
         )}
         {resolved && (
           <>
-            <div
-              className={`mt-6 max-w-2xl rounded-2xl p-4 text-sm leading-6 ${outcome === 'correct' ? 'bg-success-bg text-success' : 'bg-error-bg text-error'}`}
-            >
-              <p className="font-medium">{feedbackMessage}</p>
-            </div>
             {solution && (
               <section
                 aria-label="Gabarito comentado"
@@ -709,24 +727,14 @@ export function PracticeSurface() {
           <div className="flex w-full flex-wrap items-center justify-end gap-x-5 gap-y-4 sm:w-auto">
             <a
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              href={
-                practiceSession?.returnPath ??
-                `/questions?subject=${subject?.slug ?? question.subjectId}`
-              }
+              href={returnHref}
             >
               Voltar para questões
             </a>
             {nextQuestion && (
               <button
                 className="inline-flex items-center gap-1 text-sm font-medium text-accent-strong hover:underline"
-                onClick={() =>
-                  goToQuestion(
-                    nextQuestion.id,
-                    catalogue?.subjects.find(
-                      (item) => item.id === nextQuestion.subjectId,
-                    )?.slug ?? nextQuestion.subjectId,
-                  )
-                }
+                onClick={goToNextQuestion}
               >
                 {resolved ? 'Próxima questão' : 'Pular questão'}{' '}
                 <MoveRight className="size-4" />
